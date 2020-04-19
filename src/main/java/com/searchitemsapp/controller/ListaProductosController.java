@@ -44,7 +44,7 @@ public class ListaProductosController {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),
 				ListaProductosController.class);
-		
+
 		/**
 		 *   // para inicializar el proxy, descomenta esta línea 
 		 *   // JsonUtil.establecerProxy();
