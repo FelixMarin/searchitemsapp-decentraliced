@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+ 
+<hibernate-configuration>
+    <session-factory>
+ 
+        <!-- Connection settings -->
+        <property name="hibernate.bytecode.use_reflection_optimizer">${hibernate.bytecode.use_reflection_optimizer}</property>
+        <property name="hibernate.connection.driver_class">${hibernate.connection.driver_class}</property>
+        <property name="hibernate.connection.url">${hibernate.connection.url}</property>
+        <property name="hibernate.connection.username">${hibernate.connection.username}</property>
+        <property name="hibernate.connection.password">${hibernate.connection.password}</property>
+        <property name="hibernate.default_schema">${hibernate.default_schema}</property>
+ 
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">${hibernate.dialect}</property>
+ 
+ 		<property name="hibernate.current_session_context_class">${hibernate.current_session_context_class}</property>
+ 
+        <!-- Print executed SQL to stdout -->
+        <property name="show_sql">${hibernate.show_sql}</property>
+        
+        <!-- Fix Postgres JPA Error (Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented) -->
+ 		<property name="spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation">true</property>
+ 
+        <!-- Validate all database on startup -->
+ 		<property name="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</property>
+ 		
+        <!-- Annotated entity classes -->
+        <mapping class="com.searchitemsapp.model.TbSiaUrl"/>
+        <mapping class="com.searchitemsapp.model.TbSiaCategoriasEmpresa"/>
+        <mapping class="com.searchitemsapp.model.TbSiaEmpresa"/>
+        <mapping class="com.searchitemsapp.model.TbSiaPais"/>
+        <mapping class="com.searchitemsapp.model.TbSiaLogin"/>
+        <mapping class="com.searchitemsapp.model.TbSiaParamsFormLogin"/>
+        <mapping class="com.searchitemsapp.model.TbSiaParamsHeadersLogin"/>
+        <mapping class="com.searchitemsapp.model.TbSiaMarcas"/>
+        <mapping class='com.searchitemsapp.model.TbSiaNomProducto'/>
+        <mapping class="com.searchitemsapp.model.TbSiaSelectoresCss"/>
+        
+    </session-factory>
+</hibernate-configuration>

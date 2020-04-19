@@ -1,0 +1,36 @@
+package com.searchitemsapp.scraping.caprabo;
+
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jsoup.nodes.Document;
+
+import com.searchitemsapp.dto.SelectoresCssDTO;
+import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.IFScrapingEmpresas;
+import com.searchitemsapp.util.ClaseUtils;
+import com.searchitemsapp.util.LogsUtils;
+
+public class ScrapingCaprabo implements IFScrapingEmpresas {
+
+	public ScrapingCaprabo() {
+		super();
+	}
+
+	@Override
+	public List<String> getListaUrls(Document document, UrlDTO urlDto, SelectoresCssDTO selectorCssDto)
+			throws MalformedURLException {
+
+		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		
+		String urlBase = urlDto.getNomUrl();
+		List<String> listaUrls = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		listaUrls.add(urlBase);
+		
+		return listaUrls;
+	}
+	
+	
+
+}

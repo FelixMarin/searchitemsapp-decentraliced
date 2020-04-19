@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:repository="http://www.springframework.org/schema/data/repository"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository-2.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+ 	<jpa:repositories base-package="om.searchitemsapp.**.repository" />
+ 	
+ 	<mvc:annotation-driven /> 	
+ 	<context:annotation-config /> 	
+ 
+	<context:component-scan base-package="com.searchitemsapp" />
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+          <property name="prefix" value="/" />
+          <property name="suffix" value=".jsp" />
+          <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+   </bean>
+	
+   <mvc:resources mapping="/resources/**" location="WEB-INF/resources/" />
+   <mvc:resources mapping="/css/**" location="css/" />
+   <mvc:resources mapping="/js/**" location="js/" />
+   <mvc:resources mapping="/img/**" location="img/" />
+   	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+        
+    <!-- @PersistenceUnit annotation -->
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+           
+    <context:property-placeholder location="file:${PROPERTIES_SIA}/db.properties,
+    					file:${PROPERTIES_SIA}/log4j.properties" 
+    			ignore-unresolvable="false" ignore-resource-not-found="true" />   
+        
+	<bean id="dataSource"
+        class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        destroy-method="close" p:driverClass="${hibernate.connection.driver_class}"
+        p:jdbcUrl="${hibernate.connection.url}" p:user="${hibernate.connection.username}"
+        p:password="${hibernate.connection.password}"
+        p:acquireIncrement="${hibernate.c3p0.acquire_increment}"
+        p:minPoolSize="${hibernate.c3p0.min_size}"
+        p:maxPoolSize="${hibernate.c3p0.max_size}"
+        p:maxIdleTime="${hibernate.c3p0.max_idle_time}"
+        p:unreturnedConnectionTimeout="${hibernate.c3p0.unreturned_connection_timeout}" />
+        
+	<bean id="jpaAdapter"
+        class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+        
+    <bean id="entityManagerFactory"
+        class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+        p:dataSource-ref="dataSource"
+        p:packagesToScan="com.searchitemsapp.model"
+        p:jpaVendorAdapter-ref="jpaAdapter">
+
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.connection.autocommit">${hibernate.connection.autocommit}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.query.cache}</prop>
+                <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
+                <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+                <prop key="hibernate.generate_statistics">${hibernate.statistics}</prop>
+                <prop key="net.sf.ehcache.configurationResourceName">/cache-config.xml</prop>
+            </props>
+        </property>
+ 
+        <property name="loadTimeWeaver">
+            <bean
+                class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+        </property> 
+    </bean>
+        
+    <bean id="transactionManager"
+        class="org.springframework.orm.jpa.JpaTransactionManager"
+        p:entityManagerFactory-ref="entityManagerFactory" />
+        
+      <bean id="categoriaDTO" class="com.searchitemsapp.dto.CategoriaDTO"></bean>  
+      <bean id="empresaDTO" class="com.searchitemsapp.dto.EmpresaDTO"></bean> 
+      <bean id="paisDTO" class="com.searchitemsapp.dto.PaisDTO"></bean>
+      <bean id="pedidoDTO" class="com.searchitemsapp.dto.PedidoDTO"></bean> 
+      <bean id="resultadoDTO" class="com.searchitemsapp.dto.ResultadoDTO"></bean> 
+      <bean id="urlDTO" class="com.searchitemsapp.dto.UrlDTO"></bean> 
+      <bean id="loginDTO" class="com.searchitemsapp.dto.LoginDTO"></bean>
+      <bean id="paramsLoginDTO" class="com.searchitemsapp.dto.ParamsLoginDTO"></bean>
+      <bean id="marcasDTO" class="com.searchitemsapp.dto.MarcasDTO"></bean>
+      
+      <bean id="categoriaParser" class="com.searchitemsapp.parsers.CategoriaParser"></bean>
+      <bean id="empresaParser" class="com.searchitemsapp.parsers.EmpresaParser"></bean>
+      <bean id="loginParser" class="com.searchitemsapp.parsers.LoginParser"></bean>
+      <bean id="marcasParser" class="com.searchitemsapp.parsers.MarcasParser"></bean>
+      <bean id="nomProductoParser" class="com.searchitemsapp.parsers.NomProductoParser"></bean>
+      <bean id="paisParser" class="com.searchitemsapp.parsers.PaisParser"></bean>
+      <bean id="paramsFormLoginParser" class="com.searchitemsapp.parsers.ParamsFormLoginParser"></bean>
+      <bean id="paramsHeadersParser" class="com.searchitemsapp.parsers.ParamsHeadersLoginParser"></bean>
+      <bean id="selectoresCssParser" class="com.searchitemsapp.parsers.SelectoresCssParser"></bean>
+      <bean id="urlParser" class="com.searchitemsapp.parsers.UrlParser"></bean>
+      
+      <bean id="categoriaDao" class="com.searchitemsapp.dao.CategoriaDao"></bean>
+      <bean id="empresaDao" class="com.searchitemsapp.dao.EmpresaDao"></bean>
+      <bean id="loginDao" class="com.searchitemsapp.dao.LoginDao"></bean>
+      <bean id="marcasDao" class="com.searchitemsapp.dao.MarcasDao"></bean>
+      <bean id="nomProductoDao" class="com.searchitemsapp.dao.NomProductoDao"></bean>
+      <bean id="paisDao" class="com.searchitemsapp.dao.PaisDao"></bean>
+      <bean id="paramsFormLoginDao" class="com.searchitemsapp.dao.ParamsFormLoginDao"></bean>
+      <bean id="paramsHeadersLoginDao" class="com.searchitemsapp.dao.ParamsHeadersLoginDao"></bean>
+      <bean id="selectoresCssDao" class="com.searchitemsapp.dao.SelectoresCssDao"></bean>
+      <bean id="urlDao" class="com.searchitemsapp.dao.UrlDao"></bean>
+      
+      <bean id="loginImpl" class="com.searchitemsapp.impl.LoginImpl"></bean>
+      <bean id="categoriaImpl" class="com.searchitemsapp.impl.CategoriaImpl"></bean> 
+      <bean id="empresaImpl" class="com.searchitemsapp.impl.EmpresaImpl"></bean>
+      <bean id="paisImpl" class="com.searchitemsapp.impl.PaisImpl"></bean>
+      <bean id="urlImpl" class="com.searchitemsapp.impl.UrlImpl"></bean>
+      <bean id="paramsFormLoginImpl" class="com.searchitemsapp.impl.ParamsFormLoginImpl"></bean>
+      <bean id="paramsHeadersLoginImpl" class="com.searchitemsapp.impl.ParamsHeadersLoginImpl"></bean>
+      <bean id="marcasImpl" class="com.searchitemsapp.impl.MarcasImpl"></bean>
+       <bean id="selectoresCssImpl" class="com.searchitemsapp.impl.SelectoresCssImpl"></bean>
+      
+      <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.model.TbSiaCategoriasEmpresa"></bean>
+      <bean id="tbSiaEmpresa" class="com.searchitemsapp.model.TbSiaEmpresa"></bean>
+      
+      <bean id="urlTreatment" class="com.searchitemsapp.scraping.UrlTreatment"></bean> 
+      <bean id="scrapingLoginUnit" class="com.searchitemsapp.scraping.ScrapingLoginUnit"></bean>
+      <bean id="scrapingUnit" class="com.searchitemsapp.scraping.ScrapingUnit" scope="prototype">
+      		<constructor-arg index="0" ref="urlDTO" />
+      		<constructor-arg index="1" type="java.lang.String" value="" />
+      		<constructor-arg index="2" type="java.lang.String" value="" />
+      		<constructor-arg index="3" type="java.lang.String" value="" />
+      		<constructor-arg index="4" type="java.lang.String" value="" />
+      </bean>
+      <bean id="scrapingDiccionario" class="com.searchitemsapp.scraping.ScrapingDiccionario" scope="prototype">
+      		<constructor-arg index="0" ref="urlDTO" />
+      		<constructor-arg index="1" type="java.lang.String" value="" />
+      </bean>
+      
+      <bean id="dynScrapingUnit" class="com.searchitemsapp.scraping.DynScrapingUnit"></bean>
+      <bean id="scrapingConsum" class="com.searchitemsapp.scraping.consum.ScrapingConsum"></bean>
+      <bean id="scrapingEroski" class="com.searchitemsapp.scraping.eroski.ScrapingEroski"></bean>
+      <bean id="scrapingSimply" class="com.searchitemsapp.scraping.simply.ScrapingSimply"></bean>
+      <bean id="scrapingMercadona" class="com.searchitemsapp.scraping.mercadona.ScrapingMercadona"></bean>
+      <bean id="scrapingCondis" class="com.searchitemsapp.scraping.condis.ScrapingCondis"></bean>
+      <bean id="scrapingHipercor" class="com.searchitemsapp.scraping.hipercor.ScrapingHipercor"></bean>
+      <bean id="scrapingCarrefour" class="com.searchitemsapp.scraping.carrefour.ScrapingCarrefour"></bean>
+      <bean id="scrapingDia" class="com.searchitemsapp.scraping.dia.ScrapingDia"></bean>
+      <bean id="scrapingECI" class="com.searchitemsapp.scraping.eci.ScrapingECI"></bean>
+      <bean id="scrapingUlabox" class="com.searchitemsapp.scraping.ulabox.ScrapingUlabox"></bean>
+      <bean id="scrapingAlcampo" class="com.searchitemsapp.scraping.alcampo.ScrapingAlcampo"></bean>
+      <bean id="scrapingCaprabo" class="com.searchitemsapp.scraping.caprabo.ScrapingCaprabo"></bean>
+      <bean id="scrapingLidl" class="com.searchitemsapp.scraping.lidl.ScrapingLidl"></bean>
+      
+      <bean id="diccionario" class="com.searchitemsapp.diccionario.Diccionario"></bean>
+      <bean id="fillSelectores" class="com.searchitemsapp.diccionario.FillSelectores"></bean>     
+      
+      <bean id="parserXmlJaxb" class="com.searchitemsapp.util.ParserXmlJaxb"></bean>
+      
+      <bean id="parserFactory" class="com.searchitemsapp.factory.ParserFactory"></bean>
+      <bean id="serviceFactory" class="com.searchitemsapp.factory.ServiceFactory"></bean>
+       <bean id="scrapingEmpFactory" class="com.searchitemsapp.factory.ScrapingEmpFactory"></bean>
+</beans>
