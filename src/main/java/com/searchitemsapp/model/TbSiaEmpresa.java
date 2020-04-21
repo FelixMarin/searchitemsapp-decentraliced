@@ -97,7 +97,7 @@ public class TbSiaEmpresa implements Serializable {
 
 	public Boolean getBolActivo() {
 		return this.bolActivo;
-	}
+	} 
 
 	public void setBolActivo(Boolean bolActivo) {
 		this.bolActivo = bolActivo;
