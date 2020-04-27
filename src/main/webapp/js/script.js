@@ -7,9 +7,15 @@ function init() {
     document.getElementById('botonAceptar').addEventListener('click',enviar,false);
     document.getElementById('botonBarra').addEventListener('click',enviar,false);
     document.getElementById('inputtext').addEventListener('keyup', function() {
-        liveSearch(this.value);        
+        liveSearch(this.value);
+        aceptarSearchBar();
+        $('#sugerencias').css('display','none');
     }, false);
-    aceptarSearchBar();
+
+    document.getElementById('body').addEventListener('click', function() {
+        $('#sugerencias').css('display','none');
+    }, false);
+
     $("img.imglogo").imgCheckbox();
 }
 
@@ -35,7 +41,7 @@ function enviar() {
     document.getElementById('cajamensajes').style.display = 'none';
     let elemProducto = document.getElementById('inputtext');
     let elemEmpresas = document.getElementsByClassName('imgChked');
-    let elemOrdenar = document.getElementsByName('sizeBy');
+    let elemOrdenarDown = document.getElementsByName('sizeBy');
     let valOrdenar = 1;
     let valProducto = '';
     let valEmpresas = '';
@@ -67,12 +73,50 @@ function enviar() {
             div.classList.add('border');
             div.appendChild(logoEmpresa);
             document.getElementById('caja-logos-checked').appendChild(div);
-            valEmpresas += didEmpresa + ',';            
+            valEmpresas += didEmpresa + ',';
         }
 
+        let div1 = document.createElement('div');
+        div1.classList.add('col-2');
+        div1.classList.add('mt-3');
+        div1.classList.add('offset-lg-' + (12 - elemEmpresas.length-3)); 
+        let selectGroup = document.createElement("select");
+        selectGroup.addEventListener('change',function() {
+            let opcion = this.options[this.selectedIndex].value;
+            if(opcion == 1) {
+                //$('#precio').prop('checked',true).trigger('change');                
+                elemOrdenarDown[0].checked = true;
+            } else {
+                //$('#volumen').prop('checked',true).trigger('change');
+                elemOrdenarDown[1].checked = true;
+            }
+        }, false);
+        selectGroup.setAttribute('id','select-top');
+        selectGroup.setAttribute("class", "form-control");
+        selectGroup.classList.add('float-right'); 
+        let opcionPrecio = document.createElement("option");
+        opcionPrecio.text = 'Precio';
+        opcionPrecio.setAttribute('value','1');
+        opcionPrecio.setAttribute('id','precio');
+        let opcionVolumen = document.createElement("option");
+        opcionVolumen.text = 'Volumen';
+        opcionVolumen.setAttribute('value','2');
+        opcionVolumen.setAttribute('id','volumen');
+        
+        if(elemOrdenarDown[0].checked) {
+            opcionPrecio.selected = "true";
+        } else {
+            opcionVolumen.selected = "true";
+        }
+
+        selectGroup.appendChild(opcionPrecio);
+        selectGroup.appendChild(opcionVolumen);
+        div1.appendChild(selectGroup);
+        document.getElementById('caja-logos-checked').appendChild(div1);
+
         let div = document.createElement("div");
-        div.classList.add('col-' + (12 - elemEmpresas.length));
-        div.classList.add('mt-3');       
+        div.classList.add('col-1');
+        div.classList.add('mt-3');
         let buttonVolver = document.createElement("a");
         buttonVolver.setAttribute("href", "./index.html");
         buttonVolver.setAttribute("id", "boton-volver");
@@ -89,7 +133,7 @@ function enviar() {
         return;
     }
 
-    if(elemOrdenar[1].checked) {
+    if(elemOrdenarDown[1].checked) {
         valOrdenar = 2;
     }
 
@@ -106,8 +150,7 @@ function traerProductos(producto, ordenar, strEmpresas) {
     timeout: 600000,
     beforeSend: function(){
         $('#sugerencias').addClass('hidden');
-        $('#cajamensajes').removeClass("show");
-        $('#cajamensajes').addClass("hidden");
+        $('#cajamensajes').css("display","none");
         $('#productos').addClass("hidden");
         $("#rowempresas").css("display", "none");
         $("#separdor-footer").css("display", "none");
@@ -138,24 +181,21 @@ function liveSearch(keyword) {
         beforeSend: function(){
             $('#inputtext').addClass('loading-live-search');
             $('#sugerencias').html('');
-            $('#sugerencias').addClass('hidden');            
+            $('#sugerencias').css("display", "none");             
         }
         }).done(function (data) {
-            $('#inputtext').removeClass('loading-live-search');
-            $('#sugerencias').removeClass('hidden');
-            $('#sugerencias').css("display", "block");
-
-            if(data.length > 0) {
-                $('#sugerencias').append(data);
-            }
+            $('#inputtext').removeClass('loading-live-search'); 
+            $('#sugerencias').append(data);
+            $('#sugerencias').css("display", "block");            
 
             $('#sugerencias').find('.sugerencia').each(function(index) {
-                this.classList.add('border-bottom');
                 this.classList.add('pb-2');
                 this.setAttribute("onclick","focoSerchBar(this);return false;");
-            }
+            });
 
-            )
+            if(document.getElementById('inputtext').value === '') {
+                $('#sugerencias').css("display", "none"); 
+            }
    
         }).fail(function (xhr, textStatus, errorThrown) {
             console.log(errorThrown+'\n'+status+'\n'+xhr.statusText);
@@ -165,7 +205,6 @@ function liveSearch(keyword) {
 
 function focoSerchBar(param) {
     document.getElementById('inputtext').value = param.text;
-    document.getElementById('inputtext').focus();
     document.getElementById('sugerencias').style.display = "none";
 }
 
@@ -177,6 +216,14 @@ function componerCartas(data) {
         let datosJSON = jQuery.parseJSON(data);
         let contenedor = document.getElementById('productos');
         let row;
+
+        if(datosJSON.descripcion !== undefined) { 
+            document.getElementById("cajamensajes").classList.remove("hidden"); 
+            document.getElementById("cajamensajes").style.display = "block";
+            return;
+        } else { 
+            document.getElementById("cajamensajes").style.display = "none";            
+        }
 
         datosJSON.resultado.forEach(element => {           
 
@@ -210,9 +257,7 @@ function componerCartas(data) {
             }
         });  
     } catch(error) {
-        document.getElementById("caja-logos-checked").classList.add("hidden");          
-        document.getElementById("cajamensajes").classList.remove('hidden');
-        document.getElementById("cajamensajes").classList.add("show");        
+        document.getElementById("cajamensajes").style.display = "block";      
         console.log(error);
     }
 }
@@ -252,10 +297,12 @@ function imagenLogoEmpresa(didEmpresa) {
 function aceptarSearchBar() {
     let elemProducto = document.getElementById('inputtext');
 
-    elemProducto.addEventListener("keyup", function(event) {
+    elemProducto.addEventListener("keypress", function(event) {
         if (event.keyCode === 13) {
           event.preventDefault();
           document.getElementById("botonAceptar").click();
+          document.getElementById("sugerencias").style.display = "none";
+          $('#botonBarra').focus();
         }
       });
 }
@@ -278,6 +325,11 @@ function resize() {
         if(document.getElementById('boton-volver') != null) {
             document.getElementById('boton-volver').style.display = 'none';
         }
+
+        if(document.getElementById('select-top') != null) {
+            document.getElementById('select-top').style.display = 'none';
+        }
+        
         document.getElementById('productos').classList.remove('mt-4');
         document.getElementById('productos').classList.add('p-5');
 
@@ -321,6 +373,10 @@ function resize() {
 
         if(document.getElementById('boton-volver') != null) {
             document.getElementById('boton-volver').style.display = 'block';
+        }
+
+        if(document.getElementById('select-top') != null) {
+            document.getElementById('select-top').style.display = 'block';
         }
         
         let listaTd = document.getElementsByTagName('td');
