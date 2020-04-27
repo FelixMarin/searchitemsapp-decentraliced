@@ -74,7 +74,8 @@ public class ListadoProductosService implements IFService<String,String> {
 		ScrapingUnit scrapingUnit;
 
 		if (validaCamposEntrada(didCategoria, producto, didPais, ordenacion, empresas))  {		
-			return errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString());
+			return errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+					Thread.currentThread().getId());
 		}
 		
 		executorService = Executors.newCachedThreadPool();
@@ -84,7 +85,8 @@ public class ListadoProductosService implements IFService<String,String> {
 			fillSelectoresCss();
 			
 			if(ClaseUtils.isNullObject(listTodosSelectoresCss)) {
-				return errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString());
+				return errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+						Thread.currentThread().getId());
 			}
 
 			strJsonResult = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
@@ -129,7 +131,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		}catch(IOException | NoResultException | InterruptedException | ExecutionException | URISyntaxException e) {			
 			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);			
 			Thread.currentThread().interrupt();			
-			return StringUtils.getErrorJsonResponse(e.toString());
+			return StringUtils.getErrorJsonResponse(e.toString(),Thread.currentThread().getId());
 		} finally {
 			executorService.shutdown();
 		}
@@ -154,7 +156,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	private String errorJsonResponseNoResultException(final String linea, final String mensaje) {
 		return StringUtils.getErrorJsonResponse(linea
-				.concat(new NoResultException(mensaje).toString())); 		
+				.concat(new NoResultException(mensaje).toString()),Thread.currentThread().getId()); 		
 	}
 		
 	private void fillSelectoresCss() throws IOException {
@@ -198,8 +200,8 @@ public class ListadoProductosService implements IFService<String,String> {
 		return listResultFinal;
 	}	
 	
-	private String errorJsonResponse(final String mensaje) {
-		return StringUtils.getErrorJsonResponse(mensaje);
+	private String errorJsonResponse(final String mensaje, long id) {
+		return StringUtils.getErrorJsonResponse(mensaje, id);
 	}
 	
 	private static void setListTodosSelectoresCss(List<SelectoresCssDTO> listTodosSelectoresCss) {

@@ -3,9 +3,12 @@ window.addEventListener("resize", resize);
 window.document.onresize = resize();
 
 function init() {
-    document.getElementById('inputtext').addEventListener('keyup', desplazarbarra, false);    
+    document.getElementById('inputtext').addEventListener('keyup', desplazarbarra, false);
     document.getElementById('botonAceptar').addEventListener('click',enviar,false);
     document.getElementById('botonBarra').addEventListener('click',enviar,false);
+    document.getElementById('inputtext').addEventListener('keyup', function() {
+        liveSearch(this.value);        
+    }, false);
     aceptarSearchBar();
     $("img.imglogo").imgCheckbox();
 }
@@ -102,6 +105,7 @@ function traerProductos(producto, ordenar, strEmpresas) {
     dataType: "text",
     timeout: 600000,
     beforeSend: function(){
+        $('#sugerencias').addClass('hidden');
         $('#cajamensajes').removeClass("show");
         $('#cajamensajes').addClass("hidden");
         $('#productos').addClass("hidden");
@@ -113,7 +117,7 @@ function traerProductos(producto, ordenar, strEmpresas) {
         $('#ruleta').removeClass('hidden');
         $('#ruleta').addClass('show');
     }
-    }).done(function (data) {
+    }).done(function (data) {        
         $('#ruleta').addClass('hidden');
         $('#productos').removeClass("hidden");
         $('#productos').addClass("show");
@@ -122,6 +126,47 @@ function traerProductos(producto, ordenar, strEmpresas) {
         console.log(errorThrown+'\n'+status+'\n'+xhr.statusText);
         alert("AJAX call failed: " + textStatus + ", " + errorThrown);
     });
+}
+
+function liveSearch(keyword) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost/accesosia/readProduct.php",
+        data:"keyword=" + keyword,
+        dataType: "text",
+        timeout: 600000,
+        beforeSend: function(){
+            $('#inputtext').addClass('loading-live-search');
+            $('#sugerencias').html('');
+            $('#sugerencias').addClass('hidden');            
+        }
+        }).done(function (data) {
+            $('#inputtext').removeClass('loading-live-search');
+            $('#sugerencias').removeClass('hidden');
+            $('#sugerencias').css("display", "block");
+
+            if(data.length > 0) {
+                $('#sugerencias').append(data);
+            }
+
+            $('#sugerencias').find('.sugerencia').each(function(index) {
+                this.classList.add('border-bottom');
+                this.classList.add('pb-2');
+                this.setAttribute("onclick","focoSerchBar(this);return false;");
+            }
+
+            )
+   
+        }).fail(function (xhr, textStatus, errorThrown) {
+            console.log(errorThrown+'\n'+status+'\n'+xhr.statusText);
+            alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+        });
+}
+
+function focoSerchBar(param) {
+    document.getElementById('inputtext').value = param.text;
+    document.getElementById('inputtext').focus();
+    document.getElementById('sugerencias').style.display = "none";
 }
 
 function componerCartas(data) {
@@ -165,8 +210,6 @@ function componerCartas(data) {
             }
         });  
     } catch(error) {
-        $('#caja-logos-checked').removeClass("hidden");
-        document.getElementById("caja-logos-checked").classList.remove('show');
         document.getElementById("caja-logos-checked").classList.add("hidden");          
         document.getElementById("cajamensajes").classList.remove('hidden');
         document.getElementById("cajamensajes").classList.add("show");        

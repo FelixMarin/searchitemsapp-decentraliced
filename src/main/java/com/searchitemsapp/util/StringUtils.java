@@ -1445,10 +1445,8 @@ public class StringUtils  implements IFUtils {
 		return value;
 	}
 
-	public static String getErrorJsonResponse(String error) {
-		return "{\"id\":\"-1\", \"marca\": \"\", \"imagen\": \"\", "
-				+ "\"descripcion\": ".concat(error)
-				+ "\"Error\",\"precio\": \"\"}";
+	public static String getErrorJsonResponse(String error, long id) {
+		return "{\"id\":\"" + id +"\",\"descripcion\":\"" + error + "\"}";
 	}
 	
 	public static String eliminarTildes(final String cadena) {
