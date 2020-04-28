@@ -22,12 +22,8 @@
 }
   
 @keyframes movetotop {
-    100% {top: 78%;}
+    100% {top: 22%;}
     0%   {top: 400%;}    
-}
-
-@media (min-width: 1024) {
-   
 }
 
 @media (max-width: 1023px) {
@@ -44,7 +40,7 @@
     .containerCL{
         margin: 0;
         position: absolute;
-        top: 300%;
+        top: 200%;
         left: 50%;
         margin-right: -50%;
         transform: translate(-50%, 0%);
@@ -56,7 +52,7 @@
     }
       
     @keyframes movetotop {
-        100% {top: 110%;}
+        100% {top:20%;}
         0%   {top: 500%;}
     }
 }
@@ -179,8 +175,14 @@
     color:black;
 }
 
+.divsugerencia {
+    cursor: pointer;
+    padding-bottom: 1%;
+    padding-top: .5%;
+}
+
 .divsugerencia:hover {
-    background-color: #ddd;
+    background-color: #eee;
 }
 
 .separdor-sugerencias {

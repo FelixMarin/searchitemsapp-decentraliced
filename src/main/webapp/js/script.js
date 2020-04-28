@@ -67,10 +67,18 @@ function enviar() {
             let didEmpresa = item.firstChild.alt;
             let imgLogo = imagenLogoEmpresa(parseInt(didEmpresa)).replace('w-50','w-100');
             let logoEmpresa = document.createRange().createContextualFragment(imgLogo);
+            logoEmpresa.children[0].classList.add('cardinal');
+            logoEmpresa.children[0].classList.remove('climg');
+            logoEmpresa.children[0].classList.remove('pt-2');
+            logoEmpresa.children[0].classList.remove('pl-2');
+            logoEmpresa.children[0].classList.remove('pb-2');
             let div = document.createElement("div");
-            div.classList.add('col-1');
             div.classList.add('mt-3');
             div.classList.add('border');
+            div.classList.add('col-lg-1');
+            div.classList.add('col-md-2');
+            div.classList.add('col-sm-3');
+            div.classList.add('col-xs-3');
             div.appendChild(logoEmpresa);
             document.getElementById('caja-logos-checked').appendChild(div);
             valEmpresas += didEmpresa + ',';
@@ -187,12 +195,7 @@ function liveSearch(keyword) {
         }).done(function (data) {
             $('#inputtext').removeClass('loading-live-search'); 
             $('#sugerencias').append(data);
-            $('#sugerencias').css("display", "block");            
-
-            $('#sugerencias').find('.sugerencia').each(function(index) {
-                this.classList.add('pb-2');
-                this.setAttribute("onclick","focoSerchBar(this);return false;");
-            });
+            $('#sugerencias').css("display", "block");    
 
             if(document.getElementById('inputtext').value === '') {
                 $('#sugerencias').css("display", "none"); 
@@ -205,7 +208,7 @@ function liveSearch(keyword) {
 }
 
 function focoSerchBar(param) {
-    document.getElementById('inputtext').value = param.text;
+    document.getElementById('inputtext').value = param.innerText.trim();
     document.getElementById('sugerencias').style.display = "none";
 }
 
@@ -241,7 +244,7 @@ function componerCartas(data) {
             estructuraHTML += imagenLogoEmpresa(element.didEmpresa);
             estructuraHTML += '<span class="pt-1 pull-right"><kbd>' + element.identificador + '</kbd></span>';
             estructuraHTML += '</h4>'
-            estructuraHTML += '<a href="' + element.nomUrlAllProducts + '" target="_blank" rel="noopener noreferrer">';
+            estructuraHTML += '<a href="' + element.nomUrl + '" target="_blank" rel="noopener noreferrer">';
             estructuraHTML += '<img class="imgprod" src="' + element.imagen + '" alt="Photo of sunset" />';
             estructuraHTML += '</a>';
             estructuraHTML += '<h5 class="card-title p-2">' + element.nomProducto + '</h5>';
@@ -291,7 +294,7 @@ function imagenLogoEmpresa(didEmpresa) {
          case 114:		
              return '<img class="w-50 pt-2 pl-2 pb-2 climg" src="img/Simply-market.png" alt="simply" />';
          case 116:		
-             return '<img class="w-50 pt-2 pl-2 pb-2 climg" src="img/tudespensa.jpg" alt="CONSUM" />';
+             return '<img class="w-50 pt-2 pl-2 pb-2 climg" src="img/consum.svg" alt="consum" />';
     }
 }
 
@@ -332,7 +335,9 @@ function resize() {
         }
         
         document.getElementById('productos').classList.remove('mt-4');
-        document.getElementById('productos').classList.add('p-5');
+        document.getElementById('productos').classList.add('pt-4');
+        document.getElementById('productos').classList.add('pl-5');
+        document.getElementById('productos').classList.add('pr-5');
 
         let listaTd = document.getElementsByTagName('td');
 
@@ -363,6 +368,14 @@ function resize() {
             logochecked[index].classList.remove('w-100');
             logochecked[index].classList.remove('climg');
             logochecked[index].classList.add('w-100');
+        }
+
+        let cardinal = document.getElementsByClassName('cardinal');
+
+        for (let index = 0; index < cardinal.length; index++) {
+            cardinal[index].classList.remove('w-50');
+            cardinal[index].classList.remove('w-75');
+            cardinal[index].classList.add('w-100');        
         }
 
     } else {
@@ -410,4 +423,18 @@ function resize() {
             logochecked[index].classList.add('w-50');
         }
     }
+
+    let cardinal = document.getElementsByClassName('cardinal');
+
+    for (let index = 0; index < cardinal.length; index++) {
+        cardinal[index].classList.remove('w-50');
+        cardinal[index].classList.remove('w-75');
+        cardinal[index].classList.add('w-100');
+        
+
+    }
+}
+
+function clickDivSugerencias() {
+
 }
