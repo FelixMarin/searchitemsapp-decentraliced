@@ -1,10 +1,19 @@
+.supracontainer {
+    position: absolute;
+    align-content: center;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .containerCL{
     margin: 0;
     position: absolute;
-    top: 40%;
+    top: 400%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
 }
 
 .desplazar {
@@ -13,8 +22,43 @@
 }
   
 @keyframes movetotop {
-    0%   {top: 88%;}
-    100% {top: 44%;}
+    100% {top: 78%;}
+    0%   {top: 400%;}    
+}
+
+@media (min-width: 1024) {
+   
+}
+
+@media (max-width: 1023px) {
+    .supracontainer {
+        position: absolute;
+        align-content: center;
+        left: 0;
+        right: 0;
+        top: 0%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .containerCL{
+        margin: 0;
+        position: absolute;
+        top: 300%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, 0%);
+    }
+    
+    .desplazar {
+        animation: movetotop .5s 1;
+        -webkit-animation-fill-mode: forwards;
+    }
+      
+    @keyframes movetotop {
+        100% {top: 110%;}
+        0%   {top: 500%;}
+    }
 }
 
 .show {

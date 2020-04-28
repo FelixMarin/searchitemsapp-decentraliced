@@ -9,11 +9,11 @@ function init() {
     document.getElementById('inputtext').addEventListener('keyup', function() {
         liveSearch(this.value);
         aceptarSearchBar();
-        $('#sugerencias').css('display','none');
+        document.getElementById('sugerencias').style.display = "none";  
     }, false);
 
     document.getElementById('body').addEventListener('click', function() {
-        $('#sugerencias').css('display','none');
+        document.getElementById('sugerencias').style.display = "none"; 
     }, false);
 
     $("img.imglogo").imgCheckbox();
@@ -83,16 +83,15 @@ function enviar() {
         let selectGroup = document.createElement("select");
         selectGroup.addEventListener('change',function() {
             let opcion = this.options[this.selectedIndex].value;
-            if(opcion == 1) {
-                //$('#precio').prop('checked',true).trigger('change');                
+            if(opcion == 1) {               
                 elemOrdenarDown[0].checked = true;
             } else {
-                //$('#volumen').prop('checked',true).trigger('change');
                 elemOrdenarDown[1].checked = true;
             }
         }, false);
         selectGroup.setAttribute('id','select-top');
         selectGroup.setAttribute("class", "form-control");
+        selectGroup.style.border = "solid 1px #ddd";
         selectGroup.classList.add('float-right'); 
         let opcionPrecio = document.createElement("option");
         opcionPrecio.text = 'Precio';
@@ -122,8 +121,9 @@ function enviar() {
         buttonVolver.setAttribute("id", "boton-volver");
         buttonVolver.innerHTML = "Volver";
         buttonVolver.classList.add('btn');
-        buttonVolver.classList.add('btn-outline-primary');
-        buttonVolver.classList.add('ml-5');        
+        buttonVolver.classList.add('btn-outline-secondary');
+        buttonVolver.style.border = "solid 1px #ddd";
+        buttonVolver.classList.add('ml-5');
         buttonVolver.classList.add('float-right'); 
         div.appendChild(buttonVolver);
         document.getElementById('caja-logos-checked').appendChild(div);
@@ -155,6 +155,7 @@ function traerProductos(producto, ordenar, strEmpresas) {
         $("#rowempresas").css("display", "none");
         $("#separdor-footer").css("display", "none");
         $("#radiogroupid").css("display", "none");
+        $("#colinput").css("margin-top", "1%");
         $('#input-container').removeClass("containerCL");
         $("#input-container").addClass("mt-2");
         $('#ruleta').removeClass('hidden');
@@ -234,7 +235,7 @@ function componerCartas(data) {
                 contenedor.appendChild(row);
             }
 
-            estructuraHTML = '<div class="col-md-2 col-sm-3 mb-3 crd">';
+            estructuraHTML = '<div class="col-md-6 col-lg-2 col-sm-12 mb-3 crd">';
             estructuraHTML += '<div class="card card-block crd h-100 showcard">';            
             estructuraHTML += '<h4 class="card-title">';
             estructuraHTML += imagenLogoEmpresa(element.didEmpresa);
@@ -315,11 +316,11 @@ function resize() {
     let ancho = window.outerWidth;
     let largo = window.outerHeight;
 
-    if(ancho <= 767) {
+    if(ancho <= 1023) {
         document.getElementById('rowempresas').classList.remove('ml-2');
         document.getElementById('radiogroupid').classList.remove('ml-2');
         document.getElementById('radiogroup').classList.remove('offset-1');
-        document.getElementById('colinput').classList.add('pt-5');
+        document.getElementById('colinput').classList.add('pt-1');
         document.getElementById('colinput').classList.add('colinp');
 
         if(document.getElementById('boton-volver') != null) {
