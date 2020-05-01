@@ -151,9 +151,9 @@ function enviar() {
 function traerProductos(producto, ordenar, strEmpresas) {	
     $.ajax({
     type: "GET",
-    url: "http://localhost/accesosia/getData.php",
-    data:"didPais=101&didCategoria=101&ordenacion="+ ordenar +"&producto="+producto + "&empresa=" + strEmpresas,
-    //url: "http://192.168.0.106/searchitemsapp/search/101/101/"+ ordenar +"/"+producto + "/" + strEmpresas,
+    //url: "http://localhost/accesosia/getData.php",
+    //data:"didPais=101&didCategoria=101&ordenacion="+ ordenar +"&producto="+producto + "&empresa=" + strEmpresas,
+    url: "/searchitemsapp/search/101/101/"+ ordenar +"/"+producto + "/" + strEmpresas,
     dataType: "text",
     timeout: 600000,
     beforeSend: function(){
@@ -183,8 +183,9 @@ function traerProductos(producto, ordenar, strEmpresas) {
 function liveSearch(keyword) {
     $.ajax({
         type: "GET",
-        url: "http://localhost/accesosia/readProduct.php",
-        data:"keyword=" + keyword,
+        url: "http://192.168.0.106:3000/keywords/" + keyword,
+        //url: "http://localhost/accesosia/readProduct.php",
+        //data:"keyword=" + keyword,
         dataType: "text",
         timeout: 600000,
         beforeSend: function(){
@@ -193,13 +194,23 @@ function liveSearch(keyword) {
             $('#sugerencias').css("display", "none");             
         }
         }).done(function (data) {
-            $('#inputtext').removeClass('loading-live-search'); 
-            $('#sugerencias').append(data);
-            $('#sugerencias').css("display", "block");    
-
-            if(document.getElementById('inputtext').value === '') {
-                $('#sugerencias').css("display", "none"); 
-            }
+			$('#inputtext').removeClass('loading-live-search');
+			let datosJSON = jQuery.parseJSON(data);
+			
+			datosJSON.forEach(elem => {
+				let div = document.createElement('div');
+				div.classList.add('col-12');
+				div.classList.add('divsugerencia');
+				div.setAttribute('onclick','focoSerchBar(this);return false;');
+				div.innerText = elem.nom_producto;
+				$('#sugerencias').append(div);
+			});
+                         
+            $('#sugerencias').css("display", "block"); 
+            $('#sugerencias').find('.sugerencia').each(function(index) {
+                this.classList.add('pb-2');
+                this.setAttribute("onclick","focoSerchBar(this);return false;");
+            });
    
         }).fail(function (xhr, textStatus, errorThrown) {
             console.log(errorThrown+'\n'+status+'\n'+xhr.statusText);
