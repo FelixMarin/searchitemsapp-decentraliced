@@ -10,8 +10,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import javax.persistence.NoResultException;
 
@@ -19,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.mchange.util.StringObjectMap;
 import com.searchitemsapp.diccionario.Diccionario;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
@@ -30,6 +28,7 @@ import com.searchitemsapp.scraping.ScrapingUnit;
 import com.searchitemsapp.scraping.UrlTreatment;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.JsonUtil;
+import com.searchitemsapp.util.ListaProductosUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
@@ -73,19 +72,22 @@ public class ListadoProductosService implements IFService<String,String> {
 		StringBuilder strJsonResult;
 		ScrapingUnit scrapingUnit;
 
-		if (validaCamposEntrada(didCategoria, producto, didPais, ordenacion, empresas))  {		
-			return errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+		if (ListaProductosUtils.validaCamposEntrada(didCategoria, producto, didPais, ordenacion, empresas))  {		
+			return ListaProductosUtils.errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
 					Thread.currentThread().getId());
 		}
 		
 		executorService = Executors.newCachedThreadPool();
 
 		try {
-			logInicioDebugMessage(didCategoria);
-			fillSelectoresCss();
+			ListaProductosUtils.logInicioDebugMessage(didCategoria);
 			
 			if(ClaseUtils.isNullObject(listTodosSelectoresCss)) {
-				return errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+				listTodosSelectoresCss = ListaProductosUtils.fillSelectoresCss(selectoresCssImpl);
+			}
+			
+			if(ClaseUtils.isNullObject(listTodosSelectoresCss)) {
+				return ListaProductosUtils.errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
 						Thread.currentThread().getId());
 			}
 
@@ -110,10 +112,10 @@ public class ListadoProductosService implements IFService<String,String> {
 			}
 			
 			listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
-			listResultDtoFinal = executeFuture(listFutureListResDto);
+			listResultDtoFinal = ListaProductosUtils.executeFuture(listFutureListResDto);
 			
             if(listResultDtoFinal.isEmpty()) {
-    			return errorJsonResponseNoResultException(
+    			return ListaProductosUtils.errorJsonResponseNoResultException(
     					Thread.currentThread().getStackTrace()[1].toString(),
     					StringUtils.NO_HAY_RESULTADOS);          	
             }
@@ -125,7 +127,16 @@ public class ListadoProductosService implements IFService<String,String> {
 			}
 
 			for (ResultadoDTO resultadoDTO : listResultDtoFinal) {
-				strJsonResult.append(JsonUtil.toJson(resultadoDTO));
+								
+				strJsonResult.append("{" +
+						"\"identificador\":\"" + resultadoDTO.getIdentificador() + "\"," +
+						"\"nomProducto\":\"" + resultadoDTO.getNomProducto() + "\"," +
+						"\"didEmpresa\":\"" + resultadoDTO.getDidEmpresa() + "\"," +
+						"\"nomEmpresa\":\"" + resultadoDTO.getTbSiaEmpresa().getNomEmpresa() + "\"," +
+						"\"imagen\":\"" + resultadoDTO.getImagen() + "\"," +
+						"\"nomUrl\":\"" + resultadoDTO.getNomUrl() + "\"," +
+						"\"precio\":\"" + resultadoDTO.getPrecio() + "\"," +
+						"\"precioKilo\":\"" + resultadoDTO.getPrecioKilo() + "\"}");
 			}
 
 		}catch(IOException | NoResultException | InterruptedException | ExecutionException | URISyntaxException e) {			
@@ -138,73 +149,11 @@ public class ListadoProductosService implements IFService<String,String> {
 		
 
 		if(StringUtils.isEmpty(strJsonResult.toString())) {
-			return errorJsonResponseNoResultException(
+			return ListaProductosUtils.errorJsonResponseNoResultException(
 					Thread.currentThread().getStackTrace()[1].toString(),
 					StringUtils.NO_HAY_RESULTADOS); 
 		}
 		
 		return JsonUtil.toArrayJson(strJsonResult.toString());
 	}
-
-	private void logInicioDebugMessage(final String didCategoria) {
-		StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
-		debugMessage.append(didCategoria);
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
-	}
-	
-	private String errorJsonResponseNoResultException(final String linea, final String mensaje) {
-		return StringUtils.getErrorJsonResponse(linea
-				.concat(new NoResultException(mensaje).toString()),Thread.currentThread().getId()); 		
-	}
-		
-	private void fillSelectoresCss() throws IOException {
-		if(ClaseUtils.isNullObject(listTodosSelectoresCss)) {
-			setListTodosSelectoresCss(selectoresCssImpl.findAll());
-		}
-	}	
-	
-	private boolean validaCamposEntrada(final String didCategoria, 
-			final String producto, final String didPais, 
-			final String ordenacion, final String empresas) {
-		
-		return StringUtils.validateNull(didCategoria) || 
-				StringUtils.validateNull(producto) ||
-				StringUtils.validateNull(ordenacion) ||
-				StringUtils.validateNull(didPais) ||
-				StringUtils.isEmpty(empresas);
-	}
-	
-	private List<ResultadoDTO> executeFuture(final List<Future<List<ResultadoDTO>>> resultList) 
-			throws InterruptedException, ExecutionException {
-		
-		List<ResultadoDTO> listResultFinal = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
-		
-		for(Future<List<ResultadoDTO>> future : resultList) {
-			
-			try {
-				if(ClaseUtils.isNullObject(future.get())) {
-					continue;
-				}
-				
-				listResultFinal.addAll(future.get(5, TimeUnit.MINUTES));				
-				LogsUtils.escribeLogDebug(future.get().toString().concat(StringUtils.SPACE_STRING)
-						.concat(String.valueOf(future.isDone())),this.getClass());
-			
-			}catch(TimeoutException e) {
-				LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
-			}
-		}
-		
-		return listResultFinal;
-	}	
-	
-	private String errorJsonResponse(final String mensaje, long id) {
-		return StringUtils.getErrorJsonResponse(mensaje, id);
-	}
-	
-	private static void setListTodosSelectoresCss(List<SelectoresCssDTO> listTodosSelectoresCss) {
-		ListadoProductosService.listTodosSelectoresCss = listTodosSelectoresCss;
-	}	
 }

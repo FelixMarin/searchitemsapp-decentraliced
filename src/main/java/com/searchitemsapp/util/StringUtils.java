@@ -1542,6 +1542,5 @@ public class StringUtils  implements IFUtils {
 	
 	public static List<String> getNewListString() {
 		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
-	}
-		
+	}		
 }
