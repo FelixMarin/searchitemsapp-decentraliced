@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.mchange.util.StringObjectMap;
 import com.searchitemsapp.diccionario.Diccionario;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
