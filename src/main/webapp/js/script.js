@@ -125,7 +125,7 @@ function enviar() {
         div.classList.add('col-1');
         div.classList.add('mt-3');
         let buttonVolver = document.createElement("a");
-        buttonVolver.setAttribute("href", "./index.html");
+        buttonVolver.setAttribute("href", "./index.jsp");
         buttonVolver.setAttribute("id", "boton-volver");
         buttonVolver.innerHTML = "Volver";
         buttonVolver.classList.add('btn');
@@ -207,7 +207,7 @@ function liveSearch(keyword) {
 			});
                          
             $('#sugerencias').css("display", "block"); 
-            $('#sugerencias').find('.sugerencia').each(function(index) {
+            $('#sugerencias').find('.sugerencia').each(function() {
                 this.classList.add('pb-2');
                 this.setAttribute("onclick","focoSerchBar(this);return false;");
             });
@@ -328,7 +328,6 @@ $(window).resize(function() {
 
 function resize() {
     let ancho = window.outerWidth;
-    let largo = window.outerHeight;
 
     if(ancho <= 1023) {
         document.getElementById('rowempresas').classList.remove('ml-2');

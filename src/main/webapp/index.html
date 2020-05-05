@@ -24,7 +24,7 @@
     <div id="input-container" class="container containerCL">
         <div class="row">
             <div id="logo" class="col-sm-12 col-lg-6 offset-lg-3">
-                <img src="./img/1j+ojl1FOMkX9WypfBe43D6kifaIrxJLmxbIwXs1M3EMoAJtlSgqgPRq8vg___.png" alt="" srcset="">
+                <img src="./img/1j+ojl1FOMkX9WypfBe43D6kifaIrxJLmxbIwXs1M3EMoAJtlSgqgPRq8vg___.png" alt="">
             </div>
             <div id="colinput" class="colinp col-sm-12 col-lg-6 offset-lg-3">  
                 <div class="input-group">
