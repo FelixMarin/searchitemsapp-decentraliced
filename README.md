@@ -52,6 +52,12 @@ El siguiente paso es instalar Apache Tomcat para las ejecuciones de la aplicaci�
 
 ![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000006.png)
 
+El directorio resources contiene tres ficheros:
+
+- **db.properties**: contiene los datos de conexion a base de datos.
+- **flow.properties**: contiene todos los literales de la aplicación.
+- **log4j.properties**: contiene la configuración de la libreria de registros.
+
 Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
 
 ![Directorio './resources'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
@@ -66,12 +72,6 @@ Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a c
 En el fichero de propiedades aparece de esta forma: 
 
 ![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
-
-El directorio resources contiene tres ficheros:
-
-- **db.properties**: contiene los datos de conexion a base de datos.
-- **flow.properties**: contiene todos los literales de la aplicación.
-- **log4j.properties**: contiene la configuración de la libreria de registros.
 
 Añadir al fichero ‘**/etc/environmet**’ las siguientes variables de entorno.  
 
