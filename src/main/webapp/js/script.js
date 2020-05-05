@@ -252,7 +252,7 @@ function componerCartas(data) {
             estructuraHTML = '<div class="col-md-6 col-lg-2 col-sm-12 mb-3 crd">';
             estructuraHTML += '<div class="card card-block crd h-100 showcard">';            
             estructuraHTML += '<h4 class="card-title">';
-            estructuraHTML += imagenLogoEmpresa(element.didEmpresa);
+            estructuraHTML += imagenLogoEmpresa(parseInt(element.didEmpresa));
             estructuraHTML += '<span class="pt-1 pull-right"><kbd>' + element.identificador + '</kbd></span>';
             estructuraHTML += '</h4>'
             estructuraHTML += '<a href="' + element.nomUrl + '" target="_blank" rel="noopener noreferrer">';
