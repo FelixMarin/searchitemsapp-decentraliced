@@ -157,6 +157,7 @@ http://[url]:[port]/searchitemsapp/index.jsp
 ```
 
 Ejemplo en vídeo de la aplicación usando una interfaz web:
-
+[![IMAGE ALT TEXT HERE](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/portada-video-0.png)](https://youtu.be/LX-w0rHEKvk)
+ 
 [![IMAGE ALT TEXT HERE](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/portada-video.png)](https://youtu.be/LX-w0rHEKvk)
 
