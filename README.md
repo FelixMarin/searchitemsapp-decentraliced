@@ -78,8 +78,8 @@ Se procede a instalar PostgreSQL en el sistema operativo. Una vez instalado y co
 Antes de ejecutar el script, habrá que crear los siguientes ‘Login/Grup Roles: 
 
 ```console
-pgadmin:  SuperUser. Pass:0000 
-sia_select:  Solo permisos de lectura.Pass: 1111 
+pgadmin:  SuperUser.
+sia_select:  Solo permisos de lectura.
 ```
 
 
