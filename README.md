@@ -1,8 +1,9 @@
-# Preparación del Framework
+# Preparación del Entorno
 
-Una aplicación web desarrollada íntegramente en java. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación.
+Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación. La característica principal de la aplicación es la extracción de datos usando la técnica del web scraping.
+La aplicación es una API REST, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
 
-Formato de la url con la que se realizará la llamada al servicio:
+Formato de la URL con la que se realizará la llamada al servicio:
 
 ```console
 http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
@@ -77,8 +78,8 @@ Se procede a instalar PostgreSQL en el sistema operativo. Una vez instalado y co
 Antes de ejecutar el script, habrá que crear los siguientes ‘Login/Grup Roles: 
 
 ```console
-pgadmin:  SuperUser. Pass:0000 
-sia_select:  Solo permisos de lectura.Pass: 1111 
+pgadmin:  SuperUser.
+sia_select:  Solo permisos de lectura.
 ```
 
 
@@ -149,7 +150,13 @@ Una vez preparado el entorno habrá que compilar el proyecto y desplegar la apli
 
 Para realizar pruebas se acoseja usar la aplicación de escritorio [Postman](https://www.postman.com/downloads/). 
 
-Ejemplo de la aplicación usando una interfaz web
+Para acceder a la interfaz gráfica de la aplicación se hará mediante el fichero index.jsp:
+
+```console
+http://[url]:[port]/searchitemsapp/index.jsp
+```
+
+Ejemplo en vídeo de la aplicación usando una interfaz web:
 
 [![IMAGE ALT TEXT HERE](https://i9.ytimg.com/vi/LX-w0rHEKvk/mq2.jpg?sqp=CIejxvUF&rs=AOn4CLD2asneroUHGgjB_pHQ58WbtLZOtQ)](https://youtu.be/LX-w0rHEKvk)
 
