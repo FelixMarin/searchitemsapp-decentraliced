@@ -149,6 +149,12 @@ Una vez preparado el entorno habrá que compilar el proyecto y desplegar la apli
 
 Para realizar pruebas se acoseja usar la aplicación de escritorio [Postman](https://www.postman.com/downloads/). 
 
+Para acceder a la interfaz gráfica de la aplicación se hará mediante el fichero index.jsp:
+
+```console
+http://[url]:[port]/searchitemsapp/index.jsp
+```
+
 Ejemplo en vídeo de la aplicación usando una interfaz web:
 
 [![IMAGE ALT TEXT HERE](https://i9.ytimg.com/vi/LX-w0rHEKvk/mq2.jpg?sqp=CIejxvUF&rs=AOn4CLD2asneroUHGgjB_pHQ58WbtLZOtQ)](https://youtu.be/LX-w0rHEKvk)
