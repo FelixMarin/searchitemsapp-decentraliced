@@ -156,13 +156,13 @@ Para acceder a la interfaz gráfica de la aplicación se hará mediante el fiche
 http://[url]:[port]/searchitemsapp/index.jsp
 ```
 
-## Ejemplo en vídeo de la aplicación usando una interfaz web:
+### Ejemplo en vídeo de la aplicación usando una interfaz web:
 
-### Ventana de inicio:
+#### Ventana de inicio:
 
 [![IMAGE ALT TEXT HERE](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/portada-video-0.png)](https://youtu.be/LX-w0rHEKvk)
  
- ### Resultados de la búsqueda:
+ #### Resultados de la búsqueda:
  
 [![IMAGE ALT TEXT HERE](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/portada-video.png)](https://youtu.be/LX-w0rHEKvk)
 
