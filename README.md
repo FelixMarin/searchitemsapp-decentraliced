@@ -1,8 +1,9 @@
 # Preparación del Entorno
 
 Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación. La característica principal de la aplicación es la extracción de datos usando la técnica del web scraping.
+La aplicación es una API REST, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
 
-Formato de la url con la que se realizará la llamada al servicio:
+Formato de la URL con la que se realizará la llamada al servicio:
 
 ```console
 http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
