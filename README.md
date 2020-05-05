@@ -3,73 +3,6 @@
 Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación. La característica principal de la aplicación es la extracción de datos usando la técnica del web scraping.
 La aplicación es una API REST, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
 
-Formato de la URL con la que se realizará la llamada al servicio:
-
-```console
-http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
-```
-
-__país__: 101 (España).
-
-__categoría__: 101 (Supermercados)
-
-__ordenar__: precio: 1 / volumen: 2
-
-__producto__: (Arroz, Aceite, sal, ...)
-
-__super__: [101] , [101,103,104] , [ALL]
- 
-
-Ejemplo de uso:
-
-```console
-/**
-*  Esta llamada a la API devolverá un listado de 
-*  objetos json con los productos de todos los 
-*  supermercados ordenados por precio. 
-**/
-http://[url]:[port]/searchitemsapp/search/101/101/1/arroz/ALL
-```
-
-```console
-/**
-*  Esta llamada a la API devolverá un listado de 
-*  objetos json con los productos de un supermercado  
-*  ordenados por volumen.
-**/
-http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
-```
-
-Ejemplo de respuesta:
-
-```console
-{
-    "resultado": [
-        {
-            "identificador": "9",
-            "nomProducto": "Arroz categoría extra Carrefour 1 kg.",
-            "didEmpresa": "104",
-            "nomEmpresa": "CARREFOUR",
-            "imagen": "https://static.carrefour.es/hd_280x_/img_pim_food/101424_00_1.jpg",
-            "nomUrl": "https://www.carrefour.es/supermercado/arroz-categoria-extra-carrefour-1-kg-carrefour/R-prod1022743/p",
-            "precio": "0,78 eur",
-            "precioKilo": "0,78 eur/kg"
-        },
-        {
-            "identificador": "10",
-            "nomProducto": "Arroz redondo Hacendado",
-            "didEmpresa": "101",
-            "nomEmpresa": "MERCADONA",
-            "imagen": "https://prod-mercadona.imgix.net/images/0daf43fb5761b823ce83c985930c97c9.jpg?fit=crop&h=300&w=300",
-            "nomUrl": "null",
-            "precio": "0,79",
-            "precioKilo": "0,79"
-        }
-]}
-```
-
-
-
 ## Instalación de la base de datos 
 Se utilizará una base de datos relacional. El SGBD elegido para la capa de persistencia será PostgresSQL. 
 
@@ -134,6 +67,11 @@ En el fichero de propiedades aparece de esta forma:
 
 ![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
 
+El directorio resources contiene tres ficheros:
+
+- **db.properties**: contiene los datos de conexion a base de datos.
+- **flow.properties**: contiene todos los literales de la aplicación.
+- **log4j.properties**: contiene la configuración de la libreria de registros.
 
 Añadir al fichero ‘**/etc/environmet**’ las siguientes variables de entorno.  
 
@@ -154,6 +92,71 @@ Para acceder a la interfaz gráfica de la aplicación se hará mediante el fiche
 
 ```console
 http://[url]:[port]/searchitemsapp/index.jsp
+```
+
+Formato de la URL con la que se realizará la solicitud al servicio:
+
+```console
+http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
+```
+
+__país__: 101 (España).
+
+__categoría__: 101 (Supermercados)
+
+__ordenar__: precio: 1 / volumen: 2
+
+__producto__: (Arroz, Aceite, sal, ...)
+
+__super__: [101] , [101,103,104] , [ALL]
+ 
+
+Ejemplo de uso:
+
+```console
+/**
+*  Esta llamada a la API devolverá un listado de 
+*  objetos json con los productos de todos los 
+*  supermercados ordenados por precio. 
+**/
+http://[url]:[port]/searchitemsapp/search/101/101/1/arroz/ALL
+```
+
+```console
+/**
+*  Esta llamada a la API devolverá un listado de 
+*  objetos json con los productos de un supermercado  
+*  ordenados por volumen.
+**/
+http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
+```
+
+Ejemplo de respuesta:
+
+```console
+{
+    "resultado": [
+        {
+            "identificador": "9",
+            "nomProducto": "Arroz categoría extra Carrefour 1 kg.",
+            "didEmpresa": "104",
+            "nomEmpresa": "CARREFOUR",
+            "imagen": "https://static.carrefour.es/hd_280x_/img_pim_food/101424_00_1.jpg",
+            "nomUrl": "https://www.carrefour.es/supermercado/arroz-categoria-extra-carrefour-1-kg-carrefour/R-prod1022743/p",
+            "precio": "0,78 eur",
+            "precioKilo": "0,78 eur/kg"
+        },
+        {
+            "identificador": "10",
+            "nomProducto": "Arroz redondo Hacendado",
+            "didEmpresa": "101",
+            "nomEmpresa": "MERCADONA",
+            "imagen": "https://prod-mercadona.imgix.net/images/0daf43fb5761b823ce83c985930c97c9.jpg?fit=crop&h=300&w=300",
+            "nomUrl": "null",
+            "precio": "0,79",
+            "precioKilo": "0,79"
+        }
+]}
 ```
 
 #### Ejemplo en vídeo de la aplicación usando una interfaz web:
