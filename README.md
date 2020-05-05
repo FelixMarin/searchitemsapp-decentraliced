@@ -158,5 +158,5 @@ http://[url]:[port]/searchitemsapp/index.jsp
 
 Ejemplo en vídeo de la aplicación usando una interfaz web:
 
-[![IMAGE ALT TEXT HERE](https://i9.ytimg.com/vi/LX-w0rHEKvk/mq2.jpg?sqp=CIejxvUF&rs=AOn4CLD2asneroUHGgjB_pHQ58WbtLZOtQ)](https://youtu.be/LX-w0rHEKvk)
+[![IMAGE ALT TEXT HERE](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/portada-video.png)](https://youtu.be/LX-w0rHEKvk)
 
