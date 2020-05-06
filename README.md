@@ -80,7 +80,7 @@ Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a c
 
 En el fichero de propiedades aparece de esta forma: 
 
-![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
+![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
 
 Añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
@@ -91,7 +91,7 @@ Añadir al fichero **/etc/environmet** las siguientes variables de entorno.
 
 El último paso sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va soltando la aplicación.  
 
-![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
+![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
 
 Una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor de aplicaciones local Tomcat.
 
