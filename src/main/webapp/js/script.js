@@ -195,6 +195,11 @@ function liveSearch(keyword) {
         }
         }).done(function (data) {
 			$('#inputtext').removeClass('loading-live-search');
+			
+			if(data === '' || data === undefined) {
+				return '';
+			}
+			
 			let datosJSON = jQuery.parseJSON(data);
 			
 			datosJSON.forEach(elem => {
