@@ -23,9 +23,9 @@ El primer paso consiste en descargar el proyecto de GitHub.
 ~$ git clone https://github.com:/FelixMarin/searchitemsapp.git 
 ```
 
-Una vez descargado el proyecto de GitHub, instalar la última versión de eclipse JEE y crear un nuevo workspace.  
-
 ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000000.png)
+
+Una vez descargado el proyecto de GitHub, instalar la última versión de eclipse JEE y crear un nuevo workspace.  
 
 A continuación, se importa el proyecto Git y se crea el proyecto. 
 
