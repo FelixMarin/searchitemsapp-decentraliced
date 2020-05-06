@@ -72,8 +72,6 @@ flow.value.google.driver.path=/usr/local/bin/drivers/chrome/chromedriver
 flow.value.firefox.driver.path=/usr/local/bin/drivers/firefox/geckodriver
 ```
 
-![Directorio './resources'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
-
 Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a continuación. 
 
 ```console
@@ -85,7 +83,7 @@ En el fichero de propiedades aparece de esta forma:
 
 ![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
 
-Añadir al fichero ‘**/etc/environmet**’ las siguientes variables de entorno.  
+Añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
 - **PROPERTIES_SIA** = "/resources" 
 - **CATALINA_HOME** = "/opt/apache-tomcat-9.0.34" 
