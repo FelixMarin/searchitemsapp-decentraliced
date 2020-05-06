@@ -50,9 +50,9 @@ Aparecen algunos warnings que se irán resolviendo conforme se vaya configurado 
 
 El siguiente paso es instalar Apache Tomcat para las ejecuciones de la aplicación mientras se desarrolla y se relazan las pruebas en local. Vincular el servidor Tomcat a Eclipse. 
 
-![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000006.png)
-
 El directorio resources contiene tres ficheros:
+
+![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000006.png)
 
 - **db.properties**: contiene los literales y datos de conexión a la base de datos.
 - **flow.properties**: contiene todos los literales de la aplicación.
