@@ -71,16 +71,14 @@ flow.value.google.driver.path=/usr/local/bin/drivers/chrome/chromedriver
 flow.value.firefox.driver.path=/usr/local/bin/drivers/firefox/geckodriver
 ```
 
+![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
+
 Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a continuación. 
 
 ```console
 /usr/local/bin/drivers/chrome/chromedriver 
 /usr/local/bin/drivers/firefox/geckodriver 
 ```
-
-En el fichero de propiedades aparece de esta forma: 
-
-![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
 
 Añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
