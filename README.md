@@ -6,7 +6,7 @@ La aplicación es una API REST, lo que significa que para obtener la informcaci�
 ## Instalación de la base de datos 
 Se utilizará una base de datos relacional. El SGBD elegido para la capa de persistencia será PostgresSQL. 
 
-Se procede a instalar PostgreSQL en el sistema operativo. Una vez instalado y configurado el SGBD, se ejecuta el script de la base de datos de SIA que se encuentra entre los recursos. ‘backup_sia_bbdd.sql’. 
+Se procede a [instalar PosgreSQL](https://www.digitalocean.com/community/tutorials/como-instalar-y-utilizar-postgresql-en-ubuntu-18-04-es) en el sistema operativo. Si sigues el manual del hipervinculo no tendras problemas en crear la base de datos. Una vez instalado y configurado el SGBD, se ejecuta el script de la base de datos de SIA que se encuentra entre los recursos. **backup_sia_bbdd.sql**. 
 
 Antes de ejecutar el script, habrá que crear los siguientes ‘Login/Grup Roles: 
 
@@ -14,7 +14,6 @@ Antes de ejecutar el script, habrá que crear los siguientes ‘Login/Grup Roles
 pgadmin:  SuperUser.
 sia_select:  Solo permisos de lectura.
 ```
-
 
 ## Instalación del entorno 
 El primer paso consiste en descargar el proyecto de GitHub.  
@@ -28,23 +27,23 @@ Una vez descargado el proyecto de GitHub, instalar la última versión de eclips
 
 A continuación, se importa el proyecto Git y se crea el proyecto. 
 
-![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000001.png)
+![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000000.png)
 
 En el siguiente cuadro de diálogo se introducirá la ruta del proyecto y seleccionar el fichero ‘.git’ que aparece en la lista. Pulsar finalizar. 
 
-![add git repository](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000002.png)
+![add git repository](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000001.png)
 
 En el siguiente cuadro de diálogo, aparecerá el repositorio marcado. Pulsar siguiente. 
 
-![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000003.png)
+![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000002.png)
 
 Para terminar el apartado de importación del proyecto, se elegirá la opción ‘Import existing Eclipse Project’.
 
- ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000004.png)
+ ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000003.png)
 
 Se comprueba que el proyecto importado no tenga errores. 
 
- ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000005.png)
+ ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000004.png)
 
 Aparecen algunos warnings que se irán resolviendo conforme se vaya configurado el entorno. 
 
@@ -56,7 +55,7 @@ El siguiente paso es instalar Apache Tomcat para las ejecuciones de la aplicaci�
 
 Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
 
-![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000006.png)
+![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000005.png)
 
 El directorio resources contiene tres ficheros:
 
@@ -81,7 +80,7 @@ Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a c
 
 En el fichero de propiedades aparece de esta forma: 
 
-![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
+![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
 
 Añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
@@ -92,7 +91,7 @@ Añadir al fichero **/etc/environmet** las siguientes variables de entorno.
 
 El último paso sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va soltando la aplicación.  
 
-![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
+![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
 
 Una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor de aplicaciones local Tomcat.
 
