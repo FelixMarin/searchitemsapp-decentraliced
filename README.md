@@ -50,9 +50,15 @@ Aparecen algunos warnings que se irán resolviendo conforme se vaya configurado 
 
 El siguiente paso es instalar Apache Tomcat para las ejecuciones de la aplicación mientras se desarrolla y se relazan las pruebas en local. Vincular el servidor Tomcat a Eclipse. 
 
-El directorio resources contiene tres ficheros:
+![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
+
+
+
+Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
 
 ![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000006.png)
+
+El directorio resources contiene tres ficheros:
 
 - **db.properties**: contiene los literales y datos de conexión a la base de datos.
 - **flow.properties**: contiene todos los literales de la aplicación.
@@ -65,7 +71,6 @@ folw.value.firefox.ejecutable.path=/usr/bin/firefox
 flow.value.google.driver.path=/usr/local/bin/drivers/chrome/chromedriver 
 flow.value.firefox.driver.path=/usr/local/bin/drivers/firefox/geckodriver
 ```
-Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
 
 ![Directorio './resources'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
 
