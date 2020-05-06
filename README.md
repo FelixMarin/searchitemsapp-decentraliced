@@ -1,8 +1,10 @@
-# Preparación del Entorno
+
+# Comparador de precios de supermercados online
 
 Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación. La característica principal de la aplicación es la extracción de datos usando la técnica del web scraping.
 La aplicación es una API REST, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
 
+# Preparación del Entorno
 ## Instalación de la base de datos 
 Se utilizará una base de datos relacional. El SGBD elegido para la capa de persistencia será PostgresSQL. 
 
