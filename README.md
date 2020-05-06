@@ -55,6 +55,8 @@ El siguiente paso es instalar Apache Tomcat para las ejecuciones de la aplicaci�
 
 Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
 
+![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
+
 El directorio resources contiene tres ficheros:
 
 - **db.properties**: contiene los literales y datos de conexión a la base de datos.
