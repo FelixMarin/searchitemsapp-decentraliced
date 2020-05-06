@@ -95,6 +95,8 @@ El último paso sería crear un directorio llamado logs en la raíz de sistema p
 
 Una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor de aplicaciones local Tomcat.
 
+![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
+
 Para realizar pruebas se acoseja usar la aplicación de escritorio [Postman](https://www.postman.com/downloads/). 
 
 Para acceder a la interfaz gráfica de la aplicación se hará mediante el fichero index.jsp:
