@@ -61,7 +61,7 @@ El directorio resources contiene tres ficheros:
 El fichero **flow.properties** contiene tres rutas a tener encueta. Son las rutas al ejecutabme del navegador firefox y los drivers de chrome y gecko. Hay que colocar los drivers en la ruta indicada.
 
 ```console
- folw.value.firefox.ejecutable.path=/usr/bin/firefox
+folw.value.firefox.ejecutable.path=/usr/bin/firefox
 flow.value.google.driver.path=/usr/cdw/chromedriver
 flow.value.firefox.driver.path=/usr/cdw/geckodriver
 ```
