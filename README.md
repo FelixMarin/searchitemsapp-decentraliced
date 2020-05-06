@@ -62,8 +62,8 @@ El fichero **flow.properties** contiene tres rutas a tener encueta. Son las ruta
 
 ```console
 folw.value.firefox.ejecutable.path=/usr/bin/firefox
-flow.value.google.driver.path=/usr/cdw/chromedriver
-flow.value.firefox.driver.path=/usr/cdw/geckodriver
+flow.value.google.driver.path=/usr/local/bin/drivers/chrome/chromedriver 
+flow.value.firefox.driver.path=/usr/local/bin/drivers/firefox/geckodriver
 ```
 Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
 
@@ -73,7 +73,7 @@ Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a c
 
 ```console
 /usr/local/bin/drivers/chrome/chromedriver 
-/usr/local/bin/drivers/chrome/geckodriver 
+/usr/local/bin/drivers/firefox/geckodriver 
 ```
 
 En el fichero de propiedades aparece de esta forma: 
