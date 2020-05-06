@@ -25,25 +25,27 @@ El primer paso consiste en descargar el proyecto de GitHub.
 
 Una vez descargado el proyecto de GitHub, instalar la última versión de eclipse JEE y crear un nuevo workspace.  
 
-A continuación, se importa el proyecto Git y se crea el proyecto. 
-
 ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000000.png)
 
-En el siguiente cuadro de diálogo se introducirá la ruta del proyecto y seleccionar el fichero ‘.git’ que aparece en la lista. Pulsar finalizar. 
+A continuación, se importa el proyecto Git y se crea el proyecto. 
 
 ![add git repository](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000001.png)
 
-En el siguiente cuadro de diálogo, aparecerá el repositorio marcado. Pulsar siguiente. 
+En el siguiente cuadro de diálogo se introducirá la ruta del proyecto y seleccionar el fichero ‘.git’ que aparece en la lista. Pulsar finalizar. 
 
 ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000002.png)
 
-Para terminar el apartado de importación del proyecto, se elegirá la opción ‘Import existing Eclipse Project’.
+En el siguiente cuadro de diálogo, aparecerá el repositorio marcado. Pulsar siguiente. 
 
  ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000003.png)
 
-Se comprueba que el proyecto importado no tenga errores. 
+Para terminar el apartado de importación del proyecto, se elegirá la opción ‘Import existing Eclipse Project’.
 
  ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000004.png)
+
+Se comprueba que el proyecto importado no tenga errores. 
+
+
 
 Aparecen algunos warnings que se irán resolviendo conforme se vaya configurado el entorno. 
 
