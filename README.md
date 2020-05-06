@@ -54,10 +54,17 @@ El siguiente paso es instalar Apache Tomcat para las ejecuciones de la aplicaci�
 
 El directorio resources contiene tres ficheros:
 
-- **db.properties**: contiene los datos de conexion a base de datos.
+- **db.properties**: contiene los literales y datos de conexión a la base de datos.
 - **flow.properties**: contiene todos los literales de la aplicación.
-- **log4j.properties**: contiene la configuración de la libreria de registros.
+- **log4j.properties**: contiene la configuración de la libreria de registros log4j.
 
+El fichero **flow.properties** contiene tres rutas a tener encueta. Son las rutas al ejecutabme del navegador firefox y los drivers de chrome y gecko. Hay que colocar los drivers en la ruta indicada.
+
+```console
+ folw.value.firefox.ejecutable.path=/usr/bin/firefox
+flow.value.google.driver.path=/usr/cdw/chromedriver
+flow.value.firefox.driver.path=/usr/cdw/geckodriver
+```
 Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
 
 ![Directorio './resources'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
