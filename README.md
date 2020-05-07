@@ -6,7 +6,7 @@ La aplicaci√≥n es una API REST, lo que significa que para obtener la informcaci√
 
 # Herramientas
 
-- [Linux](https://ubuntu.com/download/server)
+- [Ubuntu Server 18.04](https://ubuntu.com/download/server)
 - [Eclipse IDE for J2EE 2020](https://www.eclipse.org/ide/)
 - [PostgresSQL](https://www.postgresql.org/)
 - [OpenJDK 13](https://openjdk.java.net/projects/jdk/)
