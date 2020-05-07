@@ -45,7 +45,7 @@ Clic en ```bash Existing local repository ``` => ```bash Next ```.
 
 Clic en ```bash Add ``` para navegar a cualquier repositorio local. 
 
-Clic en ```bash Next ```. En la sección ```bash Wizard for project import ```, 
+Clic en ```bash Next ```. En la sección ```bash Wizard for project import ```. 
 
 Clic ```bash Import  existing Eclipse project ```. Haga clic ```bash Next ```.
 
