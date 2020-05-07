@@ -33,17 +33,26 @@ El primer paso consiste en descargar el proyecto de GitHub.
 ~$ sudo apt install git 
 ~$ git clone https://github.com:/FelixMarin/searchitemsapp.git 
 ```
-Importar el proyecto en Eclipse IDE. Para importar proyectos como proyectos Eclipse existentes:
+Importar el proyecto en Eclipse IDE:
 
 Clic en ``` bash File > Import ```.
 
 En el Import Wizard:
 
 Expandir ```bash Git ``` y luego clic en ```bash Projects from Git ``` => ```bash Next ```.
+
 Clic en ```bash Existing local repository ``` => ```bash Next ```.
-Clic en ```bash Add ``` para navegar a cualquier repositorio local. Clic en ```bash Next ```. En la sección ```bash Wizard for project import ```, Clic ```bash Import  existing Eclipse project ```. Haga clic ```bash Next ```.
+
+Clic en ```bash Add ``` para navegar a cualquier repositorio local. 
+
+Clic en ```bash Next ```. En la sección ```bash Wizard for project import ```, 
+
+Clic ```bash Import  existing Eclipse project ```. Haga clic ```bash Next ```.
+
 En la ventana ```bash Import Projects ```, seleccionar el proyecto a importar.
+
 Asegurarse de hacer clic en la casilla de verificación ```bash Select nested projects ``` para importar los proyectos anidados bajo el proyecto principal que está importando.
+
 Finalmente, clic en ```bash Finish ```.
 
 Una vez importado el proyecto, actualizar las dependencias Maven: ```bash Project Properties ``` => ```bash Maven ``` => ```bash Maven Update ```.
