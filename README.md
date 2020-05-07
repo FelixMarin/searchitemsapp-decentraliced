@@ -180,8 +180,3 @@ http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
 ```
 
 ## Ejemplo de la aplicación en [vídeo](https://youtu.be/K_4Wp0Poh2Q)
-
-[![Ejemplo de la aplicación en vídeo](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/portada-video-0.png)](https://youtu.be/K_4Wp0Poh2Q)
- 
-
-
