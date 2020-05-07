@@ -86,11 +86,7 @@ El último paso sería crear un directorio llamado logs en la raíz de sistema p
 
 ![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
 
- [Instalar el servidor de aplicaciones Apache Tomcat 9.](https://tecnstuff.net/how-to-install-tomcat-9-on-ubuntu-18-04/)
- 
- [Vicular Tomcat a Eclipse IDE](https://www.codejava.net/servers/tomcat/how-to-add-tomcat-server-in-eclipse-ide). 
- 
-Una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor Tomcat.
+ [Instalar el servidor de aplicaciones Apache Tomcat 9.](https://tecnstuff.net/how-to-install-tomcat-9-on-ubuntu-18-04/) y [Vicular Tomcat a Eclipse IDE](https://www.codejava.net/servers/tomcat/how-to-add-tomcat-server-in-eclipse-ide). Finalmente, una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor Tomcat.
 
 ![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
 
