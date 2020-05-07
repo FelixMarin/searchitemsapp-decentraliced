@@ -35,27 +35,27 @@ El primer paso consiste en descargar el proyecto de GitHub.
 ```
 Importar el proyecto en Eclipse IDE:
 
-Clic en 'bash File > Import'.
+```bash
+1. 'File > Import'.
 
 En el Import Wizard:
 
-Expandir 'Git' y luego clic en 'Projects from Git'  => 'Next'.
+2. Expandir 'Git' => 'Projects from Git' => 'Next'.
+3. 'Existing local repository' => 'bash Next'.
+4. 'Add' (para navegar a cualquier repositorio local).
+5. En 'Wizard for project import' => 'Next'. 
+6. 'Import  existing Eclipse project' => 'Next'.
+7. 'Select nested projects'.
+8. 'Import Projects'.
+9. 'Finish'.
+```
 
-Clic en 'Existing local repository' => 'bash Next'.
+Una vez importado el proyecto, actualizar las dependencias Maven: 
 
-Clic en 'Add' para navegar a cualquier repositorio local. 
-
-Clic en 'Next'. En la sección 'Wizard for project import'. 
-
-Clic 'Import  existing Eclipse project'. Haga clic 'Next'.
-
-En la ventana 'Import Projects', seleccionar el proyecto a importar.
-
-Asegurarse de hacer clic en la casilla de verificación 'Select nested projects' para importar los proyectos anidados bajo el proyecto principal que está importando.
-
-Finalmente, clic en 'Finish'.
-
-Una vez importado el proyecto, actualizar las dependencias Maven: 'Project Properties' => 'Maven' => 'Maven Update'.
+```bash
+1. 'Project Properties' => 'Maven' => 'Maven Update'.
+2. 'Project Properties' => 'Run' => 'Maven Clean'.
+```
 
 Crear un el directorio **'/resources/'** en la raiz del sistema. 
 
