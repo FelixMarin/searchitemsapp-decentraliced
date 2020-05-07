@@ -61,7 +61,7 @@ Se crea un el directorio **'/resources/'** en la raiz del sistema.
 
 Este directorio contiene los ficheros **'*.properties'**:
 
-```bash
+```console
    /resources/
    |----/resources/db.properties
    |----/resources/flow.properties
@@ -100,7 +100,11 @@ El siguiente paso es añadir al fichero **/etc/environmet** las siguientes varia
 
 Se crea un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
 
-![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
+```console
+/log4j/
+|-----/log4j/daily.log
+|-----/log4j/error.log
+```
 
 [Instalar el servidor de aplicaciones Apache Tomcat 9.](https://tecnstuff.net/how-to-install-tomcat-9-on-ubuntu-18-04/) y [Vicular Tomcat a Eclipse IDE](https://www.codejava.net/servers/tomcat/how-to-add-tomcat-server-in-eclipse-ide). 
  
