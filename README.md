@@ -119,7 +119,7 @@ Formato de la URL con la que se realizará la solicitud al servicio:
 http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
 ```
 
-Lista de parámetros de la petición:
+Lista de parámetros de la solicitud:
 
 | Parámetro | Valor |
 | --- | --- |
