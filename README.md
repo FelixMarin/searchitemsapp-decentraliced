@@ -4,13 +4,23 @@
 Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación. La característica principal de la aplicación es la extracción de datos usando la técnica del web scraping.
 La aplicación es una API REST, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
 
+# Herramientas
+
+- [Linux](https://ubuntu.com/download/server)
+- [Eclipse IDE for J2EE 2020](https://www.eclipse.org/ide/)
+- [OpenJDK 13](https://openjdk.java.net/projects/jdk/)
+- [Spring Framework](https://spring.io/)
+- [Apache Tomcat 9](http://tomcat.apache.org/)
+- [SmartBear SoapUI](https://www.soapui.org/)
+- [Oracle VirtualBox](https://www.virtualbox.org/)
+
 # Preparación del Entorno
 ## Instalación de la base de datos 
 Se utilizará una base de datos relacional. El SGBD elegido para la capa de persistencia será PostgresSQL. 
 
-Se procede a [instalar PosgreSQL](https://www.digitalocean.com/community/tutorials/como-instalar-y-utilizar-postgresql-en-ubuntu-18-04-es) en el sistema operativo. Si sigues el manual del hipervinculo no tendras problemas en crear la base de datos. Una vez instalado y configurado el SGBD, se ejecuta el script de la base de datos de SIA que se encuentra entre los recursos. **backup_sia_bbdd.sql**. 
+Se procede a [instalar PosgreSQL](https://www.digitalocean.com/community/tutorials/como-instalar-y-utilizar-postgresql-en-ubuntu-18-04-es) en el sistema operativo. Si sigues el manual del hipervinculo no tendras problemas en crear la base de datos. Una vez instalado y configurado el SGBD, se ejecuta el script de la base de datos de SIA que se encuentra en **./BBDD/backup_sia_bbdd.sql**. 
 
-Antes de ejecutar el script, habrá que crear los siguientes ‘Login/Grup Roles: 
+Una vez instalado el SGBD, crear los siguientes **'Login/Grup Roles'** usados por la aplicación: 
 
 ```console
 pgadmin:  SuperUser.
@@ -24,6 +34,21 @@ El primer paso consiste en descargar el proyecto de GitHub.
 ~$ sudo apt install git 
 ~$ git clone https://github.com:/FelixMarin/searchitemsapp.git 
 ```
+Importar el proyecto en Eclipse IDE. Para importar proyectos como proyectos Eclipse existentes:
+
+Clic en ``` bash File> Import ```.
+
+En el Import Wizard:
+
+Expandir ```bash Git ``` y luego clic en ```bash Projects from Git ``` => ```bash Next ```.
+Clic en ```bash Existing local repository ``` => ```bash Next ```.
+Clic en ```bash Add ``` para navegar a cualquier repositorio local. Clic en ```bash Next ```. En la sección ```bash Wizard for project import ```, Clic ```bash Import  existing Eclipse project ```. Haga clic ```bash Next ```.
+En la ventana ```bash Import Projects ```, seleccionar el proyecto a importar.
+Asegurarse de hacer clic en la casilla de verificación ```bash Select nested projects ``` para importar los proyectos anidados bajo el proyecto principal que está importando.
+Finalmente, clic en ```bash Finish ```.
+
+Una vez importado el proyecto, actualizar las dependencias Maven: ```bash Project Properties ``` => ```bash Maven ``` => ```bash Maven Update ```.
+
 Crear un el directorio **'/resources/'** en la raiz del sistema. 
 
 ![Drivers en './resources/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
@@ -58,11 +83,15 @@ Añadir al fichero **/etc/environmet** las siguientes variables de entorno.
 - **JAVA_HOME** = "/usr/lib/jvm/java-14-openjdk-amd64" 
 - **JRE_HOME** = "/usr/lib/jvm/java-14-openjdk-amd64" 
 
-El último paso sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va soltando la aplicación.  
+El último paso sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
 
 ![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
 
-Una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor de aplicaciones local Tomcat.
+ [Instalar el servidor de aplicaciones Apache Tomcat 9.](https://tecnstuff.net/how-to-install-tomcat-9-on-ubuntu-18-04/)
+ 
+ [Vicular Tomcat a Eclipse IDE](https://www.codejava.net/servers/tomcat/how-to-add-tomcat-server-in-eclipse-ide). 
+ 
+Una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor Tomcat.
 
 ![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
 
