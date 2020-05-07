@@ -112,21 +112,21 @@ Finalmente, una vez preparado el entorno habrá que compilar el proyecto y despl
 
 ![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
 
-Para realizar pruebas se acoseja usar la aplicación de escritorio [Postman](https://www.postman.com/downloads/). 
 
-Para acceder a la interfaz gráfica de la aplicación se hará mediante el fichero index.jsp:
+
+- **Para acceder a la interfaz gráfica de la aplicación se hará mediante el fichero index.jsp:**
 
 ```console
 http://[url]:[port]/searchitemsapp/index.jsp
 ```
 
-Formato de la URL con la que se realizará la solicitud al servicio:
+- **Formato de la URL con la que se realizará la solicitud al servicio:**
 
 ```console
 http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
 ```
 
-Lista de parámetros de la solicitud:
+- **Lista de parámetros de la solicitud:**
 
 | Parámetro | Valor |
 | --- | --- |
@@ -179,7 +179,7 @@ http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
 ]}
 ```
 
-#### [Ejemplo de la aplicación en vídeo](https://youtu.be/K_4Wp0Poh2Q)
+## Ejemplo de la aplicación en [vídeo](https://youtu.be/K_4Wp0Poh2Q)
 
 [![Ejemplo de la aplicación en vídeo](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/portada-video-0.png)](https://youtu.be/K_4Wp0Poh2Q)
  
