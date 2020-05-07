@@ -91,7 +91,7 @@ El siguiente paso es añadir al fichero **/etc/environmet** las siguientes varia
 - **JAVA_HOME** = "/[path_to]/java-14-openjdk-amd64" 
 - **JRE_HOME** = "/[path_to]/java-14-openjdk-amd64" 
 
-Lo siguientes sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
+Lo siguiente sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
 
 ![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
 
@@ -130,13 +130,13 @@ __super__: [101] , [101,103,104] , [ALL]
 
 Ejemplo de uso:
 
-La siguiente llamada a la API devolverá un listado de objetos json con los productos de todos los supermercados ordenados por precio. 
+Esta URL devolverá un listado de objetos json con los productos de todos los supermercados ordenados por precio. 
 
 ```console
 http://[url]:[port]/searchitemsapp/search/101/101/1/arroz/ALL
 ```
 
-Esta llamada a la API devolverá un listado de objetos json con los productos de un supermercado ordenados por volumen.
+Esta URL devolverá un listado de objetos json con los productos de un supermercado ordenados por volumen.
 
 ```console
 http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
@@ -162,7 +162,7 @@ Ejemplo de respuesta:
             "nomProducto": "Arroz redondo Hacendado",
             "didEmpresa": "101",
             "nomEmpresa": "MERCADONA",
-            "imagen": "https://prod-mercadona.imgix.net/images/0daf43fb5761b823ce83c985930c97c9.jpg?fit=crop&h=300&w=300",
+            "imagen": "https://prod-mercadona.imgix.net/images/930c97c9.jpg?fit=crop&h=300&w=300",
             "nomUrl": "null",
             "precio": "0,79",
             "precioKilo": "0,79"
