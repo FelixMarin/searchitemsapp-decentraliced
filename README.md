@@ -8,6 +8,7 @@ La aplicación es una API REST, lo que significa que para obtener la informcaci�
 
 - [Linux](https://ubuntu.com/download/server)
 - [Eclipse IDE for J2EE 2020](https://www.eclipse.org/ide/)
+- [PostgresSQL](https://www.postgresql.org/)
 - [OpenJDK 13](https://openjdk.java.net/projects/jdk/)
 - [Spring Framework](https://spring.io/)
 - [Apache Tomcat 9](http://tomcat.apache.org/)
@@ -15,12 +16,10 @@ La aplicación es una API REST, lo que significa que para obtener la informcaci�
 - [Oracle VirtualBox](https://www.virtualbox.org/)
 
 # Preparación del Entorno
-## Instalación de la base de datos 
-Se utilizará una base de datos relacional. El SGBD elegido para la capa de persistencia será PostgresSQL. 
 
-Se procede a [instalar PosgreSQL](https://www.digitalocean.com/community/tutorials/como-instalar-y-utilizar-postgresql-en-ubuntu-18-04-es) en el sistema operativo. Si sigues el manual del hipervinculo no tendras problemas en crear la base de datos. Una vez instalado y configurado el SGBD, se ejecuta el script de la base de datos de SIA que se encuentra en **./BBDD/backup_sia_bbdd.sql**. 
+## Instalación del SGBD  
 
-Una vez instalado el SGBD, crear los siguientes **'Login/Grup Roles'** usados por la aplicación: 
+Se procede a [instalar PosgreSQL](https://www.digitalocean.com/community/tutorials/como-instalar-y-utilizar-postgresql-en-ubuntu-18-04-es) en el sistema operativo. Una vez instalado y configurado el SGBD, se ejecuta el script de la base de datos que se encuentra en **./BBDD/backup_sia_bbdd.sql**. Finalmente, Crear los siguientes **'Login/Grup Roles'** usados por la aplicación: 
 
 ```console
 pgadmin:  SuperUser.
