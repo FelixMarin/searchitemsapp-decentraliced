@@ -63,9 +63,11 @@ Se crea un el directorio **'/resources/'** en la raiz del sistema.
 
 Este directorio contiene los ficheros **'.properties'**.:
 
-- **db.properties**: contiene los literales y datos de conexión a la base de datos.
-- **flow.properties**: contiene todos los literales de la aplicación.
-- **log4j.properties**: contiene la configuración de la libreria de registros log4j.
+| Properties | Descripción |
+| --- | --- |
+| **db.properties** | contiene los literales y datos de conexión a la base de datos. |
+| **flow.properties** | contiene todos los literales de la aplicación. |
+| **log4j.properties** | contiene la configuración de la libreria de registros log4j. |
 
 El fichero **flow.properties** contiene tres rutas a tener encueta. Son las rutas al ejecutabme del navegador firefox y los drivers de chrome y gecko. Hay que colocar los drivers en la ruta indicada.
 
@@ -86,10 +88,12 @@ A continuación, descargar los drivers de Firefox y Chrome y situarlos en la rut
 
 El siguiente paso es añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
-- **PROPERTIES_SIA** = "/resources" 
-- **CATALINA_HOME** = "/[path_to]/apache-tomcat-9" 
-- **JAVA_HOME** = "/[path_to]/java-14-openjdk-amd64" 
-- **JRE_HOME** = "/[path_to]/java-14-openjdk-amd64" 
+| Usuario | Permisos |
+| --- | --- |
+| **PROPERTIES_SIA** | "/resources" | 
+| **CATALINA_HOME** | "/[path_to]/apache-tomcat-9" | 
+| **JAVA_HOME** | "/[path_to]/java-14-openjdk-amd64" | 
+| **JRE_HOME** | "/[path_to]/java-14-openjdk-amd64" |
 
 Se crea un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
 
@@ -117,15 +121,13 @@ http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[produc
 
 Lista de parámetros de la petición:
 
-__país__: 101 (España).
-
-__categoría__: 101 (Supermercados)
-
-__ordenar__: precio: 1 / volumen: 2
-
-__producto__: (Arroz, Aceite, sal, ...)
-
-__super__: [101] , [101,103,104] , [ALL]
+| Parámetro | Valor |
+| --- | --- |
+| __país__ | 101 (España). |
+| __categoría__ | 101 (Supermercados) |
+| __ordenar__ | precio: 1 / volumen: 2 |
+| __producto__ | (Arroz, Aceite, sal, ...) |
+| __super__ | [101] , [101,103,104] , [ALL] |
  
 
 Ejemplo de uso:
