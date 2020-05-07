@@ -180,4 +180,4 @@ http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
 ]}
 ```
 
-#### Ejemplo de la aplicación en [vídeo](https://youtu.be/K_4Wp0Poh2Q)
+#### Ejemplo en [vídeo](https://youtu.be/K_4Wp0Poh2Q)
