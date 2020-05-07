@@ -21,10 +21,10 @@ La aplicación es una API REST, lo que significa que para obtener la informcaci�
 
 Se procede a [instalar PosgreSQL](https://www.digitalocean.com/community/tutorials/como-instalar-y-utilizar-postgresql-en-ubuntu-18-04-es) en el sistema operativo. Una vez instalado y configurado el SGBD, se ejecuta el script de la base de datos que se encuentra en **./BBDD/backup_sia_bbdd.sql**. Finalmente, Crear los siguientes **'Login/Grup Roles'** usados por la aplicación: 
 
-```console
-pgadmin:  SuperUser.
-sia_select:  Solo permisos de lectura.
-```
+| Usuario | Permisos |
+| --- | --- |
+| pgadmin | administrador |
+| sia_select | Lectura |
 
 ## Instalación del entorno 
 El primer paso consiste en descargar el proyecto de GitHub.  
