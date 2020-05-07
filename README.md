@@ -24,42 +24,11 @@ El primer paso consiste en descargar el proyecto de GitHub.
 ~$ sudo apt install git 
 ~$ git clone https://github.com:/FelixMarin/searchitemsapp.git 
 ```
+Crear un el directorio **'/resources/'** en la raiz del sistema. 
 
-![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000000.png)
+![Drivers en './resources/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
 
-Una vez descargado el proyecto de GitHub, instalar la última versión de eclipse JEE y crear un nuevo workspace.  
-
-A continuación, se importa el proyecto Git y se crea el proyecto. 
-
-![add git repository](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000001.png)
-
-En el siguiente cuadro de diálogo se introducirá la ruta del proyecto y seleccionar el fichero ‘.git’ que aparece en la lista. Pulsar finalizar. 
-
-![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000002.png)
-
-En el siguiente cuadro de diálogo, aparecerá el repositorio marcado. Pulsar siguiente. 
-
- ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000003.png)
-
-Para terminar el apartado de importación del proyecto, se elegirá la opción ‘Import existing Eclipse Project’.
-
- ![import project form git to eclipse](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000004.png)
-
-Se comprueba que el proyecto importado no tenga errores. 
-
-![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000005.png)
-
-Aparecen algunos warnings que se irán resolviendo conforme se vaya configurado el entorno. 
-
-El siguiente paso es instalar Apache Tomcat para las ejecuciones de la aplicación mientras se desarrolla y se relazan las pruebas en local. Vincular el servidor Tomcat a Eclipse. 
-
-![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
-
-Sigamos con la configuración, existe un directorio fuera de la aplicación al cual se accede a través de las variables de entono. Esto es debido a que en ese directorio se almacenan los ficheros ‘properties’ que contiene información sensible. Este directorio se denomina resources y se coloca en la raíz del sistema operativo. Los permisos de los properties serán de lectura solamente. 
-
-![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
-
-El directorio resources contiene tres ficheros:
+Este directorio contiene los ficheros **'.properties'**.:
 
 - **db.properties**: contiene los literales y datos de conexión a la base de datos.
 - **flow.properties**: contiene todos los literales de la aplicación.
