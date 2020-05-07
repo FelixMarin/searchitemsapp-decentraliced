@@ -148,17 +148,17 @@ Ejemplo de respuesta:
 {
     "resultado": [
         {
-            "identificador": "9",
+            "identificador": "1",
             "nomProducto": "Arroz categoría extra Carrefour 1 kg.",
             "didEmpresa": "104",
             "nomEmpresa": "CARREFOUR",
             "imagen": "https://static.carrefour.es/hd_280x_/img_pim_food/101424_00_1.jpg",
-            "nomUrl": "https://www.carrefour.es/supermercado/arroz-categoria-extra-carrefour-1-kg-carrefour/R-prod1022743/p",
+            "nomUrl": "https://www.carrefour.es/supermercado/arroz-categoria-extra-carrefour-1/
             "precio": "0,78 eur",
             "precioKilo": "0,78 eur/kg"
         },
         {
-            "identificador": "10",
+            "identificador": "2",
             "nomProducto": "Arroz redondo Hacendado",
             "didEmpresa": "101",
             "nomEmpresa": "MERCADONA",
