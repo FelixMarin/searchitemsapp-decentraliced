@@ -61,7 +61,7 @@ Se crea un el directorio **'/resources/'** en la raiz del sistema.
 
 ![Drivers en './resources/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
 
-Este directorio contiene los ficheros **'.properties'**.:
+Este directorio contiene los ficheros **'.properties'**:
 
 | Properties | Descripción |
 | --- | --- |
@@ -88,7 +88,7 @@ A continuación, descargar los drivers de Firefox y Chrome y situarlos en la rut
 
 El siguiente paso es añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
-| Usuario | Permisos |
+| Variable de Entorno | Valor |
 | --- | --- |
 | **PROPERTIES_SIA** | "/resources" | 
 | **CATALINA_HOME** | "/[path_to]/apache-tomcat-9" | 
