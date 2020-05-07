@@ -91,7 +91,7 @@ El siguiente paso es añadir al fichero **/etc/environmet** las siguientes varia
 - **JAVA_HOME** = "/[path_to]/java-14-openjdk-amd64" 
 - **JRE_HOME** = "/[path_to]/java-14-openjdk-amd64" 
 
-Lo siguiente sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
+Se crea un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
 
 ![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
 
