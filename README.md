@@ -59,9 +59,14 @@ Una vez importado el proyecto, actualizar las dependencias Maven:
 
 Se crea un el directorio **'/resources/'** en la raiz del sistema. 
 
-![Drivers en './resources/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
+Este directorio contiene los ficheros **'*.properties'**:
 
-Este directorio contiene los ficheros **'.properties'**:
+```bash
+   /resources/
+   |----/resources/db.properties
+   |----/resources/flow.properties
+   |----/resources/log4j.properties
+```
 
 | Properties | Descripción |
 | --- | --- |
