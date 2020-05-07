@@ -112,7 +112,7 @@ Finalmente, una vez preparado el entorno habrá que compilar el proyecto y despl
 
 ![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
 
-
+## Uso de la aplicación
 
 - **Para acceder a la interfaz gráfica de la aplicación se hará mediante el fichero index.jsp:**
 
