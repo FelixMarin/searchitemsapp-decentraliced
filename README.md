@@ -33,7 +33,7 @@ El primer paso consiste en descargar el proyecto de GitHub.
 ~$ sudo apt install git 
 ~$ git clone https://github.com:/FelixMarin/searchitemsapp.git 
 ```
-Importar el proyecto en Eclipse IDE:
+A continuacion, importar el proyecto en Eclipse IDE:
 
 ```bash
 1. 'File > Import'.
@@ -57,7 +57,7 @@ Una vez importado el proyecto, actualizar las dependencias Maven:
 2. 'Project Properties' => 'Run' => 'Maven Clean'.
 ```
 
-Crear un el directorio **'/resources/'** en la raiz del sistema. 
+Se crea un el directorio **'/resources/'** en la raiz del sistema. 
 
 ![Drivers en './resources/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000007.png)
 
@@ -77,21 +77,21 @@ flow.value.firefox.driver.path=/usr/local/bin/drivers/firefox/geckodriver
 
 ![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
 
-Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a continuación. 
+A continuación, descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a continuación. 
 
 ```console
 /usr/local/bin/drivers/chrome/chromedriver 
 /usr/local/bin/drivers/firefox/geckodriver 
 ```
 
-Añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
+El siguiente paso es añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
 - **PROPERTIES_SIA** = "/resources" 
 - **CATALINA_HOME** = "/[path_to]/apache-tomcat-9" 
 - **JAVA_HOME** = "/[path_to]/java-14-openjdk-amd64" 
 - **JRE_HOME** = "/[path_to]/java-14-openjdk-amd64" 
 
-El último paso sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
+Lo siguientes sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
 
 ![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
 
@@ -115,6 +115,8 @@ Formato de la URL con la que se realizará la solicitud al servicio:
 http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
 ```
 
+Lista de parámetros de la petición:
+
 __país__: 101 (España).
 
 __categoría__: 101 (Supermercados)
@@ -128,21 +130,15 @@ __super__: [101] , [101,103,104] , [ALL]
 
 Ejemplo de uso:
 
+La siguiente llamada a la API devolverá un listado de objetos json con los productos de todos los supermercados ordenados por precio. 
+
 ```console
-/**
-*  Esta llamada a la API devolverá un listado de 
-*  objetos json con los productos de todos los 
-*  supermercados ordenados por precio. 
-**/
 http://[url]:[port]/searchitemsapp/search/101/101/1/arroz/ALL
 ```
 
+Esta llamada a la API devolverá un listado de objetos json con los productos de un supermercado ordenados por volumen.
+
 ```console
-/**
-*  Esta llamada a la API devolverá un listado de 
-*  objetos json con los productos de un supermercado  
-*  ordenados por volumen.
-**/
 http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
 ```
 
