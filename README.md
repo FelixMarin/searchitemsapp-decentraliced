@@ -137,7 +137,7 @@ Lista de parámetros de la solicitud:
 | __super__ | [101] , [101,103,104] , [ALL] |
  
 
-Ejemplo de solicitud:
+- **Ejemplos de solicitud:**
 
 Esta URL devolverá un listado de objetos json con los productos de todos los supermercados ordenados por precio. 
 
@@ -151,7 +151,7 @@ Esta URL devolverá un listado de objetos json con los productos de un supermerc
 http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
 ```
 
-Ejemplo de respuesta:
+- **Ejemplo de respuesta:**
 
 ```console
 {
