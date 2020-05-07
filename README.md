@@ -9,7 +9,7 @@ La aplicación es una API REST, lo que significa que para obtener la informcaci�
 - [Ubuntu Server 18.04](https://ubuntu.com/download/server)
 - [Eclipse IDE for J2EE 2020](https://www.eclipse.org/ide/)
 - [PostgresSQL](https://www.postgresql.org/)
-- [OpenJDK 13](https://openjdk.java.net/projects/jdk/)
+- [OpenJDK 14](https://openjdk.java.net/projects/jdk/)
 - [Spring Framework](https://spring.io/)
 - [Apache Tomcat 9](http://tomcat.apache.org/)
 - [SmartBear SoapUI](https://www.soapui.org/)
@@ -87,9 +87,9 @@ Descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a c
 Añadir al fichero **/etc/environmet** las siguientes variables de entorno.  
 
 - **PROPERTIES_SIA** = "/resources" 
-- **CATALINA_HOME** = "/opt/apache-tomcat-9.0.34" 
-- **JAVA_HOME** = "/usr/lib/jvm/java-14-openjdk-amd64" 
-- **JRE_HOME** = "/usr/lib/jvm/java-14-openjdk-amd64" 
+- **CATALINA_HOME** = "/[path_to]/apache-tomcat-9" 
+- **JAVA_HOME** = "/[path_to]/java-14-openjdk-amd64" 
+- **JRE_HOME** = "/[path_to]/java-14-openjdk-amd64" 
 
 El último paso sería crear un directorio llamado logs en la raíz de sistema para recoger los logs que va escribiendo la aplicación.  
 
