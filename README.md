@@ -82,8 +82,6 @@ flow.value.google.driver.path=/usr/local/bin/drivers/chrome/chromedriver
 flow.value.firefox.driver.path=/usr/local/bin/drivers/firefox/geckodriver
 ```
 
-![Drivers en './resources/flow.properties'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000008.png)
-
 A continuación, descargar los drivers de Firefox y Chrome y situarlos en la ruta que aparece a continuación. 
 
 ```console
