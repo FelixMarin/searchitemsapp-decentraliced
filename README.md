@@ -35,7 +35,7 @@ El primer paso consiste en descargar el proyecto de GitHub.
 ```
 Importar el proyecto en Eclipse IDE. Para importar proyectos como proyectos Eclipse existentes:
 
-Clic en ``` bash File> Import ```.
+Clic en ``` bash File > Import ```.
 
 En el Import Wizard:
 
@@ -86,7 +86,9 @@ El último paso sería crear un directorio llamado logs en la raíz de sistema p
 
 ![Directorio '/log4j/'](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/000009.png)
 
- [Instalar el servidor de aplicaciones Apache Tomcat 9.](https://tecnstuff.net/how-to-install-tomcat-9-on-ubuntu-18-04/) y [Vicular Tomcat a Eclipse IDE](https://www.codejava.net/servers/tomcat/how-to-add-tomcat-server-in-eclipse-ide). Finalmente, una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor Tomcat.
+[Instalar el servidor de aplicaciones Apache Tomcat 9.](https://tecnstuff.net/how-to-install-tomcat-9-on-ubuntu-18-04/) y [Vicular Tomcat a Eclipse IDE](https://www.codejava.net/servers/tomcat/how-to-add-tomcat-server-in-eclipse-ide). 
+ 
+Finalmente, una vez preparado el entorno habrá que compilar el proyecto y desplegar la aplicación en el servidor Tomcat.
 
 ![Instalación Apache Tomcat](https://github.com/FelixMarin/searchitemsapp/blob/v0.7.0/docimg/tomcat.png)
 
