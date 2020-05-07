@@ -137,7 +137,7 @@ Lista de parámetros de la solicitud:
 | __super__ | [101] , [101,103,104] , [ALL] |
  
 
-Ejemplo de uso:
+Ejemplo de solicitud:
 
 Esta URL devolverá un listado de objetos json con los productos de todos los supermercados ordenados por precio. 
 
