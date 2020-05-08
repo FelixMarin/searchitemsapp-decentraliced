@@ -26,15 +26,17 @@ public class ListaProductosController {
 	private ServiceFactory serviceFactory;
 	
 	/**
-	 * Metodo que recoge la petcion del web service.
+	 * Este método es el que recibe los parametros 
+	 * de entrada e inicializa el proceso de la petición.
+	 * 
 	 * 
 	 * @param didPais
 	 * @param didCategoria
 	 * @param ordenacion
 	 * @param producto
 	 * @param empresas
-	 * @return Un String con el listado de productos 
-	 * de menor a mayor. La respuesta es en formato JSON
+	 * @return Un JSON con el listado de productos de menor a mayor. 
+	 * La respuesta es en formato JSON.
 	 */
 	@GetMapping(value = "/search/{didPais}//{didCategoria}/{ordenacion}/{producto}/{empresas}", 
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

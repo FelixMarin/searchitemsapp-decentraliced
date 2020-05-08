@@ -52,6 +52,16 @@ public class ListaProductosUtils {
 				StringUtils.isEmpty(empresas);
 	}
 	
+	/**
+	 * La clase Future representa un resultado futuro de un cálculo 
+	 * asincrónico, un resultado que finalmente aparecerá en el Futuro 
+	 * después de que se complete el procesamiento.
+	 * 
+	 * @param resultList Una lista de listas de resultados.
+	 * @return List<ResultadoDTO>
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 	public static List<ResultadoDTO> executeFuture(final List<Future<List<ResultadoDTO>>> resultList) 
 			throws InterruptedException, ExecutionException {
 		

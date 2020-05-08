@@ -13,6 +13,12 @@ import org.springframework.core.env.StandardEnvironment;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * 
+ * @author Felix Marin Ramirez
+ * 
+ * Esta clase carga los ficheros de propiedades con todos los literales. 
+ */
 public class CommonsPorperties {
 	
 	private static Properties properties;

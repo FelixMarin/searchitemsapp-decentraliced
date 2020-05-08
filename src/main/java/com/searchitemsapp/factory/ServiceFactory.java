@@ -8,6 +8,14 @@ import com.searchitemsapp.services.ListadoProductosService;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * 
+ * @author Felix Marin Ramirez
+ * 
+ * Clase encargada de gestionar la creación de objetos de tipo service.
+ * Las peticiones a los services pasarán siempre por esta clase.
+ *
+ */
 @SuppressWarnings("unchecked")
 @Component
 public class ServiceFactory {
