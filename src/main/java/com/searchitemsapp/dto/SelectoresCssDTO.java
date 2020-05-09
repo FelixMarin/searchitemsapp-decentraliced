@@ -5,8 +5,20 @@ import java.time.LocalDate;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaUrl;
 
+/**
+ * Objeto de Transferencia de Datos (DTO) 
+ * es un objeto que transporta datos entre procesos.
+ * No tiene más comportamiento que almacenar y entregar 
+ * sus propios datos.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class SelectoresCssDTO  implements IFdto {
 	
+	/*
+	 * Variables Globales
+	 */
 	private Integer did;
 	private Boolean bolActivo;
 	private LocalDate fecModificacion;
@@ -21,12 +33,18 @@ public class SelectoresCssDTO  implements IFdto {
 	private TbSiaEmpresa tbSiaEmpresa;
 	private TbSiaUrl tbSiaUrl;
 
+	/*
+	 * Constructor
+	 */
 	public SelectoresCssDTO() {
 		super();
 		tbSiaEmpresa = new TbSiaEmpresa();
 		tbSiaUrl = new TbSiaUrl();
 	}
 
+	/*
+	 * Métodos Getters y Setters
+	 */
 	public Integer getDid() {
 		return did;
 	}
@@ -131,6 +149,9 @@ public class SelectoresCssDTO  implements IFdto {
 		this.selPaginacion = selPaginacion;
 	}
 
+	/*
+	 * Métodos sobre escritos
+	 */
 	@Override
 	public String toString() {
 		return "SelectoresCssDTO [did=" + did + ", bolActivo=" + bolActivo + ", fecModificacion=" + fecModificacion

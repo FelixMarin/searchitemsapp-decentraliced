@@ -2,19 +2,37 @@ package com.searchitemsapp.dto;
 
 import com.searchitemsapp.model.TbSiaUrl;
 
+/**
+ * Objeto de Transferencia de Datos (DTO) 
+ * es un objeto que transporta datos entre procesos.
+ * No tiene más comportamiento que almacenar y entregar 
+ * sus propios datos.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class ParamsLoginDTO implements IFdto {
 
-	public ParamsLoginDTO() {
-		super();
-		tbSiaUrl = new TbSiaUrl();
-	}
-	
+	/*
+	 * Variables Globales
+	 */
 	private Integer did;
 	private String paramClave;
 	private String paramValor;
 	private TbSiaUrl tbSiaUrl;
 	private Boolean bolActivo;
 	
+	/*
+	 * Constructor
+	 */
+	public ParamsLoginDTO() {
+		super();
+		tbSiaUrl = new TbSiaUrl();
+	}	
+	
+	/*
+	 * Métodos Getters y Setters
+	 */
 	public Integer getDid() {
 		return did;
 	}
@@ -46,6 +64,9 @@ public class ParamsLoginDTO implements IFdto {
 		this.bolActivo = bolActivo;
 	}
 	
+	/*
+	 * Métodos sobre escritos
+	 */
 	@Override
 	public String toString() {
 		return "ParamsLoginDTO [did=" + did + ", paramClave=" + paramClave + ", paramValor=" + paramValor

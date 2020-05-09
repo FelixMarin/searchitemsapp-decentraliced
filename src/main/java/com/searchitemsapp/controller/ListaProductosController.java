@@ -12,7 +12,12 @@ import com.searchitemsapp.factory.ServiceFactory;
 import com.searchitemsapp.util.LogsUtils;
 
 /**
- * 
+ *  Controlador principal de la aplicación. Contiene
+ *  todos los servicios que pueden ser invocados 
+ *  mediate la URL del servicio. Proporciona 
+ *  asignaciones entre rutas de solicitud y métodos 
+ *  de controlador.
+ *   
  * @author Felix Marin Ramirez
  *
  */
@@ -26,17 +31,18 @@ public class ListaProductosController {
 	private ServiceFactory serviceFactory;
 	
 	/**
-	 * Este método es el que recibe los parametros 
-	 * de entrada e inicializa el proceso de la petición.
+	 * @GetMapping para asignar solicitudes HTTP GET 
+	 * a métodos de controlador específicos. 
+	 * Se indica mediate notación, la ruta y 
+	 * los parametros que debe tener la solicitud 
+	 * de servicio.
 	 * 
-	 * 
-	 * @param didPais
-	 * @param didCategoria
-	 * @param ordenacion
-	 * @param producto
-	 * @param empresas
-	 * @return Un JSON con el listado de productos de menor a mayor. 
-	 * La respuesta es en formato JSON.
+	 * @param didPais String
+	 * @param didCategoria String
+	 * @param ordenacion String
+	 * @param producto String
+	 * @param empresas String
+	 * @return String
 	 */
 	@GetMapping(value = "/search/{didPais}//{didCategoria}/{ordenacion}/{producto}/{empresas}", 
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -48,10 +54,17 @@ public class ListaProductosController {
 				ListaProductosController.class);
 
 		/**
-		 *   // para inicializar el proxy, descomenta esta línea 
-		 *   // JsonUtil.establecerProxy();
+		 * En este punto se establece la dirección del proxy
+		 * que utiliza la apicación para realizar el ratreo
+		 * de páginas web. En cada petición de servicio 
+		 * se solicita una nueva IP de proxy a una API REST
+		 * externa.
 		 */
+		 //ProxyConnection.establecerProxy();
 		
+		 /**
+		  * Llamada al servicio a través del service factory
+		  */
 		return serviceFactory
 				.getService(LISTA_PRODUCTOS)
 				.service(didPais, didCategoria, ordenacion, producto, empresas);
