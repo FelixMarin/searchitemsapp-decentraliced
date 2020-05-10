@@ -23,6 +23,11 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 		super();
 	}
 		
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public PaisDTO findByDid(Integer did) throws IOException {
 		
@@ -34,7 +39,7 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 		
 		PaisDTO paisDto = (PaisDTO) ClaseUtils.NULL_OBJECT;
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(did);		

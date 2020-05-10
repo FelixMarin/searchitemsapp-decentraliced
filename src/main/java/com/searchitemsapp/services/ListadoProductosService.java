@@ -215,7 +215,7 @@ public class ListadoProductosService implements IFService<String,String> {
              * Se crea un objeto StringBuilider en el que se concatenarán todos
              * los productos formateados en JSON. 
              */
-            strJsonResult = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+            strJsonResult = StringUtils.getNewStringBuilder();
             
             /**
              * Se itera sobre los resultados para formar un string con formato

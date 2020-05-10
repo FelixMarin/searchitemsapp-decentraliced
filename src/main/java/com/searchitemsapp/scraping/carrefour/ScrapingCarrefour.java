@@ -35,14 +35,14 @@ public class ScrapingCarrefour implements IFScrapingEmpresas {
 		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.carrefour"));
 		
 		StringTokenizer st = new StringTokenizer(selectorPaginacion,StringUtils.PIPE);  
-		List<String> liSelectorAtr = new ArrayList<>(ClaseUtils.TWO_INT);
+		List<String> liSelectorAtr = StringUtils.getNewListString();
 		
 		while (st.hasMoreTokens()) {  
 			liSelectorAtr.add(st.nextToken());
 		}
 		
 		Elements elements = document.select(liSelectorAtr.get(ClaseUtils.ZERO_INT));
-		List<String> listaUrls = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<String> listaUrls = StringUtils.getNewListString();
 		
 		listaUrls.add(urlBase);
 		

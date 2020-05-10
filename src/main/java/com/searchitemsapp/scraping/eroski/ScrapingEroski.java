@@ -28,7 +28,7 @@ public class ScrapingEroski implements IFScrapingEmpresas{
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(), this.getClass());
 		
 		String urlBase = urlDto.getNomUrl();
-		List<String> listaUrls = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<String> listaUrls = StringUtils.getNewListString();
 		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.eroski"));
 		
 		listaUrls.add(urlBase);

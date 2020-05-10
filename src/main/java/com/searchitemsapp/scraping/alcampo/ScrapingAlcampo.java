@@ -38,7 +38,7 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		int intPaginacion;
 		
 		StringTokenizer st = new StringTokenizer(selectorPaginacion,StringUtils.PIPE);  
-		List<String> liSelectorAtr = new ArrayList<>(ClaseUtils.TWO_INT);
+		List<String> liSelectorAtr = StringUtils.getNewListString();
 		
 		while (st.hasMoreTokens()) {  
 			liSelectorAtr.add(st.nextToken());

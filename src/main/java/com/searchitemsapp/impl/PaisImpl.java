@@ -33,7 +33,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 			return (PaisDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.pais.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(paisDto.getDid());

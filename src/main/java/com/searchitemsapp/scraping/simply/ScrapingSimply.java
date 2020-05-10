@@ -32,7 +32,7 @@ public class ScrapingSimply implements IFScrapingEmpresas {
 		int fin = 30;
 		int max = 10;
 		int incremento = ClaseUtils.TWO_INT;
-		List<String> listaUrls = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<String> listaUrls = StringUtils.getNewListString();
 		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.simply"));
 		
 		listaUrls.add(urlBase);

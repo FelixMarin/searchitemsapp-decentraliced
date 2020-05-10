@@ -28,6 +28,12 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		super();
 	}
 	
+	/**
+	 * Método que devuelve un elemento de la 
+	 * tabla dependiendo del identificador
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public UrlDTO findByDid(Integer did) throws IOException {
 
@@ -39,7 +45,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		
 		UrlDTO urlDto = (UrlDTO) ClaseUtils.NULL_OBJECT;
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(did);
@@ -66,7 +72,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		
 		List<UrlDTO> listResultadoDto = (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.nom.categoria"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -95,7 +101,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		
 		List<UrlDTO> listUrlDto = (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
 
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.by.empresa"));
 
 		Query query = getEntityManager().createQuery(queryBuilder.toString());
@@ -123,7 +129,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		
 		List<UrlDTO> urlDto = (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.bollogin"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -155,7 +161,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		
 		List<UrlDTO>listUrlDto = (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties
 				.getValue("flow.value.url.select.url.by.list.empresa"));
 		

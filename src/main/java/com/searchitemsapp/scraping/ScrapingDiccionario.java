@@ -39,20 +39,18 @@ public class ScrapingDiccionario extends Scraping {
 		super.cargarTodasLasMarcas();
 		super.setTbSiaSelectoresCss(urlDto);
 		String strProductoCorregido;
-		StringBuilder palabrasResultado = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
-		Document document;
-		Elements entrada;
+		StringBuilder palabrasResultado = StringUtils.getNewStringBuilder();
+				
 		Element elem = (Element) ClaseUtils.NULL_OBJECT;
-		
-		
-		document = getHtmlDocument(urlDto, (Map<String, String>) ClaseUtils.NULL_OBJECT,producto,
+				
+		Document document = getHtmlDocument(urlDto, (Map<String, String>) ClaseUtils.NULL_OBJECT,producto,
 						(SelectoresCssDTO) ClaseUtils.NULL_OBJECT).get(ClaseUtils.ZERO_INT);
 			
 		 if(!ClaseUtils.isNullObject(document)) {
             TbSiaSelectoresCss selectorCss = urlDto
             		.getTbSiaSelectoresCsses().get(ClaseUtils.ZERO_INT);
             
-            entrada = selectScrapPattern(document,selectorCss.getScrapPattern(), selectorCss.getScrapNoPattern());
+        Elements entrada = selectScrapPattern(document,selectorCss.getScrapPattern(), selectorCss.getScrapNoPattern());
             
             if(!entrada.isEmpty()) {
             	elem = entrada.get(ClaseUtils.ZERO_INT);

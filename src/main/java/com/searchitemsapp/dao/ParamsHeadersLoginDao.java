@@ -16,6 +16,7 @@ import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.repository.IFParamsHeadersLogin;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.util.StringUtils;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -27,6 +28,11 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		super();
 	}
 		
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public List<ParamsLoginDTO> findAll() throws IOException {
 
@@ -34,7 +40,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		
 		List<ParamsLoginDTO> resultado = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -61,7 +67,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		
 		List<ParamsLoginDTO> listParamsLoginDto = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsHeadersLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), tbSiaUrl.getDid());

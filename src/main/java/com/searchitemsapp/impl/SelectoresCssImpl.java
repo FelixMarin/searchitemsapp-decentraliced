@@ -35,7 +35,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 			return (SelectoresCssDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.valor.dto"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(selectorCssDto.toString());
@@ -61,7 +61,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 			return (List<SelectoresCssDTO>) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.activo"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(empresaDto.getDid());

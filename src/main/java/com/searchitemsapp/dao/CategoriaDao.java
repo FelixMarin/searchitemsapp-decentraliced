@@ -15,6 +15,7 @@ import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.repository.IFCategoriaRepository;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.util.StringUtils;
 
 @SuppressWarnings({"unchecked"})
 @Repository
@@ -26,6 +27,11 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		super();
 	}
 	
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public List<CategoriaDTO> findAll() throws IOException {
 		
@@ -33,7 +39,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		
 		List<CategoriaDTO> resultado = (List<CategoriaDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.all"));		
 
 		isEntityManagerOpen(this.getClass());
@@ -49,6 +55,12 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		return resultado;
 	}
 		
+	/**
+	 * A partir de un indentifcador se obtiene un elemento
+	 * de la tabla.
+	 * 
+	 * @return CategoriaDTO
+	 */
 	@Override
 	public CategoriaDTO findByDid(Integer did) {
 		
@@ -83,7 +95,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		
 		List<CategoriaDTO> listCategoriaDTO = (List<CategoriaDTO>)ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.categoria.by.activo"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString());
 		query.setParameter(CommonsPorperties.getValue("flow.value.activo"), activo);

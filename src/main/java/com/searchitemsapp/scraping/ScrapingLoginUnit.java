@@ -65,14 +65,6 @@ public class ScrapingLoginUnit extends Scraping {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		ResultadoDTO auxResDto = (ResultadoDTO) ClaseUtils.NULL_OBJECT;
-		String b64login;
-		List<ResultadoDTO> listResUrlLogin;
-		ResultadoDTO resultadoDto;
-		List<UrlDTO> listUrlDto;
-		Map<String, String> mapLoginPageCookies;
-		 Map<String, String> mapParamsFormLogin;		
-		List<ParamsLoginDTO> listParamLoginForm;
-		List<ParamsLoginDTO> listParamLoginHeaders;
 		
 		boolean isLoginActivo = Boolean
 				.parseBoolean(CommonsPorperties.getValue("flow.value.did.login.activo"));
@@ -83,13 +75,13 @@ public class ScrapingLoginUnit extends Scraping {
 		
 		paisDto.setDid(StringUtils.desformatearEntero(didPais));
 		categoriaDto.setDid(StringUtils.desformatearEntero(didCategoria));
-		listUrlDto = urlImpl.obtenerUrlsLogin(paisDto, categoriaDto);
+		List<UrlDTO> listUrlDto = urlImpl.obtenerUrlsLogin(paisDto, categoriaDto);
 		empresaDTO.setDid(iIdEmpresa);
 		
-		listResUrlLogin = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<ResultadoDTO> listResUrlLogin = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
 		
 		for (UrlDTO urlDto : listUrlDto) {
-			resultadoDto = new ResultadoDTO();
+			ResultadoDTO resultadoDto = new ResultadoDTO();
 			resultadoDto.setNomUrl(urlDto.getNomUrl());
 			resultadoDto.setDidEmpresa(urlDto.getTbSiaEmpresa().getDid());
 			resultadoDto.setDidUrl(urlDto.getDid());
@@ -121,20 +113,20 @@ public class ScrapingLoginUnit extends Scraping {
 		
 		paramsLoginDto.getTbSiaUrl().setDid(auxResDto.getDidUrl());
 		
-		listParamLoginForm = paramsFormLoginImpl.findByTbSia(paramsLoginDto, categoriaDto);
-		listParamLoginHeaders = pramsHeadersLoginImpl.findByTbSia(paramsLoginDto, empresaDTO);
+		List<ParamsLoginDTO> listParamLoginForm = paramsFormLoginImpl.findByTbSia(paramsLoginDto, categoriaDto);
+		List<ParamsLoginDTO> listParamLoginHeaders = pramsHeadersLoginImpl.findByTbSia(paramsLoginDto, empresaDTO);
 		
 		
 		if(ClaseUtils.isNullObject(listParamLoginForm)) {
 			return (HashMap) ClaseUtils.NULL_OBJECT;
 		}
             
-		mapLoginPageCookies = obtenerCookiesMethodGet(auxResDto.getLoginnUrl(), 
+		Map<String, String> mapLoginPageCookies = obtenerCookiesMethodGet(auxResDto.getLoginnUrl(), 
 				listParamLoginHeaders, auxResDto.getDidUrl());
 		
 		mapaCookies.put(empresaDTO.getDid(), mapLoginPageCookies);
         
-        mapParamsFormLogin = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
+		 Map<String, String> mapParamsFormLogin = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
         
         for (ParamsLoginDTO paramsLoginDTO : listParamLoginForm) {
         	if(auxResDto.getDidUrl() == paramsLoginDTO.getTbSiaUrl().getDid()) {
@@ -142,7 +134,7 @@ public class ScrapingLoginUnit extends Scraping {
         	}
 		}
         
-        b64login = setB64encode((LoginDTO) ClaseUtils.NULL_OBJECT, empresaDTO);
+        String b64login = setB64encode((LoginDTO) ClaseUtils.NULL_OBJECT, empresaDTO);
         
         logearseEnSitioWeb(auxResDto.getNomUrl(), mapParamsFormLogin, mapLoginPageCookies, b64login);
         

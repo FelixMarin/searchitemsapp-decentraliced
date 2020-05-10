@@ -15,17 +15,37 @@ import com.searchitemsapp.model.TbSiaLogin;
 import com.searchitemsapp.repository.IFLoginRepository;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Método que DAO proporcionará los métodos necesarios para 
+ * insertar, actualizar, borrar y consultar la información
+ * de la base de datos.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings({"unchecked"})
 @Repository
 public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLoginRepository {
 
+	/*
+	 * Variables Globales
+	 */
 	private static final String LOGIN_PARSER = "LOGIN_PARSER";
 	
+	/*
+	 * Constructor
+	 */
 	public LoginDao() {
 		super();
 	}
 		
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public List<LoginDTO> findAll() throws IOException {
 		
@@ -33,7 +53,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		
 		List<LoginDTO> resultado = (List<LoginDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.all"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -49,6 +69,12 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		return resultado;
 	}	
 	
+	/**
+	 * A partir de un indentifcador se obtiene un elemento
+	 * de la tabla.
+	 * 
+	 * @return findByDidDTO
+	 */
 	@Override
 	public LoginDTO findByDid(Integer did) {
 		
@@ -81,7 +107,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		}
 		LogsUtils.escribeLogDebug(String.valueOf(tbSiaEmpresa.toString()),this.getClass());
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.by.did.categoria"));
 		
 		Query query = getEntityManager().createQuery(queryBuilder.toString());

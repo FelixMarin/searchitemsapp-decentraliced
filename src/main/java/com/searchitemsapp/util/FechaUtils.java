@@ -564,7 +564,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 		final int seg = fecha.get(java.util.Calendar.SECOND);
 		
 		
-		final StringBuilder sbFecha = new StringBuilder(10);
+		final StringBuilder sbFecha = StringUtils.getNewStringBuilder();
 		
 				if (dia<10) {
 					sbFecha.append("0");

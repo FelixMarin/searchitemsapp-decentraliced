@@ -25,7 +25,12 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 	public MarcasDao() {
 		super();
 	}
-		
+	
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public List<MarcasDTO> findAll() throws IOException {
 
@@ -33,7 +38,7 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		
 		List<MarcasDTO> resultado = (List<MarcasDTO>) ClaseUtils.NULL_OBJECT;	
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.marcas.select.all"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -60,7 +65,7 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		
 		MarcasDTO resultado = (MarcasDTO) ClaseUtils.NULL_OBJECT;
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.marcas.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(did);	

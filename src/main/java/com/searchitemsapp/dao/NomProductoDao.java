@@ -14,6 +14,7 @@ import com.searchitemsapp.model.TbSiaNomProducto;
 import com.searchitemsapp.repository.IFNomProductoRepository;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.util.StringUtils;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -24,14 +25,19 @@ public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto
 	public NomProductoDao() {
 		super();
 	}
-		
+	
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public List<NomProductoDTO> findAll() throws IOException {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		List<NomProductoDTO> resultado = (List<NomProductoDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.nomproducto.select.all"));
 		
 		isEntityManagerOpen(this.getClass());

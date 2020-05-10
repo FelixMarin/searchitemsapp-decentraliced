@@ -41,7 +41,7 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 			return (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(paramsLoginDTO.getTbSiaUrl().getDid());

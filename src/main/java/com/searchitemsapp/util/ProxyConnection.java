@@ -20,7 +20,7 @@ public class ProxyConnection {
 
 	public static void establecerProxy() {
 		
-		StringBuilder sbResultado = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder sbResultado = StringUtils.getNewStringBuilder();
 		HttpURLConnection conn = (HttpURLConnection) ClaseUtils.NULL_OBJECT;
 		String[] arStrIpPort = (String[]) ClaseUtils.NULL_OBJECT;
 		String output;

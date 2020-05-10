@@ -47,7 +47,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 			return (EmpresaDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(empresaDto.getDid());

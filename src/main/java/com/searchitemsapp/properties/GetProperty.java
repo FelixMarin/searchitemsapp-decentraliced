@@ -30,7 +30,7 @@ public class GetProperty {
 			return StringUtils.NULL_STRING;
 		}
 		
-		StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		String value = StringUtils.NULL_STRING;
 		
 		try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName)) {

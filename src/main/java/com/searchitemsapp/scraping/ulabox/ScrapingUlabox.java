@@ -34,7 +34,7 @@ public class ScrapingUlabox implements IFScrapingEmpresas {
 		String urlBase = urlDto.getNomUrl();
 		String selectorPaginacion = selectorCssDto.getSelPaginacion();		
 		String strPaginacion = document.select(selectorPaginacion).text();
-		List<String> listaUrls = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<String> listaUrls = StringUtils.getNewListString();
 		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.ulabox"));
 		
 		listaUrls.add(urlBase);

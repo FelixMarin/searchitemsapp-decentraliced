@@ -23,7 +23,7 @@ public class ListaProductosUtils {
 	}
 
 	public static void logInicioDebugMessage(final String didCategoria) {
-		StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(didCategoria);

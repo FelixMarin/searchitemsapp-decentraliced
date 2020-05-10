@@ -1,6 +1,5 @@
 package com.searchitemsapp.util;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -46,10 +45,13 @@ public abstract class AbstractFechas  implements IFUtils {
 	}
 
 	public static List<String> getMeses() {
-		List<String> meses = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		
+		List<String> meses = StringUtils.getNewListString();
+		
 		for (MesAnio aux : MesAnio.values()) {
 			meses.add(aux.toString());
 		}
+		
 		return meses;
 	}
 

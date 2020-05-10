@@ -38,7 +38,7 @@ public class UrlImpl implements IFImplementacion<UrlDTO, CategoriaDTO> {
 			return (UrlDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(urlDTO.getDid());

@@ -28,13 +28,19 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		super();
 	}
 	
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
+	@Override
 	public List<EmpresaDTO> findAll() throws IOException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		List<EmpresaDTO> resultado = (List<EmpresaDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.all"));		
 
 		isEntityManagerOpen(this.getClass());
@@ -50,6 +56,12 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		return resultado;
 	}
 	
+	/**
+	 * A partir de un indentifcador se obtiene un elemento
+	 * de la tabla.
+	 * 
+	 * @return EmpresaDTO
+	 */
 	@Override
 	public EmpresaDTO findByDid(Integer did) throws IOException {
 		
@@ -61,7 +73,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		
 		EmpresaDTO empresaDto = (EmpresaDTO) ClaseUtils.NULL_OBJECT;
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(did);		
@@ -88,13 +100,13 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 			return resultado;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.categoria.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(tbSiaCategoriasEmpresa.getDid());	
 		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
 		
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.categoria"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -122,7 +134,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		
 		List<EmpresaDTO> listEmpresaDto = (List<EmpresaDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.empresa.y.categoria"));
 			
 		Query q = getEntityManager().createQuery(queryBuilder.toString());		
@@ -149,7 +161,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		
 		EmpresaDTO empresaDto = (EmpresaDTO) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.empresa.by.pais"));
 		
 		Query query = getEntityManager().createQuery(queryBuilder.toString());

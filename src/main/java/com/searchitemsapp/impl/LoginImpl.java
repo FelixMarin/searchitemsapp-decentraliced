@@ -77,7 +77,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		/**
 		 * Traza de log que escribe identificador de la empresa.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.login.dto.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(loginDTO.getDid());
@@ -109,7 +109,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		/**
 		 * Traza de log que escribe identificador de la empresa.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(empresaDTO.getDid());

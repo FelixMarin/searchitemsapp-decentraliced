@@ -41,7 +41,7 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 			return (MarcasDTO) ClaseUtils.NULL_OBJECT;
 		}		
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.marcas.dto.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(marcasDTO.getDid());

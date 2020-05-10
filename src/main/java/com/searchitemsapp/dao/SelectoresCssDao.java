@@ -26,13 +26,18 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		super();
 	}
 		
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public List<SelectoresCssDTO> findAll() throws IOException {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		List<SelectoresCssDTO> resultado = (List<SelectoresCssDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.all"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -59,7 +64,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		
 		SelectoresCssDTO resultado = (SelectoresCssDTO) ClaseUtils.NULL_OBJECT;
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.selectorescss.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(did);
@@ -85,7 +90,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		
 		List<TbSiaSelectoresCss> selectoresCssList = (List<TbSiaSelectoresCss>) ClaseUtils.NULL_OBJECT;
 
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaSelectoresCss.class);
 		query.setParameter("didEmpresa", tbSiaEmpresa.getDid());

@@ -42,7 +42,7 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 			return (CategoriaDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.dto.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(categoriaDto.toString());

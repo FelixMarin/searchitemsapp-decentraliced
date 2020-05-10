@@ -20,6 +20,7 @@ import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.util.StringUtils;
 
 public class ScrapingConsum implements IFScrapingEmpresas {
 
@@ -38,7 +39,7 @@ public class ScrapingConsum implements IFScrapingEmpresas {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		String urlBase = urlDto.getNomUrl();
-		List<String> listaUrls = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<String> listaUrls = StringUtils.getNewListString();
 		listaUrls.add(urlBase);
 		
 		return listaUrls;

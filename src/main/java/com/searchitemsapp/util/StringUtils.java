@@ -242,7 +242,7 @@ public class StringUtils  implements IFUtils {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
 
 		Matcher matcher = matcher(PATRON_FECHA_MAESTRO, fuente);
-		StringBuilder fechaConvertida = new StringBuilder(10);
+		StringBuilder fechaConvertida = StringUtils.getNewStringBuilder();
 		if (matcher.find()) {
 			String fecha = matcher.group();
 			String[] fechaConvertida1 = fecha.split(GUION);
@@ -286,7 +286,7 @@ public class StringUtils  implements IFUtils {
 
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
 
-		final StringBuilder sbResultado = new StringBuilder(iLongitud);
+		final StringBuilder sbResultado = StringUtils.getNewStringBuilder();
 		if (iTipo == AJUSTE_DERECHA) {
 			sbResultado.append(strCadena);
 		}
@@ -960,7 +960,7 @@ public class StringUtils  implements IFUtils {
 		String ret;
 
 		if (longitudCadena > 80) {
-			final StringBuilder cadenaFinal = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+			final StringBuilder cadenaFinal = StringUtils.getNewStringBuilder();
 			int longitudLinea = 70;
 			int numeroFilas = 0;
 			int mod;
@@ -1090,7 +1090,7 @@ public class StringUtils  implements IFUtils {
 		final int valorEnt = desformatearEntero(string);
 
 		if (valorEnt != ClaseUtils.ZERO_INT) {
-			final StringBuilder salida = new StringBuilder(string.length());
+			final StringBuilder salida = StringUtils.getNewStringBuilder();
 			final int miLong = string.length();
 
 			for (int i = ClaseUtils.ZERO_INT; i < miLong; i++) {
@@ -1119,7 +1119,7 @@ public class StringUtils  implements IFUtils {
 
 			LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
 
-		final StringBuilder sb = new StringBuilder(cadenaXML);
+		final StringBuilder sb = StringUtils.getNewStringBuilder();
 		final String[] aCaracteres = new String[] { "\"", "'", "\\" };
 		final int miNumCaracteres = aCaracteres.length;
 		int miIndice;
@@ -1389,7 +1389,7 @@ public class StringUtils  implements IFUtils {
         }
 
         // two or more elements
-        final StringBuilder buf = new StringBuilder(256); // Java default is 16, probably too small
+        final StringBuilder buf = StringUtils.getNewStringBuilder();
         if (first != null) {
             buf.append(first);
         }
@@ -1419,6 +1419,14 @@ public class StringUtils  implements IFUtils {
         return true;
 }    
 	
+    /**
+     * Metodo que contene combinaciones de palabras 
+     * no permitidas. Las palabras no permitidas se
+     * reemplazan por espacios en blanco.
+     * 
+     * @param value
+     * @return String
+     */
 	public static String sanitizeValue(String value) {
 		
 		if(validateNull(value)) {
@@ -1477,14 +1485,13 @@ public class StringUtils  implements IFUtils {
 	
 	public static String[] tokenizeString(final String cadena, final String token) {
 		
-		List<String> listaAux;
 		StringTokenizer st = new StringTokenizer(cadena, token); 
 		
 		if(ClaseUtils.isNullObject(st)) {
 			return NULL_STRING_ARRAY;
 		}
 		
-		listaAux = StringUtils.getNewListString();
+		List<String> listaAux = getNewListString();
 		
 		while (st.hasMoreElements()) {
 			listaAux.add((String) st.nextElement());
@@ -1542,5 +1549,9 @@ public class StringUtils  implements IFUtils {
 	
 	public static List<String> getNewListString() {
 		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
-	}		
+	}	
+	
+	public static StringBuilder getNewStringBuilder() {
+		return new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+	}
 }

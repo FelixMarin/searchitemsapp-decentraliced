@@ -42,6 +42,14 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Clase abstracta que cotiene métodos 
+ * expecializados para el web scraping.
+ * 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("deprecation")
 public abstract class Scraping {
 
@@ -59,10 +67,9 @@ public abstract class Scraping {
 	private static String selectorDescriptionText;
 	private int idEmpresaActual;
 	
-	protected Scraping() {
-		super();
-	}
-	
+	/*
+	 * Variables Globales
+	 */
 	@Autowired
 	private IFImplementacion<EmpresaDTO, CategoriaDTO> iFEmpresaImpl;
 	
@@ -90,11 +97,19 @@ public abstract class Scraping {
 	@Autowired
 	private ScrapingEmpFactory scrapingEmpFactory;
 	
+	/*
+	 * Constructor
+	 */
+	protected Scraping() {
+		super();
+	}
+	
 	/**
-	 * Con esta metodo compruebo el Status code de la respuesta que recibo al hacer
-	 * la peticion EJM: 200 OK 300 Multiple Choices 301 Moved Permanently 305 Use
-	 * Proxy 400 Bad Request 403 Forbidden 404 Not Found 500 Internal Server Error
-	 * 502 Bad Gateway 503 Service Unavailable
+	 * Con esta metodo se comprueba el Status code de la respuesta que recibo al hacer
+	 * la peticion EJM: 
+	 * 		200 OK 300 Multiple Choices 301 Moved Permanently 305 Use Proxy .
+	 * 		400 Bad Request 403 Forbidden 404 Not Found 500 Internal Server Error.
+	 * 		502 Bad Gateway 503 Service Unavailable.
 	 * 
 	 * @param url
 	 * @return Status Code
@@ -107,6 +122,10 @@ public abstract class Scraping {
 		int iResultado = ClaseUtils.ZERO_INT;
 
 		try {
+			/**
+			 * Jsoup es una librería que permite conectarse a sitios web
+			 * descargarlos y manipularlos a través de un DOM virtual.
+			 */
 			iResultado = Jsoup.connect(url)
 					.userAgent(StringUtils.AGENT_ALL)
 					.method(Connection.Method.GET)
@@ -126,9 +145,9 @@ public abstract class Scraping {
 	}
 
 	/**
-	 * Con este metodo devuelvo un objeto de la clase Document con el contenido del
-	 * HTML de la web que me permitira parsearlo con los metodos de la librelia
-	 * JSoup
+	 * Este método devuelve un objeto de la clase Document con el contenido del
+	 * HTML de la web que permitirá parsearlo con los métodos de la libreía
+	 * JSoup.
 	 * 
 	 * @param url
 	 * @return Documento con el HTML
@@ -143,17 +162,23 @@ public abstract class Scraping {
 					throws IOException, URISyntaxException, InterruptedException {
 
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-		
-		int idEmpresa = urlDto.getTbSiaEmpresa().getDid();
-			
-    	
-    	List<String> liUrlsPorEmpresaPaginacion;
+
     	List<Document> listDocuments = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
     	
+		/**
+		 * El identificador de la empresa se añade 
+		 * a una variable.
+		 */
+		int idEmpresa = urlDto.getTbSiaEmpresa().getDid();			
+    	
+		/**
+		 * Objeto Document con el contenido del
+		 * HTML de la web listo para ser manipulado.
+		 */
     	Document document = getDocument(urlDto.getNomUrl(), idEmpresa, 
     			producto, mapLoginPageCookies);
 
-   		liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, selectorCssDto, idEmpresa);
+    	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, selectorCssDto, idEmpresa);
    		
    		if(!liUrlsPorEmpresaPaginacion.isEmpty()) {
 	   		for (String url : liUrlsPorEmpresaPaginacion) {
@@ -167,6 +192,44 @@ public abstract class Scraping {
 		return listDocuments;
 	}
 	
+	/**
+	 * 
+	 * @param document
+	 * @param urlDto
+	 * @param selectorCssDto
+	 * @param idEmpresa
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	protected List<String> urlsPaginacion(final Document document, 
+			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto, 
+			final int idEmpresa) throws MalformedURLException {
+		
+		List<String> listUrlsResultado = StringUtils.getNewListString();
+		
+		if(getMapEmpresas().get(StringUtils.DICCIONARIO) == idEmpresa) {
+			return StringUtils.getNewListString();
+		}
+		
+		listUrlsResultado.addAll(scrapingEmpFactory
+				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto, selectorCssDto));
+		
+		return listUrlsResultado;
+	}
+	
+	/**
+	 * Este método devuelve un objeto de la clase Document con el contenido del
+	 * HTML de la web.
+	 * 
+	 * @param strUrl
+	 * @param didEmpresa
+	 * @param producto
+	 * @param mapLoginPageCookies
+	 * @return Document
+	 * @throws InterruptedException
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 	private Document getDocument(final String strUrl, 
 			final int didEmpresa, final String producto,
 			final Map<String, String> mapLoginPageCookies) 
@@ -279,8 +342,8 @@ public abstract class Scraping {
 	
 	protected Pattern createPatternProduct(final String[] arProducto) {
 		
-		List<String> tokens = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
-		StringBuilder pattSb = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		List<String> tokens = StringUtils.getNewListString();
+		StringBuilder pattSb = StringUtils.getNewStringBuilder();
 		
 		for (int i = 0; i < arProducto.length; i++) {
 			tokens.add(arProducto[i].toUpperCase());
@@ -313,7 +376,7 @@ public abstract class Scraping {
 		}
 		
 		StringTokenizer st = new StringTokenizer(cssSelector,StringUtils.PIPE);  
-		List<String> lista = new ArrayList<>(2);
+		List<String> lista = StringUtils.getNewListString();
 		String strResult;
 		
 		while (st.hasMoreTokens()) {  
@@ -383,7 +446,7 @@ public abstract class Scraping {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE_STRING);
-		StringBuilder resultado = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder resultado = StringUtils.getNewStringBuilder();
 		
 		if(ClaseUtils.isNullObject(nomProdSeparado)) {
 			return StringUtils.NULL_STRING;
@@ -489,6 +552,15 @@ public abstract class Scraping {
 		return StringUtils.formatoCaracteres(caracteres);
 	}	
 	
+	/**
+	 * Funcionalidad que se encaga de corregir el nombre del producto
+	 * en el caso de contenga espacios en blanco, caracteres especiales
+	 * o palabras reservadas no permitidas.
+	 * 
+	 * @param producto
+	 * @return String
+	 * @throws IOException
+	 */
 	protected static String tratarProducto(final String producto) throws IOException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),Scraping.class);
@@ -504,22 +576,6 @@ public abstract class Scraping {
 		} else {
 			return URLEncoder.encode(productoTratado, StandardCharsets.UTF_8.toString());
 		}
-	}
-	
-	protected List<String> urlsPaginacion(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto, 
-			final int idEmpresa) throws MalformedURLException {
-		
-		List<String> listUrlsResultado = StringUtils.getNewListString();
-		
-		if(getMapEmpresas().get(StringUtils.DICCIONARIO) == idEmpresa) {
-			return StringUtils.getNewListString();
-		}
-		
-		listUrlsResultado.addAll(scrapingEmpFactory
-				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto, selectorCssDto));
-		
-		return listUrlsResultado;
 	}
 	
 	protected boolean validaNomProducto(final String nomProducto) {

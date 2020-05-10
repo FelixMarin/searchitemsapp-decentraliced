@@ -82,7 +82,7 @@ public class Diccionario {
 		String urlAux;
 		String strResultadoProducto;
 		UrlDTO urlDtoAux;
-		StringBuilder strResultado = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder strResultado = StringUtils.getNewStringBuilder();
 		
 		/**
 		 * Si el nombre del producto consta de más de una palabra,
@@ -153,7 +153,7 @@ public class Diccionario {
 		 */
 		if(StringUtils.isEmpty(strResultado.toString()) ||
 				!StringUtils.eliminarTildes(strResultado.toString().trim()).equalsIgnoreCase(producto)) {
-			strResultado = new StringBuilder(producto);
+			strResultado = StringUtils.getNewStringBuilder().append(producto);
 		}
 		
 		/**
