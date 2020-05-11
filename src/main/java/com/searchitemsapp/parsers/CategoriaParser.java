@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEmpresa>  {
 	
-	private CategoriaParser() {
+	public CategoriaParser() {
 		super();
 	}
 	

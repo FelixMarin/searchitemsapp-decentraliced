@@ -1,7 +1,6 @@
 package com.searchitemsapp.scraping.alcampo;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;

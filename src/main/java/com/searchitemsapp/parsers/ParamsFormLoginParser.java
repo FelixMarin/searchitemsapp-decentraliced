@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaParamsFormLogin> {
 
-	private ParamsFormLoginParser() {
+	public ParamsFormLoginParser() {
 		super();
 	}
 

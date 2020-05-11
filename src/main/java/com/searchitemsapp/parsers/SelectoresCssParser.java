@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSelectoresCss> {
 
-	private SelectoresCssParser() {
+	public SelectoresCssParser() {
 		super();
 	}
 	

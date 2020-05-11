@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	
-	private PaisParser() {
+	public PaisParser() {
 		super();
 	}
 	

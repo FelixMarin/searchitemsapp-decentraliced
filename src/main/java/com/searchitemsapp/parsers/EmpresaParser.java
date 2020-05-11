@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	
-	private EmpresaParser() {
+	public EmpresaParser() {
 		super();
 	}
 	

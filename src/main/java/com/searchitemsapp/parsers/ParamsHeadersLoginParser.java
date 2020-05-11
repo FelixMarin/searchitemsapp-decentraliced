@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaParamsHeadersLogin> {
 
-	private ParamsHeadersLoginParser() {
+	public ParamsHeadersLoginParser() {
 		super();
 	}
 	

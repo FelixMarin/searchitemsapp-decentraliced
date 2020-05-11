@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	
-	private LoginParser() {
+	public LoginParser() {
 		super();
 	}
 	

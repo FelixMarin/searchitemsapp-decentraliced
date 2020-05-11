@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 
-	private MarcasParser() {
+	public MarcasParser() {
 		super();
 	}
 	

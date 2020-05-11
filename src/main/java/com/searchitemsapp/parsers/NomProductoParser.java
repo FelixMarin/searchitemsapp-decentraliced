@@ -10,7 +10,7 @@ import com.searchitemsapp.util.LogsUtils;
 
 public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProducto> {
 
-	private NomProductoParser() {
+	public NomProductoParser() {
 		super();
 	}
 

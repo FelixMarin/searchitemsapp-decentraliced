@@ -1,7 +1,6 @@
 package com.searchitemsapp.scraping.simply;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.nodes.Document;

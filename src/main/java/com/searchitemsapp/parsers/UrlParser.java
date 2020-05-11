@@ -7,12 +7,11 @@ import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 @SuppressWarnings("unchecked")
 public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	
-	private UrlParser() {
+	public UrlParser() {
 		super();
 	}
 	
@@ -90,8 +89,8 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 			for (Object[] objects : urlList) {
 				urlDto = new UrlDTO();
 				urlDto.setNomUrl(String.valueOf(objects[0]));
-				urlDto.getTbSiaEmpresa().setDid(StringUtils.desformatearEntero(String.valueOf(objects[1])));
-				urlDto.setDid(StringUtils.desformatearEntero(String.valueOf(objects[2])));
+				urlDto.getTbSiaEmpresa().setDid(Integer.parseInt(String.valueOf(objects[1])));
+				urlDto.setDid(Integer.parseInt(String.valueOf(objects[2])));
 				urlDto.setBolActivo(Boolean.parseBoolean(null!=objects[3]?String.valueOf(objects[3]):null));
 				urlDto.getTbSiaEmpresa().setNomEmpresa(String.valueOf(objects[4]));
 				urlDto.setBolStatus(Boolean.parseBoolean(null!=objects[5]?String.valueOf(objects[5]):null));
