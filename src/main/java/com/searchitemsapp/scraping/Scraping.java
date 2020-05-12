@@ -65,7 +65,6 @@ public abstract class Scraping {
 	private static String accesoPopupPeso;
 	private static String productLeftContainer;
 	private static String selectorDescriptionText;
-	private int idEmpresaActual;
 	
 	/*
 	 * Variables Globales
@@ -178,6 +177,9 @@ public abstract class Scraping {
     	Document document = getDocument(urlDto.getNomUrl(), idEmpresa, 
     			producto, mapLoginPageCookies);
 
+    	/**
+    	 * Se 
+    	 */
     	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, selectorCssDto, idEmpresa);
    		
    		if(!liUrlsPorEmpresaPaginacion.isEmpty()) {
@@ -193,12 +195,15 @@ public abstract class Scraping {
 	}
 	
 	/**
+	 * Devuelve un listado con de las URLs correspondientes
+	 * a uno de los supermecados a los que se le van a 
+	 * extraer los datos.
 	 * 
 	 * @param document
 	 * @param urlDto
 	 * @param selectorCssDto
 	 * @param idEmpresa
-	 * @return
+	 * @return List<String>
 	 * @throws MalformedURLException
 	 */
 	protected List<String> urlsPaginacion(final Document document, 
@@ -207,10 +212,20 @@ public abstract class Scraping {
 		
 		List<String> listUrlsResultado = StringUtils.getNewListString();
 		
+		/**
+		 * Si el identificador de empresa es el 
+		 * que corresponde al diccionario, la
+		 * ejecución termina. 
+		 */
 		if(getMapEmpresas().get(StringUtils.DICCIONARIO) == idEmpresa) {
 			return StringUtils.getNewListString();
 		}
 		
+		/**
+		 * Se obtiene el listado de URLs correspodientes
+		 * a la empresa a la que se le va a realizar la
+		 * solicitud.
+		 */
 		listUrlsResultado.addAll(scrapingEmpFactory
 				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto, selectorCssDto));
 		
@@ -280,6 +295,17 @@ public abstract class Scraping {
 		}
 	}
 
+	/**
+	 * Este método extrae la informacíon a partir
+	 * de un selector. Devuelve un conjunto de 
+	 * elementos que coincidan con el patron de
+	 * busqeda.
+	 * 
+	 * @param document
+	 * @param strScrapPattern
+	 * @param strScrapNotPattern
+	 * @return Elements
+	 */
 	protected Elements selectScrapPattern(final Document document,
 			final String strScrapPattern, final String strScrapNotPattern) {
 
@@ -303,22 +329,30 @@ public abstract class Scraping {
 		!ClaseUtils.isNullObject(elem.selectFirst(getAccesoPopupPeso()));
 	}	
 
+	/**
+	 * Método que valida todos los parámetros que 
+	 * se van a utilizar al solicitar el sitio web.  
+	 * 
+	 * @param arProducto
+	 * @param nomProducto
+	 * @param iIdEmpresa
+	 * @param pattern
+	 * @return boolean
+	 */
 	protected boolean validateContent(final String[] arProducto, 
 			final String nomProducto, final int iIdEmpresa, final Pattern pattern) {
 
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
-		String strProducto;
-		
-		if(ClaseUtils.isNullObject(nomProducto)) {
+		/**
+		 * Se comprueba que
+		 */
+		if(ClaseUtils.isNullObject(nomProducto) ||
+				iIdEmpresa == ClaseUtils.ZERO_INT) {
 			return Boolean.FALSE;
 		} 
 		
-		if(iIdEmpresa == ClaseUtils.ZERO_INT) {
-			return Boolean.FALSE;
-		}
-		
-		strProducto = filtroMarca(iIdEmpresa, nomProducto);
+		String strProducto = filtroMarca(iIdEmpresa, nomProducto);
 		
 		if(ClaseUtils.isNullObject(strProducto)) {
 			return Boolean.FALSE;
@@ -334,21 +368,33 @@ public abstract class Scraping {
 			
 			return pattern.matcher(StringUtils
 					.eliminarTildes(strProducto).toUpperCase()).find();
-			
 		} else {
 			return Boolean.FALSE;
 		}
 	}
 	
+	/**
+	 * Método que compone un patrón regex con el que se
+	 * realizará el filtrado de productos a partir del 
+	 * parámetro de entrada.
+	 * 
+	 * @param arProducto
+	 * @return Pattern
+	 */
 	protected Pattern createPatternProduct(final String[] arProducto) {
-		
+
 		List<String> tokens = StringUtils.getNewListString();
 		StringBuilder pattSb = StringUtils.getNewStringBuilder();
 		
+		/**
+		 * Se añaden todas las palabras que componen 
+		 * el producto en una lista en mayúsculas.
+		 */
 		for (int i = 0; i < arProducto.length; i++) {
 			tokens.add(arProducto[i].toUpperCase());
 		}
 		
+		//INI - Bloque de código donde se forma el patrón.
 		pattSb.append("(");
 		for (String string : tokens) {
 			pattSb.append(".*").append(string);
@@ -363,28 +409,63 @@ public abstract class Scraping {
 			.append(string);
 		}
 		pattSb.append(")");
+		//FIN - Bloque de código donde se forma el patrón.
 		
+		
+		/**
+		 * El resultado es un objeto de tipo 
+		 * patrón creado a partir del patrón
+		 * en formato String. 
+		 */
 		return Pattern.compile(pattSb.toString());
 	}
 	
+	/**
+	 * Método que extrae los datos del elemento a partir de
+	 * un selector. Dependiendo de la empresa la técnica de
+	 * extraccion de los datos es de una manera u otra.
+	 * 
+	 * @param elem
+	 * @param cssSelector
+	 * @param urlDto
+	 * @return String
+	 * @throws MalformedURLException
+	 */
 	protected String elementoPorCssSelector(final Element elem, 
 			final String cssSelector,
 			final UrlDTO urlDto) throws MalformedURLException {
 		
+		/**
+		 * Se comprueba que los parametros de entrada no sean nulos.
+		 * Si nulos retorna nulo.
+		 */
 		if(StringUtils.isEmpty(cssSelector)) {
 			return StringUtils.NULL_STRING;
 		}
 		
-		StringTokenizer st = new StringTokenizer(cssSelector,StringUtils.PIPE);  
 		List<String> lista = StringUtils.getNewListString();
 		String strResult;
 		
+		/**
+		 * Se extraen los selectores de la variable.
+		 */
+		StringTokenizer st = new StringTokenizer(cssSelector,StringUtils.PIPE);  
+		
+		/**
+		 * Se añaden los tokens a una lista.
+		 */
 		while (st.hasMoreTokens()) {  
 			lista.add(st.nextToken());
 		}
 		
+		/**
+		 * Se obtiene el tamaño de la lista en una variable
+		 */
 		int listaSize = lista.size();
 		
+		/**
+		 * El método de extracción de datos es diferente en cada empresa.
+		 */
 		if(getMapEmpresas().get(StringUtils.MERCADONA) == urlDto.getTbSiaEmpresa().getDid()) {
 			strResult = scrapingMercadona.getResult(elem, cssSelector);
 		} else if(getMapEmpresas().get(StringUtils.CONDIS) == urlDto.getTbSiaEmpresa().getDid() &&
@@ -441,13 +522,28 @@ public abstract class Scraping {
 		return strProducto;
 	}
 	
+	/**
+	 * Extrae la marca del principio de los resultado para
+	 * no distorsionar el resultado.
+	 * 
+	 * @param nomProducto
+	 * @return
+	 */
 	private String eliminarMarcaPrincipio(final String nomProducto) {
 
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
-		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE_STRING);
 		StringBuilder resultado = StringUtils.getNewStringBuilder();
 		
+		/**
+		 * Se corta el nombre del producto y se añade e un array.
+		 */
+		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE_STRING);
+		
+		
+		/**
+		 * Se valida el array.
+		 */
 		if(ClaseUtils.isNullObject(nomProdSeparado)) {
 			return StringUtils.NULL_STRING;
 		}
@@ -461,18 +557,44 @@ public abstract class Scraping {
 		return resultado.toString();
 	}	
 		
+	/**
+	 * Método que carga los datos estáticos usados en el proceso
+	 * de las peticiones. Este método solo se ejecuta una vez,
+	 * los datos se cachean mientras esté la aplicación activa.
+	 */
 	protected void staticData() {
 		
 		try {
+			
+			/**
+			 * Solo se ejecutará esta condición cuando el mapa 
+			 * de empresas está vacío. Eso solo pasará una vez
+			 * ya que se trata de una variable estática.
+			 */
 			if(mapEmpresas.size() == ClaseUtils.ZERO_INT) {
 				
+				/**
+				 * Se establece la lista de empresas en la 
+				 * variable global estática.
+				 */
 				setListEmpresaDto(iFEmpresaImpl.findAll());
 	
+				/**
+				 * En este punto se establece la lista de empresas
+				 * en la variable estática global y se indica en otro
+				 * mapa el tipo de raspado que se va a utilizar en el
+				 * proceso. 
+				 */
 				for (EmpresaDTO empresaDTO : listEmpresaDto) {
 					mapEmpresas.put(empresaDTO.getNomEmpresa(),empresaDTO.getDid());
 					mapDynScraping.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
 				}
 				
+				/**
+				 * Se setean algunas variables obtenidas de las propiedades.
+				 * Esta variables se cargan de forma estática al arrancar la
+				 * aplicación. Se utilizan durante el proceso de la solicitud.
+				 */
 				setSelectorPrecio(CommonsPorperties.getValue("flow.value.select.precio.oferta.ulabox"));
 				setSelectorPrecioLess(CommonsPorperties.getValue("flow.value.pagina.precio.less"));
 				setSelectorPrecioECIOffer(CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer"));
@@ -484,13 +606,33 @@ public abstract class Scraping {
 		}
 	}
 	
+	/**
+	 * Este método se encarga de extraer cada uno de los datos 
+	 * necesarios par componer un objeto de tipo resultado.
+	 * 
+	 * @param elem
+	 * @param selectoresCssDto
+	 * @param urlDto
+	 * @param ordenacion
+	 * @return ResultadoDTO
+	 * @throws IOException
+	 */
 	protected ResultadoDTO fillDataResultadoDTO(final Element elem, 
 			final SelectoresCssDTO selectoresCssDto, 
 			final UrlDTO urlDto, 
 			final String ordenacion) throws IOException {
 		
-		idEmpresaActual = urlDto.getTbSiaEmpresa().getDid();
+		/**
+		 * Variables utilizadas en el proceso.
+		 */
+		int idEmpresaActual = urlDto.getTbSiaEmpresa().getDid();
 		ResultadoDTO resDto = new ResultadoDTO();
+		
+		/**
+		 * Se setean los valores recuperados de los elementos
+		 * en la variable resultado. Los valores son todos los
+		 * que devolverá el servicio.
+		 */
 		resDto.setImagen(elementoPorCssSelector(elem, selectoresCssDto.getSelImage(), urlDto));
 		resDto.setNomProducto(elementoPorCssSelector(elem, selectoresCssDto.getSelProducto(), urlDto));
 		resDto.setDesProducto(elementoPorCssSelector(elem, selectoresCssDto.getSelProducto(), urlDto));
@@ -501,6 +643,10 @@ public abstract class Scraping {
 		resDto.getTbSiaEmpresa().setDid(urlDto.getTbSiaEmpresa().getDid());
 		resDto.getTbSiaEmpresa().setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
 		
+		/**
+		 * Dependiendo de la empresa, el tratamiento de las URLs 
+		 * extraidas del elemento se realiza de diferente forma.
+		 */
 		if(idEmpresaActual == getMapEmpresas().get(StringUtils.MERCADONA)) {
 			resDto.setNomUrlAllProducts(scrapingMercadona.getUrlAll(resDto));
 			resDto.setImagen(resDto.getImagen().replace(StringUtils.COMMA_STRING, StringUtils.DOT_STRING));
@@ -508,39 +654,69 @@ public abstract class Scraping {
 			resDto.setNomUrlAllProducts(urlDto.getNomUrl());
 		}
 		
+		/**
+		 * En este punto, el valor de la variable Precio/Kilo
+		 * se trata para eliminar el caracter PIPE |.
+		 */
 		if(!StringUtils.isEmpty(resDto.getPrecioKilo()) &&
 				resDto.getPrecioKilo().contains(StringUtils.PIPE)) {
 			resDto.setPrecioKilo(resDto.getPrecioKilo().substring(resDto.getPrecioKilo()
 					.indexOf(StringUtils.PIPE)+1,resDto.getPrecioKilo().length()).trim());
 		}
 		
+		/**
+		 * Se establece el tipo de ordenación del resultado
+		 * La oredenacion puede ser por por precio o por
+		 * precio/kilo.
+		 */
 		resDto.setOrdenacion(Integer.parseInt(ordenacion));		
 		
 		return resDto;
 	}
 	
+	/**
+	 * Valida los datos extraidos de los elementos.
+	 * 
+	 * @param strResult
+	 * @param strUrl
+	 * @return String
+	 * @throws MalformedURLException
+	 */
 	private String validaResultadoElementValue(String strResult, 
 			final String strUrl) throws MalformedURLException {
 		
+		int iend = ClaseUtils.ONE_NEGATIVE_INT;
 		String caracteres;
 		
+		/**
+		 * Se valida el párametro de entrada.
+		 */
 		if(StringUtils.validateNull(strResult)){
 			return strResult;
-		}
-		
-		int iend = ClaseUtils.ONE_NEGATIVE_INT;
-		URL url = new URL(strUrl);
-		String strUrlEmpresa = url.getProtocol().concat(StringUtils.PROTOCOL_ACCESSOR).concat(url.getHost());
-		
-		if(!StringUtils.validateNull(strResult)) {
+		} else {
 			iend = strResult.indexOf(StringUtils.LEFT_PARENTHESIS_0);
 		}
 		
+		/**
+		 * Se crea un objeto URL a partir del párametro.
+		 * Con los metodos del objeto url se compone la
+		 * estructura de la URL de la empresa.
+		 */		
+		URL url = new URL(strUrl);
+		String strUrlEmpresa = url.getProtocol().concat(StringUtils.PROTOCOL_ACCESSOR).concat(url.getHost());
+		
+		/**
+		 * Si el valor contiene un paraentesis, se
+		 * extrae el texto hasta dicho parentesis.
+		 */
 		if(iend != ClaseUtils.ONE_NEGATIVE_INT) {
 			strResult = strResult.substring(ClaseUtils.ZERO_INT, 
 					strResult.indexOf(StringUtils.LEFT_PARENTHESIS_0)-1);
 		}
 		
+		/**
+		 * En este punto se compone la URL de la imagen del producto.
+		 */
 		if(!StringUtils.validateNull(strResult) && strResult.trim().startsWith(StringUtils.DOBLE_BARRA)) {
 			caracteres = StringUtils.HTTPS.concat(strResult);
 		} else if(!StringUtils.validateNull(strResult) && strResult.trim().startsWith(StringUtils.BARRA)) {
@@ -577,11 +753,13 @@ public abstract class Scraping {
 			return URLEncoder.encode(productoTratado, StandardCharsets.UTF_8.toString());
 		}
 	}
-	
-	protected boolean validaNomProducto(final String nomProducto) {
-		return StringUtils.isEmpty(nomProducto);
-	}
 
+	/**
+	 * Este metodo carga todas las marcas de 
+	 * productos desde la base de datos. Se
+	 * cachea al principio y dura durante toda
+	 * la ejecución del programa,
+	 */
 	protected void cargarTodasLasMarcas() {
 		try {
 			if(ClaseUtils.isNullObject(listTodasMarcas)) {
@@ -592,6 +770,11 @@ public abstract class Scraping {
 		}
 	}
 	
+	/**
+	 * Establece el valor del selector en la variable de tipo UrlDTO.
+	 * 
+	 * @param urlDto
+	 */
 	protected void setTbSiaSelectoresCss(UrlDTO urlDto) {
 		if(!ClaseUtils.isNullObject(urlDto) &&
 				!ClaseUtils.isNullObject(urlDto.getTbSiaEmpresa())) {
@@ -609,22 +792,10 @@ public abstract class Scraping {
 		Scraping.listTodasMarcas = listTodasMarcas;
 	}	
 	
-	protected static List<MarcasDTO> getListTodasMarcas() {
-		return listTodasMarcas;
-	}
-
-	protected static String getSelectorPrecio() {
-		return selectorPrecio;
-	}
-
 	protected static void setSelectorPrecio(String selectorPrecio) {
 		Scraping.selectorPrecio = selectorPrecio;
 	}
 
-	protected static String getSelectorPrecioLess() {
-		return selectorPrecioLess;
-	}
-	
 	protected static String getSelectorPrecioECIOffer() {
 		return selectorPrecioECIOffer;
 	}
@@ -686,14 +857,6 @@ public abstract class Scraping {
 	
 	protected static Map<Integer, Boolean> getMapDynScraping() {
 		return mapDynScraping;
-	}
-	
-	protected int getIdEmpresaActual() {
-		return idEmpresaActual;
-	}
-
-	protected void setIdEmpresaActual(int idEmpresaActual) {
-		this.idEmpresaActual = idEmpresaActual;
 	}
 	
 	protected String reeplazarTildesCondis(final String producto) {

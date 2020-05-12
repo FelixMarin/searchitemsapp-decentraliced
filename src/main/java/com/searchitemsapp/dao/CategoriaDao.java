@@ -56,8 +56,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 	}
 		
 	/**
-	 * A partir de un indentifcador se obtiene un elemento
-	 * de la tabla.
+	 * A partir de un indentifcador se obtiene un elemento de la tabla.
 	 * 
 	 * @return CategoriaDTO
 	 */

@@ -9,6 +9,18 @@ import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaPais;
 
+/**
+ * Interfaz de marcador de repositorio. 
+ * Captura el tipo de dominio para administrar, 
+ * así como el tipo de identificación del tipo de 
+ * dominio. El propósito general es mantener la 
+ * información de tipo y poder descubrir interfaces 
+ * que extiendan esta durante el escaneo de classpath 
+ * para crear fácilmente Spring bean.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public interface IFEmpresaRepository extends Repository<TbSiaEmpresa, Long>{
 	List<EmpresaDTO> findAll() throws IOException;
 	EmpresaDTO findByDid(Integer did) throws IOException;

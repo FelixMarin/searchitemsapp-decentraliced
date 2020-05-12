@@ -179,6 +179,13 @@ public final class ClaseUtils implements IFUtils {
 		}
 	}
 
+	/**
+	 * Comprueba si un objeto es nulo.
+	 * True si es nulo, false si no lo es.
+	 * 
+	 * @param object
+	 * @return boolean
+	 */
 	public static boolean isNullObject(Object object) {
 		return Objects.isNull(object);
 	}
