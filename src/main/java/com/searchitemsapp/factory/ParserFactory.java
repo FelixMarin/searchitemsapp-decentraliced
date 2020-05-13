@@ -17,6 +17,15 @@ import com.searchitemsapp.parsers.SelectoresCssParser;
 import com.searchitemsapp.parsers.UrlParser;
 import com.searchitemsapp.util.ClaseUtils;
 
+/**
+ * 
+ * @author Felix Marin Ramirez
+ * 
+ * Clase Factory encargada de gestionar la creación de 
+ * objetos de tipo service. Las peticiones a los services 
+ * pasarán siempre por esta clase.
+ *
+ */
 @Component
 public class ParserFactory {
 

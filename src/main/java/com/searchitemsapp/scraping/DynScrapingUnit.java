@@ -19,24 +19,60 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Módulo de web scraping dinámico. Esta clase contiene la
+ * lógica necesaria para extraer información de sitios web
+ * que se forman de manera dinámica. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class DynScrapingUnit extends Scraping {
 	
-	private static final String SCROLL_DOWN = "window.scrollTo(0, document.body.scrollHeight);";
+	
+	/*
+	 * Variables Globales
+	 */
 	private static WebDriver webDriver;
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String SCROLL_DOWN = "window.scrollTo(0, document.body.scrollHeight);";	
 	private static final int SELECTOR = 0;
 	
+	/*
+	 * Constructor
+	 */
 	private DynScrapingUnit() {
 		super();
 	}
 	
+	/**
+	 * Método que permite extraer informacíon de una web que 
+	 * se construye dinámicamente en el navegador y no existe
+	 * una fuente html como tal.
+	 * 
+	 * @param strUrl
+	 * @param didEmpresa
+	 * @return String
+	 * @throws InterruptedException
+	 */
 	public String getDynHtmlContent(final String strUrl, final int didEmpresa) throws InterruptedException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),DynScrapingUnit.class);
 		
-		String resultado;		
+		String resultado;	
+		
+		/**
+		 * Se añade el driver a las propiedades globales del sistema.
+		 */
 		System.getProperties().setProperty(initDriver(SELECTOR), 
 				CommonsPorperties.getValue("flow.value.firefox.driver.path"));
 		
+		/**
+		 * Se inicilaiza y configura el driver.
+		 */
 		initWebDriver(SELECTOR);
 		
 		if(getMapEmpresas().get(StringUtils.CONSUM) == didEmpresa) {			
@@ -55,6 +91,18 @@ public class DynScrapingUnit extends Scraping {
 		return resultado;
 	}
 	
+	/**
+	 * Genera un WebDriver para controlar el navegador (Chrome o Firefox)
+	 * dependiendo del párametro insertado.
+	 * 
+	 * Hay dos posibilidades:
+	 * 
+	 * 		- Chrome Web Driver
+	 * 			ò
+	 * 		- Firefox Web Driver
+	 * 
+	 * @param selector
+	 */
 	private void initWebDriver(final int selector) {
 		if(selector == 1) {
 			setupWebDriverChrome();
@@ -63,6 +111,13 @@ public class DynScrapingUnit extends Scraping {
 		}
 	}
 	
+	/**
+	 * Configuración del web driver de Chrome.
+	 * 
+	 * Un WebDriver es una herramienta para 
+	 * automatizar extraciones de datos de 
+	 * aplicaciones Web.
+	 */
 	private void setupWebDriverChrome() {
 		
 		if(ClaseUtils.isNullObject(getWebDriver())) {
@@ -85,6 +140,13 @@ public class DynScrapingUnit extends Scraping {
 		}
 	}
 	
+	/**
+	 * Configuración del web driver de Firefox.
+	 * 
+	 * Un WebDriver es una herramienta para 
+	 * automatizar extraciones de datos de 
+	 * aplicaciones Web.
+	 */
 	private void setupWebDriverFirefox() {
 		
 		if(ClaseUtils.isNullObject(getWebDriver())) {
@@ -101,6 +163,10 @@ public class DynScrapingUnit extends Scraping {
 		}
 	}
 	
+	/**
+	 * Funcionalidad para cerrar las ventanas que puedan
+	 * quedar abiertas en el buscador headless.
+	 */
 	private void clieanWindows() {            
         Set<String> windows = getWebDriver().getWindowHandles();
         Iterator<String> iter = windows.iterator();
@@ -120,6 +186,12 @@ public class DynScrapingUnit extends Scraping {
         getWebDriver().switchTo().window(winNames[ClaseUtils.ZERO_INT]);
     }
 	
+	/**
+	 * Devuelve el controlador del web driver.
+	 * 
+	 * @param selector
+	 * @return String
+	 */
 	private String initDriver(final int selector) {
 		if(selector == 1) {
 			return CommonsPorperties.getValue("flow.value.chrome.driver");
@@ -128,14 +200,15 @@ public class DynScrapingUnit extends Scraping {
 		}
 	}
 
+	/**
+	 * 
+	 * @return {@link WebDriver}
+	 */
 	public static WebDriver getWebDriver() {
 		return webDriver;
 	}
-
 	public static void setWebDriver(WebDriver webDriver) {
 		DynScrapingUnit.webDriver = webDriver;
-	}
-	
-	
+	}	
 }
 

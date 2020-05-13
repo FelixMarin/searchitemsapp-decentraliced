@@ -9,8 +9,9 @@ import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 
 /**
- * Intefaz que implementan los módulos de raspado 
- * de las empresas.
+ * Representa de forma abstracta el objeto que queremos crear, 
+ * mediante esta interface se definen la estructura que tendrán
+ * los objetos 'Scraping'. 
  * 
  * @author Felix Marin Ramirez
  *

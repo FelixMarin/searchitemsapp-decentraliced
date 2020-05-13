@@ -70,9 +70,13 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	}
 	
 	/**
+	 * Método que realiza todo el proceso de web scraping.
+	 * Primero obtiene los html de los sitios web, después
+	 * Estrae la información relevante y la inserta en una 
+	 * lista de objetos. Finalmente se devuelve una lista
+	 * con todos los resultados obtenidos.
 	 * 
-	 * 
-	 * @return
+	 * @return List<ResultadoDTO>
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 * @throws InterruptedException

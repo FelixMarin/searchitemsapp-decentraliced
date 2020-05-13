@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Interfaz de acceso a datos y persistencia de entidades. 
+ * Representa de forma abstracta el objeto que queremos crear, 
+ * mediante esta interface se definen la estructura que tendrán
+ * los objetos 'Impl' para la persistencia de entidades. 
  * 
  * @author Felix Marin Ramirez
  *

@@ -44,8 +44,9 @@ import com.searchitemsapp.util.StringUtils;
 
 /**
  * Clase abstracta que cotiene métodos 
- * expecializados para el web scraping.
+ * expecializados para módulo de web scraping.
  * 
+ * {@link Jsoup}
  * 
  * @author Felix Marin Ramirez
  *
@@ -58,8 +59,6 @@ public abstract class Scraping {
 	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
 	private static List<MarcasDTO> listTodasMarcas;
 	private static List<EmpresaDTO> listEmpresaDto;
-	private static String selectorPrecio;
-	private static String selectorPrecioLess;
 	private static String selectorPrecioECIOffer;
 	private static String selectorPaginaSiguienteCarrefour;
 	private static String accesoPopupPeso;
@@ -199,6 +198,8 @@ public abstract class Scraping {
 	 * a uno de los supermecados a los que se le van a 
 	 * extraer los datos.
 	 * 
+	 * {@link ScrapingEmpFactory#getScrapingEmpresa(int)}
+	 * 
 	 * @param document
 	 * @param urlDto
 	 * @param selectorCssDto
@@ -249,10 +250,15 @@ public abstract class Scraping {
 			final int didEmpresa, final String producto,
 			final Map<String, String> mapLoginPageCookies) 
 					throws InterruptedException, URISyntaxException, IOException {
-		
+	
 		Document document = (Document) ClaseUtils.NULL_OBJECT;
 		Connection connection  = (Connection) ClaseUtils.NULL_OBJECT;
 		Response response = (Response) ClaseUtils.NULL_OBJECT;
+		
+		/**
+		 * Variables con los valores necesarios para 
+		 * le proceso.
+		 */
 		boolean isMercadona = didEmpresa == getMapEmpresas().get(StringUtils.MERCADONA);	
 		boolean bDynScrap = mapDynScraping.get(didEmpresa);
 		URL url = new URL(strUrl);
@@ -330,8 +336,7 @@ public abstract class Scraping {
 	}	
 
 	/**
-	 * Método que valida todos los parámetros que 
-	 * se van a utilizar al solicitar el sitio web.  
+	 * Método que valida el resultado obtenido. 
 	 * 
 	 * @param arProducto
 	 * @param nomProducto
@@ -345,13 +350,16 @@ public abstract class Scraping {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		/**
-		 * Se comprueba que
+		 * Se comprueba que el nombre del producto no sea nulo.
 		 */
 		if(ClaseUtils.isNullObject(nomProducto) ||
 				iIdEmpresa == ClaseUtils.ZERO_INT) {
 			return Boolean.FALSE;
 		} 
 		
+		/**
+		 * Se elimina la marca de la descripción del producto
+		 */
 		String strProducto = filtroMarca(iIdEmpresa, nomProducto);
 		
 		if(ClaseUtils.isNullObject(strProducto)) {
@@ -467,34 +475,45 @@ public abstract class Scraping {
 		 * El método de extracción de datos es diferente en cada empresa.
 		 */
 		if(getMapEmpresas().get(StringUtils.MERCADONA) == urlDto.getTbSiaEmpresa().getDid()) {
+			
 			strResult = scrapingMercadona.getResult(elem, cssSelector);
+			
 		} else if(getMapEmpresas().get(StringUtils.CONDIS) == urlDto.getTbSiaEmpresa().getDid() &&
 				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
+			
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
+			
 		} else if(getMapEmpresas().get(StringUtils.ELCORTEINGLES) == urlDto.getTbSiaEmpresa().getDid() &&
 				elem.select(getSelectorPrecioECIOffer()).size() > ClaseUtils.ZERO_INT) {
+			
 			strResult = elem.selectFirst(getSelectorPrecioECIOffer()).text();
+			
 		} else {
-			switch (listaSize) {
-				case 1:
-					strResult = elem.select(lista.get(0)).text();
-					break;			
-				case 2:
-					strResult = elem.select(lista.get(0)).attr(lista.get(1));
-					break;
-				default:
-					strResult = elem.select(cssSelector).text();
-					break;
-			}
+			strResult = extraerValorDelElemento(listaSize, elem, lista, cssSelector);
 		}
 		
+		/**
+		 * se validan y se retorna el resultado.
+		 */
 		return validaResultadoElementValue(strResult, urlDto.getNomUrl());
 	}
-		
+	
+	/**
+	 * Método encargado de filtra la marca del producto. 
+	 * Elimina la marca de la descripción del producto.
+	 * 
+	 * @param iIdEmpresa
+	 * @param nomProducto
+	 * @return String
+	 */
 	protected String filtroMarca(final int iIdEmpresa, final String nomProducto) {
 		
 		String strProducto;
 		
+		/**
+		 * Se comprueba de que marca es el producto, dependiendo
+		 * de la misma, se ejecutará un proceso u otro.
+		 */
 		if(iIdEmpresa == getMapEmpresas().get(StringUtils.HIPERCOR) ||
 				iIdEmpresa == getMapEmpresas().get(StringUtils.DIA) ||
 				iIdEmpresa == getMapEmpresas().get(StringUtils.ELCORTEINGLES)) {
@@ -503,6 +522,10 @@ public abstract class Scraping {
 			strProducto = nomProducto;
 		}
 		
+		/**
+		 * Se comprueba que la descripción del producto no 
+		 * comience por la marca. Si es así, esta se elimina.
+		 */
 		for (MarcasDTO marcaDto : listTodasMarcas) {
 			if(strProducto.toLowerCase()
 					.startsWith(marcaDto
@@ -542,7 +565,8 @@ public abstract class Scraping {
 		
 		
 		/**
-		 * Se valida el array.
+		 * Se valida el array. En caso de que sea nulo
+		 * termina el proceso.
 		 */
 		if(ClaseUtils.isNullObject(nomProdSeparado)) {
 			return StringUtils.NULL_STRING;
@@ -595,8 +619,7 @@ public abstract class Scraping {
 				 * Esta variables se cargan de forma estática al arrancar la
 				 * aplicación. Se utilizan durante el proceso de la solicitud.
 				 */
-				setSelectorPrecio(CommonsPorperties.getValue("flow.value.select.precio.oferta.ulabox"));
-				setSelectorPrecioLess(CommonsPorperties.getValue("flow.value.pagina.precio.less"));
+		
 				setSelectorPrecioECIOffer(CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer"));
 				setSelectorPaginaSiguienteCarrefour(CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour"));
 				setAccesoPopupPeso(CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso"));
@@ -792,20 +815,24 @@ public abstract class Scraping {
 		Scraping.listTodasMarcas = listTodasMarcas;
 	}	
 	
-	protected static void setSelectorPrecio(String selectorPrecio) {
-		Scraping.selectorPrecio = selectorPrecio;
+	private String extraerValorDelElemento(int l, Element elem, List<String> lista, String cssSelector) {
+		
+		switch (l) {
+		case 1:
+			return elem.select(lista.get(0)).text();
+		case 2:
+			return elem.select(lista.get(0)).attr(lista.get(1));
+		default:
+			return elem.select(cssSelector).text();
+		}
 	}
-
+	
 	protected static String getSelectorPrecioECIOffer() {
 		return selectorPrecioECIOffer;
 	}
 
 	protected static void setSelectorPrecioECIOffer(String selectorPrecioECIOffer) {
 		Scraping.selectorPrecioECIOffer = selectorPrecioECIOffer;
-	}
-
-	protected static void setSelectorPrecioLess(String selectorPrecioLess) {
-		Scraping.selectorPrecioLess = selectorPrecioLess;
 	}
 
 	protected static String getSelectorPaginaSiguienteCarrefour() {

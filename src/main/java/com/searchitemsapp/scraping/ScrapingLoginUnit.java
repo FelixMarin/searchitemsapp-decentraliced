@@ -26,14 +26,17 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings({"unchecked","rawtypes","deprecation"})
 public class ScrapingLoginUnit extends Scraping {
-	
-
-	public ScrapingLoginUnit() {
-		super();
-	}
 		
+	/*
+	 * Variables Globales
+	 */
 	@Autowired
 	private IFImplementacion<ParamsLoginDTO, CategoriaDTO> paramsFormLoginImpl;
 	
@@ -57,7 +60,29 @@ public class ScrapingLoginUnit extends Scraping {
 	
 	@Autowired
 	ParamsLoginDTO paramsLoginDto;
+	
+	/*
+	 * Constructor
+	 */
+	public ScrapingLoginUnit() {
+		super();
+	}
 
+	/**
+	 * Método encargado de extraer información 
+	 * de un html después de realizar el login 
+	 * en el sitios web. Si la web necesita un 
+	 * usuario logeado para ver los datos 
+	 * este método realiza el proceso login y 
+	 * conexión al sitio web.
+	 * 
+	 * @param didPais
+	 * @param didCategoria
+	 * @param iIdEmpresa
+	 * @param mapaCookies
+	 * @return Map<String, String>
+	 * @throws IOException
+	 */
 	public Map<String, String> checkingHtmlLoginDocument(
 			String didPais, String didCategoria, int iIdEmpresa,  
 			Map<Integer,Map<String,String>> mapaCookies) throws IOException {
@@ -158,13 +183,14 @@ public class ScrapingLoginUnit extends Scraping {
 	}
 	
 	/**
-	 * Con este metodo devuelvo un objeto de tipo Mapa con las cookies necesarias
-	 * para realizar la conexion a la web
+	 * Este método devuelve un objeto de tipo Map con 
+	 * las cookies de la sesion del usuario tras el 
+	 * login.
 	 * 
 	 * @param url
 	 * @param listParamLoginHeaders
 	 * @param idUrl
-	 * @return Mapa con el listado de cookies
+	 * @return Map<String, String>
 	 */
 	private Map<String, String> obtenerCookiesMethodGet(final String url, 
 			final List<ParamsLoginDTO> listParamLoginHeaders, 

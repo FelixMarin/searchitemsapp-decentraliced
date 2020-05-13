@@ -10,13 +10,9 @@ import com.searchitemsapp.model.TbSiaParamsFormLogin;
 import com.searchitemsapp.model.TbSiaUrl;
 
 /**
- * Interfaz de marcador de repositorio. 
- * Captura el tipo de dominio para administrar, 
- * así como el tipo de identificación del tipo de 
- * dominio. El propósito general es mantener la 
- * información de tipo y poder descubrir interfaces 
- * que extiendan esta durante el escaneo de classpath 
- * para crear fácilmente Spring bean.
+ * Interfaz que se encarga de gestionar todas las 
+ * operaciones de persistencia contra la tabla 
+ * 'TbSiaParamsFormLogin' de la base de datos.
  * 
  * @author Felix Marin Ramirez
  *
