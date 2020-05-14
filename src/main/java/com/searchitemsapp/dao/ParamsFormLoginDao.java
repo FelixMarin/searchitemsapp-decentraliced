@@ -17,6 +17,14 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
+ * de lógica de negocio necesite interactuar con la base de datos, va 
+ * a hacerlo a través de la API que le ofrece el DAO.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 @Repository
 public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsFormLogin> implements IFParamsFormLogin {
@@ -81,6 +89,12 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		return listParamsLoginDto;
 	}
 	
+	/**
+	 * A partir de un indentifcador se obtiene un elemento
+	 * de la tabla.
+	 * 
+	 * @return ParamsLoginDTO
+	 */
 	@Override
 	public ParamsLoginDTO findByDid(Integer did) throws IOException {
 		return getParser(PARAMS_FORM_PARSER).toDTO(getEntityManager().find(TbSiaParamsFormLogin.class, did));

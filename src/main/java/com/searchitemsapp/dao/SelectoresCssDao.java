@@ -16,6 +16,14 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
+ * de lógica de negocio necesite interactuar con la base de datos, va 
+ * a hacerlo a través de la API que le ofrece el DAO.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 @Repository
 public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelectoresCss> implements IFSelectoresCssRepository {
@@ -53,6 +61,12 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		return resultado;
 	}
 
+	/**
+	 * A partir de un indentifcador se obtiene un elemento
+	 * de la tabla.
+	 * 
+	 * @return SelectoresCssDTO
+	 */
 	@Override
 	public SelectoresCssDTO findByDid(Integer did) throws IOException {
 

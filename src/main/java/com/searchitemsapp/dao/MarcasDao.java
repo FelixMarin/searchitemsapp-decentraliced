@@ -16,6 +16,14 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
+ * de lógica de negocio necesite interactuar con la base de datos, va 
+ * a hacerlo a través de la API que le ofrece el DAO.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 @Repository
 public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IFMarcasRepository {
@@ -54,6 +62,12 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		return resultado;
 	}
 
+	/**
+	 * A partir de un indentifcador se obtiene un elemento
+	 * de la tabla.
+	 * 
+	 * @return MarcasDTO
+	 */
 	@Override
 	public MarcasDTO findByDid(Integer did) throws IOException {
 

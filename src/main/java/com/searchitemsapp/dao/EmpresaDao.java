@@ -39,7 +39,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	/**
 	 * Método que devuelve todos los elementos de una tabla.
 	 * 
-	 * @return List<LoginDTO>
+	 * @return List<EmpresaDTO>
 	 */
 	@Override
 	public List<EmpresaDTO> findAll() throws IOException {
