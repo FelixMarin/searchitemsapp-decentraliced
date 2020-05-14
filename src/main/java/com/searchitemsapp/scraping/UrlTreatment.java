@@ -17,10 +17,10 @@ import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
 /**
- * En esta clase configuran las URLs a las que 
- * se solicitarán los datos.
- *
- * 
+ * En esta clase se configuran las URLs de los
+ * sitios web a los que posteriormente se extraerá
+ * la información.
+ *  
  * @author Felix Marin Ramirez
  *
  */

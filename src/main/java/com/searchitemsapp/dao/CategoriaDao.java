@@ -17,20 +17,35 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
+ * de lógica de negocio necesite interactuar con la base de datos, va 
+ * a hacerlo a través de la API que le ofrece el DAO.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings({"unchecked"})
 @Repository
 public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpresa> implements IFCategoriaRepository {
 
+	/*
+	 * Constantes
+	 */
 	private static final String CATEGORIA_PARSER = "CATEGORIA_PARSER";
 	
+	/*
+	 * Constructor 
+	 */
 	public CategoriaDao() {
 		super();
 	}
 	
 	/**
-	 * Método que devuelve todos los elementos de una tabla.
+	 * Método que devuelve todos los elementos de la tabla {@link TbSiaCategoriasEmpresa}.
 	 * 
 	 * @return List<LoginDTO>
+	 * @exception IOException
 	 */
 	@Override
 	public List<CategoriaDTO> findAll() throws IOException {
@@ -39,14 +54,26 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		
 		List<CategoriaDTO> resultado = (List<CategoriaDTO>) ClaseUtils.NULL_OBJECT;
 		
+		/**
+		 * Se obtiene la query del fichero de propiedades.
+		 */
 		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.all"));		
 
+		/**
+		 * Se comprueba que el entity manager esté activado.
+		 */
 		isEntityManagerOpen(this.getClass());
 		
+		/**
+		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
+		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaEmpresa.class);
 		
 		try {
+			/**
+			 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
+			 */
 			resultado = getParser(CATEGORIA_PARSER).toListDTO(((List<TbSiaCategoriasEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
 			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
@@ -58,6 +85,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 	/**
 	 * A partir de un indentifcador se obtiene un elemento de la tabla.
 	 * 
+	 * @param id
 	 * @return CategoriaDTO
 	 */
 	@Override
@@ -65,14 +93,25 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si el parametro de entrada es nulo, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(did)) {
 			return (CategoriaDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
+		/**
+		 * Se traza el identificador de la categoría.
+		 */
 		LogsUtils.escribeLogDebug(String.valueOf(did),this.getClass());
 		
 		CategoriaDTO categoriaDTO = (CategoriaDTO) ClaseUtils.NULL_OBJECT;
 		
+		/**
+		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
+		 * Si no hay resultado la excepcion se traza en los logs.
+		 */
 		try {
 			categoriaDTO = getParser(CATEGORIA_PARSER).toDTO(getEntityManager().find(TbSiaCategoriasEmpresa.class, did));
 		}catch(NoResultException e) {
@@ -82,7 +121,13 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		return categoriaDTO;
 	}
 	
-	
+	/**
+	 * Devuelve las categorías que estén activadas.
+	 * 
+	 * @param activo
+	 * @return List<CategoriaDTO>
+	 * @exception IOException
+	 */
 	@Override
 	public List<CategoriaDTO> findByBolActivo(Boolean activo) throws IOException {
 		

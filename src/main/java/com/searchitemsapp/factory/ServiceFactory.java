@@ -9,13 +9,11 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
 /**
- * 
- * @author Felix Marin Ramirez
- * 
  * Clase Factory encargada de gestionar la creación de 
  * objetos de tipo service. Las peticiones a los services 
  * pasarán siempre por esta clase.
  *
+ * @author Felix Marin Ramirez
  */
 @SuppressWarnings("unchecked")
 @Component
@@ -37,10 +35,8 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * Metodo a través del cual se obtiene un 
-	 * objeto de tipo service. Como parámetro
-	 * recibe el nombre del objeto service 
-	 * solicitado, en otro caso null.
+	 * Método de la clase factory que gestiona la creación 
+	 * de instancias de servicios.
 	 * 
 	 * @param String
 	 * @return IFService<String,String>

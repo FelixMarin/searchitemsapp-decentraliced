@@ -10,21 +10,42 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Implementación del dao {@link CategoriaDao}.
+ * 
+ * Esta clase ofrece los métodos que permiten interactuar con
+ * la capa de persistencia. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @Aspect
 public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO> {
 
+	/*
+	 * Variables Globales. 
+	 */
+	@Autowired
+	private CategoriaDao categoriaDao;
 	
+	/*
+	 * Constructor
+	 */
 	public CategoriaImpl() {
 		super();
 	}
 	
-	@Autowired
-	private CategoriaDao categoriaDao;
-	
+	/**
+	 * Recupera todos los datos de tabla {@link TbSiaCategoriasEmpresa}.
+	 * 
+	 * @return List<CategoriaDTO>
+	 * @exception IOException
+	 */
 	@Override
 	public List<CategoriaDTO> findAll() throws IOException {
 		
@@ -33,6 +54,13 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 		return categoriaDao.findAll();
 	}
 	
+	/**
+	 * Recupear una categoría a partir de su identificador.
+	 * 
+	 * @param CategoriaDTO
+	 * @return CategoriaDTO
+	 * @exception IOException
+	 */
 	@Override
 	public CategoriaDTO findByDid(CategoriaDTO categoriaDto)  throws IOException {
 		
@@ -42,6 +70,9 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 			return (CategoriaDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
+		/**
+		 * Mensaje que se pintará en las trazas de log.
+		 */
 		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.dto.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
@@ -52,6 +83,9 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 		return categoriaDao.findByDid(categoriaDto.getDid());
 	}
 	
+	/**
+	 * Funcionalidad no implementada.
+	 */
 	@Override
 	public List<CategoriaDTO> findByTbSia(CategoriaDTO categoriaDTO, EmpresaDTO empresaDTO) throws IOException {
 		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);

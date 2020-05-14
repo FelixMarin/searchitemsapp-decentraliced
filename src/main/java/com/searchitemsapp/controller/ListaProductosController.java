@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.factory.ServiceFactory;
 import com.searchitemsapp.util.LogsUtils;
 
@@ -31,11 +32,10 @@ public class ListaProductosController {
 	private ServiceFactory serviceFactory;
 	
 	/**
-	 * @GetMapping para asignar solicitudes HTTP GET 
-	 * a métodos de controlador específicos. 
-	 * Se indica mediate notación, la ruta y 
-	 * los parametros que debe tener la solicitud 
-	 * de servicio.
+	 * @GetMapping para asignar solicitudes HTTP GET a métodos de 
+	 * controlador específicos. Se indica mediate notación, la ruta y 
+	 * los parametros que debe tener la solicitud de servicio.
+	 * {@link ListadoProductosService} 
 	 * 
 	 * @param didPais String
 	 * @param didCategoria String
@@ -63,7 +63,8 @@ public class ListaProductosController {
 		 //ProxyConnection.establecerProxy();
 		
 		 /**
-		  * Llamada al servicio a través del service factory
+		  * Llamada al servicio a través del service factory.
+		  * 
 		  */
 		return serviceFactory
 				.getService(LISTA_PRODUCTOS)

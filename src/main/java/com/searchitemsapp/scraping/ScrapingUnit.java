@@ -30,6 +30,8 @@ import com.searchitemsapp.util.StringUtils;
  * rastreadas. El proceso de consulta, extracción y 
  * refinamiento de datos se realiza en tiempo real, lo que
  * permite tener la información totalmente actualizada.
+ * {@link Scraping}, {@link ScrapingLoginUnit}, 
+ * {@link ScrapingDiccionario}, {@link UrlTreatment}
  * 
  * @author Felix Marin Ramirez
  *

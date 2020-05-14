@@ -12,22 +12,43 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.EmpresaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Implementación del dao {@link EmpresaDao}.
+ * 
+ * Esta clase ofrece los métodos que permiten interactuar con
+ * la capa de persistencia. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings({"rawtypes", "unchecked"})
 @Aspect
 public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	
+	/*
+	 * Variables Globales
+	 */
+	@Autowired
+	private EmpresaDao empresaDao;
 	
+	/*
+	 * Constructor
+	 */
 	public EmpresaImpl() {
 		super();
 	}
 	
-	@Autowired
-	private EmpresaDao empresaDao;
-	
+	/**
+	 * Recupera todos los datos de tabla {@link TbSiaEmpresa}.
+	 * 
+	 * @return List<EmpresaDTO>
+	 * @exception  IOException
+	 */
 	@Override
 	public List<EmpresaDTO> findAll() throws IOException {
 		
@@ -36,6 +57,9 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		return empresaDao.findAll();
 	}	
 	
+	/**
+	 * Recupear una empresa a partir de su identificador.
+	 */
 	@Override
 	public EmpresaDTO findByDid(EmpresaDTO empresaDto) throws IOException {
 		
@@ -57,6 +81,9 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		return empresaDao.findByDid(empresaDto.getDid());
 	}
 	
+	/**
+	 * Recupera una lista de objetos empresa en formato entidad.
+	 */
 	@Override
 	public List<EmpresaDTO> findByTbSia(EmpresaDTO empresaDto, CategoriaDTO categoriaDto) throws IOException {
 		

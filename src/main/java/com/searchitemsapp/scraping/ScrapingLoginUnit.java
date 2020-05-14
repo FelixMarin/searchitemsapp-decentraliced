@@ -27,6 +27,8 @@ import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
 /**
+ * Contiene la funcionalidad necesaria para extraer información de
+ * sitios web en los que se necesitan credenciales de acceso. 
  * 
  * @author Felix Marin Ramirez
  *
@@ -69,12 +71,10 @@ public class ScrapingLoginUnit extends Scraping {
 	}
 
 	/**
-	 * Método encargado de extraer información 
-	 * de un html después de realizar el login 
-	 * en el sitios web. Si la web necesita un 
-	 * usuario logeado para ver los datos 
-	 * este método realiza el proceso login y 
-	 * conexión al sitio web.
+	 * Método encargado de extraer información de un html después de 
+	 * realizar el login en el sitios web. Si la web necesita un 
+	 * usuario logeado para ver los datos, este método realiza el 
+	 * proceso login y conexión al sitio web.
 	 * 
 	 * @param didPais
 	 * @param didCategoria
@@ -91,13 +91,27 @@ public class ScrapingLoginUnit extends Scraping {
 		
 		ResultadoDTO auxResDto = (ResultadoDTO) ClaseUtils.NULL_OBJECT;
 		
+		/**
+		 * Se comprueba si el módulo está activo consultando una
+		 * propieadad del fichero 'flow.properties'.
+		 */
 		boolean isLoginActivo = Boolean
 				.parseBoolean(CommonsPorperties.getValue("flow.value.did.login.activo"));
 		
+		/**
+		 * Si el valor de la propiedad es 'false' 
+		 * termina el proceso y retorna nulo.
+		 */
 		if(!isLoginActivo) {
 			return (HashMap) ClaseUtils.NULL_OBJECT; 
 		}
 		
+		/**
+		 * se setean los ids de pais y categoria en cada uno 
+		 * de los objetos globales. Estos objetos son los
+		 * parametros del metodo que llama a bbdd y que obtiene
+		 * una lista de urls. 
+		 */
 		paisDto.setDid(StringUtils.desformatearEntero(didPais));
 		categoriaDto.setDid(StringUtils.desformatearEntero(didCategoria));
 		List<UrlDTO> listUrlDto = urlImpl.obtenerUrlsLogin(paisDto, categoriaDto);
@@ -105,6 +119,10 @@ public class ScrapingLoginUnit extends Scraping {
 		
 		List<ResultadoDTO> listResUrlLogin = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
 		
+		/**
+		 * se crea una lista de resultados a partir de
+		 * la lista de URLs.
+		 */
 		for (UrlDTO urlDto : listUrlDto) {
 			ResultadoDTO resultadoDto = new ResultadoDTO();
 			resultadoDto.setNomUrl(urlDto.getNomUrl());
@@ -118,6 +136,10 @@ public class ScrapingLoginUnit extends Scraping {
 			listResUrlLogin.add(resultadoDto);
 		}
     	
+		/**
+		 * Se filtran todos los que tienen el campo 'ActionLogin' y 
+		 * se descarta el resto.
+		 */
 		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
 			if(resUrlLogin.getTbSiaEmpresa().getDid()  == empresaDTO.getDid() &&
 					StringUtils.ACTION_LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
@@ -125,10 +147,18 @@ public class ScrapingLoginUnit extends Scraping {
 			}
 		}
 		
+		/**
+		 * Se comprueba que al menos haya un objeto resultado 
+		 * en la lista. De otro modo, termina el proceso.
+		 */
 		if(ClaseUtils.isNullObject(auxResDto)) {
 			return (HashMap) ClaseUtils.NULL_OBJECT;
 		}
 		
+		/**
+		 * Se filtran todos los que tienen el campo 'Login' y 
+		 * se descarta el resto.
+		 */
 		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
 			if(resUrlLogin.getTbSiaEmpresa().getDid()  == empresaDTO.getDid() &&
 					StringUtils.LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
@@ -136,22 +166,48 @@ public class ScrapingLoginUnit extends Scraping {
 			}
 		}
 		
+		/**
+		 * Se establece el id de la url.
+		 */
 		paramsLoginDto.getTbSiaUrl().setDid(auxResDto.getDidUrl());
 		
+		/**
+		 * Se obtienen de la bbdd los valores necesarios para
+		 * realizar el login en el sitio web. Se obtienen los
+		 * parámetros incluidos en el formulario y los headers, 
+		 * ambos almacenados en bbdd.
+		 */
 		List<ParamsLoginDTO> listParamLoginForm = paramsFormLoginImpl.findByTbSia(paramsLoginDto, categoriaDto);
 		List<ParamsLoginDTO> listParamLoginHeaders = pramsHeadersLoginImpl.findByTbSia(paramsLoginDto, empresaDTO);
 		
 		
+		/**
+		 * Si la lista de parametros del formulario es nula,
+		 * se termina el proceso retornando nulo.
+		 */
 		if(ClaseUtils.isNullObject(listParamLoginForm)) {
 			return (HashMap) ClaseUtils.NULL_OBJECT;
 		}
-            
+        
+		/**
+		 * En este punto se inicia la sessión mediante login de usuario
+		 * y se obtienen las cookies de la sesion.
+		 */
 		Map<String, String> mapLoginPageCookies = obtenerCookiesMethodGet(auxResDto.getLoginnUrl(), 
 				listParamLoginHeaders, auxResDto.getDidUrl());
 		
+		/**
+		 * Se crea un mapa con el identificador de la empresa
+		 * y la lista de cookies como valor.
+		 */
 		mapaCookies.put(empresaDTO.getDid(), mapLoginPageCookies);
         
-		 Map<String, String> mapParamsFormLogin = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
+		/**
+		 * Se crea un mapa para la lista de parametros del login y
+		 * se añaden a la misma todos los parámetros correspondientes
+		 * a la url actual.
+		 */
+		Map<String, String> mapParamsFormLogin = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
         
         for (ParamsLoginDTO paramsLoginDTO : listParamLoginForm) {
         	if(auxResDto.getDidUrl() == paramsLoginDTO.getTbSiaUrl().getDid()) {
@@ -159,18 +215,44 @@ public class ScrapingLoginUnit extends Scraping {
         	}
 		}
         
+        /**
+         * se obtienen el usuario y la contraseña con los que
+         * se va a realizar el login en formato base 64.
+         */
         String b64login = setB64encode((LoginDTO) ClaseUtils.NULL_OBJECT, empresaDTO);
         
+        /**
+         * En este punto se establece el login y 
+         * se inicia la sesion en el sitio web.
+         */
         logearseEnSitioWeb(auxResDto.getNomUrl(), mapParamsFormLogin, mapLoginPageCookies, b64login);
         
         return mapLoginPageCookies;
     }
 	
+	/**
+	 * Convierte a codificación base 64 tanto el login como el password 
+	 * del usuario virtual con el que la aplicación realizará login en 
+	 * el sitio web del que se extraerá la información.
+	 * 
+	 * @param loginDTO
+	 * @param empresaDTO
+	 * @return String
+	 * @throws IOException
+	 */
 	private String setB64encode(final LoginDTO loginDTO, final EmpresaDTO empresaDTO) throws IOException {
 		
+		/**
+		 * Se consulta en bbdd los datos de usuario virtual 
+		 * con el que se va a logear la aplicaión al sitio web.
+		 */
 		List<LoginDTO> listloginDto = loginImpl.findByTbSia(loginDTO, empresaDTO);
 		String b64login = StringUtils.NULL_STRING;
         
+		/**
+		 * Se concatenan tanto el usuario como la contraseña 
+		 * a una cadena de caracteres y se transforma a base 64.
+		 */
         if(!ClaseUtils.isNullObject(listloginDto)) {
 	        String login = listloginDto.get(ClaseUtils.ZERO_INT).getNomUsuario()
 	        		.concat(StringUtils.DOS_PUNTOS)
@@ -179,6 +261,9 @@ public class ScrapingLoginUnit extends Scraping {
 	        b64login = Base64.getEncoder().encodeToString(login.getBytes());
         }
         
+        /**
+         * retorna la cadena en formato base 64.
+         */
         return b64login;
 	}
 	
@@ -234,6 +319,15 @@ public class ScrapingLoginUnit extends Scraping {
 		return response.cookies();
 	}
 	
+	/**
+	 * Método que establece el login en el sitio 
+	 * web usando los parametros del usuario virtual. 
+	 * 
+	 * @param url
+	 * @param mapParams
+	 * @param mapLoginPageCookies
+	 * @param b64login
+	 */
 	private void logearseEnSitioWeb(final String url, 
 			final Map<String, String> mapParams, 
 			final Map<String, String> mapLoginPageCookies, 
@@ -244,6 +338,10 @@ public class ScrapingLoginUnit extends Scraping {
 		Connection connection  = (Connection) ClaseUtils.NULL_OBJECT;
 		Response response  = (Response) ClaseUtils.NULL_OBJECT;
 		
+		/**
+		 * Configuración del objeto que realizará 
+		 * el login en el sitio web.
+		 */
 		try {
 			connection = Jsoup.connect(url)
 					.referrer(url)
@@ -258,9 +356,15 @@ public class ScrapingLoginUnit extends Scraping {
 			if(!StringUtils.validateNull(b64login)) {
 				connection.header(StringUtils.AUTHORIZATION,StringUtils.BASIC.concat(b64login));
 			}
-					
+
+			/**
+			 * Se establece la conexión con el sitio web.
+			 */
 			response = connection.execute();
 			
+			/**
+			 * Se pinta el estado de la conexion en las trazas de log.
+			 */
 			LogsUtils.escribeLogDebug(StringUtils.HTTP_STATUS_CODE.concat(String.valueOf(response.statusCode())),this.getClass());
 			
 		} catch (IOException e) {

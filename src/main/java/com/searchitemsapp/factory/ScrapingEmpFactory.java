@@ -19,12 +19,19 @@ import com.searchitemsapp.scraping.ulabox.ScrapingUlabox;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Clase Factory encargada de gestionar la creación de 
+ * objetos de tipo service. Las peticiones a los services 
+ * pasarán siempre por esta clase.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class ScrapingEmpFactory {
 
-	public ScrapingEmpFactory() {
-		super();
-	}
-	
+	/*
+	 * Variables Globales
+	 */
 	@Autowired
 	private ScrapingAlcampo scrapingAlcapo;
 	
@@ -64,8 +71,26 @@ public class ScrapingEmpFactory {
 	@Autowired
 	private ScrapingLidl scrapingLidl;	
 	
+	/*
+	 * Constructor
+	 */
+	public ScrapingEmpFactory() {
+		super();
+	}
+	
+	/**
+	 * Método de la clase factory que gestiona la creación 
+	 * de instancias de las clases de scraping de empresas.
+	 * 
+	 * @param idEmpresa
+	 * @return IFScrapingEmpresas
+	 */
 	public IFScrapingEmpresas getScrapingEmpresa(final int idEmpresa) {
 		
+		/**
+		 * Dependiendo del valor de entrada devolverá uno u otro objeto.
+		 * Nulo si el parámetro de entrada no coincide con lo esperado.
+		 */
 		if(StringUtils.desformatearEntero(StringUtils.ID_ALCAMPO) == idEmpresa) {
 			return scrapingAlcapo;
 		} else if(StringUtils.desformatearEntero(StringUtils.ID_CAPRABO) == idEmpresa) {

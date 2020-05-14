@@ -36,6 +36,7 @@ import com.searchitemsapp.util.StringUtils;
  * 
  * Servicio que contiene la lógica para obtener listados 
  * de productos ordenados de los distintos supermercados.
+ * 
  */
 @Service("listadoProductosService")
 public class ListadoProductosService implements IFService<String,String> {
@@ -67,7 +68,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	/**
 	 * Método principal de servicio web.  Este método contiene 
-	 * toda la lógica de negocio del servicio.
+	 * toda la lógica de negocio del servicio. {@link ScrapingUnit}
 	 */
 	public String service(final String... str) {
 

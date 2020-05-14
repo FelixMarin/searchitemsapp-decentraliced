@@ -18,17 +18,19 @@ import com.searchitemsapp.parsers.UrlParser;
 import com.searchitemsapp.util.ClaseUtils;
 
 /**
- * 
- * @author Felix Marin Ramirez
- * 
  * Clase Factory encargada de gestionar la creación de 
  * objetos de tipo service. Las peticiones a los services 
  * pasarán siempre por esta clase.
+ * 
+ * @author Felix Marin Ramirez
  *
  */
 @Component
 public class ParserFactory {
 
+	/*
+	 * Constantes Globales 
+	 */
 	private static final String URL_PARSER = "URL_PARSER";
 	private static final String PARAMS_HEADERS_PARSER = "PARAMS_HEADERS_PARSER";
 	private static final String PARAMS_FORM_PARSER = "PARAMS_FORM_PARSER";
@@ -40,10 +42,9 @@ public class ParserFactory {
 	private static final String CATEGORIA_PARSER = "CATEGORIA_PARSER";
 	private static final String SELECTORES_PARSER = "SELECTORES_PARSER";
 
-	public ParserFactory() {
-		super();
-	}
-	
+	/*
+	 * Variables Globales
+	 */
 	@Autowired
 	private UrlParser urlParser;
 	
@@ -74,6 +75,20 @@ public class ParserFactory {
 	@Autowired
 	private PaisParser paisParser;
 	
+	/*
+	 * Constructor
+	 */
+	public ParserFactory() {
+		super();
+	}
+		
+	/**
+	 * Método de la clase factory que gestiona la creación 
+	 * de instancias de las clases de tipo parser.
+	 * 
+	 * @param nomParser
+	 * @return IFParser<?, ?>
+	 */
 	public IFParser<?, ?> getParser(String nomParser) {
 		
 		if(StringUtils.isEmpty(nomParser)) {
