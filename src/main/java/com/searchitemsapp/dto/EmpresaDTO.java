@@ -115,7 +115,7 @@ public class EmpresaDTO implements IFdto {
 	}
 
 	/*
-	 * Métodos sobre escitos 
+	 * Métodos sobre-escritos. 
 	 */
 	@Override
 	public String toString() {

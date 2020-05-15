@@ -54,23 +54,37 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 
+		/**
+		 * Ejeculta la llamada al dao y devuelve el resultado.
+		 */
 		return empresaDao.findAll();
 	}	
 	
 	/**
 	 * Recupear una empresa a partir de su identificador.
+	 * 
+	 * @param EmpresaDTO
+	 * @return EmpresaDTO
+	 * @exception IOException
 	 */
 	@Override
 	public EmpresaDTO findByDid(EmpresaDTO empresaDto) throws IOException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 
+		/**
+		 * Si los parámetros de entrada son nulos, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(empresaDto) ||
 				ClaseUtils.isNullObject(empresaDto.getDid())) {
 			
 			return (EmpresaDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
+		/**
+		 * Mensaje que se pintará en las trazas de log.
+		 */
 		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
@@ -78,21 +92,36 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		
 		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
 		
+		/**
+		 * Ejecuta la llamada al dao y devuelve el resultado.
+		 */
 		return empresaDao.findByDid(empresaDto.getDid());
 	}
 	
 	/**
 	 * Recupera una lista de objetos empresa en formato entidad.
+	 * 
+	 * @param EmpresaDTO empresaDto
+	 * @param CategoriaDTO categoriaDto
+	 * @return List<EmpresaDTO>
+	 * @exception IOException
 	 */
 	@Override
 	public List<EmpresaDTO> findByTbSia(EmpresaDTO empresaDto, CategoriaDTO categoriaDto) throws IOException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si los parámetros de entrada son nulos, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(empresaDto) || ClaseUtils.isNullObject(categoriaDto)) {
 			return new ArrayList();
 		}
-				
+		
+		/**
+		 * Ejecuta la llamada al dao y devuelve el resultado.
+		 */
 		return empresaDao.findByTbSiaCategoriasEmpresa(empresaDto.getDid(), categoriaDto.getDid());
 	}	
 }

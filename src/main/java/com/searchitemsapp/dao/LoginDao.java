@@ -45,6 +45,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 	 * Método que devuelve todos los elementos de una tabla.
 	 * 
 	 * @return List<LoginDTO>
+	 * @exception IOException
 	 */
 	@Override
 	public List<LoginDTO> findAll() throws IOException {
@@ -53,13 +54,25 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		
 		List<LoginDTO> resultado = (List<LoginDTO>) ClaseUtils.NULL_OBJECT;
 		
+		/**
+		 * Se obtiene la query del fichero de propiedades.
+		 */
 		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.all"));
 		
+		/**
+		 * Se comprueba que el entity manager esté activado.
+		 */
 		isEntityManagerOpen(this.getClass());
 		
+		/**
+		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
+		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaLogin.class);
 		
+		/**
+		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
+		 */
 		try {
 			resultado = getParser(LOGIN_PARSER).toListDTO(((List<TbSiaLogin>) q.getResultList()));
 		}catch(NoResultException e) {
@@ -80,6 +93,10 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si el parametro de entrada es nulo, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(did)) {
 			return (LoginDTO) ClaseUtils.NULL_OBJECT;
 		}
@@ -88,6 +105,10 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		
 		LogsUtils.escribeLogDebug(String.valueOf(did),this.getClass());
 		
+		/**
+		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
+		 * Si no hay resultado la excepcion se traza en los logs.
+		 */
 		try {
 			loginDto = getParser(LOGIN_PARSER).toDTO(getEntityManager().find(TbSiaLogin.class, did));
 		}catch(NoResultException e) {
@@ -97,31 +118,46 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		return loginDto;
 	}
 
+	/**
+	 * Devuelve los datos de login a la web de una empresa.
+	 * 
+	 * @param TbSiaEmpresa tbSiaEmpresa
+	 * @return LoginDTO
+	 * @exception IOException
+	 */
 	@Override
 	public LoginDTO findByTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa)  throws IOException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si el parametro de entrada es nulo, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(tbSiaEmpresa)) {
 			return (LoginDTO) ClaseUtils.NULL_OBJECT;
 		}
 		LogsUtils.escribeLogDebug(String.valueOf(tbSiaEmpresa.toString()),this.getClass());
 		
+		LoginDTO resultado = (LoginDTO) ClaseUtils.NULL_OBJECT;
+		
+		/**
+		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
+		 */
 		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.by.did.categoria"));
 		
+		/**
+		 * Se crea el objeto query y se le 
+		 * añade el parametro al objeto query.
+		 */
 		Query query = getEntityManager().createQuery(queryBuilder.toString());
 		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), tbSiaEmpresa.getDid());
 		
-		return noResultControl(query);
-	}
-	
-	private LoginDTO noResultControl(Query query) {
-
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-		
-		LoginDTO resultado = (LoginDTO) ClaseUtils.NULL_OBJECT;
-		
+		/**
+		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
+		 * Si no hay resultado la excepcion se traza en los logs.
+		 */
 		try {
 			resultado = getParser(LOGIN_PARSER).toDTO((TbSiaLogin) query.getSingleResult());
 		} catch(NoResultException e) {
@@ -129,6 +165,5 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		}
 		
 		return resultado;
-		
 	}
 }

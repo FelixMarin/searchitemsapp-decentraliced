@@ -66,6 +66,10 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si el parametro de entrada es nulo, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(categoriaDto)) {
 			return (CategoriaDTO) ClaseUtils.NULL_OBJECT;
 		}
@@ -80,11 +84,16 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 		
 		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
 		
+		/**
+		 * Realiza la consulta y devuelve el resultado.
+		 */
 		return categoriaDao.findByDid(categoriaDto.getDid());
 	}
 	
 	/**
 	 * Funcionalidad no implementada.
+	 * 
+	 * @throws UnsupportedOperationException 
 	 */
 	@Override
 	public List<CategoriaDTO> findByTbSia(CategoriaDTO categoriaDTO, EmpresaDTO empresaDTO) throws IOException {

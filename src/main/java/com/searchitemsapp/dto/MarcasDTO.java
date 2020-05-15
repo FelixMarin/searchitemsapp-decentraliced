@@ -66,7 +66,7 @@ public class MarcasDTO implements IFdto {
 	}
 
 	/*
-	 * Métodos sobre escritos
+	 * Métodos sobre-escritos
 	 */
 	@Override
 	public int hashCode() {

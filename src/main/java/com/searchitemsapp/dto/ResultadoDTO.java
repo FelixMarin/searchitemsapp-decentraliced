@@ -152,7 +152,7 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	}
 
 	/*
-	 * Métodos sobre escritos
+	 * Métodos sobre-escritos
 	 */
 	@Override
 	public int compare(ResultadoDTO a, ResultadoDTO b) {

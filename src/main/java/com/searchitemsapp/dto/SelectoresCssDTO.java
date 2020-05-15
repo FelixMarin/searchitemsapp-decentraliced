@@ -150,7 +150,7 @@ public class SelectoresCssDTO  implements IFdto {
 	}
 
 	/*
-	 * Métodos sobre escritos
+	 * Métodos sobre-escritos
 	 */
 	@Override
 	public String toString() {

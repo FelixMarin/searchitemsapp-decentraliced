@@ -99,7 +99,7 @@ public class CategoriaDTO implements IFdto {
 	}
 
 	/*
-	 * Metodos sobre escitos. 
+	 * Métodos sobre-escritos. 
 	 */
 	
 	@Override

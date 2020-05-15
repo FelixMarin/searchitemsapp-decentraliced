@@ -48,7 +48,7 @@ public class PedidoDTO implements IFdto {
 	}
 
 	/*
-	 * Métodos sobre escitos
+	 * Métodos sobre-escitos
 	 */
 	@Override
 	public int hashCode() {

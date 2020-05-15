@@ -30,7 +30,7 @@ import com.searchitemsapp.util.StringUtils;
 public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpresa> implements IFCategoriaRepository {
 
 	/*
-	 * Constantes
+	 * Constantes Globales
 	 */
 	private static final String CATEGORIA_PARSER = "CATEGORIA_PARSER";
 	
@@ -44,7 +44,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 	/**
 	 * Método que devuelve todos los elementos de la tabla {@link TbSiaCategoriasEmpresa}.
 	 * 
-	 * @return List<LoginDTO>
+	 * @return List<CategoriaDTO>
 	 * @exception IOException
 	 */
 	@Override
@@ -66,14 +66,14 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		isEntityManagerOpen(this.getClass());
 		
 		/**
-		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
+		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaEmpresa.class);
 		
+		/**
+		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
+		 */
 		try {
-			/**
-			 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
-			 */
 			resultado = getParser(CATEGORIA_PARSER).toListDTO(((List<TbSiaCategoriasEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
 			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
@@ -133,17 +133,29 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si el parametro de entrada es nulo, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(activo)) {
 			return (List<CategoriaDTO>)ClaseUtils.NULL_OBJECT;
 		}
 		
 		List<CategoriaDTO> listCategoriaDTO = (List<CategoriaDTO>)ClaseUtils.NULL_OBJECT;
 		
+		/**
+		 * Se obtiene la query del fichero de propiedades y se
+		 * le añade el parametro al objeto query.
+		 */
 		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.categoria.by.activo"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString());
 		query.setParameter(CommonsPorperties.getValue("flow.value.activo"), activo);
 		
+		/**
+		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
+		 * Si no hay resultado la excepcion se traza en los logs.
+		 */
 		try {
 			listCategoriaDTO = getParser(CATEGORIA_PARSER).toListDTO(((List<TbSiaCategoriasEmpresa>) query.getSingleResult()));
 		}catch(NoResultException e) {

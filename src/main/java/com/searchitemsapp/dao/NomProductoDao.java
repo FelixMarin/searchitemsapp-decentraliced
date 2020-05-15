@@ -28,8 +28,14 @@ import com.searchitemsapp.util.StringUtils;
 @Repository
 public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto> implements IFNomProductoRepository {
 	
+	/*
+	 * Constantes Globales
+	 */
 	private static final String NOM_PRODUCTO_PARSER = "NOM_PRODUCTO_PARSER";
 
+	/*
+	 * Constructor
+	 */
 	public NomProductoDao() {
 		super();
 	}
@@ -38,6 +44,7 @@ public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto
 	 * Método que devuelve todos los elementos de una tabla.
 	 * 
 	 * @return List<LoginDTO>
+	 * @exception IOException
 	 */
 	@Override
 	public List<NomProductoDTO> findAll() throws IOException {
@@ -45,13 +52,25 @@ public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto
 		
 		List<NomProductoDTO> resultado = (List<NomProductoDTO>) ClaseUtils.NULL_OBJECT;
 		
+		/**
+		 * Se obtiene la query del fichero de propiedades.
+		 */
 		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.nomproducto.select.all"));
 		
+		/**
+		 * Se comprueba que el entity manager esté activado.
+		 */
 		isEntityManagerOpen(this.getClass());
 		
+		/**
+		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
+		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaNomProducto.class);
 		
+		/**
+		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
+		 */
 		try {
 			resultado = getParser(NOM_PRODUCTO_PARSER).toListDTO(((List<TbSiaNomProducto>) q.getResultList()));
 		}catch(NoResultException e) {
@@ -66,6 +85,7 @@ public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto
 	 * de la tabla.
 	 * 
 	 * @return NomProductoDTO
+	 * @exception IOException
 	 */
 	@Override
 	public NomProductoDTO findByDid(Integer did) throws IOException {

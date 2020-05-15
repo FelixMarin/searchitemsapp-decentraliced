@@ -30,8 +30,14 @@ import com.searchitemsapp.util.StringUtils;
 @Repository
 public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsHeadersLogin> implements IFParamsHeadersLogin {
 	
+	/*
+	 * Constantes Globales
+	 */
 	private static final String PARAMS_HEADERS_PARSER = "PARAMS_HEADERS_PARSER";
 
+	/*
+	 * Constructor
+	 */
 	public ParamsHeadersLoginDao() {
 		super();
 	}

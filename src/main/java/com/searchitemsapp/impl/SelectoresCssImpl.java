@@ -15,16 +15,32 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Implementación del dao {@link SelectoresCssDao}.
+ * 
+ * Esta clase ofrece los métodos que permiten interactuar con
+ * la capa de persistencia. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 @Aspect
 public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, EmpresaDTO> {
 
+	/*
+	 * Variables Globales
+	 */
+	@Autowired
+	private SelectoresCssDao selectoresCssDao;
+	
+	/*
+	 * Controlador
+	 */
 	public SelectoresCssImpl() {
 		super();
 	}
 	
-	@Autowired
-	private SelectoresCssDao selectoresCssDao;
 	
 	@Override
 	public SelectoresCssDTO findByDid(SelectoresCssDTO selectorCssDto) throws IOException {

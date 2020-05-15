@@ -17,8 +17,10 @@ import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
 /**
- * Implementación de la interfaz de acceso a datos  
- * y persistencia de entidades.
+ * Implementación del dao {@link LoginDao}.
+ * 
+ * Esta clase ofrece los métodos que permiten interactuar con
+ * la capa de persistencia. 
  * 
  * @author Felix Marin Ramirez
  *
@@ -49,12 +51,16 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	 * los agrega a una lista y son devueltos.
 	 * 
 	 * @return List<LoginDTO>
+	 * @exception IOException
 	 */
 	@Override
 	public List<LoginDTO> findAll() throws IOException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 
+		/**
+		 * Ejeculta la llamada al dao y devuelve el resultado.
+		 */
 		return loginDao.findAll();
 	}	
 	
@@ -70,6 +76,10 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si los parámetros de entrada son nulos, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(loginDTO)) {
 			return (LoginDTO) ClaseUtils.NULL_OBJECT;
 		}
@@ -91,17 +101,21 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	}
 	
 	/**
-	 * Recupera un elemento de la tabla a partir
-	 * de su identificador.
+	 * Devuelve una lista de Logins a partir de un objeto login y una empresa.
 	 * 
 	 * @param LoginDTO
-	 * @return LoginDTO
+	 * @return List<LoginDTO>
+	 * @exception IOException
 	 */
 	@Override
 	public List<LoginDTO> findByTbSia(LoginDTO loginDTO, EmpresaDTO empresaDTO) throws IOException {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
+		/**
+		 * Si los parámetros de entrada son nulos, el proceso
+		 * termina y retorna nulo.
+		 */
 		if(ClaseUtils.isNullObject(loginDTO) || ClaseUtils.isNullObject(empresaDTO)) {
 			return (List<LoginDTO>) ClaseUtils.NULL_OBJECT;
 		}		
@@ -116,8 +130,15 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		
 		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
 		
+		/**
+		 * Se establce el id en el objeto.
+		 */
 		tbSiaEmpresa.setDid(empresaDTO.getDid());
 		
+		/**
+		 * Se ejecuta la consulta y el resultado 
+		 * se asigna a la lista que será retornada.
+		 */
 		List<LoginDTO> listLoginDTO = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
 		listLoginDTO.add(loginDao.findByTbSiaEmpresa(tbSiaEmpresa));
 		
