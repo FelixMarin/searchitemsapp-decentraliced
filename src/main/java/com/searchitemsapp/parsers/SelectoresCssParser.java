@@ -8,12 +8,30 @@ import com.searchitemsapp.model.TbSiaSelectoresCss;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * Es un componente analizador de software que 
+ * toma datos de entrada y construye una 
+ * estructura de datos. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSelectoresCss> {
 
+	/*
+	 * Constructor
+	 */
 	public SelectoresCssParser() {
 		super();
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo Entity a un objeto de tipo DTO.
+	 * 
+	 * @param TbSiaSelectoresCss
+	 * @return SelectoresCssDTO
+	 */
+	@Override
 	public SelectoresCssDTO toDTO(TbSiaSelectoresCss tbSiaSelectoresCss) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
@@ -37,6 +55,13 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 		return selectoresCssDTO;
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo DTO a un objeto de tipo Entity.
+	 * 
+	 * @param SelectoresCssDTO
+	 * @return TbSiaSelectoresCss
+	 */
+	@Override
 	public TbSiaSelectoresCss toTbSia(SelectoresCssDTO selectoresCssDTO) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
@@ -60,6 +85,12 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 		return tbSiaSelectoresCss;
 	}
 	
+	/**
+	 * Mapea una lista de de Entities a una lista de DTOs.
+	 * 
+	 * @param List<TbSiaSelectoresCss>
+	 * @return List<SelectoresCssDTO>
+	 */
 	public List<SelectoresCssDTO> toListDTO(List<TbSiaSelectoresCss> lsTbSiaSelectoresCss) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
@@ -87,6 +118,9 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 		return listDto;
 	}
 	
+	/**
+	 * Método no implementado.
+	 */
 	@Override
 	public List<SelectoresCssDTO> toListODTO(List<Object[]> objeto) {
 		

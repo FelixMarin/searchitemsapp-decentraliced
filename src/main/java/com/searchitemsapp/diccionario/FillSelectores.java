@@ -24,15 +24,23 @@ import com.searchitemsapp.util.LogsUtils;
 @SuppressWarnings("unchecked")
 public class FillSelectores {
 	
+	/*
+	 * Constantes Globales
+	 */
 	private static final String SELECTORES_PARSER = "SELECTORES_PARSER";
-
-	public FillSelectores() {
-		super();
-	}
 	
+	/*
+	 * Variables Globales
+	 */
 	@Autowired
 	private ParserFactory parserFactory;
 	
+	/*
+	 * Constructor
+	 */
+	public FillSelectores() {
+		super();
+	}
 	
 	/**
 	 * Este metodo obtinen los selectores correspondietes

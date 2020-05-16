@@ -99,7 +99,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	}
 	
 	/**
-	 * Recupera una lista de objetos empresa en formato entidad.
+	 * Recupera una lista de objetos {@link EmpresaDTO} en formato entidad.
 	 * 
 	 * @param EmpresaDTO empresaDto
 	 * @param CategoriaDTO categoriaDto

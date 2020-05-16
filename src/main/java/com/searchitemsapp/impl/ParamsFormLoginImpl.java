@@ -79,7 +79,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 		}
 		
 		/**
-		 * Traza de log que escribe identificador de la empresa.
+		 * Traza de log que escribe identificador de la URL.
 		 */
 		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));

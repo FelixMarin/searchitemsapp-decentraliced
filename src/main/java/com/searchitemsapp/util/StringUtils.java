@@ -18,18 +18,16 @@ import com.searchitemsapp.commons.CommonsPorperties;
 
 /**
  * @version 1.0.0
- * @author Architect: Getronics
- * @author <br>
- *         Designer: Getronics
- * @author <br>
- *         Developer: Getronics
+ * @author Felix Marin Ramirez
  *
- *         Clase que proporciona funciones de utilidad sobre elementos de tipo
- *         String
+ * Clase que proporciona funciones de utilidad sobre elementos de tipo String.
  * @modelguid {2969363B-099C-43ED-BFF2-C955BBB3B4D3}
  */
 public class StringUtils  implements IFUtils {
-
+	
+	/*
+	 * Constantes Globales
+	 */
 	public static final String OPERACION_NO_SOPORTADA = "Operación no soportada";
 	public static final String GET = "GET";
 	public static final String POST = "POST";
@@ -187,12 +185,9 @@ public class StringUtils  implements IFUtils {
 	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
 	private static final String[] ARRAY_VOCALES_MIN = {"a","e","i","o","u"};
 	
-	/**
-	 * Logger de la aplicacion
-	 *
-	 * @modelguid {3A3993BA-7938-485F-9955-A160F81781D4}
+	/*
+	 * Constructor
 	 */
-
 	private StringUtils() {
 		super();
 	}

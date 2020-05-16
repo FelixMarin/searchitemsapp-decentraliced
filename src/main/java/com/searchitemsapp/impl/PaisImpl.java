@@ -61,7 +61,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 		}
 		
 		/**
-		 * Traza de log que escribe identificador de la empresa.
+		 * Traza de log que escribe identificador del pais.
 		 */
 		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.pais.did.txt"));

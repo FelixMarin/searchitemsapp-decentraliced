@@ -16,14 +16,38 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Módulo de scraping especifico diseñado para la 
+ * extracción de datos del sitio web de Alcampo.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class ScrapingAlcampo implements IFScrapingEmpresas{
 	
+	/*
+	 * Constantes Globales
+	 */
 	private static final String PATTERN = ".*&page=([0-9]+)";
 
+	/*
+	 * Constructor
+	 */
 	public ScrapingAlcampo() {
 		super();
 	}
 	
+	/**
+	 * Compone una lista de URLs de la empresa Alcampo.
+	 * Con estas URLs se realizarán las peticiones al
+	 * sitio web para extraer los datos. 
+	 * 
+	 * @param document
+	 * @param urlDto
+	 * @param selectorCssDto
+	 * @return List<String>
+	 * @exception MalformedURLException
+	 */
 	@Override
 	public List<String> getListaUrls(Document document, UrlDTO urlDto, 
 			SelectoresCssDTO selectorCssDto) throws MalformedURLException {

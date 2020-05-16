@@ -79,7 +79,7 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 		}		
 		
 		/**
-		 * Traza de log que escribe identificador de la empresa.
+		 * Traza de log que escribe identificador de la marca.
 		 */
 		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.marcas.dto.txt"));

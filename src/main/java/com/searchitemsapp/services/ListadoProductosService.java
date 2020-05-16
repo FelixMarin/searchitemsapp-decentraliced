@@ -10,6 +10,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.persistence.NoResultException;
 
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.diccionario.Diccionario;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
@@ -27,7 +30,6 @@ import com.searchitemsapp.scraping.ScrapingUnit;
 import com.searchitemsapp.scraping.UrlTreatment;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.JsonUtil;
-import com.searchitemsapp.util.ListaProductosUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
@@ -44,7 +46,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	/**
 	 * Variables
 	 */
-	private static List<SelectoresCssDTO> listTodosSelectoresCss;
+	private List<SelectoresCssDTO> listTodosSelectoresCss;
 	
 	@Autowired
 	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
@@ -105,8 +107,8 @@ public class ListadoProductosService implements IFService<String,String> {
 		/**
 		 * Validación de las variables de entrada.
 		 */
-		if (ListaProductosUtils.validaCamposEntrada(didCategoria, producto, didPais, ordenacion, empresas))  {		
-			return ListaProductosUtils.errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+		if (validaCamposEntrada(didCategoria, producto, didPais, ordenacion, empresas))  {		
+			return StringUtils.getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
 					Thread.currentThread().getId());
 		}
 		
@@ -123,7 +125,11 @@ public class ListadoProductosService implements IFService<String,String> {
 			/**
 			 * Se traza el log con el identificador de la categoría.
 			 */
-			ListaProductosUtils.logInicioDebugMessage(didCategoria);
+			StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+			debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"));
+			debugMessage.append(StringUtils.SPACE_STRING);
+			debugMessage.append(didCategoria);
+			LogsUtils.escribeLogDebug(debugMessage.toString(), this.getClass());
 			
 			/**
 			 * El listado de selectores se rellena la primera vez que
@@ -133,7 +139,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * web revisadas. 
 			 */
 			if(ClaseUtils.isNullObject(listTodosSelectoresCss)) {
-				listTodosSelectoresCss = ListaProductosUtils.fillSelectoresCss(selectoresCssImpl);
+				listTodosSelectoresCss = selectoresCssImpl.findAll();
 			}
 			
 			/**
@@ -142,7 +148,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * bbdd. Si eso sucede se devuelve un error.
 			 */
 			if(ClaseUtils.isNullObject(listTodosSelectoresCss)) {
-				return ListaProductosUtils.errorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+				return StringUtils.getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
 						Thread.currentThread().getId());
 			}			
 			
@@ -192,16 +198,16 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * verdadero para cada elemento de la lista devuelta.
 			 */
 			listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
-			listResultDtoFinal = ListaProductosUtils.executeFuture(listFutureListResDto);
+			listResultDtoFinal = executeFuture(listFutureListResDto);
 			
 			/**
 			 * Si la lista de resultados está vacía (no ha habido resultados)
 			 * la aplicación devolverá un mensaje notificando el suceso.
 			 */
             if(listResultDtoFinal.isEmpty()) {
-    			return ListaProductosUtils.errorJsonResponseNoResultException(
-    					Thread.currentThread().getStackTrace()[1].toString(),
-    					StringUtils.NO_HAY_RESULTADOS);          	
+    			return StringUtils.getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString()
+    					.concat(new NoResultException(StringUtils.NO_HAY_RESULTADOS).toString()),
+    					Thread.currentThread().getId());
             }
 
             /**
@@ -253,9 +259,9 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * indicando el suceso.
 		 */
 		if(StringUtils.isEmpty(strJsonResult.toString())) {
-			return ListaProductosUtils.errorJsonResponseNoResultException(
-					Thread.currentThread().getStackTrace()[1].toString(),
-					StringUtils.NO_HAY_RESULTADOS); 
+			return  StringUtils.getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString()
+					.concat(new NoResultException(StringUtils.NO_HAY_RESULTADOS).toString()),
+					Thread.currentThread().getId());
 		}
 		
 		/**
@@ -264,5 +270,61 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * por precio/kilo.
 		 */
 		return JsonUtil.toArrayJson(strJsonResult.toString());
+	}
+	
+	// Métodos privados //	
+	/**
+	 * La clase Future representa un resultado futuro de un cálculo 
+	 * asincrónico, un resultado que finalmente aparecerá en el Futuro 
+	 * después de que se complete el procesamiento.
+	 * 
+	 * @param resultList Una lista de listas de resultados.
+	 * @return List<ResultadoDTO>
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
+	private List<ResultadoDTO> executeFuture(final List<Future<List<ResultadoDTO>>> resultList) 
+			throws InterruptedException, ExecutionException {
+		
+		List<ResultadoDTO> listResultFinal = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		
+		for(Future<List<ResultadoDTO>> future : resultList) {
+			
+			try {
+				if(ClaseUtils.isNullObject(future.get())) {
+					continue;
+				}
+				
+				listResultFinal.addAll(future.get(5, TimeUnit.MINUTES));				
+				LogsUtils.escribeLogDebug(future.get().toString().concat(StringUtils.SPACE_STRING)
+						.concat(String.valueOf(future.isDone())),this.getClass());
+			
+			}catch(TimeoutException e) {
+				LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			}
+		}
+		
+		return listResultFinal;
+	}	
+	
+	/**
+	 * Valida los campos recibidos en la solicitud de servicio.
+	 * 
+	 * @param didCategoria
+	 * @param producto
+	 * @param didPais
+	 * @param ordenacion
+	 * @param empresas
+	 * @return boolean
+	 */
+	private boolean validaCamposEntrada(final String didCategoria, 
+			final String producto, final String didPais, 
+			final String ordenacion, final String empresas) {
+		
+		return StringUtils.validateNull(didCategoria) || 
+				StringUtils.validateNull(producto) ||
+				StringUtils.validateNull(ordenacion) ||
+				StringUtils.validateNull(didPais) ||
+				StringUtils.isEmpty(empresas);
 	}
 }

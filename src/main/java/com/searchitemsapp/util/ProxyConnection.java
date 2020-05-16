@@ -18,6 +18,11 @@ import com.searchitemsapp.commons.CommonsPorperties;
   */
 public class ProxyConnection {
 
+	/**
+	 * Método que establece una conexion con el proxy indicado
+	 * en el fichero de propiedades.
+	 * 
+	 */
 	public static void establecerProxy() {
 		
 		StringBuilder sbResultado = StringUtils.getNewStringBuilder();

@@ -8,13 +8,30 @@ import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * Es un componente analizador de software que 
+ * toma datos de entrada y construye una 
+ * estructura de datos. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	
+	/*
+	 * Constructor
+	 */
 	public UrlParser() {
 		super();
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo Entity a un objeto de tipo DTO.
+	 * 
+	 * @param TbSiaUrl
+	 * @return UrlDTO
+	 */
 	public UrlDTO toDTO(TbSiaUrl tbSiaPUrl) {	
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
@@ -32,6 +49,12 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		return urlPDto;
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo DTO a un objeto de tipo Entity.
+	 * 
+	 * @param UrlDTO
+	 * @return TbSiaUrl
+	 */
 	public TbSiaUrl toTbSia(UrlDTO urlPDto) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
@@ -50,6 +73,12 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		return tbSiaPUrl;
 	}
 	
+	/**
+	 * Mapea una lista de de Entities a una lista de DTOs.
+	 * 
+	 * @param List<TbSiaUrl>
+	 * @return List<UrlDTO>
+	 */
 	public List<UrlDTO> toListDTO(List<TbSiaUrl> lsUrls) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
@@ -73,16 +102,23 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		return listDto;
 	}
 	
+	/**
+	 * Convierte una lista de arrays de objetos a una lista de URLs.
+	 * 
+	 * @param List<Object[]>
+	 * @return List<UrlDTO>
+	 */
 	public List<UrlDTO> toListODTO(List<Object[]> urlList) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
+		
+		UrlDTO urlDto;
 		
 		if(ClaseUtils.isNullObject(urlList)) {
 			return (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
 		}
 		
 		List<UrlDTO> listUrlDto = (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
-		UrlDTO urlDto;
 		
 		if (!urlList.isEmpty()){ 
 			listUrlDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
@@ -99,7 +135,6 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 				listUrlDto.add(urlDto);
 			}
 		}
-		
 		return listUrlDto;
 	}
 }

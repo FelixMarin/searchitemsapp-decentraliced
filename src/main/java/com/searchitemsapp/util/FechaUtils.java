@@ -1,7 +1,5 @@
 package com.searchitemsapp.util;
 
-//PMD.jllgalvez
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,11 +9,7 @@ import java.util.Date;
 
 /**
  * @version 1.0.0
- * @author Architect: Getronics
- * @author <br>
- *         Designer: Getronics
- * @author <br>
- *         Developer: Getronics
+ * @author Felix Marin Ramirez
  *
  * Clase que proporciona funciones de utilidad sobre objetos de tipo Date
  * @modelguid {A7D8D125-64CA-40EF-86B0-D6D223E1C324}

@@ -85,7 +85,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		}
 		
 		/**
-		 * Traza de log que escribe identificador de la empresa.
+		 * Traza de log que escribe identificador del login.
 		 */
 		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.login.dto.txt"));
