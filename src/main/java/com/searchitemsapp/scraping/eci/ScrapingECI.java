@@ -13,10 +13,23 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Módulo de scraping especifico diseñado para la 
+ * extracción de datos del sitio web de Dia.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class ScrapingECI implements IFScrapingEmpresas {
 	
+	/*
+	 * Constasntes Globales
+	 */
 	private static final String PATTERN = ".*de ([0-9]+)";
 
+	/*
+	 * Constructor
+	 */
 	public ScrapingECI() {
 		super();
 	}
