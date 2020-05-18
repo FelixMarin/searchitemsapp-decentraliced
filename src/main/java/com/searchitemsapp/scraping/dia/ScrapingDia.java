@@ -52,8 +52,10 @@ public class ScrapingDia  implements IFScrapingEmpresas {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(), this.getClass());
 
 		/**
-		 * Se obtiene la URL y se añade en una lista que
-		 * será retornada.
+		 * Se obtiene la URL base. Esta es la URL principal 
+		 * del conjunto de páginas obtenidas como resultado
+		 * de la búsqueda del producto. A partir de esta URL 
+		 * se generan las de paginación.
 		 */
 		String urlBase = urlDto.getNomUrl();
 		String selectorPaginacion = selectorCssDto.getSelPaginacion();

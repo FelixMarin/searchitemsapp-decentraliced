@@ -288,14 +288,32 @@ public class ListadoProductosService implements IFService<String,String> {
 		
 		List<ResultadoDTO> listResultFinal = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
 		
+		/**
+		 * Se itera sobre la lista de futuros. Cada ejecución
+		 * de futuro tiene como máximo 5 segundos para ser
+		 * ejecutado, en otro caso, continuará con el siguiente.
+		 */
 		for(Future<List<ResultadoDTO>> future : resultList) {
 			
 			try {
+				/**
+				 * Si el futuro de la posición actual es nulo
+				 * se continua con la siguente ejecución
+				 */
 				if(ClaseUtils.isNullObject(future.get())) {
 					continue;
 				}
 				
-				listResultFinal.addAll(future.get(5, TimeUnit.MINUTES));				
+				/**
+				 * El resultado de la ejecución del futuro es una
+				 * lista de resultados. Todos los resultado se unen
+				 * en una sola lista. 
+				 */
+				listResultFinal.addAll(future.get(5, TimeUnit.SECONDS));
+				
+				/**
+				 * Se escribe una traza de log indicado el resultado de la ejecución
+				 */
 				LogsUtils.escribeLogDebug(future.get().toString().concat(StringUtils.SPACE_STRING)
 						.concat(String.valueOf(future.isDone())),this.getClass());
 			

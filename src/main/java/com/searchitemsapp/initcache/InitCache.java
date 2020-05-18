@@ -9,7 +9,11 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.util.LogsUtils;
 
 /**
- * ServletContextListener implementation class InitCache
+ * Servlet que se ejecuta al arrancar la aplicación y carga
+ * en el contexto todas la propiedades de los ficheros.
+ * 
+ * @author Felix Marin Ramirez
+ *
  */
 public class InitCache implements ServletContextListener {
 	
@@ -18,12 +22,18 @@ public class InitCache implements ServletContextListener {
 	private static final String[] PROPERTIES_FILES = {"flow.properties","db.properties","log4j.properties"};
 	       
     /**
+     * Constructor
      * @see ServletContextListener#ServletContextListener()
      */
     public InitCache() {
         super();
     }
 
+    /**
+     * Método que inicializa todas las propiedades desde los ficheros.
+     * 
+     * @param ServletContextEvent
+     */
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 
@@ -41,6 +51,10 @@ public class InitCache implements ServletContextListener {
 		}	
 	}
 
+	/**
+	 * Método que se encarga de destruir eventos cerrando 
+	 * los grupos de conexiones y vaciando las cachés.
+	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),InitCache.class);

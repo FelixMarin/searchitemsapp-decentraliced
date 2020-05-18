@@ -64,6 +64,10 @@ public class ScrapingDiccionario extends Scraping {
 			return (String) ClaseUtils.NULL_OBJECT;
 		}
 		
+		/**
+		 * Se inicializan todas las propiedes necesarias para
+		 * la ejecución de la aplicación
+		 */
 		super.staticData();
 		super.cargarTodasLasMarcas();
 		super.setTbSiaSelectoresCss(urlDto);

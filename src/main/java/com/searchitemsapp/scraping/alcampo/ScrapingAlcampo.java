@@ -38,7 +38,7 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 	}
 	
 	/**
-	 * Compone una lista de URLs de la empresa Alcampo.
+	 * Compone una lista de URLs de la web de Alcampo.
 	 * Con estas URLs se realizarán las peticiones al
 	 * sitio web para extraer los datos. 
 	 * 
@@ -55,13 +55,24 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		/**
-		 * Se establcen las variables necesarias para la ejecución.
+		 * Se obtiene la URL base. Esta es la URL principal 
+		 * del conjunto de páginas obtenidas como resultado
+		 * de la búsqueda del producto. A partir de esta URL 
+		 * se generan las de paginación.
 		 */
 		String urlBase = urlDto.getNomUrl();
+		
+		/**
+		 * Se obbtiene del documento el número de resultados. 
+		 */
 		String selectorPaginacion = selectorCssDto.getSelPaginacion();	
 		String strPaginacion = StringUtils.ZERO_STRING;
+		
+		/**
+		 * Se obtiene del fichero de propiedades el número máximo de
+		 * páginas que se van a pedir al sitio web.
+		 */		
 		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.alcampo"));
-		int intPaginacion;
 		
 		/**
 		 * Se crea una lista de Strings.
@@ -72,7 +83,6 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		 * Se divide el selector de paginación.
 		 */
 		StringTokenizer st = new StringTokenizer(selectorPaginacion,StringUtils.PIPE);  
-		
 		
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
@@ -123,7 +133,7 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		 * el sitio web. Se formatea a numérico y se asigna a 
 		 * una variable.
 		 */
-		intPaginacion = StringUtils.desformatearEntero(strPaginacion.trim());
+		int intPaginacion = StringUtils.desformatearEntero(strPaginacion.trim());
 		
 		/**
 		 * Se crean tantas URLs como indique el número de paginación.

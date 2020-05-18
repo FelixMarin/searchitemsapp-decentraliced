@@ -12,6 +12,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.TypeDef;
 
+/**
+ * Definición de tipos customizados.
+ */
 @TypeDef(
 		   name = "didDef",
 		   defaultForType = Integer.class,
@@ -33,6 +36,8 @@ import org.hibernate.annotations.TypeDef;
 /**
  * The persistent class for the tb_sia_categorias_empresas database table.
  * 
+ * @author Felix Marin Ramirez
+ *
  */
 @Entity
 @Table(name="tb_sia_categorias_empresas", schema = "sia")

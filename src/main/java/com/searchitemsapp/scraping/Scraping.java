@@ -45,7 +45,7 @@ import com.searchitemsapp.util.StringUtils;
 /**
  * Clase abstracta que cotiene métodos 
  * expecializados para módulo de web scraping.
- * 
+ * <br>
  * {@link Jsoup}
  * 
  * @author Felix Marin Ramirez
@@ -177,10 +177,15 @@ public abstract class Scraping {
     			producto, mapLoginPageCookies);
 
     	/**
-    	 * Se 
+    	 * Se extrae el listado de URLs que se van a utlizar
+    	 * para extraer los datos.
     	 */
     	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, selectorCssDto, idEmpresa);
    		
+    	/**
+    	 * Se obtienen los documets de la llamadas a las
+    	 * URLs, se añaden a una lista y se retorna.
+    	 */
    		if(!liUrlsPorEmpresaPaginacion.isEmpty()) {
 	   		for (String url : liUrlsPorEmpresaPaginacion) {
 	   			listDocuments.add(getDocument(url, idEmpresa, 
@@ -256,13 +261,17 @@ public abstract class Scraping {
 		Response response = (Response) ClaseUtils.NULL_OBJECT;
 		
 		/**
-		 * Variables con los valores necesarios para 
-		 * le proceso.
+		 * Variables con los valores necesarios para el proceso.
 		 */
 		boolean isMercadona = didEmpresa == getMapEmpresas().get(StringUtils.MERCADONA);	
 		boolean bDynScrap = mapDynScraping.get(didEmpresa);
 		URL url = new URL(strUrl);
-		
+		 
+		/**
+		  * Si está activo el indicador de scraping dinámico asociado a la empresa
+		  * la llamada a las webs se realizará mediante web driver. Si no, se usará
+		  * la librería JSOUP.
+		  */
 		if(bDynScrap) {
 			LogsUtils.escribeLogDebug(DynScrapingUnit.class.toString(),Scraping.class);
 			document = Jsoup.parse(dynScrapingUnit.getDynHtmlContent(strUrl, didEmpresa), 
@@ -288,6 +297,11 @@ public abstract class Scraping {
 				response = connection.execute();
 		}
 		
+		/**
+		 * Si el booleano de scraping dinamico no está activo y
+		 * el mapa con las cookie para el login no es nulo, se
+		 * añaden las cookies a la conexión.
+		 */
 		if(!bDynScrap && !ClaseUtils.isNullObject(mapLoginPageCookies)) {
 			connection.cookies(mapLoginPageCookies);
 		}
@@ -326,6 +340,13 @@ public abstract class Scraping {
         return entradas;
 	}
 
+	/**
+	 * Método que valida una URL.
+	 * 
+	 * @param baseUri
+	 * @param url
+	 * @return boolean
+	 */
 	protected boolean validaURL(final String baseUri,final String url) {
 		return url.equalsIgnoreCase(baseUri);
 	}

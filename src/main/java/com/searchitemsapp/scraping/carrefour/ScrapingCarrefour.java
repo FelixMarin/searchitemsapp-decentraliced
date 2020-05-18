@@ -51,10 +51,22 @@ public class ScrapingCarrefour implements IFScrapingEmpresas {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
 		
 		/**
-		 * Se establcen las variables necesarias para la ejecución.
+		 * Se obtiene la URL base. Esta es la URL principal 
+		 * del conjunto de páginas obtenidas como resultado
+		 * de la búsqueda del producto. A partir de esta URL 
+		 * se generan las de paginación.
 		 */
 		String urlBase = urlDto.getNomUrl();
+		
+		/**
+		 * Se obbtiene del documento el número de resultados. 
+		 */
 		String selectorPaginacion = selectorCssDto.getSelPaginacion();	
+		
+		/**
+		 * Se obtiene del fichero de propiedades el número máximo de
+		 * páginas que se van a pedir al sitio web.
+		 */	
 		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.carrefour"));
 		
 		/**

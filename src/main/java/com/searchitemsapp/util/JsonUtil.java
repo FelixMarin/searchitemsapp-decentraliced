@@ -148,6 +148,10 @@ public class JsonUtil implements IFUtils {
 			 */
 			Map objMap = mapper.readValue(json, Map.class);
 
+			/**
+			 * Se crea una nueva instancia de la clase
+			 * pasada como parámetro
+			 */
 			Object instance = clazz.newInstance();
 
 			Set<Object> propertykeys = new HashSet<>(objMap.keySet());

@@ -5,6 +5,9 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.TypeDef;
 
+/**
+ * Definición de tipos customizados.
+ */
 @TypeDef(
 		   name = "didDef",
 		   defaultForType = Integer.class,
@@ -25,7 +28,8 @@ import org.hibernate.annotations.TypeDef;
 
 /**
  * The persistent class for the tb_sia_login database table.
- * 
+ * @author Felix Marin Ramirez
+ *
  */
 @Entity
 @Table(name="tb_sia_login", schema = "sia")
