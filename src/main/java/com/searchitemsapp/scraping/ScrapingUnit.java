@@ -47,6 +47,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	private static final String SELECTORES_PARSER = "SELECTORES_PARSER";
 	private static final String EMPTY_STRING = "";
 	private static final String SEPARADOR_URL = "%20";
+	private static final String SPACE_STRING = " ";
 	
 	/* 
 	 * Variables Globales
@@ -117,7 +118,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 * y procesar según proceda.
 		 */
 		boolean bStatus = urlDto.getBolStatus();
-		String[] arProducto = producto.split(" ");
+		String[] arProducto = producto.split(SPACE_STRING);
 		int iIdEmpresa = urlDto.getTbSiaEmpresa().getDid();
 		Pattern pattern = createPatternProduct(arProducto);
 		
@@ -177,7 +178,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	        	 */
 	            if(listDocuments.size() == 1 && 
 	            		!validaURL(document.baseUri(),urlDto.getNomUrl()
-	            				.replace(" ", SEPARADOR_URL))) {
+	            				.replace(SPACE_STRING, SEPARADOR_URL))) {
 	            	return null;
 	            }
 	            
@@ -313,7 +314,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 			return Boolean.FALSE; 
 		} else if(Objects.isNull(resDto.getPrecioKilo()) || 
 				EMPTY_STRING.contentEquals(resDto.getPrecioKilo())) {
-			resDto.setPrecioKilo("");
+			return Boolean.FALSE;
 		}
 		
 		/**
@@ -329,7 +330,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 				eliminarTildes(strProducto)
 				.toLowerCase().startsWith(
 						eliminarTildes(arProducto[0].trim())
-				.toLowerCase().concat(" "))) {
+				.toLowerCase().concat(SPACE_STRING))) {
 			return Boolean.TRUE;			
 		} else if(arProducto.length > 1) {			
 			

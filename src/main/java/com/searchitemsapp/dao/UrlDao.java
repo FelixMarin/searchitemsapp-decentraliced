@@ -84,7 +84,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			resultado = getParser(URL_PARSER).toListDTO(((List<TbSiaUrl>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		
@@ -135,7 +135,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			urlDto = getParser(URL_PARSER).toDTO(getEntityManager().find(TbSiaUrl.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 
@@ -193,7 +193,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			listResultadoDto = getParser(URL_PARSER).toListDTO(((List<TbSiaUrl>) query.getSingleResult()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		
@@ -247,7 +247,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			listUrlDto = getParser(URL_PARSER).toListDTO(((List<TbSiaUrl>) query.getSingleResult()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		
@@ -304,7 +304,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			urlDto = getParserObject().toListODTO((List<Object[]>) query.getResultList());
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		

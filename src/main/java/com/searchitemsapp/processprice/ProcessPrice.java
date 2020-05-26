@@ -30,15 +30,16 @@ public class ProcessPrice {
 	private static final String DEFAULT_STR_PRICE = "1000.00";
 	private static final String REGEX_NUMERO_DECIMAL = "(\\d*[,][0-9]*)|([0-9]{1,9})";
 	private static final String REGEX_INTEGER = "\\d+";
-	private static final String BARRA_KILO_GRAM = "/KG.";
-	private static final String KILO_GRAM = "kg";
+	private static final String BARRA_KILO_GRAM = "/kg";
 	private static final double DEFAULT_PRICE = 1000.00;
-	private static final String XXX = "xxx";
 	private static final String EMPTY_STRING = "";
 	private static final String NULL_STRING = "null";
 	private static final String PIPE_STRING = "|";
 	private static final String COMMA_STRING = ",";
 	private static final String DOT_STRING = ".";
+	private static final String DOUBLE_EMPTY_STRING = "  ";
+	private static final String SPACE_STRING = " ";
+	private static final String EURO_SYMBOL = "/Eur";
 	
 	/*
 	 * Constructor 
@@ -102,6 +103,13 @@ public class ProcessPrice {
 				i = convertirDouble(a.getPrecio())
 						.compareTo(convertirDouble(b.getPrecio()));
 				
+				/**
+				 * Se formatea el precio. Se quita la información
+				 * no relevante y se deja estandarizado para todos
+				 * los productos en el mismo formato.
+				 */
+				estilizarPrecios(a,b);
+				
 			} else if(a.getOrdenacion() == 2) {
 				
 				/**
@@ -110,16 +118,15 @@ public class ProcessPrice {
 				 * por defecto hará que el producto se vaya al final 
 				 * de los resultados.
 				 */
-				if(Objects.isNull(a.getPrecioKilo()) && 
-						EMPTY_STRING.contentEquals(a.getPrecioKilo()) || 
-						XXX.contentEquals(a.getPrecioKilo())) {
+				if(Objects.isNull(a.getPrecioKilo()) || 
+						EMPTY_STRING.contentEquals(a.getPrecioKilo())) {
 					a.setPrecioKilo(String.valueOf(DEFAULT_PRICE));
 				}
 				
 				/**
-				 * 
+				 * en el caso de que no vaya informado el precio por
+				 * kilo, se le pone el precio por unidad por defecto.
 				 */
-				comprobarPrecioKilo(a,b);
 				mismoPrecioYPrecioKilo(a, b);
 				
 				/**
@@ -134,14 +141,10 @@ public class ProcessPrice {
 				
 				/**
 				 * Se formatea el precio. Se quita la información
-				 * no relevante.
+				 * no relevante y se deja estandarizado para todos
+				 * los productos en el mismo formato.
 				 */
-				a.setPrecioKilo(extraerPrecioKilo(a.getPrecioKilo()));
-				b.setPrecioKilo(extraerPrecioKilo(b.getPrecioKilo()));
-				
-				if(String.valueOf(DEFAULT_PRICE).equals(a.getPrecioKilo())) {
-					a.setPrecioKilo(XXX);
-				}
+				estilizarPrecios(a,b);
 			}
 		} else {
 			UnsupportedAttributeException e = new UnsupportedAttributeException("Error en el parametro de ordenacion", String.valueOf(a.getOrdenacion()));
@@ -222,13 +225,19 @@ public class ProcessPrice {
 	   * Si la cadena contiene un "|", se extrae de la misma
 	   * la parte posterior de dicho "|" de la cadena. 
 	   */
-	  cadenaAux = extraerPrecioKilo(cadenaAux);
+	  if(cadenaAux.contains(PIPE_STRING)) {
+		  cadenaAux = cadenaAux.substring(
+				  cadenaAux.lastIndexOf(PIPE_STRING)+1,
+				  cadenaAux.length()).trim().
+				  replaceAll(DOUBLE_EMPTY_STRING,SPACE_STRING);
+	  }
 	  
 	  /**
 	   * Se comprueba si el valor extraido de la cadena es válido
 	   * aplicándole el patrón regex para un número decimal. 
 	   */
-	  Matcher mDecimal = Pattern.compile(REGEX_NUMERO_DECIMAL, Pattern.MULTILINE).matcher(cadenaAux);
+	  Matcher mDecimal = Pattern.compile(
+			  REGEX_NUMERO_DECIMAL, Pattern.MULTILINE).matcher(cadenaAux);
 	  
 	  /**
 	   * Si hay match, se asigna el valor a la variable de retorno.
@@ -333,46 +342,6 @@ public class ProcessPrice {
 	}
 	
 	/**
-	 * Si el valor del precio por kilo está vacío se pone 
-	 * el precio por unidad su lugar.
-	 * 
-	 * @param a
-	 * @param b
-	 */
-	private static void comprobarPrecioKilo(ResultadoDTO a, ResultadoDTO b) {
-		
-		int iIndexOfA = -1;
-		int iIndexOfB = -1;
-		
-		/**
-		 * En el caso de que el valor del precio/kilo no esté vacío,
-		 * se comprueba si dicho valor contiene el acronimo 'private static final Logger LOGGER'. Si
-		 * contiene dicho acronimo, es que la variable viene informada
-		 * con el valor correcto.
-		 * 
-		 */
-		if(EMPTY_STRING.contentEquals(a.getPrecioKilo()) &&
-				!EMPTY_STRING.contentEquals(a.getPrecio())) {
-			iIndexOfA = a.getPrecio().toLowerCase().indexOf(KILO_GRAM);
-		}
-		if(EMPTY_STRING.contentEquals(b.getPrecioKilo()) &&
-				!EMPTY_STRING.contentEquals(b.getPrecio())) {
-			iIndexOfB = b.getPrecio().toLowerCase().indexOf(KILO_GRAM);
-		}
-		
-		/**
-		 * Si el valor index es negativo, se setea 
-		 * el valor del precio por unidad al precio por kilo.
-		 */
-		if(iIndexOfA != -1) {
-			a.setPrecioKilo( a.getPrecio());
-		}		
-		if(iIndexOfB != -1) {
-			b.setPrecioKilo( b.getPrecio());
-		}
-	}
-	
-	/**
 	 * Si la variable de peso por kilo está vacía se le aplica
 	 * el valor del precio por unidad.
 	 * 
@@ -394,23 +363,27 @@ public class ProcessPrice {
 		}
 	}
 	
-    /**
-     * Si la cadena contiene un "|", se extrae de la misma
-     * la parte posterior del "|" de la cadena. 
-	 * 
-	 * @param cadena
-	 * @return String
-	 */
-	private static String extraerPrecioKilo(final String cadena) {
-
-		String res;
+	private static void estilizarPrecios(final ResultadoDTO a, final ResultadoDTO b) {
 		
-		  if(cadena.contains(PIPE_STRING)) {
-			  res = cadena.substring(cadena.lastIndexOf(PIPE_STRING)+1,cadena.length()).trim();
-		  } else {
-			  res = cadena;
-		  }
-		  
-		  return res;
+		/**
+		 * Se formatea el precio. Se quita la información
+		 * no relevante.
+		 */
+		a.setPrecio(extraerDecimal(a.getPrecio())
+				.concat(EURO_SYMBOL)
+				.replace(DOT_STRING,COMMA_STRING));	
+		
+		b.setPrecio(extraerDecimal(b.getPrecio())
+				.concat(EURO_SYMBOL)
+				.replace(DOT_STRING,COMMA_STRING));
+		
+		//precio Kilo
+		a.setPrecioKilo(extraerDecimal(a.getPrecioKilo())
+				.concat(BARRA_KILO_GRAM)
+				.replace(DOT_STRING,COMMA_STRING));	
+		
+		b.setPrecioKilo(extraerDecimal(b.getPrecioKilo())
+				.concat(BARRA_KILO_GRAM)
+				.replace(DOT_STRING,COMMA_STRING));
 	}
 }

@@ -83,7 +83,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 			resultado = getParser(SELECTORES_PARSER).toListDTO(((List<TbSiaSelectoresCss>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		
@@ -136,7 +136,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 			resultado = getParser(SELECTORES_PARSER).toDTO(getEntityManager().find(TbSiaSelectoresCss.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		
@@ -184,7 +184,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 			selectoresCssList = query.getResultList();
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		

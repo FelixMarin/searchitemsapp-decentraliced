@@ -56,12 +56,6 @@ import com.searchitemsapp.scraping.simply.ScrapingSimply;
 @SuppressWarnings("deprecation")
 public abstract class Scraping {
 	
-	private static final String DOT_STRING = ".";
-
-	private static final String COMMA_STRING = ",";
-
-	private static final String PIPE_STRING = "|";
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(Scraping.class);   
 	
 	/*
@@ -95,6 +89,9 @@ public abstract class Scraping {
 	private static final String RIGTH_PARENTHESIS = "\\)";
 	private static final String LEFT_PARENTHESIS = "\\(";
 	private static final String REGEX_PERCENT_DOLAR = "(\\%|\\$00)";
+	private static final String DOT_STRING = ".";
+	private static final String COMMA_STRING = ",";
+	private static final String PIPE_STRING = "|";
 	
 	/*
 	 * Variables Globales
@@ -1100,8 +1097,8 @@ public abstract class Scraping {
 		if(Objects.isNull(cadena)) {
 			return resultado;
 		}
-		resultado = cadena.replaceAll("€", "eur");
-		resultado = resultado.replaceAll("Kilo", "private static final Logger LOGGER.");
+		resultado = cadena.replaceAll("€", " eur");
+		resultado = resultado.replaceAll("Kilo", "kg");
 		resultado = resultado.replaceAll(" / ", "/");
 		resultado = resultado.replaceAll(" \"", "\"");
 		return resultado;

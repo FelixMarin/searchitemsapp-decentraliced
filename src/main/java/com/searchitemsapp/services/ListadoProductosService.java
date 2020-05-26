@@ -45,6 +45,11 @@ public class ListadoProductosService implements IFService<String,String> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListadoProductosService.class);  
 	
 	/*
+	 * Constantes Globales
+	 */
+	private static final String SPACE_STRING = " ";
+	
+	/*
 	 * Variables Globales
 	 */
 	private List<SelectoresCssDTO> listTodosSelectoresCss;
@@ -130,7 +135,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 */
 			StringBuilder debugMessage = new StringBuilder(10);
 			debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"));
-			debugMessage.append(" ");
+			debugMessage.append(SPACE_STRING);
 			debugMessage.append(didCategoria);
 
 			if(LOGGER.isInfoEnabled()) {
@@ -249,7 +254,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		}catch(IOException | NoResultException | InterruptedException | ExecutionException | URISyntaxException e) {			
 			
 			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}		
 			
 			Thread.currentThread().interrupt();		
@@ -328,7 +333,7 @@ public class ListadoProductosService implements IFService<String,String> {
 				 * Se escribe una traza de log indicado el resultado de la ejecución
 				 */
 				if(LOGGER.isInfoEnabled()) {
-					LOGGER.info(future.get().toString().concat(" ")
+					LOGGER.info(future.get().toString().concat(SPACE_STRING)
 							.concat(String.valueOf(future.isDone())));
 				}
 				
