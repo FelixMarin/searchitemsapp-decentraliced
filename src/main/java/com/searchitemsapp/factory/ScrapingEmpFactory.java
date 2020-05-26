@@ -1,7 +1,10 @@
 package com.searchitemsapp.factory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.searchitemsapp.dao.PaisDao;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
 import com.searchitemsapp.scraping.alcampo.ScrapingAlcampo;
 import com.searchitemsapp.scraping.caprabo.ScrapingCaprabo;
@@ -16,8 +19,8 @@ import com.searchitemsapp.scraping.lidl.ScrapingLidl;
 import com.searchitemsapp.scraping.mercadona.ScrapingMercadona;
 import com.searchitemsapp.scraping.simply.ScrapingSimply;
 import com.searchitemsapp.scraping.ulabox.ScrapingUlabox;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.StringUtils;
+
+
 
 /**
  * Clase Factory encargada de gestionar la creación de 
@@ -28,6 +31,25 @@ import com.searchitemsapp.util.StringUtils;
  *
  */
 public class ScrapingEmpFactory {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PaisDao.class);  
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String ID_EROSKI = "107";
+	private static final String ID_LIDL = "102";
+	private static final String ID_HIPERCOR = "103";
+	private static final String ID_ELCORTEINGLES = "111";
+	private static final String ID_DIA = "105";
+	private static final String ID_SIMPLY = "114";
+	private static final String ID_CONDIS = "110";
+	private static final String ID_ULABOX = "106";
+	private static final String ID_CARREFOUR = "104";
+	private static final String ID_ALCAMPO = "108";
+	private static final String ID_CAPRABO = "109";
+	private static final String ID_MERCADONA = "101";
+	private static final String ID_CONSUM = "116";
 
 	/*
 	 * Variables Globales
@@ -91,35 +113,61 @@ public class ScrapingEmpFactory {
 		 * Dependiendo del valor de entrada devolverá uno u otro objeto.
 		 * Nulo si el parámetro de entrada no coincide con lo esperado.
 		 */
-		if(StringUtils.desformatearEntero(StringUtils.ID_ALCAMPO) == idEmpresa) {
+		if(this.desformatearEntero(ID_ALCAMPO) == idEmpresa) {
 			return scrapingAlcapo;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_CAPRABO) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_CAPRABO) == idEmpresa) {
 			return scrapingCaprabo;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_CARREFOUR) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_CARREFOUR) == idEmpresa) {
 			return scrapingCarrefour;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_CONDIS) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_CONDIS) == idEmpresa) {
 			return scrapingCondis;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_CONSUM) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_CONSUM) == idEmpresa) {
 			return scrapingConsum;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_DIA) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_DIA) == idEmpresa) {
 			return scrapingDia;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_ELCORTEINGLES) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_ELCORTEINGLES) == idEmpresa) {
 			return scrapingECI;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_EROSKI) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_EROSKI) == idEmpresa) {
 			return scrapingEroski;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_HIPERCOR) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_HIPERCOR) == idEmpresa) {
 			return scrapingHipercor;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_MERCADONA) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_MERCADONA) == idEmpresa) {
 			return scrapingMercadona;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_SIMPLY) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_SIMPLY) == idEmpresa) {
 			return scrapingSimply;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_ULABOX) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_ULABOX) == idEmpresa) {
 			return scrapingUlabox;
-		} else if(StringUtils.desformatearEntero(StringUtils.ID_LIDL) == idEmpresa) {
+		} else if(this.desformatearEntero(ID_LIDL) == idEmpresa) {
 			return scrapingLidl;
 		}
 		
-		return (IFScrapingEmpresas) ClaseUtils.NULL_OBJECT;
+		return null;
+	}
+	
+	
+	/**
+	 * Convierte una cadena a tipo int
+	 *
+	 * @param pStrCadena
+	 * @return int
+	 */
+	private int desformatearEntero(String pStrCadena) {
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		int iResultado = 0;
+		if (!"".contentEquals(pStrCadena)) {
+			try {
+				iResultado = Integer.parseInt(pStrCadena);
+			} catch (NumberFormatException nfe) {
+				if(LOGGER.isInfoEnabled()) {
+					LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),nfe);
+				}
+			}
+		}
+		return iResultado;
 	}
 
 }

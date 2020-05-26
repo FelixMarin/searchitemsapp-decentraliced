@@ -6,8 +6,8 @@ import java.util.Objects;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaMarcas;
 import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.StringUtils;
+
+
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -104,13 +104,13 @@ public class PaisDTO implements IFdto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ClaseUtils.isNullObject(bolActivo)) ? 0 : bolActivo.hashCode());
-		result = prime * result + ((StringUtils.validateNull(desPais)) ? 0 : desPais.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(did)) ? 0 : did.hashCode());
-		result = prime * result + ((StringUtils.validateNull(nomPais)) ? 0 : nomPais.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaEmpresas)) ? 0 : tbSiaEmpresas.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaMarcas)) ? 0 : tbSiaMarcas.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaNomProductos)) ? 0 : tbSiaNomProductos.hashCode());		
+		result = prime * result + ((Objects.isNull(bolActivo)) ? 0 : bolActivo.hashCode());
+		result = prime * result + ((Objects.isNull(desPais)) ? 0 : desPais.hashCode());
+		result = prime * result + ((Objects.isNull(did)) ? 0 : did.hashCode());
+		result = prime * result + ((Objects.isNull(nomPais)) ? 0 : nomPais.hashCode());
+		result = prime * result + ((Objects.isNull(tbSiaEmpresas)) ? 0 : tbSiaEmpresas.hashCode());
+		result = prime * result + ((Objects.isNull(tbSiaMarcas)) ? 0 : tbSiaMarcas.hashCode());
+		result = prime * result + ((Objects.isNull(tbSiaNomProductos)) ? 0 : tbSiaNomProductos.hashCode());		
 		return result;
 	}
 

@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/webapp/WEB-INF/context-servicefactory-test.xml")
 @WebAppConfiguration
 public class ListaProductosControllerTest {
 	

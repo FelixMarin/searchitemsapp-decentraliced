@@ -1,8 +1,9 @@
 package com.searchitemsapp.dto;
 
+import java.util.Objects;
+
 import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaPais;
-import com.searchitemsapp.util.ClaseUtils;
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -72,10 +73,10 @@ public class MarcasDTO implements IFdto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((did == null) ? 0 : did.hashCode());
-		result = prime * result + ((nomMarca == null) ? 0 : nomMarca.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaCategoriasEmpresa)) ? 0 : tbSiaCategoriasEmpresa.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaPais)) ? 0 : tbSiaPais.hashCode());
+		result = prime * result + ((Objects.isNull(did)) ? 0 : did.hashCode());
+		result = prime * result + ((Objects.isNull(nomMarca)) ? 0 : nomMarca.hashCode());
+		result = prime * result + ((Objects.isNull(tbSiaCategoriasEmpresa)) ? 0 : tbSiaCategoriasEmpresa.hashCode());
+		result = prime * result + ((Objects.isNull(tbSiaPais)) ? 0 : tbSiaPais.hashCode());
 		return result;
 	}
 
@@ -83,19 +84,19 @@ public class MarcasDTO implements IFdto {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (Objects.isNull(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		MarcasDTO other = (MarcasDTO) obj;
-		if (did == ClaseUtils.NULL_OBJECT) {
-			if (other.did != null)
+		if (Objects.isNull(did)) {
+			if (Objects.nonNull(other.did))
 				return false;
 		} else if (!did.equals(other.did)) {
 			return false;
 		}
-		if (nomMarca == null) {
-			if (other.nomMarca != null)
+		if (Objects.isNull(nomMarca)) {
+			if (Objects.nonNull(other.nomMarca))
 				return false;
 		} else if (!nomMarca.equals(other.nomMarca)) {
 			return false;

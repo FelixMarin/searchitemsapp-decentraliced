@@ -1,18 +1,18 @@
 package com.searchitemsapp.scraping.eroski;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
-
 /**
  * Módulo de scraping especifico diseñado para la 
  * extracción de datos del sitio web de Eroski.
@@ -20,9 +20,18 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingEroski implements IFScrapingEmpresas{
+public class ScrapingEroski extends AbsScrapingEmpresas implements IFScrapingEmpresas{
 	
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingEroski.class);  
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String STRING_ENIE_MIN = "ñ";
+	private static final String ENIE_EROSKI = "$00f1";
+	private static final String[] ARRAY_TILDES_EROSKI = {"$00e1","$00e9","$00ed","$00f3","$00fa"};
+	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
+	
 	/*
 	 * Constructor 
 	 */
@@ -45,7 +54,9 @@ public class ScrapingEroski implements IFScrapingEmpresas{
 	public List<String> getListaUrls(final Document document, final UrlDTO urlDto,
 			final SelectoresCssDTO selectorCssDto) throws MalformedURLException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(), this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
@@ -59,19 +70,19 @@ public class ScrapingEroski implements IFScrapingEmpresas{
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.eroski"));
+		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.eroski"));
 		
 		/**
 		 * Se añade la URL base a la lista en formato string.
 		 */
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(10);
 		listaUrls.add(urlBase);
 		
 		/**
 		 * Se compone la lista de URLs que se van a solicitar 
 		 * al sitio web.
 		 */
-		for (int i = ClaseUtils.ONE_INT; i <= 20; i++) {
+		for (int i = 1; i <= 20; i++) {
 			listaUrls.add(urlBase.replace("=0&", "=".concat(String.valueOf(i).concat("&"))));
 		}
 		
@@ -80,8 +91,8 @@ public class ScrapingEroski implements IFScrapingEmpresas{
 		 * de resultados permitidos indicados en la variable
 		 * 'numeroresultados'.
 		 */
-		if(numresultados > ClaseUtils.ZERO_INT && numresultados <= listaUrls.size()) {
-			listaUrls = listaUrls.subList(ClaseUtils.ZERO_INT, numresultados);
+		if(numresultados > 0 && numresultados <= listaUrls.size()) {
+			listaUrls = listaUrls.subList(0, numresultados);
 		}		
 		
 		return listaUrls;
@@ -97,14 +108,16 @@ public class ScrapingEroski implements IFScrapingEmpresas{
 	 */
 	public String reemplazarCaracteres(final String producto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ScrapingEroski.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		String productoTratado = producto
-				.replace(StringUtils.STRING_ENIE_MIN, StringUtils.ENIE_EROSKI);
+				.replace(STRING_ENIE_MIN, ENIE_EROSKI);
 		
-		for (int i = ClaseUtils.ZERO_INT; i < StringUtils.arrayTildesEroski().length; i++) {
+		for (int i = 0; i < ARRAY_TILDES_EROSKI.length; i++) {
 			productoTratado = productoTratado
-					.replace(StringUtils.arrayTildesNormales()[i], StringUtils.arrayTildesEroski()[i]);
+					.replace(ARRAY_TILDES_NORMALES_MIN[i], ARRAY_TILDES_EROSKI[i]);
 		}
 		
 		return productoTratado;

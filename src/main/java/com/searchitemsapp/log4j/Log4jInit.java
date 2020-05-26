@@ -9,9 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.initcache.InitCache;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Clase encargada de configurar el módulo de trazas de log.
@@ -30,6 +31,7 @@ public class Log4jInit extends HttpServlet {
 	private static final String LOG4J_INIT_FILE = "log4j-init-file";
 	private static final String PROPERTIES_SIA = "PROPERTIES_SIA";	
 	private static final String CURRENT_FILE_SEPARATOR = System.getProperty("file.separator");
+	private static final Logger LOGGER = LoggerFactory.getLogger(Log4jInit.class);  
 
 	/**
 	 * Constructor
@@ -53,7 +55,9 @@ public class Log4jInit extends HttpServlet {
 		 * se indican la posicion actual del flujo, así como la fecha
 		 * y la hora actuales.
 		 */
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),Log4jInit.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene el valor de la variable de entorno
@@ -78,8 +82,10 @@ public class Log4jInit extends HttpServlet {
 			props.setProperty(LOG4J_APPENDER_FILE_FILE, logFile);
 			PropertyConfigurator.configure(props);
 		} catch (IOException e) {
-			LogsUtils.escribeLogError("Could not read configuration file [" + filePath + "].",InitCache.class,e);
-			LogsUtils.escribeLogError("Ignoring configuration file [" + filePath + "].",InitCache.class,e);
+			if(LOGGER.isInfoEnabled()) {
+				LOGGER.error("Could not read configuration file [" + filePath + "].",InitCache.class,e);
+				LOGGER.error("Ignoring configuration file [" + filePath + "].",InitCache.class,e);
+			}
 		}
 	}
 }

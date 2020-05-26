@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.searchitemsapp.dao.NomProductoDao;
 import com.searchitemsapp.dto.NomProductoDTO;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Implementación del dao {@link NomProductoDao}.
@@ -27,17 +27,17 @@ public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object
 
 	@Override
 	public NomProductoDTO findByDid(NomProductoDTO objeto) throws IOException {
-		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
 	}
 
 	@Override
 	public List<NomProductoDTO> findAll() throws IOException {
-		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
 	}
 
 	@Override
 	public List<NomProductoDTO> findByTbSia(NomProductoDTO r, Object t) throws IOException {
-		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
 	}
 
 }

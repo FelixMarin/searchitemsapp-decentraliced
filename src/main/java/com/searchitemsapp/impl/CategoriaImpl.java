@@ -2,8 +2,11 @@ package com.searchitemsapp.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -11,9 +14,6 @@ import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Implementación del dao {@link CategoriaDao}.
@@ -27,6 +27,8 @@ import com.searchitemsapp.util.StringUtils;
 @Aspect
 public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaImpl.class);  
+	
 	/*
 	 * Variables Globales. 
 	 */
@@ -49,8 +51,10 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	@Override
 	public List<CategoriaDTO> findAll() throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
 		return categoriaDao.findAll();
 	}
 	
@@ -64,25 +68,29 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	@Override
 	public CategoriaDTO findByDid(CategoriaDTO categoriaDto)  throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(categoriaDto)) {
-			return (CategoriaDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(categoriaDto)) {
+			return null;
 		}
 		
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.dto.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(categoriaDto.toString());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Realiza la consulta y devuelve el resultado.
@@ -97,6 +105,6 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	 */
 	@Override
 	public List<CategoriaDTO> findByTbSia(CategoriaDTO categoriaDTO, EmpresaDTO empresaDTO) throws IOException {
-		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
 	}
 }

@@ -3,8 +3,11 @@ package com.searchitemsapp.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -12,9 +15,6 @@ import com.searchitemsapp.dao.LoginDao;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.LoginDTO;
 import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Implementación del dao {@link LoginDao}.
@@ -25,10 +25,11 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("unchecked")
 @Aspect
 public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginImpl.class);  
+	
 	/*
 	 * Variables Globales
 	 */
@@ -56,8 +57,10 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	@Override
 	public List<LoginDTO> findAll() throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
 		/**
 		 * Ejeculta la llamada al dao y devuelve el resultado.
 		 */
@@ -74,25 +77,29 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	@Override
 	public LoginDTO findByDid(LoginDTO loginDTO)  throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si los parámetros de entrada son nulos, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(loginDTO)) {
-			return (LoginDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(loginDTO)) {
+			return null;
 		}
 		
 		/**
 		 * Traza de log que escribe identificador del login.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.login.dto.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(loginDTO.getDid());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Devuelve un objeto con el valor solicitado.
@@ -110,25 +117,29 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	@Override
 	public List<LoginDTO> findByTbSia(LoginDTO loginDTO, EmpresaDTO empresaDTO) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si los parámetros de entrada son nulos, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(loginDTO) || ClaseUtils.isNullObject(empresaDTO)) {
-			return (List<LoginDTO>) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(loginDTO) || Objects.isNull(empresaDTO)) {
+			return null;
 		}		
 		
 		/**
 		 * Traza de log que escribe identificador de la empresa.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(empresaDTO.getDid());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Se establce el id en el objeto.
@@ -139,7 +150,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		 * Se ejecuta la consulta y el resultado 
 		 * se asigna a la lista que será retornada.
 		 */
-		List<LoginDTO> listLoginDTO = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<LoginDTO> listLoginDTO = new ArrayList<>(10);
 		listLoginDTO.add(loginDao.findByTbSiaEmpresa(tbSiaEmpresa));
 		
 		return listLoginDTO;

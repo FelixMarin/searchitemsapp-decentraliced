@@ -5,8 +5,10 @@ import java.io.IOException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Servlet que se ejecuta al arrancar la aplicación y carga
@@ -20,7 +22,8 @@ public class InitCache implements ServletContextListener {
 	private static final String PROPERTIES_SIA = System.getenv("PROPERTIES_SIA");
 	private static final String CURRENT_FILE_SEPARATOR = System.getProperty("file.separator");
 	private static final String[] PROPERTIES_FILES = {"flow.properties","db.properties","log4j.properties"};
-	       
+	private static final Logger LOGGER = LoggerFactory.getLogger(InitCache.class);     
+	
     /**
      * Constructor
      * @see ServletContextListener#ServletContextListener()
@@ -37,7 +40,9 @@ public class InitCache implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),InitCache.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		try {
 			for (int i = 0; i < PROPERTIES_FILES.length; i++) {
@@ -47,7 +52,9 @@ public class InitCache implements ServletContextListener {
 			}
 
 		} catch (IOException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),InitCache.class,e);
+			if(LOGGER.isInfoEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}	
 	}
 
@@ -57,7 +64,10 @@ public class InitCache implements ServletContextListener {
 	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),InitCache.class);
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		for (int i = 0; i < PROPERTIES_FILES.length; i++) {
 			sce.getServletContext().removeAttribute(PROPERTIES_FILES[i]);

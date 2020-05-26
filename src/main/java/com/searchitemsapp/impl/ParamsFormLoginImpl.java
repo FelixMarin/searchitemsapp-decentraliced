@@ -2,17 +2,18 @@ package com.searchitemsapp.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.ParamsFormLoginDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Implementación del dao {@link ParamsFormLoginDao}.
@@ -23,9 +24,10 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("unchecked")
 @Aspect
 public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, CategoriaDTO> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsFormLoginImpl.class);  
 	
 	/*
 	 * Variable Globales
@@ -49,8 +51,10 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	 */
 	public List<ParamsLoginDTO> findAll() throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
 		/**
 		 * Ejeculta la llamada al dao y devuelve el resultado.
 		 */
@@ -68,25 +72,29 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	public List<ParamsLoginDTO> findByTbSia(ParamsLoginDTO paramsLoginDTO, 
 			CategoriaDTO categoriaDTO) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(paramsLoginDTO) || ClaseUtils.isNullObject(categoriaDTO)) {
-			return (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(paramsLoginDTO) || Objects.isNull(categoriaDTO)) {
+			return null;
 		}
 		
 		/**
 		 * Traza de log que escribe identificador de la URL.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(paramsLoginDTO.getTbSiaUrl().getDid());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Devuelve un objeto con el valor solicitado.
@@ -101,6 +109,6 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	 */
 	@Override
 	public ParamsLoginDTO findByDid(ParamsLoginDTO paramsLoginDTO) throws IOException {
-		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
 	}
 }

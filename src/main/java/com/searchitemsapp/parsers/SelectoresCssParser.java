@@ -3,10 +3,11 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Es un componente analizador de software que 
@@ -18,6 +19,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSelectoresCss> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssParser.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -34,7 +37,9 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	@Override
 	public SelectoresCssDTO toDTO(TbSiaSelectoresCss tbSiaSelectoresCss) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		SelectoresCssDTO selectoresCssDTO = new SelectoresCssDTO();
 		
@@ -64,7 +69,9 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	@Override
 	public TbSiaSelectoresCss toTbSia(SelectoresCssDTO selectoresCssDTO) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaSelectoresCss tbSiaSelectoresCss = new TbSiaSelectoresCss();
 
@@ -93,9 +100,11 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	 */
 	public List<SelectoresCssDTO> toListDTO(List<TbSiaSelectoresCss> lsTbSiaSelectoresCss) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<SelectoresCssDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<SelectoresCssDTO> listDto = new ArrayList<>(10); 
 		SelectoresCssDTO selectoresCssDTO;
 		
 		for (TbSiaSelectoresCss tbSiaSelectoresCss : lsTbSiaSelectoresCss) {
@@ -124,8 +133,10 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	@Override
 	public List<SelectoresCssDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(10);
 	}
 }

@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/webapp/WEB-INF/context-servicefactory-test.xml")
 @WebAppConfiguration
 public class CommonsPorpertiesTest {
 	

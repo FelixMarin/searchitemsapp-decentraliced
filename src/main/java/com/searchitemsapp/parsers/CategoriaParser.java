@@ -3,10 +3,11 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Es un componente analizador de software que 
@@ -17,6 +18,8 @@ import com.searchitemsapp.util.LogsUtils;
  *
  */
 public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEmpresa>  {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaParser.class);  
 	
 	/*
 	 *  Constructor
@@ -34,7 +37,9 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	@Override
 	public CategoriaDTO toDTO(TbSiaCategoriasEmpresa tbSiaPCategorias) {	
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),CategoriaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		CategoriaDTO categoriaPDto = new CategoriaDTO();
 		
@@ -58,7 +63,9 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	@Override
 	public TbSiaCategoriasEmpresa toTbSia(CategoriaDTO categoriaPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),CategoriaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaCategoriasEmpresa tbSiaPCategorias = new TbSiaCategoriasEmpresa();
 		
@@ -82,9 +89,11 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	@Override
 	public List<CategoriaDTO> toListDTO(List<TbSiaCategoriasEmpresa> lsCategorias) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),CategoriaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<CategoriaDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<CategoriaDTO> listDto = new ArrayList<>(10); 
 		CategoriaDTO categoriaPDto;
 		
 		for (TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa : lsCategorias) {
@@ -107,6 +116,6 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	 */
 	@Override
 	public List<CategoriaDTO> toListODTO(List<Object[]> objeto) {
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(10);
 	}
 }

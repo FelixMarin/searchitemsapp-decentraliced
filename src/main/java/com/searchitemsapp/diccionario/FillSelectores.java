@@ -2,7 +2,10 @@ package com.searchitemsapp.diccionario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.SelectoresCssDTO;
@@ -10,8 +13,8 @@ import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.factory.ParserFactory;
 import com.searchitemsapp.model.TbSiaSelectoresCss;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+
+
 
 /**
  * Clase utiliazada para obtinen los selectores correspondietes
@@ -23,6 +26,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 @SuppressWarnings("unchecked")
 public class FillSelectores {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(FillSelectores.class);  
 	
 	/*
 	 * Constantes Globales
@@ -52,14 +57,16 @@ public class FillSelectores {
 	 */
 	public void fillSelectoresCss(UrlDTO resDtoUrls, List<SelectoresCssDTO> listTodosElementNodes) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se comprueba que los parametros no sean nulos.
 		 */
-		if(!ClaseUtils.isNullObject(resDtoUrls) && 
-				!ClaseUtils.isNullObject(resDtoUrls.getTbSiaEmpresa()) &&
-				!ClaseUtils.isNullObject(listTodosElementNodes) &&
+		if(Objects.nonNull(resDtoUrls) && 
+				Objects.nonNull(resDtoUrls.getTbSiaEmpresa()) &&
+				Objects.nonNull(listTodosElementNodes) &&
 				!listTodosElementNodes.isEmpty()) {
 			
 			/**
@@ -68,8 +75,8 @@ public class FillSelectores {
 			 * otra con un objeto tabja de selectores.
 			 */
 			Integer empDidEnUlrs = resDtoUrls.getTbSiaEmpresa().getDid();
-			List<SelectoresCssDTO> listElementNodesDTOPorEmpresa = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
-			List<TbSiaSelectoresCss> listTbSiaSelectoresCssPorEmpresa = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+			List<SelectoresCssDTO> listElementNodesDTOPorEmpresa = new ArrayList<>(10);
+			List<TbSiaSelectoresCss> listTbSiaSelectoresCssPorEmpresa = new ArrayList<>(10);
 			
 			/**
 			 * Se recorre la lista con todos los selectores.

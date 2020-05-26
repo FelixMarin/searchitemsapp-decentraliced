@@ -3,10 +3,13 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+
+
 
 /**
  * Es un componente analizador de software que 
@@ -17,6 +20,8 @@ import com.searchitemsapp.util.LogsUtils;
  *
  */
 public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaParser.class);  
 	
 	/*
 	 * Constructor
@@ -34,7 +39,9 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	@Override
 	public EmpresaDTO toDTO(TbSiaEmpresa tbSiaPEmpresas) {	
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),EmpresaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		EmpresaDTO empresaPDto = new EmpresaDTO();
 		
@@ -60,7 +67,9 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	@Override
 	public TbSiaEmpresa toTbSia(EmpresaDTO empresaPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),EmpresaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaEmpresa tbSiaPEmpresas = new TbSiaEmpresa();
 		
@@ -85,9 +94,11 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	@Override
 	public List<EmpresaDTO> toListDTO(List<TbSiaEmpresa> lsEmpresas) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),EmpresaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<EmpresaDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<EmpresaDTO> listDto = new ArrayList<>(10); 
 		EmpresaDTO empresaPDto;
 		
 		for (TbSiaEmpresa empresaDto : lsEmpresas) {
@@ -113,8 +124,10 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	@Override
 	public List<EmpresaDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),EmpresaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(10);
 	}
 }

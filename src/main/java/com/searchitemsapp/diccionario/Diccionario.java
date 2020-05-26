@@ -2,8 +2,12 @@ package com.searchitemsapp.diccionario;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.Normalizer;
 import java.util.List;
+import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -14,9 +18,6 @@ import com.searchitemsapp.impl.UrlImpl;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.scraping.ScrapingDiccionario;
 import com.searchitemsapp.scraping.UrlTreatment;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * 
@@ -31,7 +32,19 @@ import com.searchitemsapp.util.StringUtils;
  */
 public class Diccionario {
 	
-	/**
+	private static final Logger LOGGER = LoggerFactory.getLogger(Diccionario.class);  
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String STRING_ENIE_MAY = "Ñ";
+	private static final String UNICODE_ENIE = "u00f1";
+	private static final char CHAR_ENIE_COD = '\u00f1';
+	private static final String REEMPLAZABLE_TILDES = "[\\p{InCombiningDiacriticalMarks}]";
+	private static final String STRING_ENIE_MIN = "ñ";
+	
+	
+	/*
 	 * Variables
 	 */
 	private static UrlDTO urlDTODiccionario;
@@ -73,7 +86,9 @@ public class Diccionario {
 		 * Traza en el fichero de logs que indica por donde
 		 * pasa el flujo del aplicación.
 		 */
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Variables de ambito local
@@ -82,13 +97,13 @@ public class Diccionario {
 		String urlAux;
 		String strResultadoProducto;
 		UrlDTO urlDtoAux;
-		StringBuilder strResultado = StringUtils.getNewStringBuilder();
+		StringBuilder strResultado = new StringBuilder(10);
 		
 		/**
 		 * Si el nombre del producto consta de más de una palabra,
 		 * se divide y se añaden a un array.
 		 */
-		String[] arPalabras = producto.split(StringUtils.SPACE_STRING);
+		String[] arPalabras = producto.split(" ");
 		
 		/**
 		 * En este loop, se realiza la comprobación de cada una
@@ -102,7 +117,7 @@ public class Diccionario {
 			 * se carga una vez y ya se queda cargado mientras la aplicacion
 			 * esté en funcionamiento.
 			 */
-			if(ClaseUtils.isNullObject(urlDTODiccionario)) {
+			if(Objects.isNull(urlDTODiccionario)) {
 				urlDtoAux = new UrlDTO();
 				urlDtoAux.setDid(Integer.parseInt(CommonsPorperties.getValue("flow.value.url.did.diccionario")));
 				urlDtoAux.setTbSiaEmpresa(new TbSiaEmpresa());
@@ -141,9 +156,9 @@ public class Diccionario {
 			 * Si el resultado de la validación es positivo, a partir de este momento 
 			 * la palabra resultante será la utilizada para realizar la busqueda.
 			 */
-			strResultado.append(StringUtils.NULL_STRING==strResultadoProducto?
+			strResultado.append("null"==strResultadoProducto?
 					producto:strResultadoProducto)
-					.append(StringUtils.SPACE_STRING);
+					.append(" ");
 		}
 		
 		/**
@@ -151,9 +166,9 @@ public class Diccionario {
 		 * con tilde y sin tilde, se dará como invalia y se dejará la 
 		 * palabra original.
 		 */
-		if(StringUtils.isEmpty(strResultado.toString()) ||
-				!StringUtils.eliminarTildes(strResultado.toString().trim()).equalsIgnoreCase(producto)) {
-			strResultado = StringUtils.getNewStringBuilder().append(producto);
+		if("".contentEquals(strResultado.toString()) ||
+				!eliminarTildes(strResultado.toString().trim()).equalsIgnoreCase(producto)) {
+			strResultado = new StringBuilder(10).append(producto);
 		}
 		
 		/**
@@ -165,7 +180,7 @@ public class Diccionario {
 	/**
 	 * Método set para añadir un nuevo objeto URL DTO.
 	 */
-	public static void setResultadoDTODiccionario(UrlDTO urlDTODiccionario) {
+	private void setResultadoDTODiccionario(UrlDTO urlDTODiccionario) {
 		Diccionario.urlDTODiccionario = urlDTODiccionario;
 	}
 	
@@ -174,7 +189,7 @@ public class Diccionario {
 	 * 
 	 * @param urlDto
 	 */
-	public static void setUrlDto(UrlDTO urlDto) {
+	private void setUrlDto(UrlDTO urlDto) {
 		Diccionario.urlDto = urlDto;
 		setTbSiaSelectoresCss(Diccionario.urlDto);
 	}
@@ -186,11 +201,29 @@ public class Diccionario {
 	 * @param urlDto
 	 */
 	private static void setTbSiaSelectoresCss(UrlDTO urlDto) {
-		if(!ClaseUtils.isNullObject(urlDto) &&
-				!ClaseUtils.isNullObject(Diccionario.urlDto.getTbSiaEmpresa())) {
+		if(Objects.nonNull(urlDto) &&
+				Objects.nonNull(Diccionario.urlDto.getTbSiaEmpresa())) {
 			urlDto.setTbSiaSelectoresCsses(
 					Diccionario.urlDto.getTbSiaEmpresa().getTbSiaSelectoresCsses());
 		}
+	}
+	
+	private String eliminarTildes(final String cadena) {
+		
+		if(Objects.isNull(cadena)) {
+			return "null";
+		}
+		
+		if(cadena.indexOf(CHAR_ENIE_COD) != -1) {
+			return cadena;
+		}
+		
+		String resultado = cadena.replace(STRING_ENIE_MAY, UNICODE_ENIE);
+		resultado = Normalizer.normalize(resultado.toLowerCase(), Normalizer.Form.NFD);
+		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, "");
+		resultado = resultado.replace(UNICODE_ENIE, STRING_ENIE_MIN);
+		return Normalizer.normalize(resultado, Normalizer.Form.NFC);
+		
 	}
 
 }

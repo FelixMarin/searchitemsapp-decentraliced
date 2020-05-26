@@ -3,10 +3,11 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.model.TbSiaPais;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Es un componente analizador de software que 
@@ -17,6 +18,8 @@ import com.searchitemsapp.util.LogsUtils;
  *
  */
 public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PaisParser.class);  
 	
 	/*
 	 * Constructor
@@ -33,7 +36,9 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	 */
 	public PaisDTO toDTO(TbSiaPais tbSiaPPais) {	
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		PaisDTO paisPDto = new PaisDTO();
 		
@@ -56,7 +61,9 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	 */
 	public TbSiaPais toTbSia(PaisDTO paisPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaPais tbSiaPPais = new TbSiaPais();
 		
@@ -77,9 +84,11 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	@Override
 	public List<PaisDTO> toListDTO(List<TbSiaPais> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(10);
 	}
 	
 	/**
@@ -88,8 +97,10 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	@Override
 	public List<PaisDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(10);
 	}
 }

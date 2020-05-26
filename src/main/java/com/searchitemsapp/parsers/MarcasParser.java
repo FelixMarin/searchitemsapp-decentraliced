@@ -3,10 +3,12 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.model.TbSiaMarcas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Es un componente analizador de software que 
@@ -18,6 +20,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaDao.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -33,7 +37,9 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	 */
 	public MarcasDTO toDTO(TbSiaMarcas tbSiaMarcas) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),MarcasParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		MarcasDTO marcasDto = new MarcasDTO();
 		
@@ -51,7 +57,9 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	 */
 	public TbSiaMarcas toTbSia(MarcasDTO marcasDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),MarcasParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaMarcas tbSiaMarcas = new TbSiaMarcas();
 		
@@ -69,9 +77,11 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	 */
 	public List<MarcasDTO> toListDTO(List<TbSiaMarcas> lsTbSiaMarcas) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),MarcasParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<MarcasDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<MarcasDTO> listDto = new ArrayList<>(10); 
 		MarcasDTO marcasDto;
 		
 		for (TbSiaMarcas tbSiaMarcas : lsTbSiaMarcas) {
@@ -90,8 +100,10 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	@Override
 	public List<MarcasDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),MarcasParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(10);
 	}
 }

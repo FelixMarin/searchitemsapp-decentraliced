@@ -2,10 +2,13 @@ package com.searchitemsapp.dao;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -13,9 +16,7 @@ import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.repository.IFEmpresaRepository;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -28,6 +29,8 @@ import com.searchitemsapp.util.StringUtils;
 @SuppressWarnings("unchecked")
 @Repository
 public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements IFEmpresaRepository {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaDao.class);     
 	
 	private static final String EMPRESA_PARSER = "EMPRESA_PARSER";
 
@@ -43,14 +46,16 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	@Override
 	public List<EmpresaDTO> findAll() throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<EmpresaDTO> resultado = (List<EmpresaDTO>) ClaseUtils.NULL_OBJECT;
+		List<EmpresaDTO> resultado = null;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.all"));		
 
 		/**
@@ -69,7 +74,9 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		try {
 			resultado = getParser(EMPRESA_PARSER).toListDTO(((List<TbSiaEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isInfoEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;
@@ -84,27 +91,32 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	@Override
 	public EmpresaDTO findByDid(Integer did) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(did)) {
-			return (EmpresaDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(did)) {
+			return null;
 		}
 		
-		EmpresaDTO empresaDto = (EmpresaDTO) ClaseUtils.NULL_OBJECT;
+		EmpresaDTO empresaDto = null;
 		
 		/**
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
-		debugMessage.append(did);		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		debugMessage.append(" ");
+		debugMessage.append(did);	
+		
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
@@ -113,7 +125,9 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		try {
 			empresaDto = getParser(EMPRESA_PARSER).toDTO(getEntityManager().find(TbSiaEmpresa.class, did));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return empresaDto;
@@ -129,15 +143,17 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	@Override
 	public List<EmpresaDTO> findByTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<EmpresaDTO> resultado = (List<EmpresaDTO>) ClaseUtils.NULL_OBJECT;
+		List<EmpresaDTO> resultado = null;
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(tbSiaCategoriasEmpresa)) {
+		if(Objects.isNull(tbSiaCategoriasEmpresa)) {
 			return resultado;
 		}
 		
@@ -145,16 +161,19 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.categoria.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(tbSiaCategoriasEmpresa.getDid());	
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.categoria"));
 		
 		/**
@@ -174,7 +193,10 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		try {
 			resultado = getParser(EMPRESA_PARSER).toListDTO(((List<TbSiaEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;
@@ -190,24 +212,26 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	 * @exception IOException
 	 */
 	@Override
-	public List<EmpresaDTO> findByTbSiaCategoriasEmpresa(Integer didEmpresa, Integer didCategoriaEmpresa) throws IOException {
+	public List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(didEmpresa) || ClaseUtils.isNullObject(didCategoriaEmpresa)) {
-			return (List<EmpresaDTO>) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(didEmpresa) || Objects.isNull(tbSiaCategoriasEmpresa)) {
+			return null;
 		}
 		
-		List<EmpresaDTO> listEmpresaDto = (List<EmpresaDTO>) ClaseUtils.NULL_OBJECT;
+		List<EmpresaDTO> listEmpresaDto = null;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.empresa.y.categoria"));
 			
 		/**
@@ -216,7 +240,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString());		
 		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);	
-		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), didCategoriaEmpresa);	
+		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), tbSiaCategoriasEmpresa.getDid());	
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
@@ -224,7 +248,9 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		try {
 			listEmpresaDto = getParser(EMPRESA_PARSER).toListDTO(((List<TbSiaEmpresa>) q.getSingleResult()));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return listEmpresaDto;

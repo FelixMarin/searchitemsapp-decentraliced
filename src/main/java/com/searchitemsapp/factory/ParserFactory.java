@@ -2,7 +2,6 @@ package com.searchitemsapp.factory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import com.searchitemsapp.parsers.CategoriaParser;
 import com.searchitemsapp.parsers.EmpresaParser;
@@ -15,7 +14,7 @@ import com.searchitemsapp.parsers.ParamsFormLoginParser;
 import com.searchitemsapp.parsers.ParamsHeadersLoginParser;
 import com.searchitemsapp.parsers.SelectoresCssParser;
 import com.searchitemsapp.parsers.UrlParser;
-import com.searchitemsapp.util.ClaseUtils;
+
 
 /**
  * Clase Factory encargada de gestionar la creación de 
@@ -91,8 +90,8 @@ public class ParserFactory {
 	 */
 	public IFParser<?, ?> getParser(String nomParser) {
 		
-		if(StringUtils.isEmpty(nomParser)) {
-			return (IFParser<?, ?>) ClaseUtils.NULL_OBJECT;
+		if("".contentEquals(nomParser)) {
+			return null;
 		}
 		
 		if(URL_PARSER.equals(nomParser)) {
@@ -117,6 +116,6 @@ public class ParserFactory {
 			return paramsHeadersParser;
 		}
 		
-		return (IFParser<?, ?>) ClaseUtils.NULL_OBJECT;
+		return null;
 	}
 }

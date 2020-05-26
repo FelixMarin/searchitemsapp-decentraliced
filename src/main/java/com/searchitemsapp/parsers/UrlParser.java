@@ -2,11 +2,13 @@ package com.searchitemsapp.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.model.TbSiaUrl;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Es un componente analizador de software que 
@@ -16,8 +18,9 @@ import com.searchitemsapp.util.LogsUtils;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("unchecked")
 public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UrlParser.class);  
 	
 	/*
 	 * Constructor
@@ -34,7 +37,9 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 */
 	public UrlDTO toDTO(TbSiaUrl tbSiaPUrl) {	
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		UrlDTO urlPDto = new UrlDTO();
 		
@@ -57,7 +62,9 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 */
 	public TbSiaUrl toTbSia(UrlDTO urlPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaUrl tbSiaPUrl = new TbSiaUrl();
 		
@@ -81,9 +88,11 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 */
 	public List<UrlDTO> toListDTO(List<TbSiaUrl> lsUrls) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<UrlDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<UrlDTO> listDto = new ArrayList<>(10); 
 		UrlDTO urlPDto;
 		
 		for (TbSiaUrl urlDto : lsUrls) {
@@ -110,18 +119,20 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 */
 	public List<UrlDTO> toListODTO(List<Object[]> urlList) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		UrlDTO urlDto;
 		
-		if(ClaseUtils.isNullObject(urlList)) {
-			return (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(urlList)) {
+			return (List<UrlDTO>) null;
 		}
 		
-		List<UrlDTO> listUrlDto = (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
+		List<UrlDTO> listUrlDto = null;
 		
 		if (!urlList.isEmpty()){ 
-			listUrlDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+			listUrlDto = new ArrayList<>(10);
 			for (Object[] objects : urlList) {
 				urlDto = new UrlDTO();
 				urlDto.setNomUrl(String.valueOf(objects[0]));

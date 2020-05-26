@@ -1,18 +1,19 @@
 package com.searchitemsapp.dao;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.model.TbSiaPais;
 import com.searchitemsapp.repository.IFPaisRepository;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -25,6 +26,8 @@ import com.searchitemsapp.util.StringUtils;
 @Repository
 public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRepository {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(PaisDao.class);     
+	
 	/*
 	 * Constantes Globales
 	 */
@@ -46,27 +49,32 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 	@Override
 	public PaisDTO findByDid(Integer did) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(did)) {
-			return (PaisDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(did)) {
+			return null;
 		}
 		
-		PaisDTO paisDto = (PaisDTO) ClaseUtils.NULL_OBJECT;
+		PaisDTO paisDto = null;
 		
 		/**
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
-		debugMessage.append(did);		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		debugMessage.append(" ");
+		debugMessage.append(did);	
+		
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
@@ -75,7 +83,9 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 		try {
 			paisDto = getParser(PAIS_PARSER).toDTO(getEntityManager().find(TbSiaPais.class, did));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return paisDto;

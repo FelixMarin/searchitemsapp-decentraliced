@@ -2,10 +2,13 @@ package com.searchitemsapp.dao;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -13,9 +16,6 @@ import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsFormLogin;
 import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.repository.IFParamsFormLogin;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -28,6 +28,8 @@ import com.searchitemsapp.util.StringUtils;
 @SuppressWarnings("unchecked")
 @Repository
 public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsFormLogin> implements IFParamsFormLogin {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsFormLoginDao.class);     
 	
 	/*
 	 * Constantes Globales
@@ -50,14 +52,16 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 	@Override
 	public List<ParamsLoginDTO> findAll() throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<ParamsLoginDTO> resultado = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
+		List<ParamsLoginDTO> resultado = null;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.all"));
 		
 		/**
@@ -76,7 +80,9 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		try {
 			resultado = getParser(PARAMS_FORM_PARSER).toListDTO(((List<TbSiaParamsFormLogin>) q.getResultList()));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;		
@@ -92,24 +98,25 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 	@Override
 	public List<ParamsLoginDTO> findByTbSiaUrl(TbSiaUrl tbSiaUrl) throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(tbSiaUrl)) {
-			return (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(tbSiaUrl)) {
+			return null;
 		}
 		
-		List<ParamsLoginDTO> listParamsLoginDto = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
-		
+		List<ParamsLoginDTO> listParamsLoginDto = null;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.by.url"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsFormLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), tbSiaUrl.getDid());
@@ -122,7 +129,9 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		try {
 			listParamsLoginDto = getParser(PARAMS_FORM_PARSER).toListDTO(formLoginList);
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return listParamsLoginDto;

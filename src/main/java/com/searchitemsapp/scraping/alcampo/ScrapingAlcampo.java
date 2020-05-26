@@ -1,20 +1,22 @@
 package com.searchitemsapp.scraping.alcampo;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -23,12 +25,15 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingAlcampo implements IFScrapingEmpresas{
+public class ScrapingAlcampo extends AbsScrapingEmpresas implements IFScrapingEmpresas{
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingAlcampo.class);   
 	
 	/*
 	 * Constantes Globales
 	 */
 	private static final String PATTERN = ".*&page=([0-9]+)";
+	private static final String ZERO_STRING = "0";
 
 	/*
 	 * Constructor
@@ -52,7 +57,9 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 	public List<String> getListaUrls(Document document, UrlDTO urlDto, 
 			SelectoresCssDTO selectorCssDto) throws MalformedURLException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
@@ -66,23 +73,23 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		 * Se obbtiene del documento el número de resultados. 
 		 */
 		String selectorPaginacion = selectorCssDto.getSelPaginacion();	
-		String strPaginacion = StringUtils.ZERO_STRING;
+		String strPaginacion = ZERO_STRING;
 		
 		/**
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */		
-		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.alcampo"));
+		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.alcampo"));
 		
 		/**
 		 * Se crea una lista de Strings.
 		 */
-		List<String> liSelectorAtr = StringUtils.getNewListString();
+		List<String> liSelectorAtr = new ArrayList<>(10);
 		
 		/**
 		 * Se divide el selector de paginación.
 		 */
-		StringTokenizer st = new StringTokenizer(selectorPaginacion,StringUtils.PIPE);  
+		StringTokenizer st = new StringTokenizer(selectorPaginacion,"|");  
 		
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
@@ -95,8 +102,8 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		 * Se obtienen todos los elementos que interesan del documento
 		 * utilizando el selector css.
 		 */
-		Elements elements = document.select(liSelectorAtr.get(ClaseUtils.ZERO_INT));
-		List<String> listaUrls = StringUtils.getNewListString();
+		Elements elements = document.select(liSelectorAtr.get(0));
+		List<String> listaUrls = new ArrayList<>(10);
 		
 		/**
 		 * Si la lista de elementos no está vacía
@@ -112,19 +119,19 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		 * Se obtiene el último elemento. Este último elemento
 		 * contiene el número máximo de paginas de resultados.
 		 */
-		String ultimoElemento = elements.get(elements.size()-1).attr(liSelectorAtr.get(ClaseUtils.ONE_INT));
+		String ultimoElemento = elements.get(elements.size()-1).attr(liSelectorAtr.get(1));
 		
 		/**
 		 * Se comprueba si coincide con el patrón predefinido.
 		 */
-		Matcher m = StringUtils.matcher(PATTERN, ultimoElemento);
+		Matcher m = Pattern.compile(PATTERN).matcher(ultimoElemento);
 		
 		/**
 		 * Si hay coincidencia en la validación contra el patrón
 		 * se asigna el valor a la variable de paginación.
 		 */
 		if(m.find()) {
-			strPaginacion=m.group(ClaseUtils.ONE_INT);
+			strPaginacion=m.group(1);
 		}
 		
 		/**
@@ -133,12 +140,12 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		 * el sitio web. Se formatea a numérico y se asigna a 
 		 * una variable.
 		 */
-		int intPaginacion = StringUtils.desformatearEntero(strPaginacion.trim());
+		int intPaginacion = desformatearEntero(strPaginacion.trim());
 		
 		/**
 		 * Se crean tantas URLs como indique el número de paginación.
 		 */
-		for (int i = ClaseUtils.TWO_INT; i <= intPaginacion; i++) {
+		for (int i = 2; i <= intPaginacion; i++) {
 			listaUrls.add(urlBase.replace("&page=1", "&page=".concat(String.valueOf(i))));
 		}
 		
@@ -148,11 +155,10 @@ public class ScrapingAlcampo implements IFScrapingEmpresas{
 		 * Este parámetro sed configura en el fichero de
 		 * properties.
 		 */
-		if(numresultados > ClaseUtils.ZERO_INT && numresultados <= listaUrls.size()) {
-			listaUrls = listaUrls.subList(ClaseUtils.ZERO_INT, numresultados);
+		if(numresultados > 0 && numresultados <= listaUrls.size()) {
+			listaUrls = listaUrls.subList(0, numresultados);
 		}		
 		
 		return listaUrls;
 	}
-
 }

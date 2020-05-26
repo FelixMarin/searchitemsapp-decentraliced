@@ -1,4 +1,4 @@
-package com.searchitemsapp.util;
+package com.searchitemsapp.proxy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,8 +6,13 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+
  /**
   * Esta clase establece el proxy, a través del cual,
   * se realizara el rastreo de las paginas web de las 
@@ -18,31 +23,47 @@ import com.searchitemsapp.commons.CommonsPorperties;
   */
 public class ProxyConnection {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProxyConnection.class); 
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String GET = "GET";
+	private static final String ACCEPT = "Accept";
+	private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+	
+	/*
+	 * Constructor
+	 */
+	public ProxyConnection() {
+		super();
+	}
+
 	/**
 	 * Método que establece una conexion con el proxy indicado
 	 * en el fichero de propiedades.
 	 * 
 	 */
-	public static void establecerProxy() {
+	public void establecerProxy() {
 		
-		StringBuilder sbResultado = StringUtils.getNewStringBuilder();
-		HttpURLConnection conn = (HttpURLConnection) ClaseUtils.NULL_OBJECT;
-		String[] arStrIpPort = (String[]) ClaseUtils.NULL_OBJECT;
+		StringBuilder sbResultado = new StringBuilder(10);
+		HttpURLConnection conn = null;
+		String[] arStrIpPort = null;
 		String output;
-				
+		
 		try {
 			URL url = new URL(CommonsPorperties.getValue("flow.value.url.ws.proxy"));
 			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod(StringUtils.GET);
-			conn.setRequestProperty(StringUtils.ACCEPT, StringUtils.ACCEPT_VALUE);
+			conn.setRequestMethod(GET);
+			conn.setRequestProperty(ACCEPT, ACCEPT_VALUE);
 
-			if (conn.getResponseCode() != ClaseUtils.STATUS_OK) {
+			if (conn.getResponseCode() != 200) {
 				throw new ConnectException("HTTP error code : " + conn.getResponseCode());
 			}
 			
 			try (BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())))) {
 				
-				while ((output = br.readLine()) != null) {
+				while (Objects.nonNull(output = br.readLine())) {
 					sbResultado.append(output);
 				}
 			}
@@ -51,14 +72,16 @@ public class ProxyConnection {
 				arStrIpPort = sbResultado.toString().split(":");
 			}
 		} catch (IOException e) {
-			LogsUtils.escribeLogError("Error en ProxyConnection.getProxyIPfromWebService()", ProxyConnection.class, e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		} finally  {
-			if(!ClaseUtils.isNullObject(conn)) {
+			if(Objects.nonNull(conn)) {
 				conn.disconnect();
 			}
 		}
 		
-		if(ClaseUtils.isNullObject(arStrIpPort)) {
+		if(Objects.isNull(arStrIpPort)) {
 			arStrIpPort = new String[2];
 			arStrIpPort[0] = CommonsPorperties.getValue("flow.value.valor.ip"); 
 			arStrIpPort[1] = CommonsPorperties.getValue("flow.value.valor.port");
@@ -67,7 +90,9 @@ public class ProxyConnection {
 		System.setProperty("https.proxyHost",arStrIpPort[0]);
 		System.setProperty("https.proxyPort",arStrIpPort[1]);
 		
-		LogsUtils.escribeLogDebug("Proxy IP:" + arStrIpPort[0] + ":" + arStrIpPort[1], JsonUtil.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info("Proxy IP:" + arStrIpPort[0] + ":" + arStrIpPort[1]);
+		}
 		
 		System.setProperty("java.net.useSystemProxies", "true");
 	}

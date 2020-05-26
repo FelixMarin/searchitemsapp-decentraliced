@@ -1,6 +1,7 @@
 package com.searchitemsapp.scraping.mercadona;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -10,15 +11,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -28,18 +29,31 @@ import com.searchitemsapp.util.StringUtils;
  *
  */
 @SuppressWarnings("deprecation")
-public class ScrapingMercadona implements IFScrapingEmpresas {
+public class ScrapingMercadona extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingMercadona.class);  
 
 	/*
 	 * Constantes Globales
 	 */
 	private static final String LT_EM_GT_CIERRE = "&lt;/em&gt;";
+	private static final String SEPARADOR_URL = "%20";
 	private static final String LT_EM_GT = "&lt;em&gt;";
 	private static final String PARAMS_QUERY = "{\"params\":\"query=";
 	private static final String CLICK_ANALYTICS_TRUE = "&clickAnalytics=true\"}";
 	private static final String TAG_FIN_ROOT = "</root>";
 	private static final String TAG_INI_ROOT = "<root>";
+	private static final String EMPTY_STRING = "";
+	private static final String CABECERA_XML = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>";
 	private static final String REFERRER_MERCADONA = "https://tienda.mercadona.es/";
+	private static final String AGENT_ALL = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36";
+	private static final String ACCEPT_LANGUAGE = "Accept-Language";	
+	private static final String ES_ES = "es-ES,es;q=0.8";
+	private static final String ACCEPT_ENCODING = "Accept-Encoding";
+	private static final String ACCEPT = "Accept";
+	private static final String ACEPT_VALUE_JSON = "application/json";
+	private static final String GZIP_DEFLATE_SDCH = "gzip, deflate, sdch";
+	
 	private static final String URL_ALL_PRODUCTS = CommonsPorperties
 			.getValue("flow.value.url.mercadona.all.products");
 
@@ -66,7 +80,9 @@ public class ScrapingMercadona implements IFScrapingEmpresas {
 			final SelectoresCssDTO selectorCssDto)
 			throws MalformedURLException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ScrapingMercadona.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
@@ -79,7 +95,7 @@ public class ScrapingMercadona implements IFScrapingEmpresas {
 		/**
 		 * Se asigna la url base a la lista.
 		 */
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(10);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;
@@ -95,7 +111,9 @@ public class ScrapingMercadona implements IFScrapingEmpresas {
 	 */
 	public Document getDocument(final String url, final String body) {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ScrapingMercadona.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se crea un objeto JSON a partir del body
@@ -111,26 +129,26 @@ public class ScrapingMercadona implements IFScrapingEmpresas {
 		/**
 		 * Del XML se reemplazan los puntos por comas.
 		 */
-		xml = xml.replace(StringUtils.DOT_STRING, StringUtils.COMMA_STRING);
+		xml = xml.replace(".", ",");
 		
 		/**
 		 * Si el XML no está vacío, se termina el proceso
 		 * y retorna nulo. En otro caso, el XML es limpiado
 		 * de caracteres especiales.
 		 */
-		if(StringUtils.isEmpty(xml)) {
-			return (Document) ClaseUtils.NULL_OBJECT;
+		if(EMPTY_STRING.contentEquals(xml)) {
+			return null;
 		} else {
-			xml = StringUtils.CABECERA_XML.concat(TAG_INI_ROOT).concat(xml).concat(TAG_FIN_ROOT);
-			xml = xml.replace(LT_EM_GT, StringUtils.EMPTY_STRING);
-			xml = xml.replace(LT_EM_GT_CIERRE, StringUtils.EMPTY_STRING);
+			xml = CABECERA_XML.concat(TAG_INI_ROOT).concat(xml).concat(TAG_FIN_ROOT);
+			xml = xml.replace(LT_EM_GT, EMPTY_STRING);
+			xml = xml.replace(LT_EM_GT_CIERRE, EMPTY_STRING);
 		}
 		
 		/**
 		 * Se transforma el XML en formato objeto Document 
 		 * y se retorna dicho objeto.
 		 */
-		Document doc = Jsoup.parse(xml, StringUtils.EMPTY_STRING, Parser.xmlParser());
+		Document doc = Jsoup.parse(xml, EMPTY_STRING, Parser.xmlParser());
 		doc.setBaseUri(url);
 		
 		return doc;
@@ -163,16 +181,16 @@ public class ScrapingMercadona implements IFScrapingEmpresas {
 		 * configura la solicitud de la página web.
 		 */
 		return Jsoup.connect(strUrl)
-				.userAgent(StringUtils.AGENT_ALL)
+				.userAgent(AGENT_ALL)
 				.method(Connection.Method.POST)
 				.referrer(REFERRER_MERCADONA)
 				.ignoreContentType(Boolean.TRUE)
 				.validateTLSCertificates(Boolean.FALSE)
-				.header(StringUtils.ACCEPT_LANGUAGE, StringUtils.ES_ES)
-				.header(StringUtils.ACCEPT_ENCODING, StringUtils.GZIP_DEFLATE_SDCH)
-				.header(StringUtils.ACCEPT, StringUtils.ACEPT_VALUE_JSON)
-				.maxBodySize(ClaseUtils.ZERO_INT)
-				.timeout(ClaseUtils.TIME_OUT)
+				.header(ACCEPT_LANGUAGE, ES_ES)
+				.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
+				.header(ACCEPT, ACEPT_VALUE_JSON)
+				.maxBodySize(0)
+				.timeout(100000)
 				.requestBody(PARAMS_QUERY
 						.concat(producto)
 						.concat(CLICK_ANALYTICS_TRUE));
@@ -187,16 +205,16 @@ public class ScrapingMercadona implements IFScrapingEmpresas {
 	 */
 	public String getUrlAll(final ResultadoDTO resDto) {
 		
-		String productoAux = StringUtils.EMPTY_STRING;
+		String productoAux = EMPTY_STRING;
 				
 		/**
 		 * Se reemplazan los espacios en blanco por el caracter
 		 * unicode que lo representa.<br> 
 		 * " " => "%20"
  		 */
-		if(!StringUtils.isEmpty(resDto.getNomProducto())) {
+		if(!EMPTY_STRING.contentEquals(resDto.getNomProducto())) {
 			productoAux= resDto.getNomProducto()
-				.replace(StringUtils.SPACE_STRING, StringUtils.SEPARADOR_URL);
+				.replace(" ", SEPARADOR_URL);
 		}
 		
 		return URL_ALL_PRODUCTS.concat(productoAux);

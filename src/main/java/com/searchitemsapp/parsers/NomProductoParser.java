@@ -3,10 +3,11 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.NomProductoDTO;
 import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Es un componente analizador de software que 
@@ -18,6 +19,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProducto> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(NomProductoParser.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -33,7 +36,9 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 */
 	public NomProductoDTO toDTO(TbSiaNomProducto tbSiaNomProducto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		NomProductoDTO nomProductoDTO = new NomProductoDTO();
 		
@@ -53,7 +58,9 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 */
 	public TbSiaNomProducto toTbSia(NomProductoDTO nomProductoDTO) { 
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaNomProducto tbSiaNomProducto = new TbSiaNomProducto();
 		
@@ -73,9 +80,11 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 */
 	public List<NomProductoDTO> toListDTO(List<TbSiaNomProducto> lsTbSiaNomProducto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<NomProductoDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<NomProductoDTO> listDto = new ArrayList<>(10); 
 		NomProductoDTO nomProductoDTO;		
 		
 		for (TbSiaNomProducto tbSiaNomProducto : lsTbSiaNomProducto) {
@@ -97,8 +106,10 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	@Override
 	public List<NomProductoDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(10);
 	}
 }

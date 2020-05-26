@@ -19,6 +19,6 @@ import com.searchitemsapp.model.TbSiaEmpresa;
 public interface IFEmpresaRepository extends Repository<TbSiaEmpresa, Long>{
 	List<EmpresaDTO> findAll() throws IOException;
 	EmpresaDTO findByDid(Integer did) throws IOException;
-	List<EmpresaDTO> findByTbSiaCategoriasEmpresa(Integer didEmpresa, Integer didCategoriaEmpresa) throws IOException;
+	List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException;
 	List<EmpresaDTO> findByTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException;
 }

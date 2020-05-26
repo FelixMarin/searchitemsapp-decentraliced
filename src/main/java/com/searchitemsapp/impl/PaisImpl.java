@@ -2,17 +2,17 @@ package com.searchitemsapp.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.PaisDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Implementación del dao {@link PaisDao}.
@@ -25,6 +25,8 @@ import com.searchitemsapp.util.StringUtils;
  */
 @Aspect
 public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PaisImpl.class);  
 	
 	/*
 	 * Variables Globales
@@ -50,25 +52,29 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	@Override
 	public PaisDTO findByDid(PaisDTO paisDto) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(paisDto)) {
-			return (PaisDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(paisDto)) {
+			return null;
 		}
 		
 		/**
 		 * Traza de log que escribe identificador del pais.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.pais.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(paisDto.getDid());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Devuelve un objeto con el valor solicitado.
@@ -83,7 +89,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<PaisDTO> findAll() throws IOException {
-		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
 	}
 
 	/**
@@ -93,6 +99,6 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<PaisDTO> findByTbSia(PaisDTO paisDTO, CategoriaDTO categoriaDTO) throws IOException {
-		throw new UnsupportedOperationException(StringUtils.OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
 	}
 }

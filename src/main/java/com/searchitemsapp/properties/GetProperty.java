@@ -3,11 +3,11 @@ package com.searchitemsapp.properties;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
  
 /**
  * Clases que gestiona el acceso a las propiedades
@@ -20,12 +20,24 @@ import com.searchitemsapp.util.StringUtils;
  */ 
 public class GetProperty {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GetProperty.class);  
 	
-	private String propFileName;
+	/*
+	 * Constantes Globales
+	 */
+	private static final String NULL = "null";
 	
+	/*
+	 * Variables Globales
+	 */
+	private static String propFileName;
+	
+	/*
+	 * Constructor
+	 */
 	public GetProperty(String propFileName) {
 		super();
-		this.propFileName = propFileName;
+		setPropFileName(propFileName);
 	}
 
 	/**
@@ -43,12 +55,12 @@ public class GetProperty {
 		 * termina el proceso y devuelve nulo.
 		 * 
 		 */
-		if(StringUtils.validateNull(key)) {
-			return StringUtils.NULL_STRING;
+		if(Objects.isNull(key)) {
+			return NULL;
 		}
 		
-		StringBuilder debugMessage = StringUtils.getNewStringBuilder();
-		String value = StringUtils.NULL_STRING;
+		StringBuilder debugMessage = new StringBuilder(10);
+		String value = NULL;
 		
 		/**
 		 * Se leen la propiedades del fichero indicado.
@@ -56,7 +68,7 @@ public class GetProperty {
 		try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName)) {
 			Properties prop = new Properties();
  
-			if (!ClaseUtils.isNullObject(inputStream)) {
+			if (Objects.nonNull(inputStream)) {
 				prop.load(inputStream);
 			} else {				
 				debugMessage.append("Error: ");
@@ -73,11 +85,13 @@ public class GetProperty {
 		 * Se traza una entrada de log con 
 		 * el valor del parámetro de entrada.
 		 */
-		debugMessage.append(StringUtils.EMPTY_STRING);
+		debugMessage.append("");
 		debugMessage.append("value = ");
 		debugMessage.append(value);
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),GetProperty.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),GetProperty.class);
+		}
 		
 		return value;
 	}
@@ -97,6 +111,6 @@ public class GetProperty {
 	 * @param propFileName
 	 */
 	public void setPropFileName(String propFileName) {
-		this.propFileName = propFileName;
+		GetProperty.propFileName = propFileName;
 	}
 }

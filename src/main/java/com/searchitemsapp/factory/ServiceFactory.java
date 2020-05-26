@@ -1,12 +1,14 @@
 package com.searchitemsapp.factory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.searchitemsapp.services.IFService;
 import com.searchitemsapp.services.ListadoProductosService;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+
+
 
 /**
  * Clase Factory encargada de gestionar la creación de 
@@ -15,9 +17,10 @@ import com.searchitemsapp.util.LogsUtils;
  *
  * @author Felix Marin Ramirez
  */
-@SuppressWarnings("unchecked")
 @Component
 public class ServiceFactory {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceFactory.class);  
 	
 	/*
 	 * Variables 
@@ -43,13 +46,15 @@ public class ServiceFactory {
 	 */
 	public IFService<String,String> getService(final String nomService) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ServiceFactory.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 
 		if(nomService.equals(LISTA_PRODUCTOS)) {
 			return listadoProductosService;
 		}
 		
-		return (IFService<String,String>) ClaseUtils.NULL_OBJECT;
+		return null;
 	}
 
 }

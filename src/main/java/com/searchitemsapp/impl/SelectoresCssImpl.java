@@ -2,8 +2,11 @@ package com.searchitemsapp.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -13,9 +16,6 @@ import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.factory.ParserFactory;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Implementación del dao {@link SelectoresCssDao}.
@@ -30,6 +30,8 @@ import com.searchitemsapp.util.StringUtils;
 @Aspect
 public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, EmpresaDTO> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssImpl.class);  
+	
 	/*
 	 * Constantes Globales
 	 */
@@ -61,8 +63,10 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	@Override
 	public List<SelectoresCssDTO> findAll() throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
 		/**
 		 * Ejeculta la llamada al dao y devuelve el resultado.
 		 */
@@ -80,25 +84,29 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	@Override
 	public SelectoresCssDTO findByDid(SelectoresCssDTO selectorCssDto) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(selectorCssDto)) {
-			return (SelectoresCssDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(selectorCssDto)) {
+			return null;
 		}
 		
 		/**
 		 * Traza de log que escribe todos los valores del objeto selector css.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.valor.dto"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(selectorCssDto.toString());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Devuelve un objeto con el valor solicitado.
@@ -117,25 +125,29 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	@Override
 	public List<SelectoresCssDTO> findByTbSia(SelectoresCssDTO selectoresCssDto, EmpresaDTO empresaDto) throws IOException {
 			
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(empresaDto)) {
-			return (List<SelectoresCssDTO>) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(empresaDto)) {
+			return null;
 		}
 		
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.activo"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(" ");
 		debugMessage.append(empresaDto.getDid());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Se crea un objeto, se le asigna el identificador y se

@@ -26,7 +26,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
- 	<jpa:repositories base-package="om.searchitemsapp.**.repository" />
+ 	<jpa:repositories base-package="com.searchitemsapp.**.repository" />
  	
  	<mvc:annotation-driven /> 	
  	<context:annotation-config /> 	
@@ -174,9 +174,10 @@
       <bean id="diccionario" class="com.searchitemsapp.diccionario.Diccionario"></bean>
       <bean id="fillSelectores" class="com.searchitemsapp.diccionario.FillSelectores"></bean>     
       
-      <bean id="parserXmlJaxb" class="com.searchitemsapp.util.ParserXmlJaxb"></bean>
-      
       <bean id="parserFactory" class="com.searchitemsapp.factory.ParserFactory"></bean>
       <bean id="serviceFactory" class="com.searchitemsapp.factory.ServiceFactory"></bean>
        <bean id="scrapingEmpFactory" class="com.searchitemsapp.factory.ScrapingEmpFactory"></bean>
+       
+       <bean id="processPrice" class="com.searchitemsapp.processprice.ProcessPrice"></bean>
+       <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>
 </beans>

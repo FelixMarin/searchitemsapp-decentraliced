@@ -1,18 +1,20 @@
 package com.searchitemsapp.scraping.eci;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -21,7 +23,9 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingECI implements IFScrapingEmpresas {
+public class ScrapingECI extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingECI.class);  
 	
 	/*
 	 * Constasntes Globales
@@ -50,8 +54,9 @@ public class ScrapingECI implements IFScrapingEmpresas {
 	public List<String> getListaUrls(final Document document, 
 			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
 		 * del conjunto de páginas obtenidas como resultado
@@ -74,27 +79,27 @@ public class ScrapingECI implements IFScrapingEmpresas {
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */
-		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.eci"));
+		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.eci"));
 		
 		/**
 		 * Si el elemento de paginación coincide con el patrón es
 		 * que hay más de una página web que hay que solicitar al 
 		 * sitio web.
 		 */
-		Matcher m = StringUtils.matcher(PATTERN, strPaginacion);		
+		Matcher m = Pattern.compile(PATTERN).matcher(strPaginacion);	
 		if(m.find()) {
-			strPaginacion=m.group(ClaseUtils.ONE_INT);
+			strPaginacion=m.group(1);
 		}
 		
 		/**
 		 * Se desformatea el número de páginas que se pueden solicitar.
 		 */
-		int intPaginacion = StringUtils.desformatearEntero(strPaginacion.trim());
+		int intPaginacion = desformatearEntero(strPaginacion.trim());
 		
 		/**
 		 * Se añade la URL base a la lista en formato string.
 		 */
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(10);
 		listaUrls.add(urlBase);
 		
 		/**
@@ -103,7 +108,7 @@ public class ScrapingECI implements IFScrapingEmpresas {
 		 * El primer elemento de la lista es la URL base, por
 		 * lo que se itera a partir de la segunda posición.
 		 */
-		for (int i = ClaseUtils.TWO_INT; i <= intPaginacion; i++) {
+		for (int i = 2; i <= intPaginacion; i++) {
 			listaUrls.add(urlBase.replace("/1/", "/".concat(String.valueOf(i).concat("/"))));
 		}
 		
@@ -112,8 +117,8 @@ public class ScrapingECI implements IFScrapingEmpresas {
 		 * de resultados permitidos indicados en la variable
 		 * 'numeroresultados'
 		 */
-		if(numresultados > ClaseUtils.ZERO_INT && numresultados <= listaUrls.size()) {
-			listaUrls = listaUrls.subList(ClaseUtils.ZERO_INT, numresultados);
+		if(numresultados > 0 && numresultados <= listaUrls.size()) {
+			listaUrls = listaUrls.subList(0, numresultados);
 		}	
 		
 		return listaUrls;

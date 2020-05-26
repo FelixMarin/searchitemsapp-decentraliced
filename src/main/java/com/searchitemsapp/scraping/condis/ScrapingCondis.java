@@ -1,20 +1,21 @@
 package com.searchitemsapp.scraping.condis;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.scraping.mercadona.ScrapingMercadona;
-import com.searchitemsapp.scraping.simply.ScrapingSimply;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -23,8 +24,20 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingCondis implements IFScrapingEmpresas {
+public class ScrapingCondis extends AbsScrapingEmpresas implements IFScrapingEmpresas {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingCondis.class);  
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String REGEX_NUMERO_DECIMAL = "\\d*[,][0-9]*";
+	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
+	private static final String[] ARRAY_VOCALES_MIN = {"a","e","i","o","u"};
+	private static final String STRING_ENIE_MIN = "ñ";
+	private  static final String ZERO_STRING = "0";
+	private static final String COMMA_STRING = ",";
+	
 	/*
 	 * Constantes Globales
 	 */
@@ -53,14 +66,16 @@ public class ScrapingCondis implements IFScrapingEmpresas {
 			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto)
 					throws MalformedURLException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ScrapingMercadona.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL y se añade en una lista que
 		 * será retornada.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(10);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;
@@ -74,41 +89,43 @@ public class ScrapingCondis implements IFScrapingEmpresas {
 	 */
 	public String tratarTagScript(final Element elem, final String cssSelector) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		String resultado = StringUtils.NULL_STRING;
+		String resultado = "null";
 		Matcher matcher;
 		
-		if(ClaseUtils.isNullObject(elem) || StringUtils.isEmpty(cssSelector)) {
+		if(Objects.isNull(elem) || "".contentEquals(cssSelector)) {
 			return resultado;
 		}
-		resultado = elem.select(cssSelector).html().replace(StringUtils.DOT_STRING, StringUtils.COMMA_STRING);
+		resultado = elem.select(cssSelector).html().replace(".", COMMA_STRING);
 		
-		if(countLines(resultado).length > ClaseUtils.ONE_INT) {
-			resultado = countLines(resultado)[ClaseUtils.ONE_INT].trim();
+		if(countLines(resultado).length > 1) {
+			resultado = countLines(resultado)[1].trim();
 		
-			matcher = StringUtils.matcher(StringUtils.REGEX_NUMERO_DECIMAL, resultado);
+			matcher = Pattern.compile(REGEX_NUMERO_DECIMAL).matcher(resultado);
 			
 			if(matcher.find()) {
-				resultado = matcher.group(ClaseUtils.ZERO_INT);
+				resultado = matcher.group(0);
 			}
 		
 		} else {
 			resultado = resultado.substring(resultado.indexOf('\'')+1, resultado.length());
-			resultado = resultado.substring(ClaseUtils.ZERO_INT, resultado.indexOf('\''));
+			resultado = resultado.substring(0, resultado.indexOf('\''));
 			
 			if(resultado.length() == 3 &&
 					resultado.substring(resultado.indexOf(','), 
-							resultado.length()).length()  == ClaseUtils.TWO_INT) {
-				resultado += StringUtils.ZERO_STRING;
+							resultado.length()).length()  == 2) {
+				resultado += ZERO_STRING;
 			}
 		}
 		
-		if(resultado.startsWith(StringUtils.COMMA_STRING)) {
-			resultado = StringUtils.ZERO_STRING.concat(resultado);
+		if(resultado.startsWith(COMMA_STRING)) {
+			resultado = ZERO_STRING.concat(resultado);
 		}
 		
-		if(resultado.endsWith(StringUtils.COMMA_STRING)) {
+		if(resultado.endsWith(COMMA_STRING)) {
 			resultado = resultado.concat("00");
 		}
 		
@@ -134,17 +151,15 @@ public class ScrapingCondis implements IFScrapingEmpresas {
 	 */
 	public String eliminarTildesProducto(final String producto) {
 		
-		if(StringUtils.isEmpty(producto)) {
+		if("".contentEquals(producto)) {
 			return producto;
 		}
 		
-		String[] vocalestildesMin = StringUtils.arrayTildesNormales();
-		String[] vocalesMin = StringUtils.arrayVocalesMin();
-		
 		String productoAux = producto.toLowerCase();
 		
-		for (int i = 0; i < vocalesMin.length; i++) {
-			productoAux = productoAux.replace(vocalestildesMin[i], vocalesMin[i]);
+		for (int i = 0; i < ARRAY_VOCALES_MIN.length; i++) {
+			productoAux = productoAux.replace(ARRAY_TILDES_NORMALES_MIN[i], 
+					ARRAY_VOCALES_MIN[i]);
 		}
 		
 		return productoAux;
@@ -159,9 +174,11 @@ public class ScrapingCondis implements IFScrapingEmpresas {
 	 */
 	public String reemplazarCaracteres(final String producto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ScrapingSimply.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return producto.replace(StringUtils.STRING_ENIE_MIN, ENIE_CONDIS);
+		return producto.replace(STRING_ENIE_MIN, ENIE_CONDIS);
 		
 	}
 

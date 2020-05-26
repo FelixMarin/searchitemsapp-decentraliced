@@ -1,15 +1,18 @@
 package com.searchitemsapp.scraping.caprabo;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -18,7 +21,9 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingCaprabo implements IFScrapingEmpresas {
+public class ScrapingCaprabo extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingCaprabo.class);   
 
 	/*
 	 * Constructor
@@ -42,14 +47,16 @@ public class ScrapingCaprabo implements IFScrapingEmpresas {
 	public List<String> getListaUrls(final Document document, final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto)
 			throws MalformedURLException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL y se añade en una lista que
 		 * será retornada.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(10);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;

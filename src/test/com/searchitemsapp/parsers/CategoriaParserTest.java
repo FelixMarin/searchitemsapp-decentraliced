@@ -24,7 +24,7 @@ import com.searchitemsapp.model.TbSiaMarcas;
 import com.searchitemsapp.model.TbSiaNomProducto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring-context.xml")
 @WebAppConfiguration
 public class CategoriaParserTest {
 	
