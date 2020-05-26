@@ -30,8 +30,8 @@ public class ProcessPrice {
 	private static final String DEFAULT_STR_PRICE = "1000.00";
 	private static final String REGEX_NUMERO_DECIMAL = "(\\d*[,][0-9]*)|([0-9]{1,9})";
 	private static final String REGEX_INTEGER = "\\d+";
-	private static final String BARRA_KILO_GRAM = "/private static final Logger LOGGER.";
-	private static final String KILO_GRAM = "private static final Logger LOGGER";
+	private static final String BARRA_KILO_GRAM = "/KG.";
+	private static final String KILO_GRAM = "kg";
 	private static final double DEFAULT_PRICE = 1000.00;
 	private static final String XXX = "xxx";
 	private static final String EMPTY_STRING = "";
