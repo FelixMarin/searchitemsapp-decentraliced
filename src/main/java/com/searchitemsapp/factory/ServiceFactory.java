@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import com.searchitemsapp.services.IFService;
 import com.searchitemsapp.services.ListadoProductosService;
 
-
-
 /**
  * Clase Factory encargada de gestionar la creación de 
  * objetos de tipo service. Las peticiones a los services 
@@ -23,10 +21,13 @@ public class ServiceFactory {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceFactory.class);  
 	
 	/*
-	 * Variables 
+	 * Constantes Globales
 	 */
 	private static final String LISTA_PRODUCTOS = "LISTA_PRODUCTOS";
 
+	/*
+	 * VAriables Globales
+	 */
 	@Autowired
 	private ListadoProductosService listadoProductosService;
 	

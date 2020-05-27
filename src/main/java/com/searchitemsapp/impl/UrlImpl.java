@@ -28,7 +28,7 @@ import com.searchitemsapp.dto.UrlDTO;
  *
  */
 @Aspect
-public class UrlImpl implements IFImplementacion<UrlDTO, CategoriaDTO> {
+public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlImpl.class);  
 	

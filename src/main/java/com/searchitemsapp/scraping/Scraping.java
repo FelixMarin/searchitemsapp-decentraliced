@@ -23,7 +23,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.factory.ScrapingEmpFactory;
 import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.scraping.condis.ScrapingCondis;
-import com.searchitemsapp.scraping.consum.ScrapingConsum;
 import com.searchitemsapp.scraping.eroski.ScrapingEroski;
 import com.searchitemsapp.scraping.mercadona.ScrapingMercadona;
 import com.searchitemsapp.scraping.simply.ScrapingSimply;
@@ -127,9 +125,6 @@ public abstract class Scraping {
 	
 	@Autowired
 	private ScrapingSimply scrapingSimply;
-	
-	@Autowired
-	private ScrapingConsum scrapingConsum;
 		
 	@Autowired
 	private ScrapingEmpFactory scrapingEmpFactory;
@@ -177,6 +172,7 @@ public abstract class Scraping {
 					.ignoreHttpErrors(Boolean.TRUE)
 					.execute()
 					.statusCode();
+			
 		} catch (IOException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
@@ -307,22 +303,6 @@ public abstract class Scraping {
 
         return entradas;
 	}
-
-	/**
-	 * Método que valida una URL.
-	 * 
-	 * @param baseUri
-	 * @param url
-	 * @return boolean
-	 */
-	protected boolean validaURL(final String baseUri,final String url) {
-		return url.equalsIgnoreCase(baseUri);
-	}
-	
-	protected boolean validaSelector(Element elem) {
-		return Objects.nonNull(elem.selectFirst(getSelectorPaginaSiguienteCarrefour())) ||
-		Objects.nonNull(elem.selectFirst(getAccesoPopupPeso()));
-	}	
 
 	/**
 	 * Método que valida el resultado obtenido. 
@@ -757,11 +737,6 @@ public abstract class Scraping {
 	
 	protected String reeplazarCaracteresSimply(final String producto) {
 		return scrapingSimply.reemplazarCaracteres(producto);
-	}
-	
-	protected String getHtmlContextConsum(final WebDriver webDriver, 
-						final String strUrl) throws InterruptedException {
-		return scrapingConsum.getHtmlContent(webDriver, strUrl);
 	}
 	
 	/*

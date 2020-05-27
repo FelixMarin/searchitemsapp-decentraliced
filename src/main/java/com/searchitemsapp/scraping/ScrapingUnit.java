@@ -169,7 +169,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	        	if(Objects.isNull(document)) {
 	            	continue;
 	            }
-	            
+	        	LOGGER.info(document.toString());
 	        	/**
 	        	 * Se comprueba que la lista no esté vacía y que
 	        	 * la URL sea válida. En el caso de que no se 
@@ -349,5 +349,21 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	 */
 	private IFParser<SelectoresCssDTO, TbSiaSelectoresCss> getParserS() {
 		return ((IFParser<SelectoresCssDTO, TbSiaSelectoresCss>) parserFactory.getParser(SELECTORES_PARSER));
+	}	
+	
+	/**
+	 * Método que valida una URL.
+	 * 
+	 * @param baseUri
+	 * @param url
+	 * @return boolean
+	 */
+	private boolean validaURL(final String baseUri,final String url) {
+		return url.equalsIgnoreCase(baseUri);
+	}
+	
+	private boolean validaSelector(Element elem) {
+		return Objects.nonNull(elem.selectFirst(getSelectorPaginaSiguienteCarrefour())) ||
+		Objects.nonNull(elem.selectFirst(getAccesoPopupPeso()));
 	}	
 }

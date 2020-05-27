@@ -26,6 +26,13 @@ public class ScrapingDiccionario extends Scraping {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingDiccionario.class);  
 	
 	/*
+	 * Constantes Globales
+	 */
+	private static final String NULL_STRING = "null";
+	private static final String EMPTY_STRING = "";
+	private static final String SPACE_STRING = " ";
+	
+	/*
 	 * Variables Globales
 	 */
     private UrlDTO urlDto;
@@ -93,10 +100,10 @@ public class ScrapingDiccionario extends Scraping {
             	strProductoCorregido = elementoPorCssSelector(elem, 
             			selectorCss.getSelProducto(),
             			urlDto);
-            	if(!"".contentEquals(strProductoCorregido)) {
-            		palabrasResultado.append(strProductoCorregido.concat(" "));
+            	if(!EMPTY_STRING.contentEquals(strProductoCorregido)) {
+            		palabrasResultado.append(strProductoCorregido.concat(SPACE_STRING));
             	}else {
-            		return "null";
+            		return NULL_STRING;
             	}
             }
 		 }
@@ -104,8 +111,8 @@ public class ScrapingDiccionario extends Scraping {
 		return palabrasResultado.toString().trim();
 	}
 	
-	public boolean validarParametros() {
-		return "".contentEquals(urlDto.getNomUrl()) ||
-				"".contentEquals(producto);
+	private boolean validarParametros() {
+		return EMPTY_STRING.contentEquals(urlDto.getNomUrl()) ||
+				EMPTY_STRING.contentEquals(producto);
 	}
 }

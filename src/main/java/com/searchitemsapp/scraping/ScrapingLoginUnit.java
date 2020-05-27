@@ -24,7 +24,7 @@ import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.IFImplementacion;
-import com.searchitemsapp.impl.UrlImpl;
+import com.searchitemsapp.impl.IFUrlImpl;
 
 
 /**
@@ -63,7 +63,7 @@ public class ScrapingLoginUnit extends Scraping {
 	private IFImplementacion<LoginDTO, EmpresaDTO> loginImpl;
 	
 	@Autowired
-	private UrlImpl urlImpl;
+	private IFUrlImpl urlImpl;
 	
 	@Autowired
 	private CategoriaDTO categoriaDto;

@@ -13,10 +13,7 @@ import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.UrlImpl;
-
-
-
+import com.searchitemsapp.impl.IFUrlImpl;
 
 /**
  * En esta clase se configuran las URLs de los
@@ -42,7 +39,7 @@ public class UrlTreatment extends Scraping {
 	 * Variables Globales
 	 */
 	@Autowired
-	private UrlImpl urlImpl;
+	private IFUrlImpl urlImpl;
 	
 	@Autowired
 	private CategoriaDTO categoriaDto;

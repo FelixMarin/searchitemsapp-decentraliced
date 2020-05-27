@@ -16,8 +16,10 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.scraping.consum.ScrapingConsum;
 
 /**
  * Módulo de web scraping dinámico. Esta clase contiene la
@@ -27,14 +29,13 @@ import com.searchitemsapp.commons.CommonsPorperties;
  * @author Felix Marin Ramirez
  *
  */
-public class DynScrapingUnit extends Scraping {
+public class DynScrapingUnit {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DynScrapingUnit.class);  
 	
 	/*
 	 * Constantes Globales
 	 */
-	private final String CONSUM = "CONSUM";
 	private final String SCROLL_DOWN = "window.scrollTo(0, document.body.scrollHeight);";	
 	
 	/*
@@ -45,6 +46,9 @@ public class DynScrapingUnit extends Scraping {
 	 * solo se tiene que crear una sola vez.
 	 */
 	private static WebDriver webDriver;
+	
+	@Autowired
+	private ScrapingConsum scrapingConsum;
 	
 	/*
 	 * Constructor
@@ -70,6 +74,8 @@ public class DynScrapingUnit extends Scraping {
 		}
 		
 		String resultado;	
+		int didConsum = Integer.parseInt(CommonsPorperties.getValue("flow.value.did.empresa.consum"));
+		
 		
 		/**
 		 * Se añade el driver a las propiedades globales del sistema.
@@ -82,8 +88,8 @@ public class DynScrapingUnit extends Scraping {
 		 */
 		initWebDriver(0);
 		
-		if(getMapEmpresas().get(CONSUM) == didEmpresa) {			
-			resultado = getHtmlContextConsum(webDriver, strUrl);
+		if(didConsum == didEmpresa) {			
+			resultado = scrapingConsum.getHtmlContent(webDriver, strUrl);
 		} else {
 			webDriver.navigate().to(strUrl);
 			JavascriptExecutor js = (JavascriptExecutor) webDriver;

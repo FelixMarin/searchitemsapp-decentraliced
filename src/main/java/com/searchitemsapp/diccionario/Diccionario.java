@@ -12,9 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.UrlImpl;
+import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.scraping.ScrapingDiccionario;
 import com.searchitemsapp.scraping.UrlTreatment;
@@ -51,7 +52,7 @@ public class Diccionario {
 	private static UrlDTO urlDto;
 
 	@Autowired
-	private UrlImpl urlImpl;
+	private IFImplementacion<UrlDTO, CategoriaDTO> urlImpl;
 	
 	@Autowired
 	private FillSelectores fillSelectores;

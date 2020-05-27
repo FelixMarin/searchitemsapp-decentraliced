@@ -103,11 +103,6 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * Se declaran las variables que serán utilizadasa en el
 		 * proceso de ejecución del programa.
 		 */
-		Collection<UrlDTO> lResultDtoUrlsTratado;
-		List<ResultadoDTO> listResultDtoFinal;
-		List<Future<List<ResultadoDTO>>> listFutureListResDto;
-		Collection<ScrapingUnit> callablesScrapingUnit;
-		ExecutorService executorService;
 		StringBuilder strJsonResult;
 		ScrapingUnit scrapingUnit;
 		int contador = 0;
@@ -126,7 +121,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * previamente cuando estén disponibles. Mejora el rendimiento de 
 		 * aplicaciones que ejecutan muchas tareas asincronas de corta duración.
 		 */
-		executorService = Executors.newCachedThreadPool();
+		ExecutorService executorService = Executors.newCachedThreadPool();
 
 		try {
 			
@@ -178,7 +173,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * indicados en la request. Se reemplaza el patron '{1}' por el nombre 
 			 * del producto a buscar.
 			 */
-			lResultDtoUrlsTratado = urlTreatment.replaceWildcardCharacter(didPais, 
+			Collection<UrlDTO> lResultDtoUrlsTratado = urlTreatment.replaceWildcardCharacter(didPais, 
 					didCategoria, productoAux, empresas, listTodosSelectoresCss);
 
 			/**
@@ -186,7 +181,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * en cada uno de los supermercados. Habrá un objeto por cada 
 			 * supermercado a rastrear.
 			 */
-			callablesScrapingUnit = new ArrayList<>(10);
+			Collection<ScrapingUnit> callablesScrapingUnit = new ArrayList<>(10);
 
 			/**
 			 * Habrá tantas iteraciones como URLs contenga cada supermercado.
@@ -208,8 +203,8 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * estado y resultados cuando todo esté completo. Future.isDone() es 
 			 * verdadero para cada elemento de la lista devuelta.
 			 */
-			listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
-			listResultDtoFinal = executeFuture(listFutureListResDto);
+			List<Future<List<ResultadoDTO>>> listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
+			List<ResultadoDTO> listResultDtoFinal = executeFuture(listFutureListResDto);
 			
 			/**
 			 * Si la lista de resultados está vacía (no ha habido resultados)
