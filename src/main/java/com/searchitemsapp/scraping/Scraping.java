@@ -576,8 +576,7 @@ public abstract class Scraping {
 		resDto.setPrecioKilo(elementoPorCssSelector(elem, selectoresCssDto.getSelPreKilo(), urlDto));
 		resDto.setNomUrl(elementoPorCssSelector(elem, selectoresCssDto.getSelLinkProd(), urlDto));
 		resDto.setDidEmpresa(urlDto.getTbSiaEmpresa().getDid());
-		resDto.getTbSiaEmpresa().setDid(urlDto.getTbSiaEmpresa().getDid());
-		resDto.getTbSiaEmpresa().setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
+		resDto.setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
 		
 		/**
 		 * Dependiendo de la empresa, el tratamiento de las URLs 

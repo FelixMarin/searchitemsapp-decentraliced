@@ -2,7 +2,6 @@ package com.searchitemsapp.dto;
 
 import java.util.Comparator;
 
-import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.processprice.ProcessPrice;
 
 /**
@@ -23,10 +22,10 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	private String nomProducto;
 	private String desProducto;
 	private Integer didEmpresa;
+	private String nomEmpresa;
 	private String precioKilo;
 	private String imagen;
 	private String precio;
-	private TbSiaEmpresa tbSiaEmpresa;
 	private String nomUrl;
 	private String loginUrl;
 	private Integer didUrl;
@@ -42,7 +41,6 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	 */
 	public ResultadoDTO() {
 		super();
-		tbSiaEmpresa = new TbSiaEmpresa();
 	}
 	
 	/*
@@ -89,12 +87,6 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	}
 	public void setPrecioKilo(String precioKilo) {
 		this.precioKilo = precioKilo;
-	}
-	public TbSiaEmpresa getTbSiaEmpresa() {
-		return tbSiaEmpresa;
-	}
-	public void setTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		this.tbSiaEmpresa = tbSiaEmpresa;
 	}
 	public String getNomUrl() {
 		return nomUrl;
@@ -150,6 +142,13 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	public void setOrdenacion(int ordenacion) {
 		this.ordenacion = ordenacion;
 	}
+	
+	public String getNomEmpresa() {
+		return nomEmpresa;
+	}
+	public void setNomEmpresa(String nomEmpresa) {
+		this.nomEmpresa = nomEmpresa;
+	}
 
 	/*
 	 * Métodos sobre-escritos
@@ -163,7 +162,7 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	public String toString() {
 		return "ResultadoDTO [identificador=" + identificador + ", nomProducto=" + nomProducto + ", desProducto="
 				+ desProducto + ", didEmpresa=" + didEmpresa + ", precioKilo=" + precioKilo + ", imagen=" + imagen
-				+ ", precio=" + precio + ", tbSiaEmpresa=" + tbSiaEmpresa + ", nomUrl=" + nomUrl + ", loginUrl="
+				+ ", precio=" + precio + ", nomEmpresa=" + nomEmpresa + ", nomUrl=" + nomUrl + ", loginUrl="
 				+ loginUrl + ", didUrl=" + didUrl + ", bolActivo=" + bolActivo + ", bolStatus=" + bolStatus
 				+ ", bolLogin=" + bolLogin + ", desUrl=" + desUrl + ", nomUrlAllProducts=" + nomUrlAllProducts
 				+ ", ordenacion=" + ordenacion + "]";

@@ -69,7 +69,7 @@ public class ScrapingDiccionario extends Scraping {
 		 * Valida los parametros introducidos
 		 *  a través del constructor.
 		 */
-		if(validarParametros()) {
+		if(!validarParametros()) {
 			return null;
 		}
 		
@@ -116,7 +116,7 @@ public class ScrapingDiccionario extends Scraping {
 	}
 	
 	private boolean validarParametros() {
-		return EMPTY_STRING.contentEquals(urlDto.getNomUrl()) ||
-				EMPTY_STRING.contentEquals(producto);
+		return !EMPTY_STRING.contentEquals(urlDto.getNomUrl()) ||
+				!EMPTY_STRING.contentEquals(producto);
 	}
 }

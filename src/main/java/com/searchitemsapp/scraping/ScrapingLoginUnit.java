@@ -145,7 +145,7 @@ public class ScrapingLoginUnit extends Scraping {
 			resultadoDto.setDidEmpresa(urlDto.getTbSiaEmpresa().getDid());
 			resultadoDto.setDidUrl(urlDto.getDid());
 			resultadoDto.setBolActivo(urlDto.getBolActivo());
-			resultadoDto.getTbSiaEmpresa().setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
+			resultadoDto.setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
 			resultadoDto.setBolStatus(urlDto.getBolStatus());
 			resultadoDto.setBolLogin(urlDto.getBolLogin());
 			resultadoDto.setDesUrl(urlDto.getDesUrl());
@@ -157,7 +157,7 @@ public class ScrapingLoginUnit extends Scraping {
 		 * se descarta el resto.
 		 */
 		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
-			if(resUrlLogin.getTbSiaEmpresa().getDid()  == empresaDTO.getDid() &&
+			if(resUrlLogin.getDidEmpresa()  == empresaDTO.getDid() &&
 					ACTION_LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
 				auxResDto = resUrlLogin;
 			}
@@ -176,7 +176,7 @@ public class ScrapingLoginUnit extends Scraping {
 		 * se descarta el resto.
 		 */
 		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
-			if(resUrlLogin.getTbSiaEmpresa().getDid()  == empresaDTO.getDid() &&
+			if(resUrlLogin.getDidEmpresa()  == empresaDTO.getDid() &&
 					LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
 				auxResDto.setLoginUrl(resUrlLogin.getNomUrl());
 			}

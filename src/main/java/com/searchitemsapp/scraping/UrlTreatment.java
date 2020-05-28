@@ -82,14 +82,6 @@ public class UrlTreatment extends Scraping {
 		}
 		
 		/**
-		 * Variable locales.
-		 */
-		List<UrlDTO> listUrlDto;
-		String productoTratado;	
-		String productoTratadoAux;
-		String urlAux;
-		
-		/**
 		 * Se establece el identificador de pais y de categoria.
 		 */
 		paisDto.setDid(desformatearEntero(didPais));		
@@ -103,12 +95,12 @@ public class UrlTreatment extends Scraping {
 		/**
 		 * Se comprueba que el nombre del producto sea una palabra válida.
 		 */
-		productoTratadoAux= tratarProducto(producto);
+		String productoTratadoAux = tratarProducto(producto);
 		
 		/**
 		 * Se crea la variable que almacenará el listado de URLs.
 		 */
-		listUrlDto = new ArrayList<>(10);
+		List<UrlDTO> listUrlDto = new ArrayList<>(10);
 		
 		/**
 		 * Bucle que reemplaza el comodín '{1}' por el nombre del
@@ -131,6 +123,7 @@ public class UrlTreatment extends Scraping {
 			 * 
 			 * El resto de supermercados tienen todos el mismo tratamiento.
 			 */
+			String productoTratado;	
 			if(urlDto.getBolActivo()) {
 				if(getMapEmpresas().get(EROSKI) == urlDto.getTbSiaEmpresa().getDid()) {
 					productoTratado = reemplazarCaracteresEroski(producto);
@@ -149,7 +142,7 @@ public class UrlTreatment extends Scraping {
 				/**
 				 * Se reemplaza el 'wild card' por el nombre del producto.
 				 */
-				urlAux = urlDto.getNomUrl();
+				String urlAux = urlDto.getNomUrl();
 				urlAux = urlAux.replace(WILDCARD, productoTratado);
 				urlDto.setNomUrl(urlAux);
 				listUrlDto.add(urlDto);

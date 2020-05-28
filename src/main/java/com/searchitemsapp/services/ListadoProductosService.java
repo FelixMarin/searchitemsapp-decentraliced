@@ -239,7 +239,7 @@ public class ListadoProductosService implements IFService<String,String> {
 				strJsonResult.append("{\"identificador\":\"" + ++contador + "\","
 						+ "\"nomProducto\":\"" + resultadoDTO.getNomProducto() + "\","
 						+ "\"didEmpresa\":\"" + resultadoDTO.getDidEmpresa() + "\","
-						+ "\"nomEmpresa\":\"" + resultadoDTO.getTbSiaEmpresa().getNomEmpresa() +  "\","
+						+ "\"nomEmpresa\":\"" + resultadoDTO.getNomEmpresa() +  "\","
 						+ "\"imagen\":\"" + resultadoDTO.getImagen() +  "\","
 						+ "\"nomUrl\":\"" + resultadoDTO.getNomUrl() +  "\","
 						+ "\"precio\":\"" + resultadoDTO.getPrecio() + "\","
