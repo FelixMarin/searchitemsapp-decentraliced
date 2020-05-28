@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsFormLogin;
+import com.searchitemsapp.model.TbSiaUrl;
 
 /**
  * Es un componente analizador de software que 
@@ -45,7 +46,8 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 		paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 		paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 		paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-		paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());
+		paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+		paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());
 		
 		return paramsLoginDto;
 	}
@@ -67,7 +69,9 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 		tbSiaParamsFormLogin.setDid(paramsLoginDto.getDid());
 		tbSiaParamsFormLogin.setParamClave(paramsLoginDto.getParamClave());
 		tbSiaParamsFormLogin.setParamValor(paramsLoginDto.getParamValor());
-		tbSiaParamsFormLogin.setTbSiaUrl(paramsLoginDto.getTbSiaUrl());
+		tbSiaParamsFormLogin.setTbSiaUrl(new TbSiaUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setDid(paramsLoginDto.getDidUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setNomUrl(paramsLoginDto.getNomUrl());
 		
 		return tbSiaParamsFormLogin;		
 	}
@@ -92,7 +96,8 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 			paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 			paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 			paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-			paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());			
+			paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+			paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());	
 			listParamsLoginDto.add(paramsLoginDto);
 		}
 		

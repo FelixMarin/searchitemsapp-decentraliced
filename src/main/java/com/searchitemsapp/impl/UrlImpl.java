@@ -124,7 +124,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		
 		for (String id : arIdsEpresas) {
 			for (UrlDTO urlDTO : listUrlDTO) {
-				if(Integer.parseInt(id) == urlDTO.getTbSiaEmpresa().getDid()) {
+				if(Integer.parseInt(id) == urlDTO.getDidEmpresa()) {
 					lsIdsEmpresas.add(urlDTO);
 				}
 			}

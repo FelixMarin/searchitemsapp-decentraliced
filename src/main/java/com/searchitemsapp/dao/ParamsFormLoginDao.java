@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsFormLogin;
-import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.repository.IFParamsFormLogin;
 
 /**
@@ -96,7 +95,7 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 	 * @exception IOException
 	 */
 	@Override
-	public List<ParamsLoginDTO> findByTbSiaUrl(TbSiaUrl tbSiaUrl) throws IOException {
+	public List<ParamsLoginDTO> findByTbSiaUrl(Integer didUrl) throws IOException {
 
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -106,7 +105,7 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(Objects.isNull(tbSiaUrl)) {
+		if(Objects.isNull(didUrl)) {
 			return null;
 		}
 		
@@ -119,7 +118,7 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.by.url"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsFormLogin.class);
-		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), tbSiaUrl.getDid());
+		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
 		List<TbSiaParamsFormLogin> formLoginList = query.getResultList();	
 		
 		/**

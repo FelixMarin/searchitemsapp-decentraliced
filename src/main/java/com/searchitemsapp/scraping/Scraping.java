@@ -32,7 +32,6 @@ import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.factory.ScrapingEmpFactory;
 import com.searchitemsapp.impl.IFImplementacion;
@@ -194,8 +193,7 @@ public abstract class Scraping {
 	 */
 	protected List<Document> getHtmlDocument(final UrlDTO urlDto, 
 			final Map<String, String> mapLoginPageCookies,
-			final String producto,
-			final SelectoresCssDTO selectorCssDto) 
+			final String producto) 
 					throws IOException, URISyntaxException, InterruptedException {
 
 		if(LOGGER.isInfoEnabled()) {
@@ -208,7 +206,7 @@ public abstract class Scraping {
 		 * El identificador de la empresa se añade 
 		 * a una variable.
 		 */
-		int idEmpresa = urlDto.getTbSiaEmpresa().getDid();			
+		int idEmpresa = urlDto.getDidEmpresa();			
     	
 		/**
 		 * Objeto Document con el contenido del
@@ -221,7 +219,7 @@ public abstract class Scraping {
     	 * Se extrae el listado de URLs que se van a utlizar
     	 * para extraer los datos.
     	 */
-    	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, selectorCssDto, idEmpresa);
+    	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, idEmpresa);
    		
     	/**
     	 * Se obtienen los documets de la llamadas a las
@@ -254,8 +252,8 @@ public abstract class Scraping {
 	 * @throws MalformedURLException
 	 */
 	protected List<String> urlsPaginacion(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto, 
-			final int idEmpresa) throws MalformedURLException {
+			final UrlDTO urlDto, final int idEmpresa) 
+					throws MalformedURLException {
 		
 		List<String> listUrlsResultado = new ArrayList<>(10);
 		
@@ -274,7 +272,7 @@ public abstract class Scraping {
 		 * solicitud.
 		 */
 		listUrlsResultado.addAll(scrapingEmpFactory
-				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto, selectorCssDto));
+				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto));
 		
 		return listUrlsResultado;
 	}
@@ -423,16 +421,16 @@ public abstract class Scraping {
 		/**
 		 * El método de extracción de datos es diferente en cada empresa.
 		 */
-		if(getMapEmpresas().get(MERCADONA) == urlDto.getTbSiaEmpresa().getDid()) {
+		if(getMapEmpresas().get(MERCADONA) == urlDto.getDidEmpresa()) {
 			
 			strResult = scrapingMercadona.getResult(elem, cssSelector);
 			
-		} else if(getMapEmpresas().get(CONDIS) == urlDto.getTbSiaEmpresa().getDid() &&
+		} else if(getMapEmpresas().get(CONDIS) == urlDto.getDidEmpresa() &&
 				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
 			
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
 			
-		} else if(getMapEmpresas().get(ELCORTEINGLES) == urlDto.getTbSiaEmpresa().getDid() &&
+		} else if(getMapEmpresas().get(ELCORTEINGLES) == urlDto.getDidEmpresa() &&
 				elem.select(getSelectorPrecioECIOffer()).size() > 0) {
 			
 			strResult = elem.selectFirst(getSelectorPrecioECIOffer()).text();
@@ -553,15 +551,14 @@ public abstract class Scraping {
 	 * @return ResultadoDTO
 	 * @throws IOException
 	 */
-	protected ResultadoDTO fillDataResultadoDTO(final Element elem, 
-			final SelectoresCssDTO selectoresCssDto, 
+	protected ResultadoDTO fillDataResultadoDTO(final Element elem,
 			final UrlDTO urlDto, 
 			final String ordenacion) throws IOException {
 		
 		/**
 		 * Variables utilizadas en el proceso.
 		 */
-		int idEmpresaActual = urlDto.getTbSiaEmpresa().getDid();
+		int idEmpresaActual = urlDto.getDidEmpresa();
 		ResultadoDTO resDto = new ResultadoDTO();
 		
 		/**
@@ -569,14 +566,14 @@ public abstract class Scraping {
 		 * en la variable resultado. Los valores son todos los
 		 * que devolverá el servicio.
 		 */
-		resDto.setImagen(elementoPorCssSelector(elem, selectoresCssDto.getSelImage(), urlDto));
-		resDto.setNomProducto(elementoPorCssSelector(elem, selectoresCssDto.getSelProducto(), urlDto));
-		resDto.setDesProducto(elementoPorCssSelector(elem, selectoresCssDto.getSelProducto(), urlDto));
-		resDto.setPrecio(elementoPorCssSelector(elem, selectoresCssDto.getSelPrecio(), urlDto));
-		resDto.setPrecioKilo(elementoPorCssSelector(elem, selectoresCssDto.getSelPreKilo(), urlDto));
-		resDto.setNomUrl(elementoPorCssSelector(elem, selectoresCssDto.getSelLinkProd(), urlDto));
-		resDto.setDidEmpresa(urlDto.getTbSiaEmpresa().getDid());
-		resDto.setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
+		resDto.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_IMAGE"), urlDto));
+		resDto.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRODUCTO"), urlDto));
+		resDto.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRODUCTO"), urlDto));
+		resDto.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRECIO"), urlDto));
+		resDto.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRECIO_KILO"), urlDto));
+		resDto.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_LINK_PROD"), urlDto));
+		resDto.setDidEmpresa(urlDto.getDidEmpresa());
+		resDto.setNomEmpresa(urlDto.getNomEmpresa());
 		
 		/**
 		 * Dependiendo de la empresa, el tratamiento de las URLs 
@@ -642,19 +639,6 @@ public abstract class Scraping {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
-		}
-	}
-	
-	/**
-	 * Establece el valor del selector en la variable de tipo UrlDTO.
-	 * 
-	 * @param urlDto
-	 */
-	protected void setTbSiaSelectoresCss(UrlDTO urlDto) {
-		if(Objects.nonNull(urlDto) &&
-				Objects.nonNull(urlDto.getTbSiaEmpresa())) {
-			urlDto.setTbSiaSelectoresCsses(
-					urlDto.getTbSiaEmpresa().getTbSiaSelectoresCsses());
 		}
 	}
 	

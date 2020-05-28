@@ -18,11 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.factory.ParserFactory;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.parsers.IFParser;
 
 /**
  * Esta clase es la encargada de inicializar todo el proceso
@@ -36,7 +32,6 @@ import com.searchitemsapp.parsers.IFParser;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("unchecked")
 public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDTO>> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingUnit.class);  
@@ -44,7 +39,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	/*
 	 * Constantes Globales
 	 */	
-	private static final String SELECTORES_PARSER = "SELECTORES_PARSER";
 	private static final String EMPTY_STRING = "";
 	private static final String SEPARADOR_URL = "%20";
 	private static final String SPACE_STRING = " ";
@@ -62,9 +56,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	@Autowired
 	private ScrapingLoginUnit scrapingLoginUnit;
 	
-	@Autowired
-	private ParserFactory parserFactory;	
-	
 	/*
 	 * Constructor
 	 */
@@ -76,7 +67,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		this.didPais = didPais;
 		this.didCategoria = didCategoria;
 		this.ordenacion = ordenacion;
-		setTbSiaSelectoresCss(this.urlDto);
 	}
 	
 	/**
@@ -119,7 +109,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 */
 		boolean bStatus = urlDto.getBolStatus();
 		String[] arProducto = producto.split(SPACE_STRING);
-		int iIdEmpresa = urlDto.getTbSiaEmpresa().getDid();
+		int iIdEmpresa = urlDto.getDidEmpresa();
 		Pattern pattern = createPatternProduct(arProducto);
 		
 		/**
@@ -143,15 +133,12 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
         	 * Se obtienen los selectores que se usarán para
         	 * estraer la información de la página web.
         	 */
-        	SelectoresCssDTO selectorCssDto = getParserS().toDTO(urlDto
-        			.getTbSiaSelectoresCsses()
-        			.get(0));
-        	
+        	        	
         	/**
         	 * Se obtiene el listado de documentos de los que se
         	 * van a extraer los datos.
         	 */
-        	List<Document> listDocuments = getHtmlDocument(urlDto, getCookies(iIdEmpresa), producto, selectorCssDto);
+        	List<Document> listDocuments = getHtmlDocument(urlDto, getCookies(iIdEmpresa), producto);
         	
         	lResultadoDto = new ArrayList<>(10);
         	
@@ -187,8 +174,8 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	             * que contiene los datos.
 	             */
 	            entradas = selectScrapPattern(document,
-	            		selectorCssDto.getScrapPattern(), 
-	            		selectorCssDto.getScrapNoPattern());
+	            		urlDto.getSelectores().get(0).get("SCRAP_PATTERN"), 
+	            		urlDto.getSelectores().get(0).get("SCRAP_NO_PATTERN"));
 
 	            /**
 	             * De cada elemento se extrae la
@@ -211,7 +198,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	    			 * En este punto se extraen los datos del objeto
 	    			 * element y se añaden en un objeto DTO.
 	    			 */
-	    			resDto = fillDataResultadoDTO(elem, selectorCssDto, urlDto, ordenacion);
+	    			resDto = fillDataResultadoDTO(elem, urlDto, ordenacion);
 	    			
 	    			/**
 	    			 * Se realiza la última comprovación y 
@@ -280,8 +267,8 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	 */
 	private boolean validaUrlDto() {
 		return Objects.isNull(urlDto) ||
-				Objects.isNull(urlDto.getTbSiaEmpresa()) ||
-				urlDto.getTbSiaEmpresa().getTbSiaSelectoresCsses().isEmpty();
+				Objects.isNull(urlDto.getDidEmpresa()) ||
+				urlDto.getSelectores().isEmpty();
 	}
 		
 	/**
@@ -340,17 +327,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		}
 	}
 
-	/**
-	 * Método que retorna los selectores con los 
-	 * que se accederá a las posiciones del html
-	 * de las que se extraerán los datos.
-	 * 
-	 * @return IFParser<SelectoresCssDTO, TbSiaSelectoresCss> 
-	 */
-	private IFParser<SelectoresCssDTO, TbSiaSelectoresCss> getParserS() {
-		return ((IFParser<SelectoresCssDTO, TbSiaSelectoresCss>) parserFactory.getParser(SELECTORES_PARSER));
-	}	
-	
 	/**
 	 * Método que valida una URL.
 	 * 

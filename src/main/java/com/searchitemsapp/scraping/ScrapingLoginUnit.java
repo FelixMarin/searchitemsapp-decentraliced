@@ -142,10 +142,10 @@ public class ScrapingLoginUnit extends Scraping {
 		for (UrlDTO urlDto : listUrlDto) {
 			ResultadoDTO resultadoDto = new ResultadoDTO();
 			resultadoDto.setNomUrl(urlDto.getNomUrl());
-			resultadoDto.setDidEmpresa(urlDto.getTbSiaEmpresa().getDid());
+			resultadoDto.setDidEmpresa(urlDto.getDidEmpresa());
 			resultadoDto.setDidUrl(urlDto.getDid());
 			resultadoDto.setBolActivo(urlDto.getBolActivo());
-			resultadoDto.setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
+			resultadoDto.setNomEmpresa(urlDto.getNomEmpresa());
 			resultadoDto.setBolStatus(urlDto.getBolStatus());
 			resultadoDto.setBolLogin(urlDto.getBolLogin());
 			resultadoDto.setDesUrl(urlDto.getDesUrl());
@@ -185,7 +185,7 @@ public class ScrapingLoginUnit extends Scraping {
 		/**
 		 * Se establece el id de la url.
 		 */
-		paramsLoginDto.getTbSiaUrl().setDid(auxResDto.getDidUrl());
+		paramsLoginDto.setDidUrl(auxResDto.getDidUrl());
 		
 		/**
 		 * Se obtienen de la bbdd los valores necesarios para
@@ -226,7 +226,7 @@ public class ScrapingLoginUnit extends Scraping {
 		Map<String, String> mapParamsFormLogin = new HashMap<>(10);
         
         for (ParamsLoginDTO paramsLoginDTO : listParamLoginForm) {
-        	if(auxResDto.getDidUrl() == paramsLoginDTO.getTbSiaUrl().getDid()) {
+        	if(auxResDto.getDidUrl() == paramsLoginDTO.getDidUrl()) {
         		mapParamsFormLogin.put(paramsLoginDTO.getParamClave(), paramsLoginDTO.getParamValor());
         	}
 		}
@@ -322,7 +322,7 @@ public class ScrapingLoginUnit extends Scraping {
 					.timeout(100000);
 			
 			for (ParamsLoginDTO paramsLoginDTO : listParamLoginHeaders) {
-				if(idUrl == paramsLoginDTO.getTbSiaUrl().getDid()) {
+				if(idUrl == paramsLoginDTO.getDidUrl()) {
 					connection.header(paramsLoginDTO.getParamClave(), paramsLoginDTO.getParamValor());
 				}
 			}

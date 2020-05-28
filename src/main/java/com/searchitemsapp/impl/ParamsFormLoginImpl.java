@@ -90,7 +90,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));
 		debugMessage.append(" ");
-		debugMessage.append(paramsLoginDTO.getTbSiaUrl().getDid());
+		debugMessage.append(paramsLoginDTO.getDidUrl());
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(debugMessage.toString(),this.getClass());
@@ -99,7 +99,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 		/**
 		 * Devuelve un objeto con el valor solicitado.
 		 */
-		return paramsFormLoginDao.findByTbSiaUrl(paramsLoginDTO.getTbSiaUrl());
+		return paramsFormLoginDao.findByTbSiaUrl(paramsLoginDTO.getDidUrl());
 	}
 
 	/**

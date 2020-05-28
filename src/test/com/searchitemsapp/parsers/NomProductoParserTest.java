@@ -53,21 +53,21 @@ public class NomProductoParserTest {
 		NomProductoDTO nomProductoDto = parser.toDTO(tbSiaNomProducto);
 		
 		//- Equals -//
-		assertEquals("getTbSiaCategoriasEmpresa", 
-				tbSiaNomProducto.getTbSiaCategoriasEmpresa(), 
-				nomProductoDto.getTbSiaCategoriasEmpresa());		
-		assertEquals("getTbSiaPais", 
-				tbSiaNomProducto.getTbSiaPais(), 
-				nomProductoDto.getTbSiaPais());
+		assertEquals("getDid", 
+				tbSiaNomProducto.getDid(), 
+				nomProductoDto.getDid());		
+		assertEquals("getDid", 
+				tbSiaNomProducto.getDid(), 
+				nomProductoDto.getDid());
 		assertEquals("getetNomProducto", 
 				tbSiaNomProducto.getNomProducto(), 
 				nomProductoDto.getNomProducto());
 		
 		//- Same -//
-		assertSame(tbSiaNomProducto.getTbSiaPais(), 
-				nomProductoDto.getTbSiaPais());
-		assertSame(tbSiaNomProducto.getTbSiaCategoriasEmpresa(), 
-				nomProductoDto.getTbSiaCategoriasEmpresa());
+		assertSame(tbSiaNomProducto.getDid(), 
+				nomProductoDto.getDid());
+		assertSame(tbSiaNomProducto.getDid(), 
+				nomProductoDto.getDid());
 		assertSame(tbSiaNomProducto.getNomProducto(), 
 				nomProductoDto.getNomProducto());
 		
@@ -78,29 +78,27 @@ public class NomProductoParserTest {
 		
 		NomProductoDTO nomProductoDto = new NomProductoDTO();
 		
-		nomProductoDto.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
-		nomProductoDto.setTbSiaPais(new TbSiaPais());
 		nomProductoDto.setNomProducto("test");
 		
 		NomProductoParser parser = new NomProductoParser();
 		TbSiaNomProducto tbSiaNomProducto = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
-		assertEquals("getTbSiaCategoriasEmpresa", 
-			nomProductoDto.getTbSiaCategoriasEmpresa(), 
-				tbSiaNomProducto.getTbSiaCategoriasEmpresa());	
-		assertEquals("getTbSiaPais", 
-				nomProductoDto.getTbSiaPais(), 
-				tbSiaNomProducto.getTbSiaPais());
+		assertEquals("getDid", 
+			nomProductoDto.getDid(), 
+				tbSiaNomProducto.getDid());	
+		assertEquals("getDid", 
+				nomProductoDto.getDid(), 
+				tbSiaNomProducto.getDid());
 		assertEquals("getetNomProducto", 
 				nomProductoDto.getNomProducto(), 
 				tbSiaNomProducto.getNomProducto());
 		
 		//- Same -//
-		assertSame(nomProductoDto.getTbSiaPais(), 
-				tbSiaNomProducto.getTbSiaPais());
-		assertSame(nomProductoDto.getTbSiaCategoriasEmpresa(), 
-				tbSiaNomProducto.getTbSiaCategoriasEmpresa());
+		assertSame(nomProductoDto.getDid(), 
+				tbSiaNomProducto.getDid());
+		assertSame(nomProductoDto.getDid(), 
+				tbSiaNomProducto.getDid());
 		assertSame(nomProductoDto.getNomProducto(), 
 				tbSiaNomProducto.getNomProducto());
 		
@@ -120,8 +118,8 @@ public class NomProductoParserTest {
 		assertEquals("size", 
 				lsNomProducto.size(), listNomProductoDTO.size());
 		
-		assertSame(lsNomProducto.get(0).getTbSiaCategoriasEmpresa(), 
-				listNomProductoDTO.get(0).getTbSiaCategoriasEmpresa());		
+		assertSame(lsNomProducto.get(0).getDid(), 
+				listNomProductoDTO.get(0).getDid());		
 	}
 
 	@Test

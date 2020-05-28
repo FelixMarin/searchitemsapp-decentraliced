@@ -18,7 +18,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 
@@ -53,8 +52,7 @@ public class ScrapingConsum extends AbsScrapingEmpresas implements IFScrapingCon
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(Document document, UrlDTO urlDto, 
-			SelectoresCssDTO selectorCssDto)
+	public List<String> getListaUrls(Document document, UrlDTO urlDto)
 			throws MalformedURLException {
 
 		if(LOGGER.isInfoEnabled()) {

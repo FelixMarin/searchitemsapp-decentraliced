@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
@@ -44,9 +43,8 @@ public class ScrapingLidl extends AbsScrapingEmpresas implements IFScrapingEmpre
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto, 
-			final SelectoresCssDTO selectorCssDto)
-			throws MalformedURLException {
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto)
+				throws MalformedURLException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());

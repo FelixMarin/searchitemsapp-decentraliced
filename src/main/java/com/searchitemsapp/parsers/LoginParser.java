@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.LoginDTO;
+import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaLogin;
 
 
@@ -51,7 +52,8 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		loginPDto.setDesEmail(tbSiaLogin.getDesEmail());
 		loginPDto.setNomUsuario(tbSiaLogin.getNomUsuario());
 		loginPDto.setNumTelefono(tbSiaLogin.getNumTelefono());
-		loginPDto.setTbSiaEmpresa(tbSiaLogin.getTbSiaEmpresa());
+		loginPDto.setDidEmpresa(tbSiaLogin.getTbSiaEmpresa().getDid());
+		loginPDto.setNomEmpresa(tbSiaLogin.getTbSiaEmpresa().getNomEmpresa());
 		
 		return loginPDto;
 	}
@@ -75,9 +77,11 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		tbSiaLogin.setCodPassword(loginPDto.getCodPassword());
 		tbSiaLogin.setCodPostal(loginPDto.getCodPostal());		
 		tbSiaLogin.setDesEmail(loginPDto.getDesEmail());
-		tbSiaLogin.setNomUsuario(tbSiaLogin.getNomUsuario());
-		tbSiaLogin.setNumTelefono(tbSiaLogin.getNumTelefono());
-		tbSiaLogin.setTbSiaEmpresa(loginPDto.getTbSiaEmpresa());
+		tbSiaLogin.setNomUsuario(loginPDto.getNomUsuario());
+		tbSiaLogin.setNumTelefono(loginPDto.getNumTelefono());
+		tbSiaLogin.setTbSiaEmpresa(new TbSiaEmpresa());
+		tbSiaLogin.getTbSiaEmpresa().setDid(loginPDto.getDid());
+		tbSiaLogin.getTbSiaEmpresa().setNomEmpresa(loginPDto.getNomEmpresa());
 		
 		return tbSiaLogin;
 	}
@@ -106,7 +110,8 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 			loginPDto.setDesEmail(tbSiaLogin.getDesEmail());
 			loginPDto.setNomUsuario(tbSiaLogin.getNomUsuario());
 			loginPDto.setNumTelefono(tbSiaLogin.getNumTelefono());
-			loginPDto.setTbSiaEmpresa(tbSiaLogin.getTbSiaEmpresa());
+			loginPDto.setDidEmpresa(tbSiaLogin.getTbSiaEmpresa().getDid());
+			loginPDto.setNomEmpresa(tbSiaLogin.getTbSiaEmpresa().getNomEmpresa());
 			listDto.add(loginPDto);
 		}
 		

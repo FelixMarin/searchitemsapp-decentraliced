@@ -1,16 +1,5 @@
 package com.searchitemsapp.dto;
 
-/**
- * Objeto de Transferencia de Datos (DTO) 
- * es un objeto que transporta datos entre procesos.
- * No tiene más comportamiento que almacenar y entregar 
- * sus propios datos.
- * 
- * @author Felix Marin Ramirez
- *
- */
-import com.searchitemsapp.model.TbSiaEmpresa;
-
 public class LoginDTO implements IFdto {
 
 	/*
@@ -21,15 +10,15 @@ public class LoginDTO implements IFdto {
 	private Integer codPostal;
 	private String desEmail;
 	private String nomUsuario;
-	private String numTelefono;
-	private TbSiaEmpresa tbSiaEmpresa;
+	private String numTelefono;	
+	private Integer didEmpresa;
+	private String nomEmpresa;
 
 	/*
 	 * Constructor
 	 */
 	public LoginDTO() {
 		super();
-		tbSiaEmpresa = new TbSiaEmpresa();
 	}
 	
 	/*
@@ -71,21 +60,30 @@ public class LoginDTO implements IFdto {
 	public void setNumTelefono(String numTelefono) {
 		this.numTelefono = numTelefono;
 	}
-	public TbSiaEmpresa getTbSiaEmpresa() {
-		return tbSiaEmpresa;
-	}
-	public void setTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		this.tbSiaEmpresa = tbSiaEmpresa;
-	}
 	
+	public Integer getDidEmpresa() {
+		return didEmpresa;
+	}
+
+	public void setDidEmpresa(Integer didEmpresa) {
+		this.didEmpresa = didEmpresa;
+	}
+
+	public String getNomEmpresa() {
+		return nomEmpresa;
+	}
+
+	public void setNomEmpresa(String nomEmpresa) {
+		this.nomEmpresa = nomEmpresa;
+	}
+
 	/*
 	 * Métodos sobre-escritos. 
 	 */
 	@Override
 	public String toString() {
 		return "LoginDTO [did=" + did + ", codPassword=" + codPassword + ", codPostal=" + codPostal + ", desEmail="
-				+ desEmail + ", nomUsuario=" + nomUsuario + ", numTelefono=" + numTelefono + ", tbSiaEmpresa="
-				+ tbSiaEmpresa + "]";
+				+ desEmail + ", nomUsuario=" + nomUsuario + ", numTelefono=" + numTelefono + "]";
 	}
 	
 	

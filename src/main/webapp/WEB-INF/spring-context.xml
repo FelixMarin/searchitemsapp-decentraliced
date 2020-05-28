@@ -172,7 +172,7 @@
       <bean id="scrapingLidl" class="com.searchitemsapp.scraping.lidl.ScrapingLidl"></bean>
       
       <bean id="diccionario" class="com.searchitemsapp.diccionario.Diccionario"></bean>
-      <bean id="fillSelectores" class="com.searchitemsapp.diccionario.FillSelectores"></bean>     
+      <bean id="fillSelectores" class="com.searchitemsapp.fillselectores.FillSelectores"></bean>     
       
       <bean id="parserFactory" class="com.searchitemsapp.factory.ParserFactory"></bean>
       <bean id="serviceFactory" class="com.searchitemsapp.factory.ServiceFactory"></bean>

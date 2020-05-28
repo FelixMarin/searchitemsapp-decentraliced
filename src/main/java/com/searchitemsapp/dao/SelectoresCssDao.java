@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaSelectoresCss;
 import com.searchitemsapp.repository.IFSelectoresCssRepository;
 
@@ -151,7 +150,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 	 * @exception IOException
 	 */
 	@Override
-	public List<SelectoresCssDTO> findByTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) throws IOException {
+	public List<SelectoresCssDTO> findByTbSiaEmpresa(Integer didEmpresa) throws IOException {
 
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -161,7 +160,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if (Objects.isNull(tbSiaEmpresa)) {
+		if (Objects.isNull(didEmpresa)) {
 			return null;
 		}
 		
@@ -174,7 +173,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaSelectoresCss.class);
-		query.setParameter("didEmpresa", tbSiaEmpresa.getDid());
+		query.setParameter("didEmpresa", didEmpresa);
 
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.

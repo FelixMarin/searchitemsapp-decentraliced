@@ -1,8 +1,5 @@
 package com.searchitemsapp.dto;
 
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaPais;
-
 /**
  * Objeto de Transferencia de Datos (DTO) 
  * es un objeto que transporta datos entre procesos.
@@ -19,8 +16,10 @@ public class NomProductoDTO  implements IFdto {
 	 */
 	private Integer did;
 	private String nomProducto;
-	private TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa;
-	private TbSiaPais tbSiaPais;
+	private int didCatEmpresas;
+	private String nomCatEmpresas;	
+	private int didPais;
+	private String nomPais;
 	
 	/*
 	 * Contructor
@@ -45,25 +44,45 @@ public class NomProductoDTO  implements IFdto {
 	public void setNomProducto(String nomProducto) {
 		this.nomProducto = nomProducto;
 	}
-	public TbSiaCategoriasEmpresa getTbSiaCategoriasEmpresa() {
-		return tbSiaCategoriasEmpresa;
-	}
-	public void setTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) {
-		this.tbSiaCategoriasEmpresa = tbSiaCategoriasEmpresa;
-	}
-	public TbSiaPais getTbSiaPais() {
-		return tbSiaPais;
-	}
-	public void setTbSiaPais(TbSiaPais tbSiaPais) {
-		this.tbSiaPais = tbSiaPais;
-	}
 	
+	public int getDidCatEmpresas() {
+		return didCatEmpresas;
+	}
+
+	public void setDidCatEmpresas(int didCatEmpresas) {
+		this.didCatEmpresas = didCatEmpresas;
+	}
+
+	public String getNomCatEmpresas() {
+		return nomCatEmpresas;
+	}
+
+	public void setNomCatEmpresas(String nomCatEmpresas) {
+		this.nomCatEmpresas = nomCatEmpresas;
+	}
+
+	public int getDidPais() {
+		return didPais;
+	}
+
+	public void setDidPais(int didPais) {
+		this.didPais = didPais;
+	}
+
+	public String getNomPais() {
+		return nomPais;
+	}
+
+	public void setNomPais(String nomPais) {
+		this.nomPais = nomPais;
+	}
+
 	/*
 	 * Métodos sobre-escritos
 	 */
 	@Override
 	public String toString() {
 		return "NomProductoDTO [did=" + did + ", nomProducto=" + nomProducto + ", tbSiaCategoriasEmpresa="
-				+ tbSiaCategoriasEmpresa + ", tbSiaPais=" + tbSiaPais + "]";
+				 + "]";
 	}
 }

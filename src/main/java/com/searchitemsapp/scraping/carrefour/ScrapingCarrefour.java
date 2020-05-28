@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
@@ -54,7 +53,7 @@ public class ScrapingCarrefour extends AbsScrapingEmpresas implements IFScraping
 	 */
 	@Override
 	public List<String> getListaUrls(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto) throws MalformedURLException {
+			final UrlDTO urlDto) throws MalformedURLException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -71,7 +70,7 @@ public class ScrapingCarrefour extends AbsScrapingEmpresas implements IFScraping
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = selectorCssDto.getSelPaginacion();	
+		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");	
 		
 		/**
 		 * Se obtiene del fichero de propiedades el número máximo de

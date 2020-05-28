@@ -15,8 +15,8 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.fillselectores.FillSelectores;
 import com.searchitemsapp.impl.IFImplementacion;
-import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.scraping.ScrapingDiccionario;
 import com.searchitemsapp.scraping.UrlTreatment;
 
@@ -119,11 +119,10 @@ public class Diccionario {
 			if(Objects.isNull(urlDTODiccionario)) {
 				UrlDTO urlDtoAux = new UrlDTO();
 				urlDtoAux.setDid(Integer.parseInt(CommonsPorperties.getValue("flow.value.url.did.diccionario")));
-				urlDtoAux.setTbSiaEmpresa(new TbSiaEmpresa());
-				urlDtoAux.getTbSiaEmpresa().setDid(Integer.parseInt(CommonsPorperties.getValue("flow.value.empresa.did.diccionario")));
+				urlDtoAux.setDidEmpresa(Integer.parseInt(CommonsPorperties.getValue("flow.value.empresa.did.diccionario")));
 				setResultadoDTODiccionario(urlDtoAux);
 				setUrlDto(urlImpl.findByDid(urlDtoAux));
-				urlDTODiccionario.getTbSiaEmpresa().setDid(urlDtoAux.getTbSiaEmpresa().getDid());
+				urlDTODiccionario.setDidEmpresa(urlDtoAux.getDidEmpresa());
 				fillSelectores.fillSelectoresCss(urlDTODiccionario, listTodosSelectoresCss);
 			}
 			
@@ -134,7 +133,6 @@ public class Diccionario {
 			 */
 			String urlAux = urlTreatment.replaceWildcardCharacterDiccionario(urlDto.getNomUrl(), arPalabras[i]);
 			urlDTODiccionario.setNomUrl(urlAux);
-			setTbSiaSelectoresCss(urlDTODiccionario);
 			
 			/**
 			 * Se obtiene una instancia de la clase que realiza el scriping. 
@@ -190,23 +188,8 @@ public class Diccionario {
 	 */
 	private void setUrlDto(UrlDTO urlDto) {
 		Diccionario.urlDto = urlDto;
-		setTbSiaSelectoresCss(Diccionario.urlDto);
 	}
-	
-	/**
-	 * Sa añade la URL al objeto al objeto que contiene
-	 * los selectores para escrapear la web del diccionario.
-	 * 
-	 * @param urlDto
-	 */
-	private static void setTbSiaSelectoresCss(UrlDTO urlDto) {
-		if(Objects.nonNull(urlDto) &&
-				Objects.nonNull(Diccionario.urlDto.getTbSiaEmpresa())) {
-			urlDto.setTbSiaSelectoresCsses(
-					Diccionario.urlDto.getTbSiaEmpresa().getTbSiaSelectoresCsses());
-		}
-	}
-	
+			
 	private String eliminarTildes(final String cadena) {
 		
 		if(Objects.isNull(cadena)) {

@@ -12,7 +12,6 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 
@@ -68,7 +67,7 @@ public class ScrapingCondis extends AbsScrapingEmpresas implements IFScracpingCo
 	 */
 	@Override
 	public List<String> getListaUrls(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto)
+			final UrlDTO urlDto)
 					throws MalformedURLException {
 		
 		if(LOGGER.isInfoEnabled()) {

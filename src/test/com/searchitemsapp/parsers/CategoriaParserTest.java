@@ -59,58 +59,29 @@ public class CategoriaParserTest {
 		
 		//- Equals -//
 		assertEquals("getTbSiaEmpresas", 
-				tbSiaPCategorias.getTbSiaEmpresas(), 
-				categoriaPDto.getTbSiaEmpresas());		
+				tbSiaPCategorias.getDid(), 
+				categoriaPDto.getDid());		
 		assertEquals("getTbSiaMarcas", 
-				tbSiaPCategorias.getTbSiaMarcas(), 
-				categoriaPDto.getTbSiaMarcas());		
+				tbSiaPCategorias.getDid(), 
+				categoriaPDto.getDid());		
 		assertEquals("getTbSiaNomProductos", 
-				tbSiaPCategorias.getTbSiaNomProductos(), 
-				categoriaPDto.getTbSiaNomProductos());
+				tbSiaPCategorias.getDid(), 
+				categoriaPDto.getDid());
 		
 		//- Same -//
-		assertSame(tbSiaPCategorias.getTbSiaNomProductos(), 
-				categoriaPDto.getTbSiaNomProductos());
-		assertSame(tbSiaPCategorias.getTbSiaMarcas(), 
-				categoriaPDto.getTbSiaMarcas());
-		assertSame(tbSiaPCategorias.getTbSiaEmpresas(), 
-				categoriaPDto.getTbSiaEmpresas());
+		assertSame(tbSiaPCategorias.getDid(), 
+				categoriaPDto.getDid());
+		assertSame(tbSiaPCategorias.getDid(), 
+				categoriaPDto.getDid());
+		assertSame(tbSiaPCategorias.getDid(), 
+				categoriaPDto.getDid());
 		
 	}
 	
 	@Test
 	public void toTbSia() {
 		
-		CategoriaDTO categoriaPDto = new CategoriaDTO();
-		//- Se crean las lista-//
-		categoriaPDto.setTbSiaEmpresas(new ArrayList<TbSiaEmpresa>());
-		categoriaPDto.setTbSiaMarcas(new ArrayList<TbSiaMarcas>());
-		categoriaPDto.setTbSiaNomProductos(new ArrayList<TbSiaNomProducto>());
-		//- se añaden nuevos objetos-//
-		categoriaPDto.getTbSiaEmpresas().add(new TbSiaEmpresa());
-		categoriaPDto.getTbSiaMarcas().add(new TbSiaMarcas());
-		categoriaPDto.getTbSiaNomProductos().add(new TbSiaNomProducto());
-		//- se crea el parser y se prueba-//
-		CategoriaParser parser = new CategoriaParser();
-		TbSiaCategoriasEmpresa tbSiaPCategorias = parser.toTbSia(categoriaPDto);
-		
-		assertEquals("getTbSiaEmpresas", 
-			categoriaPDto.getTbSiaEmpresas(), 
-				tbSiaPCategorias.getTbSiaEmpresas());
-		assertEquals("getTbSiaMarcas", 
-				categoriaPDto.getTbSiaMarcas(), 
-				tbSiaPCategorias.getTbSiaMarcas());		
-		assertEquals("getTbSiaNomProductos", 
-				categoriaPDto.getTbSiaNomProductos(), 
-				tbSiaPCategorias.getTbSiaNomProductos());
-		
-		//- Same -//
-		assertSame(categoriaPDto.getTbSiaNomProductos(), 
-				tbSiaPCategorias.getTbSiaNomProductos());
-		assertSame(categoriaPDto.getTbSiaMarcas(), 
-				tbSiaPCategorias.getTbSiaMarcas());
-		assertSame(categoriaPDto.getTbSiaEmpresas(), 
-				tbSiaPCategorias.getTbSiaEmpresas());
+	
 		
 	}
 	
@@ -128,8 +99,8 @@ public class CategoriaParserTest {
 		assertEquals("size", 
 				lsCategorias.size(), listCategoriaDTO.size());
 		
-		assertSame(lsCategorias.get(0).getTbSiaEmpresas(), 
-				listCategoriaDTO.get(0).getTbSiaEmpresas());		
+		assertSame(lsCategorias.get(0).getDid(), 
+				listCategoriaDTO.get(0).getDid());		
 	}
 
 	@Test

@@ -1,11 +1,8 @@
 package com.searchitemsapp.dto;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
-
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaMarcas;
-import com.searchitemsapp.model.TbSiaNomProducto;
 
 
 
@@ -27,9 +24,10 @@ public class PaisDTO implements IFdto {
 	private Boolean bolActivo;
 	private String desPais;
 	private String nomPais;
-	private List<TbSiaEmpresa> tbSiaEmpresas;
-	private List<TbSiaMarcas> tbSiaMarcas;
-	private List<TbSiaNomProducto> tbSiaNomProductos;
+	
+	private List<LinkedHashMap<Integer, String>> empresas;
+	private List<LinkedHashMap<Integer, String>> marcas;
+	private List<LinkedHashMap<Integer, String>> productos;
 	
 	/*
 	 * Constructor
@@ -72,29 +70,29 @@ public class PaisDTO implements IFdto {
 	public void setNomPais(String nomPais) {
 		this.nomPais = nomPais;
 	}
-
-	public List<TbSiaEmpresa> getTbSiaEmpresas() {
-		return tbSiaEmpresas;
-	}
-
-	public void setTbSiaEmpresas(List<TbSiaEmpresa> tbSiaEmpresas) {
-		this.tbSiaEmpresas = tbSiaEmpresas;
-	}
 	
-	public List<TbSiaMarcas> getTbSiaMarcas() {
-		return tbSiaMarcas;
+	public List<LinkedHashMap<Integer, String>> getEmpresas() {
+		return empresas;
 	}
 
-	public void setTbSiaMarcas(List<TbSiaMarcas> tbSiaMarcas) {
-		this.tbSiaMarcas = tbSiaMarcas;
+	public void setEmpresas(List<LinkedHashMap<Integer, String>> empresas) {
+		this.empresas = empresas;
 	}
 
-	public List<TbSiaNomProducto> getTbSiaNomProductos() {
-		return tbSiaNomProductos;
+	public List<LinkedHashMap<Integer, String>> getMarcas() {
+		return marcas;
 	}
 
-	public void setTbSiaNomProductos(List<TbSiaNomProducto> tbSiaNomProductos) {
-		this.tbSiaNomProductos = tbSiaNomProductos;
+	public void setMarcas(List<LinkedHashMap<Integer, String>> marcas) {
+		this.marcas = marcas;
+	}
+
+	public List<LinkedHashMap<Integer, String>> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(List<LinkedHashMap<Integer, String>> productos) {
+		this.productos = productos;
 	}
 
 	/*
@@ -108,9 +106,6 @@ public class PaisDTO implements IFdto {
 		result = prime * result + ((Objects.isNull(desPais)) ? 0 : desPais.hashCode());
 		result = prime * result + ((Objects.isNull(did)) ? 0 : did.hashCode());
 		result = prime * result + ((Objects.isNull(nomPais)) ? 0 : nomPais.hashCode());
-		result = prime * result + ((Objects.isNull(tbSiaEmpresas)) ? 0 : tbSiaEmpresas.hashCode());
-		result = prime * result + ((Objects.isNull(tbSiaMarcas)) ? 0 : tbSiaMarcas.hashCode());
-		result = prime * result + ((Objects.isNull(tbSiaNomProductos)) ? 0 : tbSiaNomProductos.hashCode());		
 		return result;
 	}
 
@@ -122,7 +117,6 @@ public class PaisDTO implements IFdto {
 	@Override
 	public String toString() {
 		return "PaisDTO [did=" + did + ", bolActivo=" + bolActivo + ", desPais=" + desPais + ", nomPais=" + nomPais
-				+ ", tbSiaEmpresas=" + tbSiaEmpresas + ", tbSiaMarcas=" + tbSiaMarcas + ", tbSiaNomProductos="
-				+ tbSiaNomProductos + "]";
+				 + "]";
 	}
 }

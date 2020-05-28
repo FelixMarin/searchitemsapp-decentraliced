@@ -2,9 +2,6 @@ package com.searchitemsapp.dto;
 
 import java.util.Objects;
 
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaPais;
-
 /**
  * Objeto de Transferencia de Datos (DTO) 
  * es un objeto que transporta datos entre procesos.
@@ -21,8 +18,10 @@ public class MarcasDTO implements IFdto {
 	 */
 	private Integer did;
 	private String nomMarca;
-	private TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa;
-	private TbSiaPais tbSiaPais;
+	private int didCatEmpresas;
+	private String nomCatEmpresas;	
+	private int didPais;
+	private String nomPais;
 	
 	/*
 	 * Constructor
@@ -50,20 +49,36 @@ public class MarcasDTO implements IFdto {
 		this.nomMarca = nomMarca;
 	}
 	
-	public TbSiaCategoriasEmpresa getTbSiaCategoriasEmpresa() {
-		return tbSiaCategoriasEmpresa;
+	public int getDidCatEmpresas() {
+		return didCatEmpresas;
 	}
 
-	public void setTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) {
-		this.tbSiaCategoriasEmpresa = tbSiaCategoriasEmpresa;
+	public void setDidCatEmpresas(int didCatEmpresas) {
+		this.didCatEmpresas = didCatEmpresas;
 	}
 
-	public TbSiaPais getTbSiaPais() {
-		return tbSiaPais;
+	public String getNomCatEmpresas() {
+		return nomCatEmpresas;
 	}
 
-	public void setTbSiaPais(TbSiaPais tbSiaPais) {
-		this.tbSiaPais = tbSiaPais;
+	public void setNomCatEmpresas(String nomCatEmpresas) {
+		this.nomCatEmpresas = nomCatEmpresas;
+	}
+
+	public int getDidPais() {
+		return didPais;
+	}
+
+	public void setDidPais(int didPais) {
+		this.didPais = didPais;
+	}
+
+	public String getNomPais() {
+		return nomPais;
+	}
+
+	public void setNomPais(String nomPais) {
+		this.nomPais = nomPais;
 	}
 
 	/*
@@ -75,8 +90,6 @@ public class MarcasDTO implements IFdto {
 		int result = 1;
 		result = prime * result + ((Objects.isNull(did)) ? 0 : did.hashCode());
 		result = prime * result + ((Objects.isNull(nomMarca)) ? 0 : nomMarca.hashCode());
-		result = prime * result + ((Objects.isNull(tbSiaCategoriasEmpresa)) ? 0 : tbSiaCategoriasEmpresa.hashCode());
-		result = prime * result + ((Objects.isNull(tbSiaPais)) ? 0 : tbSiaPais.hashCode());
 		return result;
 	}
 
@@ -106,7 +119,7 @@ public class MarcasDTO implements IFdto {
 
 	@Override
 	public String toString() {
-		return "MarcasDTO [did=" + did + ", nomMarca=" + nomMarca + ", tbSiaCategoriasEmpresa=" + tbSiaCategoriasEmpresa
-				+ ", tbSiaPais=" + tbSiaPais + "]";
+		return "MarcasDTO [did=" + did + ", nomMarca=" + nomMarca + ", tbSiaCategoriasEmpresa="
+				 + "]";
 	}
 }

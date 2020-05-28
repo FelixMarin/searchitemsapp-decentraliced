@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.diccionario.FillSelectores;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.fillselectores.FillSelectores;
 import com.searchitemsapp.impl.IFUrlImpl;
 
 /**
@@ -125,13 +125,13 @@ public class UrlTreatment extends Scraping {
 			 */
 			String productoTratado;	
 			if(urlDto.getBolActivo()) {
-				if(getMapEmpresas().get(EROSKI) == urlDto.getTbSiaEmpresa().getDid()) {
+				if(getMapEmpresas().get(EROSKI) == urlDto.getDidEmpresa()) {
 					productoTratado = reemplazarCaracteresEroski(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(SIMPLY) == urlDto.getTbSiaEmpresa().getDid()) {
+				} else if(getMapEmpresas().get(SIMPLY) == urlDto.getDidEmpresa()) {
 					productoTratado = reeplazarCaracteresSimply(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(CONDIS) == urlDto.getTbSiaEmpresa().getDid()) {
+				} else if(getMapEmpresas().get(CONDIS) == urlDto.getDidEmpresa()) {
 					productoTratado = reeplazarTildesCondis(producto);
 					productoTratado = reeplazarCaracteresCondis(productoTratado);
 					productoTratado = tratarProducto(productoTratado);

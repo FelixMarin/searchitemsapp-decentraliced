@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
@@ -54,8 +53,8 @@ public class ScrapingAlcampo extends AbsScrapingEmpresas implements IFScrapingEm
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(Document document, UrlDTO urlDto, 
-			SelectoresCssDTO selectorCssDto) throws MalformedURLException {
+	public List<String> getListaUrls(Document document, UrlDTO urlDto) 
+			throws MalformedURLException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -72,7 +71,7 @@ public class ScrapingAlcampo extends AbsScrapingEmpresas implements IFScrapingEm
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = selectorCssDto.getSelPaginacion();	
+		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");	
 		String strPaginacion = ZERO_STRING;
 		
 		/**

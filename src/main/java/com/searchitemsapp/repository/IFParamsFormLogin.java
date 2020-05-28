@@ -19,6 +19,6 @@ import com.searchitemsapp.model.TbSiaUrl;
  */
 public interface IFParamsFormLogin extends Repository<TbSiaParamsFormLogin, Long>{
 	List<ParamsLoginDTO> findAll() throws IOException;
-	List<ParamsLoginDTO> findByTbSiaUrl(TbSiaUrl tbSiaUrl) throws IOException;
+	List<ParamsLoginDTO> findByTbSiaUrl(Integer did) throws IOException;
 	ParamsLoginDTO findByDid(Integer did) throws IOException;
 }

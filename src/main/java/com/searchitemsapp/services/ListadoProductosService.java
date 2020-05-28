@@ -235,15 +235,7 @@ public class ListadoProductosService implements IFService<String,String> {
              * JSON. Cada iteración corresponde a un producto.
              */
 			for (ResultadoDTO resultadoDTO : listResultDtoFinal) {
-								
-				strJsonResult.append("{\"identificador\":\"" + ++contador + "\","
-						+ "\"nomProducto\":\"" + resultadoDTO.getNomProducto() + "\","
-						+ "\"didEmpresa\":\"" + resultadoDTO.getDidEmpresa() + "\","
-						+ "\"nomEmpresa\":\"" + resultadoDTO.getNomEmpresa() +  "\","
-						+ "\"imagen\":\"" + resultadoDTO.getImagen() +  "\","
-						+ "\"nomUrl\":\"" + resultadoDTO.getNomUrl() +  "\","
-						+ "\"precio\":\"" + resultadoDTO.getPrecio() + "\","
-						+ "\"precioKilo\":\"" + resultadoDTO.getPrecioKilo() + "\"}");
+				strJsonResult.append(toJson(resultadoDTO,contador++));
 			}
 
 		}catch(IOException | NoResultException | InterruptedException | ExecutionException | URISyntaxException e) {			
@@ -382,5 +374,16 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	private String getErrorJsonResponse(String error, long id) {
 		return "{\"id\":\"" + id +"\",\"descripcion\":\"" + error + "\"}";
+	}
+	
+	private String toJson(ResultadoDTO resultadoDTO, int contador) {
+		return "{\"identificador\":\"" + ++contador + "\","
+				+ "\"nomProducto\":\"" + resultadoDTO.getNomProducto() + "\","
+				+ "\"didEmpresa\":\"" + resultadoDTO.getDidEmpresa() + "\","
+				+ "\"nomEmpresa\":\"" + resultadoDTO.getNomEmpresa() +  "\","
+				+ "\"imagen\":\"" + resultadoDTO.getImagen() +  "\","
+				+ "\"nomUrl\":\"" + resultadoDTO.getNomUrl() +  "\","
+				+ "\"precio\":\"" + resultadoDTO.getPrecio() + "\","
+				+ "\"precioKilo\":\"" + resultadoDTO.getPrecioKilo() + "\"}";
 	}
 }

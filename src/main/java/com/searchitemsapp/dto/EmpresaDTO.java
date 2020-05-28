@@ -1,11 +1,7 @@
 package com.searchitemsapp.dto;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaPais;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.model.TbSiaUrl;
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -25,18 +21,20 @@ public class EmpresaDTO implements IFdto {
 	private Boolean bolActivo;
 	private String desEmpresa;
 	private String nomEmpresa;
-	private TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa;
-	private TbSiaPais tbSiaPais;
-	private List<TbSiaUrl> tbSiaUrls;
 	private Boolean bolDynScrap;	
-	private List<TbSiaSelectoresCss> tbSiaSelectoresCsses;	
 	
+	private Integer didCatEmpresa;
+	private String nomCatEmpresa;
+	private Integer didPais;
+	private String nomPais;
+	private List<LinkedHashMap<String, String>> selectores;
+	private List<LinkedHashMap<Integer, String>> urls;
+
 	/*
 	 * Constructor
 	 */
 	public EmpresaDTO() {
 		super();
-		tbSiaCategoriasEmpresa = new TbSiaCategoriasEmpresa();
 	}
 
 	/*
@@ -74,30 +72,6 @@ public class EmpresaDTO implements IFdto {
 		this.nomEmpresa = nomEmpresa;
 	}
 
-	public TbSiaCategoriasEmpresa getTbSiaCategoriasEmpresa() {
-		return tbSiaCategoriasEmpresa;
-	}
-
-	public void setTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) {
-		this.tbSiaCategoriasEmpresa = tbSiaCategoriasEmpresa;
-	}
-
-	public TbSiaPais getTbSiaPais() {
-		return tbSiaPais;
-	}
-
-	public void setTbSiaPais(TbSiaPais tbSiaPais) {
-		this.tbSiaPais = tbSiaPais;
-	}
-
-	public List<TbSiaUrl> getTbSiaUrls() {
-		return tbSiaUrls;
-	}
-
-	public void setTbSiaUrls(List<TbSiaUrl> tbSiaUrls) {
-		this.tbSiaUrls = tbSiaUrls;
-	}
-	
 	public Boolean getBolDynScrap() {
 		return bolDynScrap;
 	}
@@ -105,13 +79,53 @@ public class EmpresaDTO implements IFdto {
 	public void setBolDynScrap(Boolean bolDynScrap) {
 		this.bolDynScrap = bolDynScrap;
 	}
-
-	public List<TbSiaSelectoresCss> getTbSiaSelectoresCsses() {
-		return tbSiaSelectoresCsses;
+	
+	public Integer getDidCatEmpresa() {
+		return didCatEmpresa;
 	}
 
-	public void setTbSiaSelectoresCsses(List<TbSiaSelectoresCss> tbSiaSelectoresCsses) {
-		this.tbSiaSelectoresCsses = tbSiaSelectoresCsses;
+	public void setDidCatEmpresa(Integer didCatEmpresa) {
+		this.didCatEmpresa = didCatEmpresa;
+	}
+
+	public String getNomCatEmpresa() {
+		return nomCatEmpresa;
+	}
+
+	public void setNomCatEmpresa(String nomCatEmpresa) {
+		this.nomCatEmpresa = nomCatEmpresa;
+	}
+	
+	public List<LinkedHashMap<String, String>> getSelectores() {
+		return selectores;
+	}
+
+	public void setSelectores(List<LinkedHashMap<String, String>> selectores) {
+		this.selectores = selectores;
+	}
+	
+	public List<LinkedHashMap<Integer, String>> getUrls() {
+		return urls;
+	}
+
+	public void setUrls(List<LinkedHashMap<Integer, String>> urls) {
+		this.urls = urls;
+	}
+	
+	public Integer getDidPais() {
+		return didPais;
+	}
+
+	public void setDidPais(Integer didPais) {
+		this.didPais = didPais;
+	}
+
+	public String getNomPais() {
+		return nomPais;
+	}
+
+	public void setNomPais(String nomPais) {
+		this.nomPais = nomPais;
 	}
 
 	/*
@@ -120,8 +134,8 @@ public class EmpresaDTO implements IFdto {
 	@Override
 	public String toString() {
 		return "EmpresaDTO [did=" + did + ", bolActivo=" + bolActivo + ", desEmpresa=" + desEmpresa + ", nomEmpresa="
-				+ nomEmpresa + ", tbSiaCategoriasEmpresa=" + tbSiaCategoriasEmpresa + ", tbSiaPais=" + tbSiaPais
-				+ ", tbSiaUrls=" + tbSiaUrls + ", bolDynScrap=" + bolDynScrap + ", tbSiaSelectoresCsses="
-				+ tbSiaSelectoresCsses + "]";
+				+ nomEmpresa + ", bolDynScrap=" + bolDynScrap + ", didCatEmpresa=" + didCatEmpresa + ", nomCatEmpresa="
+				+ nomCatEmpresa + ", didPais=" + didPais + ", nomPais=" + nomPais + ", selectores=" + selectores
+				+ ", urls=" + urls + "]";
 	}
 }

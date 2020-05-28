@@ -78,13 +78,13 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 	}
 
 	@Override
-	public List<ParamsLoginDTO> findByTbSiaUrl(TbSiaUrl tbSiaUrl) throws IOException {
+	public List<ParamsLoginDTO> findByTbSiaUrl(Integer didUrl) throws IOException {
 
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		if(Objects.isNull(tbSiaUrl)) {
+		if(Objects.isNull(didUrl)) {
 			return null;
 		}
 		
@@ -93,7 +93,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		StringBuilder queryBuilder = new StringBuilder(10);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsHeadersLogin.class);
-		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), tbSiaUrl.getDid());
+		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
 		
 		try {
 			listParamsLoginDto = getParser(PARAMS_HEADERS_PARSER).toListDTO((List<TbSiaParamsHeadersLogin>) query.getResultList());

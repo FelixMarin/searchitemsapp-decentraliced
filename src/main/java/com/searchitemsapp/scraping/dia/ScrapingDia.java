@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
@@ -55,8 +54,7 @@ public class ScrapingDia extends AbsScrapingEmpresas implements IFScrapingEmpres
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto,
-			final SelectoresCssDTO selectorCssDto) 
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto) 
 					throws MalformedURLException {
 
 		if(LOGGER.isInfoEnabled()) {
@@ -70,7 +68,7 @@ public class ScrapingDia extends AbsScrapingEmpresas implements IFScrapingEmpres
 		 * se generan las de paginación.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		String selectorPaginacion = selectorCssDto.getSelPaginacion();
+		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");
 		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
 
 		/**

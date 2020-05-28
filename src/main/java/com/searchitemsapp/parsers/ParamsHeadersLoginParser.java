@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.model.TbSiaUrl;
 
 
 
@@ -47,7 +48,8 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 		paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 		paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 		paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-		paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());
+		paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+		paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());
 		paramsLoginDto.setBolActivo(tbSiaParamsFormLogin.getBolActivo());
 		
 		return paramsLoginDto;
@@ -71,7 +73,9 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 		tbSiaParamsFormLogin.setDid(paramsLoginDto.getDid());
 		tbSiaParamsFormLogin.setParamClave(paramsLoginDto.getParamClave());
 		tbSiaParamsFormLogin.setParamValor(paramsLoginDto.getParamValor());
-		tbSiaParamsFormLogin.setTbSiaUrl(paramsLoginDto.getTbSiaUrl());
+		tbSiaParamsFormLogin.setTbSiaUrl(new TbSiaUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setDid(paramsLoginDto.getDidUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setNomUrl(paramsLoginDto.getNomUrl());
 		tbSiaParamsFormLogin.setBolActivo(paramsLoginDto.getBolActivo());
 		
 		return tbSiaParamsFormLogin;
@@ -98,7 +102,8 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 			paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 			paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 			paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-			paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());	
+			paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+			paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());	
 			paramsLoginDto.setBolActivo(tbSiaParamsFormLogin.getBolActivo());
 			listParamsLoginDto.add(paramsLoginDto);
 		}

@@ -45,6 +45,10 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 		
 		marcasDto.setDid(tbSiaMarcas.getDid());
 		marcasDto.setNomMarca(tbSiaMarcas.getNomMarca());
+		marcasDto.setDidCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getDid());
+		marcasDto.setNomCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+		marcasDto.setDidPais(tbSiaMarcas.getTbSiaPais().getDid());
+		marcasDto.setNomPais(tbSiaMarcas.getTbSiaPais().getNomPais());
 		
 		return marcasDto;
 	}
@@ -88,6 +92,11 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 			marcasDto = new MarcasDTO();
 			marcasDto.setDid(tbSiaMarcas.getDid());
 			marcasDto.setNomMarca(tbSiaMarcas.getNomMarca());
+			marcasDto.setDidCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getDid());
+			marcasDto.setNomCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			marcasDto.setDidPais(tbSiaMarcas.getTbSiaPais().getDid());
+			marcasDto.setNomPais(tbSiaMarcas.getTbSiaPais().getNomPais());
+			
 			listDto.add(marcasDto);
 		}
 		

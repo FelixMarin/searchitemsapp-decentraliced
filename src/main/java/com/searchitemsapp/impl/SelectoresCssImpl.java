@@ -13,9 +13,6 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.SelectoresCssDao;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
-import com.searchitemsapp.factory.ParserFactory;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.parsers.IFParser;
 
 /**
  * Implementación del dao {@link SelectoresCssDao}.
@@ -26,25 +23,21 @@ import com.searchitemsapp.parsers.IFParser;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("unchecked")
 @Aspect
 public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, EmpresaDTO> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssImpl.class);  
-	
+
 	/*
-	 * Constantes Globales
+	 * Constantes Globales.
 	 */
-	private static final String SELECTORES_PARSER = "SELECTORES_PARSER";
+	private static final String SPACE_STRING = " ";
 	
 	/*
 	 * Variables Globales
 	 */
 	@Autowired
 	private SelectoresCssDao selectoresCssDao;
-	
-	@Autowired
-	private ParserFactory parserFactory;
 	
 	/*
 	 * Controlador
@@ -101,7 +94,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		 */
 		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.valor.dto"));
-		debugMessage.append(" ");
+		debugMessage.append(SPACE_STRING);
 		debugMessage.append(selectorCssDto.toString());
 		
 		if(LOGGER.isInfoEnabled()) {
@@ -142,7 +135,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		 */
 		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.activo"));
-		debugMessage.append(" ");
+		debugMessage.append(SPACE_STRING);
 		debugMessage.append(empresaDto.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
@@ -150,25 +143,8 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		}
 		
 		/**
-		 * Se crea un objeto, se le asigna el identificador y se
-		 * usa apara realizar la consulta a bbdd.
-		 */
-		TbSiaEmpresa tbSiaEmpresa = getParser().toTbSia(empresaDto);
-		tbSiaEmpresa.setDid(empresaDto.getDid());
-		
-		/**
 		 * Ejecuta la llamada al dao y devuelve el resultado.
 		 */
-		return selectoresCssDao.findByTbSiaEmpresa(tbSiaEmpresa);
-	}
-	
-	/**
-	 * Recupera el parser encargado de transformar 
-	 * un objeto DTO a otro de tipo tabla.
-	 * 
-	 * @return IFParser<EmpresaDTO, TbSiaEmpresa>
-	 */
-	private IFParser<EmpresaDTO, TbSiaEmpresa> getParser() {
-		return ((IFParser<EmpresaDTO, TbSiaEmpresa>) parserFactory.getParser(SELECTORES_PARSER));
+		return selectoresCssDao.findByTbSiaEmpresa(empresaDto.getDid());
 	}
 }

@@ -52,9 +52,9 @@ public class LoginParserTest {
 		LoginDTO loginDto = parser.toDTO(tbSiaLogin);
 		
 		//- Equals -//
-		assertEquals("getTbSiaEmpresa", 
-				tbSiaLogin.getTbSiaEmpresa(), 
-				loginDto.getTbSiaEmpresa());		
+		assertEquals("getDid", 
+				tbSiaLogin.getDid(), 
+				loginDto.getDid());		
 		assertEquals("getCodPostal", 
 				tbSiaLogin.getCodPostal(), 
 				loginDto.getCodPostal());		
@@ -67,8 +67,8 @@ public class LoginParserTest {
 				loginDto.getDid());
 		assertSame(tbSiaLogin.getCodPostal(), 
 				loginDto.getCodPostal());
-		assertSame(tbSiaLogin.getTbSiaEmpresa(), 
-				loginDto.getTbSiaEmpresa());
+		assertSame(tbSiaLogin.getDid(), 
+				loginDto.getDid());
 		
 	}
 	
@@ -76,17 +76,13 @@ public class LoginParserTest {
 	public void toTbSia() {
 		
 		LoginDTO loginDto = new LoginDTO();
-		
-		loginDto.setTbSiaEmpresa(new TbSiaEmpresa());
-		loginDto.setCodPostal(30430);
-		loginDto.setDid(1111);
-		
+				
 		LoginParser parser = new LoginParser();
 		TbSiaLogin tbSiaLogin = parser.toTbSia(loginDto);
 		
-		assertEquals("getTbSiaEmpresa", 
-			loginDto.getTbSiaEmpresa(), 
-				tbSiaLogin.getTbSiaEmpresa());
+		assertEquals("getDid", 
+			loginDto.getDid(), 
+				tbSiaLogin.getDid());
 		assertEquals("getCodPostal", 
 				loginDto.getCodPostal(), 
 				tbSiaLogin.getCodPostal());		
@@ -99,8 +95,8 @@ public class LoginParserTest {
 				tbSiaLogin.getDid());
 		assertSame(loginDto.getCodPostal(), 
 				tbSiaLogin.getCodPostal());
-		assertSame(loginDto.getTbSiaEmpresa(), 
-				tbSiaLogin.getTbSiaEmpresa());
+		assertSame(loginDto.getDid(), 
+				tbSiaLogin.getDid());
 		
 	}
 	
@@ -118,8 +114,8 @@ public class LoginParserTest {
 		assertEquals("size", 
 				lsLogin.size(), listLoginDTO.size());
 		
-		assertSame(lsLogin.get(0).getTbSiaEmpresa(), 
-				listLoginDTO.get(0).getTbSiaEmpresa());		
+		assertSame(lsLogin.get(0).getDid(), 
+				listLoginDTO.get(0).getDid());		
 	}
 
 	@Test

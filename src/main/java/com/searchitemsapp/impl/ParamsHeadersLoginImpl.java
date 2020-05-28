@@ -91,7 +91,7 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 		final StringBuilder debugMessage = new StringBuilder(10);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));
 		debugMessage.append(" ");
-		debugMessage.append(paramsLoginDTO.getTbSiaUrl().getDid());
+		debugMessage.append(paramsLoginDTO.getDidUrl());
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(debugMessage.toString(),this.getClass());
@@ -100,7 +100,7 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 		/**
 		 * Devuelve un objeto con el valor solicitado.
 		 */
-		return paramsHeadersLoginDao.findByTbSiaUrl(paramsLoginDTO.getTbSiaUrl());
+		return paramsHeadersLoginDao.findByTbSiaUrl(paramsLoginDTO.getDidUrl());
 	}
 
 	/**

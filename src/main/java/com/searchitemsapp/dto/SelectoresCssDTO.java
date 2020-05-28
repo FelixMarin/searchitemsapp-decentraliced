@@ -2,9 +2,6 @@ package com.searchitemsapp.dto;
 
 import java.time.LocalDate;
 
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaUrl;
-
 /**
  * Objeto de Transferencia de Datos (DTO) 
  * es un objeto que transporta datos entre procesos.
@@ -29,17 +26,17 @@ public class SelectoresCssDTO  implements IFdto {
 	private String selPreKilo;
 	private String selPrecio;
 	private String selProducto;
-	private String selPaginacion;
-	private TbSiaEmpresa tbSiaEmpresa;
-	private TbSiaUrl tbSiaUrl;
+	private String selPaginacion;	
+	private Integer didEmpresa;
+	private String nomEmpresa;	
+	private Integer didUrl;
+	private String nomUrl;
 
 	/*
 	 * Constructor
 	 */
 	public SelectoresCssDTO() {
 		super();
-		tbSiaEmpresa = new TbSiaEmpresa();
-		tbSiaUrl = new TbSiaUrl();
 	}
 
 	/*
@@ -125,28 +122,44 @@ public class SelectoresCssDTO  implements IFdto {
 		this.selProducto = selProducto;
 	}
 
-	public TbSiaEmpresa getTbSiaEmpresa() {
-		return tbSiaEmpresa;
-	}
-
-	public void setTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		this.tbSiaEmpresa = tbSiaEmpresa;
-	}
-
-	public TbSiaUrl getTbSiaUrl() {
-		return tbSiaUrl;
-	}
-
-	public void setTbSiaUrl(TbSiaUrl tbSiaUrl) {
-		this.tbSiaUrl = tbSiaUrl;
-	}
-
 	public String getSelPaginacion() {
 		return selPaginacion;
 	}
 
 	public void setSelPaginacion(String selPaginacion) {
 		this.selPaginacion = selPaginacion;
+	}
+
+	public Integer getDidEmpresa() {
+		return didEmpresa;
+	}
+
+	public void setDidEmpresa(Integer didEmpresa) {
+		this.didEmpresa = didEmpresa;
+	}
+
+	public String getNomEmpresa() {
+		return nomEmpresa;
+	}
+
+	public void setNomEmpresa(String nomEmpresa) {
+		this.nomEmpresa = nomEmpresa;
+	}
+
+	public Integer getDidUrl() {
+		return didUrl;
+	}
+
+	public void setDidUrl(Integer didUrl) {
+		this.didUrl = didUrl;
+	}
+
+	public String getNomUrl() {
+		return nomUrl;
+	}
+
+	public void setNomUrl(String nomUrl) {
+		this.nomUrl = nomUrl;
 	}
 
 	/*
@@ -157,7 +170,8 @@ public class SelectoresCssDTO  implements IFdto {
 		return "SelectoresCssDTO [did=" + did + ", bolActivo=" + bolActivo + ", fecModificacion=" + fecModificacion
 				+ ", scrapNoPattern=" + scrapNoPattern + ", scrapPattern=" + scrapPattern + ", selImage=" + selImage
 				+ ", selLinkProd=" + selLinkProd + ", selPreKilo=" + selPreKilo + ", selPrecio=" + selPrecio
-				+ ", selProducto=" + selProducto + ", selPaginacion=" + selPaginacion + ", tbSiaEmpresa=" + tbSiaEmpresa
-				+ ", tbSiaUrl=" + tbSiaUrl + "]";
+				+ ", selProducto=" + selProducto + ", selPaginacion=" + selPaginacion + ", didEmpresa=" + didEmpresa
+				+ ", nomEmpresa=" + nomEmpresa + ", didUrl=" + didUrl + ", nomUrl=" + nomUrl + "]";
 	}
+
 }

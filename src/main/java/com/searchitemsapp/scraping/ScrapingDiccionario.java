@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
 
 /**
  * Esta clase se encarga de realizar la consulta al sitio web
@@ -83,18 +82,17 @@ public class ScrapingDiccionario extends Scraping {
 			isCached=true;
 		}
 		
-		super.setTbSiaSelectoresCss(urlDto);
 		StringBuilder palabrasResultado = new StringBuilder(10);
 		String strProductoCorregido;
 		Element elem = null;
 				
-		Document document = getHtmlDocument(urlDto, null, producto, null).get(0);
+		Document document = getHtmlDocument(urlDto, null, producto).get(0);
 			
 		 if(Objects.nonNull(document)) {
-            TbSiaSelectoresCss selectorCss = urlDto
-            		.getTbSiaSelectoresCsses().get(0);
-            
-        Elements entrada = selectScrapPattern(document, selectorCss.getScrapPattern(), selectorCss.getScrapNoPattern());
+
+            Elements entrada = selectScrapPattern(document, 
+            		urlDto.getSelectores().get(0).get("SCRAP_PATTERN"), 
+            		urlDto.getSelectores().get(0).get("SCRAP_NO_PATTERN"));
             
             if(!entrada.isEmpty()) {
             	elem = entrada.get(0);
@@ -102,8 +100,7 @@ public class ScrapingDiccionario extends Scraping {
             
             if(Objects.nonNull(elem)) {
             	strProductoCorregido = elementoPorCssSelector(elem, 
-            			selectorCss.getSelProducto(),
-            			urlDto);
+            			urlDto.getSelectores().get(0).get("SEL_PRODUCTO"), urlDto);
             	if(!EMPTY_STRING.contentEquals(strProductoCorregido)) {
             		palabrasResultado.append(strProductoCorregido.concat(SPACE_STRING));
             	}else {

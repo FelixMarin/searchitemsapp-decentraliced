@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 
@@ -49,8 +48,7 @@ public class ScrapingSimply extends AbsScrapingEmpresas implements IFScrapingSim
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto, 
-			final SelectoresCssDTO selectorCssDto)
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto)
 			throws MalformedURLException {
   
 		if(LOGGER.isInfoEnabled()) {

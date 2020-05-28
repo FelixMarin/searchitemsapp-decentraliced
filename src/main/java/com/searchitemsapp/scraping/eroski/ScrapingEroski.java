@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 /**
@@ -50,8 +49,8 @@ public class ScrapingEroski extends AbsScrapingEmpresas implements IFScrapingEro
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto,
-			final SelectoresCssDTO selectorCssDto) throws MalformedURLException {
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto) 
+			throws MalformedURLException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());

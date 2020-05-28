@@ -53,7 +53,7 @@ public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmp
 	 */
 	@Override
 	public List<String> getListaUrls(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto) {
+			final UrlDTO urlDto) throws MalformedURLException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -76,7 +76,7 @@ public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmp
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = selectorCssDto.getSelPaginacion();		
+		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");		
 		String strPaginacion = document.select(selectorPaginacion).text();
 		
 		/**

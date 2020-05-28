@@ -1,7 +1,5 @@
 package com.searchitemsapp.dto;
 
-import com.searchitemsapp.model.TbSiaUrl;
-
 /**
  * Objeto de Transferencia de Datos (DTO) 
  * es un objeto que transporta datos entre procesos.
@@ -19,15 +17,15 @@ public class ParamsLoginDTO implements IFdto {
 	private Integer did;
 	private String paramClave;
 	private String paramValor;
-	private TbSiaUrl tbSiaUrl;
 	private Boolean bolActivo;
+	private Integer didUrl;
+	private String nomUrl;
 	
 	/*
 	 * Constructor
 	 */
 	public ParamsLoginDTO() {
 		super();
-		tbSiaUrl = new TbSiaUrl();
 	}	
 	
 	/*
@@ -51,12 +49,6 @@ public class ParamsLoginDTO implements IFdto {
 	public void setParamValor(String paramValor) {
 		this.paramValor = paramValor;
 	}
-	public TbSiaUrl getTbSiaUrl() {
-		return tbSiaUrl;
-	}
-	public void setTbSiaUrl(TbSiaUrl tbSiaUrl) {
-		this.tbSiaUrl = tbSiaUrl;
-	}
 	public Boolean getBolActivo() {
 		return bolActivo;
 	}
@@ -64,12 +56,28 @@ public class ParamsLoginDTO implements IFdto {
 		this.bolActivo = bolActivo;
 	}
 	
+	public Integer getDidUrl() {
+		return didUrl;
+	}
+
+	public void setDidUrl(Integer didUrl) {
+		this.didUrl = didUrl;
+	}
+
+	public String getNomUrl() {
+		return nomUrl;
+	}
+
+	public void setNomUrl(String nomUrl) {
+		this.nomUrl = nomUrl;
+	}
+
 	/*
 	 * Métodos sobre-escritos
 	 */
 	@Override
 	public String toString() {
 		return "ParamsLoginDTO [did=" + did + ", paramClave=" + paramClave + ", paramValor=" + paramValor
-				+ ", tbSiaUrl=" + tbSiaUrl + ", bolActivo=" + bolActivo + "]";
+				+ ", bolActivo=" + bolActivo + "]";
 	}
 }
