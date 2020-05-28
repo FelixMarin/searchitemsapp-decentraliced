@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.scraping.consum.ScrapingConsum;
+import com.searchitemsapp.scraping.consum.IFScrapingConsum;
 
 /**
  * Módulo de web scraping dinámico. Esta clase contiene la
@@ -48,7 +48,7 @@ public class DynScrapingUnit {
 	private static WebDriver webDriver;
 	
 	@Autowired
-	private ScrapingConsum scrapingConsum;
+	private IFScrapingConsum scrapingConsum;
 	
 	/*
 	 * Constructor
@@ -98,7 +98,7 @@ public class DynScrapingUnit {
 		}
 		
 		if(Objects.nonNull(webDriver)) {
-			clieanWindows();
+			cleanWindows();
 		}
 		 
 		return resultado;
@@ -180,7 +180,7 @@ public class DynScrapingUnit {
 	 * Funcionalidad para cerrar las ventanas que puedan
 	 * quedar abiertas en el buscador headless.
 	 */
-	private void clieanWindows() {            
+	private void cleanWindows() {            
         Set<String> windows = webDriver.getWindowHandles();
         Iterator<String> iter = windows.iterator();
         String[] winNames=new String[windows.size()];

@@ -111,7 +111,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * Validación de las variables de entrada.
 		 */
 		if (validaCamposEntrada(didCategoria, producto, didPais, ordenacion, empresas))  {		
-			return getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+			return getErrorJsonResponse(Thread.currentThread().getStackTrace().toString(),
 					Thread.currentThread().getId());
 		}
 		
@@ -154,7 +154,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * bbdd. Si eso sucede se devuelve un error.
 			 */
 			if(Objects.isNull(listTodosSelectoresCss)) {
-				return getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString(),
+				return getErrorJsonResponse(Thread.currentThread().getStackTrace().toString(),
 						Thread.currentThread().getId());
 			}			
 			
@@ -211,7 +211,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * la aplicación devolverá un mensaje notificando el suceso.
 			 */
             if(listResultDtoFinal.isEmpty()) {
-    			return getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString()
+    			return getErrorJsonResponse(Thread.currentThread().getStackTrace().toString()
     					.concat(new NoResultException(NO_HAY_RESULTADOS).toString()),
     					Thread.currentThread().getId());
             }
@@ -269,7 +269,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * indicando el suceso.
 		 */
 		if(EMPTY_STRING.contentEquals(strJsonResult.toString())) {
-			return  getErrorJsonResponse(Thread.currentThread().getStackTrace()[1].toString()
+			return  getErrorJsonResponse(Thread.currentThread().getStackTrace().toString()
 					.concat(new NoResultException(NO_HAY_RESULTADOS).toString()),
 					Thread.currentThread().getId());
 		}

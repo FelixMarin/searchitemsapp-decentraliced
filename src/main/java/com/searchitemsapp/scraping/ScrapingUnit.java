@@ -169,7 +169,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	        	if(Objects.isNull(document)) {
 	            	continue;
 	            }
-	        	LOGGER.info(document.toString());
+
 	        	/**
 	        	 * Se comprueba que la lista no esté vacía y que
 	        	 * la URL sea válida. En el caso de que no se 

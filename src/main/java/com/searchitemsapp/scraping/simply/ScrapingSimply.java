@@ -12,7 +12,6 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
-import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -21,7 +20,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingSimply extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingSimply extends AbsScrapingEmpresas implements IFScrapingSimply {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingSimply.class);  
 	

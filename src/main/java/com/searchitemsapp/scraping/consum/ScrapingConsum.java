@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
-import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 
 /**
@@ -31,7 +30,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingConsum extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingConsum extends AbsScrapingEmpresas implements IFScrapingConsum {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingConsum.class);   
 

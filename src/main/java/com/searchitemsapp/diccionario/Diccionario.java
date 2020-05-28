@@ -43,7 +43,9 @@ public class Diccionario {
 	private static final char CHAR_ENIE_COD = '\u00f1';
 	private static final String REEMPLAZABLE_TILDES = "[\\p{InCombiningDiacriticalMarks}]";
 	private static final String STRING_ENIE_MIN = "ñ";
-	
+	private static final String SPACE_STRING = " ";
+	private static final String NULL_STRING = "null";
+	private static final String EMPTY_STRING = "";
 	
 	/*
 	 * Variables
@@ -94,17 +96,13 @@ public class Diccionario {
 		/**
 		 * Variables de ambito local
 		 */
-		ScrapingDiccionario scrapingDiccionario;		
-		String urlAux;
-		String strResultadoProducto;
-		UrlDTO urlDtoAux;
 		StringBuilder strResultado = new StringBuilder(10);
 		
 		/**
 		 * Si el nombre del producto consta de más de una palabra,
 		 * se divide y se añaden a un array.
 		 */
-		String[] arPalabras = producto.split(" ");
+		String[] arPalabras = producto.split(SPACE_STRING);
 		
 		/**
 		 * En este loop, se realiza la comprobación de cada una
@@ -119,7 +117,7 @@ public class Diccionario {
 			 * esté en funcionamiento.
 			 */
 			if(Objects.isNull(urlDTODiccionario)) {
-				urlDtoAux = new UrlDTO();
+				UrlDTO urlDtoAux = new UrlDTO();
 				urlDtoAux.setDid(Integer.parseInt(CommonsPorperties.getValue("flow.value.url.did.diccionario")));
 				urlDtoAux.setTbSiaEmpresa(new TbSiaEmpresa());
 				urlDtoAux.getTbSiaEmpresa().setDid(Integer.parseInt(CommonsPorperties.getValue("flow.value.empresa.did.diccionario")));
@@ -134,7 +132,7 @@ public class Diccionario {
 			 * en wordReference.
 			 * Se reemplaza el patron '{1}' por la palabra a buscar.
 			 */
-			urlAux = urlTreatment.replaceWildcardCharacterDiccionario(urlDto.getNomUrl(), arPalabras[i]);
+			String urlAux = urlTreatment.replaceWildcardCharacterDiccionario(urlDto.getNomUrl(), arPalabras[i]);
 			urlDTODiccionario.setNomUrl(urlAux);
 			setTbSiaSelectoresCss(urlDTODiccionario);
 			
@@ -144,22 +142,22 @@ public class Diccionario {
 			 * objeto con los datos reacionados con la url en la que se va
 			 * a realizar la búsqueda.
 			 */
-			scrapingDiccionario =  applicationContext
+			ScrapingDiccionario scrapingDiccionario =  applicationContext
 					.getBean(ScrapingDiccionario.class, urlDTODiccionario, arPalabras[i]);
 			
 			/**
 			 * Se obtiene la palabra analizada y se añade en una varible.
 			 */
-			strResultadoProducto = scrapingDiccionario
+			String strResultadoProducto = scrapingDiccionario
 					.checkingHtmlDocument();
 			
 			/**
 			 * Si el resultado de la validación es positivo, a partir de este momento 
 			 * la palabra resultante será la utilizada para realizar la busqueda.
 			 */
-			strResultado.append("null"==strResultadoProducto?
+			strResultado.append(NULL_STRING==strResultadoProducto?
 					producto:strResultadoProducto)
-					.append(" ");
+					.append(SPACE_STRING);
 		}
 		
 		/**
@@ -167,7 +165,7 @@ public class Diccionario {
 		 * con tilde y sin tilde, se dará como invalia y se dejará la 
 		 * palabra original.
 		 */
-		if("".contentEquals(strResultado.toString()) ||
+		if(EMPTY_STRING.contentEquals(strResultado.toString()) ||
 				!eliminarTildes(strResultado.toString().trim()).equalsIgnoreCase(producto)) {
 			strResultado = new StringBuilder(10).append(producto);
 		}
@@ -212,7 +210,7 @@ public class Diccionario {
 	private String eliminarTildes(final String cadena) {
 		
 		if(Objects.isNull(cadena)) {
-			return "null";
+			return NULL_STRING;
 		}
 		
 		if(cadena.indexOf(CHAR_ENIE_COD) != -1) {
@@ -221,7 +219,7 @@ public class Diccionario {
 		
 		String resultado = cadena.replace(STRING_ENIE_MAY, UNICODE_ENIE);
 		resultado = Normalizer.normalize(resultado.toLowerCase(), Normalizer.Form.NFD);
-		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, "");
+		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, EMPTY_STRING);
 		resultado = resultado.replace(UNICODE_ENIE, STRING_ENIE_MIN);
 		return Normalizer.normalize(resultado, Normalizer.Form.NFC);
 		

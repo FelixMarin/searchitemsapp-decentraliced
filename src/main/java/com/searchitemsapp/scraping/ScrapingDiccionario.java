@@ -35,6 +35,7 @@ public class ScrapingDiccionario extends Scraping {
 	/*
 	 * Variables Globales
 	 */
+	private static boolean isCached;
     private UrlDTO urlDto;
     private String producto;
 	
@@ -73,15 +74,18 @@ public class ScrapingDiccionario extends Scraping {
 		}
 		
 		/**
-		 * Se inicializan todas las propiedes necesarias para
-		 * la ejecución de la aplicación
+		 * Se cargan en cache los parametros usados por 
+		 * la aplicación. solo se ejecuta una vez.
 		 */
-		super.staticData();
-		super.cargarTodasLasMarcas();
+		if(!isCached) {
+			staticData();
+			cargarTodasLasMarcas();
+			isCached=true;
+		}
+		
 		super.setTbSiaSelectoresCss(urlDto);
-		String strProductoCorregido;
 		StringBuilder palabrasResultado = new StringBuilder(10);
-				
+		String strProductoCorregido;
 		Element elem = null;
 				
 		Document document = getHtmlDocument(urlDto, null, producto, null).get(0);

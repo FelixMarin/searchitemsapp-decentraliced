@@ -12,7 +12,6 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
-import com.searchitemsapp.scraping.IFScrapingEmpresas;
 /**
  * Módulo de scraping especifico diseñado para la 
  * extracción de datos del sitio web de Eroski.
@@ -20,7 +19,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingEroski extends AbsScrapingEmpresas implements IFScrapingEmpresas{
+public class ScrapingEroski extends AbsScrapingEmpresas implements IFScrapingEroski {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingEroski.class);  
 	

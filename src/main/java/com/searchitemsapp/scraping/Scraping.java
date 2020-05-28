@@ -36,10 +36,10 @@ import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.factory.ScrapingEmpFactory;
 import com.searchitemsapp.impl.IFImplementacion;
-import com.searchitemsapp.scraping.condis.ScrapingCondis;
-import com.searchitemsapp.scraping.eroski.ScrapingEroski;
-import com.searchitemsapp.scraping.mercadona.ScrapingMercadona;
-import com.searchitemsapp.scraping.simply.ScrapingSimply;
+import com.searchitemsapp.scraping.condis.IFScracpingCondis;
+import com.searchitemsapp.scraping.eroski.IFScrapingEroski;
+import com.searchitemsapp.scraping.mercadona.IFScrapingMercadona;
+import com.searchitemsapp.scraping.simply.IFScrapingSimply;
 
 
 /**
@@ -115,16 +115,16 @@ public abstract class Scraping {
 	private DynScrapingUnit dynScrapingUnit;
 	
 	@Autowired
-	private ScrapingMercadona scrapingMercadona;
+	private IFScrapingMercadona scrapingMercadona;
 				
 	@Autowired
-	private ScrapingCondis scrapingCondis;
+	private IFScracpingCondis scrapingCondis;
 	
 	@Autowired
-	private ScrapingEroski scrapingEroski;
+	private IFScrapingEroski scrapingEroski;
 	
 	@Autowired
-	private ScrapingSimply scrapingSimply;
+	private IFScrapingSimply scrapingSimply;
 		
 	@Autowired
 	private ScrapingEmpFactory scrapingEmpFactory;
@@ -777,40 +777,25 @@ public abstract class Scraping {
 		  * la llamada a las webs se realizará mediante web driver. Si no, se usará
 		  * la librería JSOUP.
 		  */
-		if(bDynScrap) {
-			
-			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(DynScrapingUnit.class.toString());
-			}
-			
+		if(bDynScrap) {			
 			document = Jsoup.parse(dynScrapingUnit.getDynHtmlContent(strUrl, didEmpresa), 
 					new URL(strUrl).toURI().toString());
-		} else if(isMercadona) {
-			
-			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(ScrapingMercadona.class.toString());
-			}
-			
+		} else if(isMercadona) {			
 			connection = scrapingMercadona.getConnection(strUrl, producto);	
 			response = connection.execute();
-		} else {
-			
-			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(ScrapingUnit.class.toString(),Scraping.class);
-			}
-			
-				connection = Jsoup.connect(strUrl)
-						.userAgent(AGENT_ALL)
-						.method(Connection.Method.GET)
-						.referrer(url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost().concat("/")))
-						.ignoreContentType(Boolean.TRUE)
-						.validateTLSCertificates(Boolean.FALSE)
-						.header(ACCEPT_LANGUAGE, ES_ES)
-						.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
-						.header(ACCEPT, ACCEPT_VALUE)
-						.maxBodySize(0)
-						.timeout(100000);
-				response = connection.execute();
+		} else {			
+			connection = Jsoup.connect(strUrl)
+					.userAgent(AGENT_ALL)
+					.method(Connection.Method.GET)
+					.referrer(url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost().concat("/")))
+					.ignoreContentType(Boolean.TRUE)
+					.validateTLSCertificates(Boolean.FALSE)
+					.header(ACCEPT_LANGUAGE, ES_ES)
+					.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
+					.header(ACCEPT, ACCEPT_VALUE)
+					.maxBodySize(0)
+					.timeout(100000);
+			response = connection.execute();
 		}
 		
 		/**

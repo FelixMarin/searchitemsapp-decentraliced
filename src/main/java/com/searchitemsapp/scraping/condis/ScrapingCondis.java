@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.AbsScrapingEmpresas;
-import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -24,7 +23,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingCondis extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingCondis extends AbsScrapingEmpresas implements IFScracpingCondis {
 
 	private static final String DOBLE_CERO_STRING = "00";
 
