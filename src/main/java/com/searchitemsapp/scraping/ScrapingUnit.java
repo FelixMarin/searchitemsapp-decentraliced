@@ -17,7 +17,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
@@ -28,13 +27,12 @@ import com.searchitemsapp.dto.UrlDTO;
  * rastreadas. El proceso de consulta, extracción y 
  * refinamiento de datos se realiza en tiempo real, lo que
  * permite tener la información totalmente actualizada.
- * {@link Scraping}, {@link ScrapingLoginUnit}, 
- * {@link UrlTreatment}
+ * {@link AbstractScraping}, {@link ScrapingLoginUnit}
  * 
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDTO>> {
+public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<ResultadoDTO>> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingUnit.class);  
 	
@@ -55,9 +53,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	private String didPais; 
 	private String didCategoria;
 	private String ordenacion;
-	
-	@Autowired
-	private ScrapingLoginUnit scrapingLoginUnit;
 	
 	/*
 	 * Constructor
@@ -146,12 +141,17 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
         	 * Se obtienen los selectores que se usarán para
         	 * estraer la información de la página web.
         	 */
-        	        	
+    		Map<String, String> mapLoginPageCookies = mapaCookies.get(iIdEmpresa);
+        	
+        	if(Objects.isNull(mapLoginPageCookies)) {
+    			mapLoginPageCookies = checkingHtmlLoginDocument(didPais, didCategoria, iIdEmpresa, mapaCookies);
+        	}
+        	
         	/**
         	 * Se obtiene el listado de documentos de los que se
         	 * van a extraer los datos.
         	 */
-        	List<Document> listDocuments = getHtmlDocument(urlDto, getCookies(iIdEmpresa), producto);
+        	List<Document> listDocuments = getHtmlDocument(urlDto, mapLoginPageCookies, producto);
         	
         	lResultadoDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
         	
@@ -251,26 +251,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	 */
 	private int getStatus(final boolean bStatus) {
 		return bStatus?getStatusConnectionCode(urlDto.getNomUrl()):200;
-	}
-	
-	/**
-	 * Método que realiza un login en el sitio web
-	 * y devuelve las cookies de la sesión.
-	 * 
-	 * @param iIdEmpresa
-	 * @return
-	 * @throws IOException
-	 */
-	private Map<String, String> getCookies(final int iIdEmpresa) throws IOException {
-		
-		Map<String, String> mapLoginPageCookies = mapaCookies.get(iIdEmpresa);
-    	
-    	if(Objects.isNull(mapLoginPageCookies)) {
-			mapLoginPageCookies = scrapingLoginUnit
-					.checkingHtmlLoginDocument(didPais, didCategoria, iIdEmpresa, mapaCookies);
-    	}
-    	
-    	return mapLoginPageCookies;
 	}
 	
 	/**

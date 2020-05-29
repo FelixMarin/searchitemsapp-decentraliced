@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -29,7 +29,7 @@ import com.searchitemsapp.scraping.AbsScrapingEmpresas;
  *
  */
 @SuppressWarnings("deprecation")
-public class ScrapingMercadona extends AbsScrapingEmpresas implements IFScrapingMercadona {
+public class ScrapingMercadona extends AbstractScrapingEmpresas implements IFScrapingMercadona {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingMercadona.class);  
 

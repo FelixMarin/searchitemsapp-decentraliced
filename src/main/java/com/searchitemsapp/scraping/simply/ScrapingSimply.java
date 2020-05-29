@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -20,7 +20,7 @@ import com.searchitemsapp.scraping.AbsScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingSimply extends AbsScrapingEmpresas implements IFScrapingSimply {
+public class ScrapingSimply extends AbstractScrapingEmpresas implements IFScrapingSimply {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingSimply.class);  
 	
@@ -76,7 +76,7 @@ public class ScrapingSimply extends AbsScrapingEmpresas implements IFScrapingSim
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.simply"));
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.simply"));
 		
 		/**
 		 * Se asigna la url base a la lista.

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 /**
  * Módulo de scraping especifico diseñado para la 
  * extracción de datos del sitio web de Eroski.
@@ -19,7 +19,7 @@ import com.searchitemsapp.scraping.AbsScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingEroski extends AbsScrapingEmpresas implements IFScrapingEroski {
+public class ScrapingEroski extends AbstractScrapingEmpresas implements IFScrapingEroski {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingEroski.class);  
 	
@@ -69,7 +69,7 @@ public class ScrapingEroski extends AbsScrapingEmpresas implements IFScrapingEro
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.eroski"));
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.eroski"));
 		
 		/**
 		 * Se añade la URL base a la lista en formato string.

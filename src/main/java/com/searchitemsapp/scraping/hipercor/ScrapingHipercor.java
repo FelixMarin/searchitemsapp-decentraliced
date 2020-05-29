@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 /**
@@ -23,7 +23,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingHipercor extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingHipercor extends AbstractScrapingEmpresas implements IFScrapingEmpresas {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingHipercor.class);  
 	
@@ -80,7 +80,7 @@ public class ScrapingHipercor extends AbsScrapingEmpresas implements IFScrapingE
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */		
-		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.hipercor"));
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.hipercor"));
 		
 		/**
 		 * Si el elemento de paginación coincide con el patrón es
@@ -95,7 +95,7 @@ public class ScrapingHipercor extends AbsScrapingEmpresas implements IFScrapingE
 		/**
 		 * Se desformatea el número de páginas que se pueden solicitar.
 		 */
-		int intPaginacion = desformatearEntero(strPaginacion.trim());
+		int intPaginacion = NumberUtils.toInt(strPaginacion.trim());
 		
 		/**
 		 * Se añade la URL base a la lista en formato string.

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ import com.searchitemsapp.impl.IFUrlImpl;
  * @author Felix Marin Ramirez
  *
  */
-public class UrlTreatment extends Scraping {
+public class UrlTreatment extends AbstractScraping {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlTreatment.class);   
 	
@@ -86,8 +85,8 @@ public class UrlTreatment extends Scraping {
 		/**
 		 * Se establece el identificador de pais y de categoria.
 		 */
-		paisDto.setDid(desformatearEntero(didPais));		
-		categoriaDto.setDid(desformatearEntero(didCategoria));
+		paisDto.setDid(NumberUtils.toInt(didPais));		
+		categoriaDto.setDid(NumberUtils.toInt(didCategoria));
 		
 		/**
 		 * De la base de datos se obtienen las URLs asociadas a la empresa. 
@@ -157,53 +156,5 @@ public class UrlTreatment extends Scraping {
 			}
 		}
 		return listUrlDto;
-	}
-
-	/**
-	 * Reemplaza el comodín de la URL del diccionario.
-	 * 
-	 * @param url
-	 * @param producto
-	 * @return String
-	 * @throws IOException
-	 */
-	public String replaceWildcardCharacterDiccionario(final String url, 
-			final String producto) throws IOException {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		String productoTratado= tratarProducto(producto);
-		String urlAux = url;
-		return urlAux.replace(WILDCARD, productoTratado);
-	}
-	
-	/*
-	 * Metodos privados
-	 */
-	/**
-	 * Convierte una cadena a tipo int
-	 *
-	 * @param pStrCadena
-	 * @return
-	 */
-	private int desformatearEntero(String pStrCadena) {
-
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-
-		int iResultado = 0;
-		if (!StringUtils.EMPTY.contentEquals(pStrCadena)) {
-			try {
-				iResultado = Integer.parseInt(pStrCadena);
-			} catch (NumberFormatException nfe) {
-				if(LOGGER.isWarnEnabled()) {
-					LOGGER.warn(Thread.currentThread().getStackTrace()[1].toString(), nfe);
-				}
-			}
-		}
-		return iResultado;
 	}
 }

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 
@@ -27,7 +27,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingDia extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingDia extends AbstractScrapingEmpresas implements IFScrapingEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingDia.class);   
 	
@@ -70,7 +70,7 @@ public class ScrapingDia extends AbsScrapingEmpresas implements IFScrapingEmpres
 		 */
 		String urlBase = urlDto.getNomUrl();
 		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
-		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
 
 		/**
 		 * Se divide el selector de paginación.
