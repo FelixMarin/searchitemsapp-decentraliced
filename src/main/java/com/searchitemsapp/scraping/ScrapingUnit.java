@@ -29,7 +29,7 @@ import com.searchitemsapp.dto.UrlDTO;
  * refinamiento de datos se realiza en tiempo real, lo que
  * permite tener la información totalmente actualizada.
  * {@link Scraping}, {@link ScrapingLoginUnit}, 
- * {@link ScrapingDiccionario}, {@link UrlTreatment}
+ * {@link UrlTreatment}
  * 
  * @author Felix Marin Ramirez
  *
@@ -49,6 +49,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	 * Variables Globales
 	 */
 	private static Map<Integer, Map<String, String>> mapaCookies = new HashMap<>(NumberUtils.INTEGER_ONE);
+	private static boolean isCached;
 	private UrlDTO urlDto; 
 	private String producto;
 	private String didPais; 
@@ -87,6 +88,16 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		/**
+		 * Se cargan en cache los parametros usados por 
+		 * la aplicación. solo se ejecuta una vez.
+		 */
+		if(!isCached) {
+			staticData();
+			cargarTodasLasMarcas();
+			isCached=true;
 		}
 		
 		/**

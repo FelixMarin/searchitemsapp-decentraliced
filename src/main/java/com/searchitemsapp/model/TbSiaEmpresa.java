@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -76,10 +77,10 @@ public class TbSiaEmpresa implements Serializable {
 	private TbSiaPais tbSiaPais;
 
 	//bi-directional many-to-one association to TbSiaUrl
-	@OneToMany(mappedBy="tbSiaEmpresa")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="tbSiaEmpresa")
 	private List<TbSiaUrl> tbSiaUrls;
 	
-	@OneToMany(mappedBy="tbSiaEmpresa")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="tbSiaEmpresa")
 	private List<TbSiaSelectoresCss> tbSiaSelectoresCsses;	
 
 	@Column(name="bol_dyn_scrap")

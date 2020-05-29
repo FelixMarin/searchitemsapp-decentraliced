@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.repository.IFEmpresaRepository;
 
@@ -143,7 +142,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	 * @exception IOException
 	 */
 	@Override
-	public List<EmpresaDTO> findByTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException {
+	public List<EmpresaDTO> findByTbSiaCategoriasEmpresa(Integer didCatEmpresa) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -155,7 +154,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(Objects.isNull(tbSiaCategoriasEmpresa)) {
+		if(Objects.isNull(didCatEmpresa)) {
 			return resultado;
 		}
 		
@@ -166,7 +165,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.categoria.txt"));
 		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(tbSiaCategoriasEmpresa.getDid());	
+		debugMessage.append(didCatEmpresa);	
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(debugMessage.toString(),this.getClass());
@@ -187,7 +186,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
 		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaEmpresa.class);	
-		q.setParameter(CommonsPorperties.getValue("flow.value.empresa.didCategoria.key"), tbSiaCategoriasEmpresa.getDid());	
+		q.setParameter(CommonsPorperties.getValue("flow.value.empresa.didCategoria.key"), didCatEmpresa);	
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
@@ -214,7 +213,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	 * @exception IOException
 	 */
 	@Override
-	public List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException {
+	public List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, Integer didCatEmpresa) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -224,7 +223,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(Objects.isNull(didEmpresa) || Objects.isNull(tbSiaCategoriasEmpresa)) {
+		if(Objects.isNull(didEmpresa) || Objects.isNull(didCatEmpresa)) {
 			return null;
 		}
 		
@@ -242,7 +241,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString());		
 		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);	
-		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), tbSiaCategoriasEmpresa.getDid());	
+		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), didCatEmpresa);	
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.

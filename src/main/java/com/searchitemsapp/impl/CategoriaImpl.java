@@ -15,7 +15,6 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 
 /**
  * Implementación del dao {@link CategoriaDao}.
@@ -45,7 +44,7 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	}
 	
 	/**
-	 * Recupera todos los datos de tabla {@link TbSiaCategoriasEmpresa}.
+	 * Recupera todos los datos de tabla {@link CategoriaDao}.
 	 * 
 	 * @return List<CategoriaDTO>
 	 * @exception IOException

@@ -1,7 +1,6 @@
 package com.searchitemsapp.services;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.diccionario.Diccionario;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
@@ -60,9 +58,6 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
-	
-	@Autowired
-	private Diccionario diccionario;
 
 	/*
 	 * Constructor
@@ -156,17 +151,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 */
 			if(Objects.isNull(listTodosSelectoresCss)) {
 				return new Gson().toJson(Thread.currentThread().getStackTrace().toString());
-			}			
-			
-			/**
-			 * Se comprueba que el nombre del producto introducido 
-			 * está bien escrito. Si el nombre es una palabra que 
-			 * no existe, la aprilcación devolverá un error.
-			 */			
-			String productoAux = diccionario.corregirCaracter(producto, 
-					urlTreatment, 
-					listTodosSelectoresCss, 
-					applicationContext);
+			}	
 			
 			/**
 			 * En este punto, la aplicación compone las URLs de los supermercados
@@ -174,7 +159,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * del producto a buscar.
 			 */
 			Collection<UrlDTO> lResultDtoUrlsTratado = urlTreatment.replaceWildcardCharacter(didPais, 
-					didCategoria, productoAux, empresas, listTodosSelectoresCss);
+					didCategoria, producto, empresas, listTodosSelectoresCss);
 
 			/**
 			 * ArrayList que contiene un objeto encargado de scrapear el producto
@@ -192,7 +177,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			for (UrlDTO urlDto : lResultDtoUrlsTratado) {
 				
 				scrapingUnit = applicationContext
-						.getBean(ScrapingUnit.class, urlDto, productoAux, 
+						.getBean(ScrapingUnit.class, urlDto, producto, 
 								didPais, didCategoria, ordenacion);
 	
 				callablesScrapingUnit.add(scrapingUnit);	
@@ -212,7 +197,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 */
             if(listResultDtoFinal.isEmpty()) {
     			return new Gson().toJson(Thread.currentThread().getStackTrace().toString()
-    					.concat(new NoResultException(NO_HAY_RESULTADOS).getStackTrace().toString()));
+    					.concat(new NoResultException(NO_HAY_RESULTADOS).toString()));
             }
 
             /**
@@ -227,7 +212,7 @@ public class ListadoProductosService implements IFService<String,String> {
 				listResultDtoFinal.get(i).setIdentificador(++contador);
 			}
 			
-		}catch(IOException | NoResultException | InterruptedException | ExecutionException | URISyntaxException e) {			
+		}catch(IOException | NoResultException | InterruptedException | ExecutionException e) {			
 			
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);

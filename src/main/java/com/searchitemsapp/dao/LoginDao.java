@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.LoginDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaLogin;
 import com.searchitemsapp.repository.IFLoginRepository;
 
@@ -140,7 +139,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 	 * @exception IOException
 	 */
 	@Override
-	public LoginDTO findByTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa)  throws IOException {
+	public LoginDTO findByTbSiaEmpresa(Integer didEmpresa)  throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -150,12 +149,12 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(Objects.isNull(tbSiaEmpresa)) {
+		if(Objects.isNull(didEmpresa)) {
 			return null;
 		}
 
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(String.valueOf(tbSiaEmpresa.toString()),this.getClass());
+			LOGGER.info(String.valueOf(didEmpresa.toString()),this.getClass());
 		}
 		
 		LoginDTO resultado = null;
@@ -171,7 +170,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		 * añade el parametro al objeto query.
 		 */
 		Query query = getEntityManager().createQuery(queryBuilder.toString());
-		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), tbSiaEmpresa.getDid());
+		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);
 		
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
