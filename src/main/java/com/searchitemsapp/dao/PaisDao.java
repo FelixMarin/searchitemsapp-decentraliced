@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.NoResultException;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -67,9 +69,9 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(" ");
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(did);	
 		
 		if(LOGGER.isInfoEnabled()) {

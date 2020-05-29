@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,9 +94,9 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		/**
 		 * Traza de log que escribe identificador del login.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.login.dto.txt"));
-		debugMessage.append(" ");
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(loginDTO.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
@@ -132,9 +134,9 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		/**
 		 * Traza de log que escribe identificador de la empresa.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(" ");
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(empresaDTO.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
@@ -150,7 +152,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		 * Se ejecuta la consulta y el resultado 
 		 * se asigna a la lista que será retornada.
 		 */
-		List<LoginDTO> listLoginDTO = new ArrayList<>(10);
+		List<LoginDTO> listLoginDTO = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listLoginDTO.add(loginDao.findByTbSiaEmpresa(tbSiaEmpresa));
 		
 		return listLoginDTO;

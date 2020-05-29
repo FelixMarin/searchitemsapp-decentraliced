@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.JSONObject;
 import org.json.XML;
 import org.jsoup.Connection;
@@ -41,7 +43,7 @@ public class ScrapingMercadona extends AbsScrapingEmpresas implements IFScraping
 	private static final String CLICK_ANALYTICS_TRUE = "&clickAnalytics=true\"}";
 	private static final String TAG_FIN_ROOT = "</root>";
 	private static final String TAG_INI_ROOT = "<root>";
-	private static final String EMPTY_STRING = "";
+	
 	private static final String CABECERA_XML = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>";
 	private static final String REFERRER_MERCADONA = "https://tienda.mercadona.es/";
 	private static final String AGENT_ALL = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36";
@@ -92,7 +94,7 @@ public class ScrapingMercadona extends AbsScrapingEmpresas implements IFScraping
 		/**
 		 * Se asigna la url base a la lista.
 		 */
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;
@@ -133,19 +135,19 @@ public class ScrapingMercadona extends AbsScrapingEmpresas implements IFScraping
 		 * y retorna nulo. En otro caso, el XML es limpiado
 		 * de caracteres especiales.
 		 */
-		if(EMPTY_STRING.contentEquals(xml)) {
+		if(StringUtils.EMPTY.contentEquals(xml)) {
 			return null;
 		} else {
 			xml = CABECERA_XML.concat(TAG_INI_ROOT).concat(xml).concat(TAG_FIN_ROOT);
-			xml = xml.replace(LT_EM_GT, EMPTY_STRING);
-			xml = xml.replace(LT_EM_GT_CIERRE, EMPTY_STRING);
+			xml = xml.replace(LT_EM_GT, StringUtils.EMPTY);
+			xml = xml.replace(LT_EM_GT_CIERRE, StringUtils.EMPTY);
 		}
 		
 		/**
 		 * Se transforma el XML en formato objeto Document 
 		 * y se retorna dicho objeto.
 		 */
-		Document doc = Jsoup.parse(xml, EMPTY_STRING, Parser.xmlParser());
+		Document doc = Jsoup.parse(xml, StringUtils.EMPTY, Parser.xmlParser());
 		doc.setBaseUri(url);
 		
 		return doc;
@@ -202,16 +204,16 @@ public class ScrapingMercadona extends AbsScrapingEmpresas implements IFScraping
 	 */
 	public String getUrlAll(final ResultadoDTO resDto) {
 		
-		String productoAux = EMPTY_STRING;
+		String productoAux = StringUtils.EMPTY;
 				
 		/**
 		 * Se reemplazan los espacios en blanco por el caracter
 		 * unicode que lo representa.<br> 
-		 * " " => "%20"
+		 * "  " => "%20"
  		 */
-		if(!EMPTY_STRING.contentEquals(resDto.getNomProducto())) {
+		if(!StringUtils.EMPTY.contentEquals(resDto.getNomProducto())) {
 			productoAux= resDto.getNomProducto()
-				.replace(" ", SEPARADOR_URL);
+				.replace(StringUtils.SPACE, SEPARADOR_URL);
 		}
 		
 		return URL_ALL_PRODUCTS.concat(productoAux);

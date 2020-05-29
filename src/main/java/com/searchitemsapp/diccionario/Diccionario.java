@@ -6,6 +6,8 @@ import java.text.Normalizer;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +45,9 @@ public class Diccionario {
 	private static final char CHAR_ENIE_COD = '\u00f1';
 	private static final String REEMPLAZABLE_TILDES = "[\\p{InCombiningDiacriticalMarks}]";
 	private static final String STRING_ENIE_MIN = "ñ";
-	private static final String SPACE_STRING = " ";
+	
 	private static final String NULL_STRING = "null";
-	private static final String EMPTY_STRING = "";
+	
 	
 	/*
 	 * Variables
@@ -96,13 +98,13 @@ public class Diccionario {
 		/**
 		 * Variables de ambito local
 		 */
-		StringBuilder strResultado = new StringBuilder(10);
+		StringBuilder strResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Si el nombre del producto consta de más de una palabra,
-		 * se divide y se añaden a un array.
+		 * se divide y se añaden a un array.oo
 		 */
-		String[] arPalabras = producto.split(SPACE_STRING);
+		String[] arPalabras = producto.split(StringUtils.SPACE);
 		
 		/**
 		 * En este loop, se realiza la comprobación de cada una
@@ -155,7 +157,7 @@ public class Diccionario {
 			 */
 			strResultado.append(NULL_STRING==strResultadoProducto?
 					producto:strResultadoProducto)
-					.append(SPACE_STRING);
+					.append(StringUtils.SPACE);
 		}
 		
 		/**
@@ -163,7 +165,7 @@ public class Diccionario {
 		 * con tilde y sin tilde, se dará como invalia y se dejará la 
 		 * palabra original.
 		 */
-		if(EMPTY_STRING.contentEquals(strResultado.toString()) ||
+		if(StringUtils.EMPTY.contentEquals(strResultado.toString()) ||
 				!eliminarTildes(strResultado.toString().trim()).equalsIgnoreCase(producto)) {
 			strResultado = new StringBuilder(10).append(producto);
 		}
@@ -202,7 +204,7 @@ public class Diccionario {
 		
 		String resultado = cadena.replace(STRING_ENIE_MAY, UNICODE_ENIE);
 		resultado = Normalizer.normalize(resultado.toLowerCase(), Normalizer.Form.NFD);
-		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, EMPTY_STRING);
+		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, StringUtils.EMPTY);
 		resultado = resultado.replace(UNICODE_ENIE, STRING_ENIE_MIN);
 		return Normalizer.normalize(resultado, Normalizer.Form.NFC);
 		

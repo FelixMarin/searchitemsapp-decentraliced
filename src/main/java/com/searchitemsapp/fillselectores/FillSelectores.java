@@ -1,6 +1,5 @@
 package com.searchitemsapp.fillselectores;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -60,7 +59,6 @@ public class FillSelectores {
 			 * otra con un objeto tabja de selectores.
 			 */
 			Integer empDidEnUlrs = resDtoUrls.getDidEmpresa();
-			List<SelectoresCssDTO> listElementNodesDTOPorEmpresa = new ArrayList<>(10);
 			
 			/**
 			 * Se recorre la lista con todos los selectores.
@@ -68,15 +66,15 @@ public class FillSelectores {
 			 * identificador de la empresa actua se añadirá a
 			 * la lista de nodos por empresa.
 			 */
+			SelectoresCssDTO selectoresCssDTO = null;
+			
 			for (SelectoresCssDTO elementNodesDTO : listTodosElementNodes) {
 				if (empDidEnUlrs == elementNodesDTO.getDidEmpresa()) {
-					listElementNodesDTOPorEmpresa.add(elementNodesDTO);
+					selectoresCssDTO = elementNodesDTO;
 				}
 			}
 			
-			resDtoUrls.setSelectores(new ArrayList<LinkedHashMap<String,String>>());
-			
-			for (SelectoresCssDTO selectoresCssDTO : listElementNodesDTOPorEmpresa) {
+			if(Objects.nonNull(selectoresCssDTO)) {	
 				LinkedHashMap<String, String> mapSelectores  = new LinkedHashMap<String, String>();
 				mapSelectores.put("SCRAP_PATTERN", selectoresCssDTO.getScrapPattern());
 				mapSelectores.put("SCRAP_NO_PATTERN", selectoresCssDTO.getScrapNoPattern());
@@ -89,7 +87,7 @@ public class FillSelectores {
 				mapSelectores.put("BOOL_ACTIVO", selectoresCssDTO.getBolActivo().toString());
 				mapSelectores.put("DID", selectoresCssDTO.getDid().toString());
 				mapSelectores.put("FEC_MODIFICACION", selectoresCssDTO.getFecModificacion().toString());
-				resDtoUrls.getSelectores().add(mapSelectores);
+				resDtoUrls.setSelectores(mapSelectores);
 			}
 		}
 	}

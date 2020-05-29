@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
@@ -79,7 +81,7 @@ public class ScrapingCondis extends AbsScrapingEmpresas implements IFScracpingCo
 		 * será retornada.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;
@@ -100,7 +102,7 @@ public class ScrapingCondis extends AbsScrapingEmpresas implements IFScracpingCo
 		String resultado = "null";
 		Matcher matcher;
 		
-		if(Objects.isNull(elem) || "".contentEquals(cssSelector)) {
+		if(Objects.isNull(elem) || StringUtils.EMPTY.contentEquals(cssSelector)) {
 			return resultado;
 		}
 		resultado = elem.select(cssSelector).html().replace(DOT_STRING, COMMA_STRING);
@@ -147,7 +149,7 @@ public class ScrapingCondis extends AbsScrapingEmpresas implements IFScracpingCo
 	 */
 	public String eliminarTildesProducto(final String producto) {
 		
-		if("".contentEquals(producto)) {
+		if(StringUtils.EMPTY.contentEquals(producto)) {
 			return producto;
 		}
 		

@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -62,7 +63,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.all"));		
 
 		/**
@@ -162,7 +163,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.categoria.by.activo"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString());
 		query.setParameter(CommonsPorperties.getValue("flow.value.activo"), activo);

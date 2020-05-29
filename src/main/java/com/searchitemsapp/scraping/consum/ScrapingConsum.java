@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
@@ -64,7 +65,7 @@ public class ScrapingConsum extends AbsScrapingEmpresas implements IFScrapingCon
 		 * será retornada.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;

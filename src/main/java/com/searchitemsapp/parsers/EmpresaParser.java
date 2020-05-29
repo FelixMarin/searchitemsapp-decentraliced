@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,10 +52,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		}
 		
 		EmpresaDTO empresaPDto = new EmpresaDTO();
-		
-		List<LinkedHashMap<String, String>> selectores = new ArrayList<>(10);
-		List<LinkedHashMap<Integer, String>> urls = new ArrayList<>(10);
-		
+				
 		empresaPDto.setBolActivo(tbSiaPEmpresas.getBolActivo());
 		empresaPDto.setDesEmpresa(tbSiaPEmpresas.getDesEmpresa());
 		empresaPDto.setDid(tbSiaPEmpresas.getDid());
@@ -66,8 +64,12 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		empresaPDto.setDidCatEmpresa(tbSiaPEmpresas.getTbSiaCategoriasEmpresa().getDid());
 		empresaPDto.setNomCatEmpresa(tbSiaPEmpresas.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
 		
-		for (TbSiaSelectoresCss tbSiaSelectoresCsses : tbSiaPEmpresas.getTbSiaSelectoresCsses()) {
-			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(10);
+		if(!tbSiaPEmpresas.getTbSiaSelectoresCsses().isEmpty()) {
+			
+			TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaPEmpresas
+					.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
+			
+			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(NumberUtils.INTEGER_ONE);
 			mapSelectores.put("SCRAP_PATTERN", tbSiaSelectoresCsses.getScrapPattern());
 			mapSelectores.put("SCRAP_NO_PATTERN", tbSiaSelectoresCsses.getScrapNoPattern());
 			mapSelectores.put("SEL_IMAGE", tbSiaSelectoresCsses.getSelImage());
@@ -79,16 +81,15 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			mapSelectores.put("BOL_ACTIVO", tbSiaSelectoresCsses.getBolActivo().toString());
 			mapSelectores.put("DID", tbSiaSelectoresCsses.getDid().toString());
 			mapSelectores.put("FEC_MODIFICACION", tbSiaSelectoresCsses.getFecModificacion().toString());
-			selectores.add(mapSelectores);
+			empresaPDto.setSelectores(mapSelectores);
 		}
-		empresaPDto.setSelectores(selectores);
 		
-		for (TbSiaUrl tbSiaUrl : tbSiaPEmpresas.getTbSiaUrls()) {
-			LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<Integer, String>(10);
+		if(!tbSiaPEmpresas.getTbSiaUrls().isEmpty()) {
+			TbSiaUrl tbSiaUrl = tbSiaPEmpresas.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
 			mapUrls.put(tbSiaUrl.getDid(), tbSiaUrl.getNomUrl());
-			urls.add(mapUrls);
+			empresaPDto.setUrls(mapUrls);
 		}
-		empresaPDto.setUrls(urls);
 		
 		return empresaPDto;
 	}
@@ -123,30 +124,27 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		tbSiaPEmpresas.getTbSiaPais().setDid(empresaPDto.getDidPais());
 		tbSiaPEmpresas.getTbSiaPais().setNomPais(empresaPDto.getNomPais());
 		
-		for (LinkedHashMap<Integer,String> map : empresaPDto.getUrls()) {
-			for (Map.Entry<Integer,String> e  : map.entrySet()) {
-				TbSiaUrl tburl = new TbSiaUrl();
-				tburl.setDid((int) e.getKey());
-				tburl.setNomUrl((String) e.getValue());
-				tbSiaPEmpresas.getTbSiaUrls().add(tburl);
-			}
+		for (Map.Entry<Integer,String> e  : empresaPDto.getUrls().entrySet()) {
+			TbSiaUrl tburl = new TbSiaUrl();
+			tburl.setDid((int) e.getKey());
+			tburl.setNomUrl((String) e.getValue());
+			tbSiaPEmpresas.getTbSiaUrls().add(tburl);
 		}
 		
-		for (LinkedHashMap<String,String> map : empresaPDto.getSelectores()) {
-				TbSiaSelectoresCss tselectores = new TbSiaSelectoresCss();
-				tselectores.setDid(Integer.parseInt(map.get("DID")));
-				tselectores.setScrapPattern(map.get("SCRAP_PATTERN"));
-				tselectores.setScrapNoPattern(map.get("SCRAP_NO_PATTERN"));
-				tselectores.setSelImage(map.get("SEL_IMAGE"));
-				tselectores.setSelLinkProd(map.get("SEL_LINK_PROD"));
-				tselectores.setSelPaginacion(map.get("SEL_PAGINACION"));
-				tselectores.setSelPrecio(map.get("SEL_PRECIO"));
-				tselectores.setSelPreKilo(map.get("SEL_PRECIO_KILO"));
-				tselectores.setSelProducto(map.get("SEL_PRODUCTO"));
-				tselectores.setBolActivo(Boolean.parseBoolean(map.get("BOL_ACTIVO")));
-				tselectores.setFecModificacion(LocalDate.parse(map.get("FEC_MODIFICACION")));
-				tbSiaPEmpresas.getTbSiaSelectoresCsses().add(tselectores);
-		}
+		LinkedHashMap<String,String> map = empresaPDto.getSelectores();
+		TbSiaSelectoresCss tselectores = new TbSiaSelectoresCss();
+		tselectores.setDid(Integer.parseInt(map.get("DID")));
+		tselectores.setScrapPattern(map.get("SCRAP_PATTERN"));
+		tselectores.setScrapNoPattern(map.get("SCRAP_NO_PATTERN"));
+		tselectores.setSelImage(map.get("SEL_IMAGE"));
+		tselectores.setSelLinkProd(map.get("SEL_LINK_PROD"));
+		tselectores.setSelPaginacion(map.get("SEL_PAGINACION"));
+		tselectores.setSelPrecio(map.get("SEL_PRECIO"));
+		tselectores.setSelPreKilo(map.get("SEL_PRECIO_KILO"));
+		tselectores.setSelProducto(map.get("SEL_PRODUCTO"));
+		tselectores.setBolActivo(Boolean.parseBoolean(map.get("BOL_ACTIVO")));
+		tselectores.setFecModificacion(LocalDate.parse(map.get("FEC_MODIFICACION")));
+		tbSiaPEmpresas.getTbSiaSelectoresCsses().add(tselectores);
 		
 		
 		return tbSiaPEmpresas;
@@ -165,26 +163,28 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<LinkedHashMap<String, String>> selectores = new ArrayList<>(10);
-		List<LinkedHashMap<Integer, String>> urls = new ArrayList<>(10);
-		List<EmpresaDTO> listDto = new ArrayList<>(10); 
+		List<EmpresaDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		EmpresaDTO empresaPDto;
 		
-		for (TbSiaEmpresa empresaDto : lsEmpresas) {
+		for (TbSiaEmpresa tbSiaEmpresa : lsEmpresas) {
 			empresaPDto = new EmpresaDTO();
-			empresaPDto.setBolActivo(empresaDto.getBolActivo());
-			empresaPDto.setDesEmpresa(empresaDto.getDesEmpresa());
-			empresaPDto.setDid(empresaDto.getDid());
-			empresaPDto.setNomEmpresa(empresaDto.getNomEmpresa());
-			empresaPDto.setBolDynScrap(empresaDto.getBolDynScrap());
+			empresaPDto.setBolActivo(tbSiaEmpresa.getBolActivo());
+			empresaPDto.setDesEmpresa(tbSiaEmpresa.getDesEmpresa());
+			empresaPDto.setDid(tbSiaEmpresa.getDid());
+			empresaPDto.setNomEmpresa(tbSiaEmpresa.getNomEmpresa());
+			empresaPDto.setBolDynScrap(tbSiaEmpresa.getBolDynScrap());
 
-			empresaPDto.setDidPais(empresaDto.getTbSiaPais().getDid());
-			empresaPDto.setNomPais(empresaDto.getTbSiaPais().getNomPais());
-			empresaPDto.setDidCatEmpresa(empresaDto.getTbSiaCategoriasEmpresa().getDid());
-			empresaPDto.setNomCatEmpresa(empresaDto.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			empresaPDto.setDidPais(tbSiaEmpresa.getTbSiaPais().getDid());
+			empresaPDto.setNomPais(tbSiaEmpresa.getTbSiaPais().getNomPais());
+			empresaPDto.setDidCatEmpresa(tbSiaEmpresa.getTbSiaCategoriasEmpresa().getDid());
+			empresaPDto.setNomCatEmpresa(tbSiaEmpresa.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
 			
-			for (TbSiaSelectoresCss tbSiaSelectoresCsses : empresaDto.getTbSiaSelectoresCsses()) {
-				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(10);
+			if(!tbSiaEmpresa.getTbSiaSelectoresCsses().isEmpty()) {
+				
+				TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaEmpresa
+						.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
+				
+				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(NumberUtils.INTEGER_ONE);
 				mapSelectores.put("SCRAP_PATTERN", tbSiaSelectoresCsses.getScrapPattern());
 				mapSelectores.put("SCRAP_NO_PATTERN", tbSiaSelectoresCsses.getScrapNoPattern());
 				mapSelectores.put("SEL_IMAGE", tbSiaSelectoresCsses.getSelImage());
@@ -193,19 +193,18 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 				mapSelectores.put("SEL_PRECIO", tbSiaSelectoresCsses.getSelPrecio());
 				mapSelectores.put("SEL_PRECIO_KILO", tbSiaSelectoresCsses.getSelPreKilo());
 				mapSelectores.put("SEL_PRODUCTO", tbSiaSelectoresCsses.getSelProducto());
-				mapSelectores.put("BOOL_ACTIVO", tbSiaSelectoresCsses.getBolActivo().toString());
+				mapSelectores.put("BOL_ACTIVO", tbSiaSelectoresCsses.getBolActivo().toString());
 				mapSelectores.put("DID", tbSiaSelectoresCsses.getDid().toString());
 				mapSelectores.put("FEC_MODIFICACION", tbSiaSelectoresCsses.getFecModificacion().toString());
-				selectores.add(mapSelectores);
+				empresaPDto.setSelectores(mapSelectores);
 			}
-			empresaPDto.setSelectores(selectores);
 			
-			for (TbSiaUrl tbSiaUrl : empresaDto.getTbSiaUrls()) {
-				LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<Integer, String>(10);
+			if(!tbSiaEmpresa.getTbSiaUrls().isEmpty()) {
+				TbSiaUrl tbSiaUrl = tbSiaEmpresa.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
+				LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
 				mapUrls.put(tbSiaUrl.getDid(), tbSiaUrl.getNomUrl());
-				urls.add(mapUrls);
+				empresaPDto.setUrls(mapUrls);
 			}
-			empresaPDto.setUrls(urls);
 			
 			listDto.add(empresaPDto);
 		}
@@ -223,6 +222,6 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		return new ArrayList<>(10);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

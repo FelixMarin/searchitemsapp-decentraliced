@@ -1,5 +1,6 @@
 package com.searchitemsapp.factory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,7 +159,7 @@ public class ScrapingEmpFactory {
 		}
 		
 		int iResultado = 0;
-		if (!"".contentEquals(pStrCadena)) {
+		if (!StringUtils.EMPTY.contentEquals(pStrCadena)) {
 			try {
 				iResultado = Integer.parseInt(pStrCadena);
 			} catch (NumberFormatException nfe) {

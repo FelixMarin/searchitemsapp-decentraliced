@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -68,14 +69,14 @@ public class ScrapingDia extends AbsScrapingEmpresas implements IFScrapingEmpres
 		 * se generan las de paginación.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
 		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
 
 		/**
 		 * Se divide el selector de paginación.
 		 */
 		StringTokenizer st = new StringTokenizer(selectorPaginacion, "|");
-		List<String> liSelectorAtr = new ArrayList<>(10);
+		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
 
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
@@ -89,7 +90,7 @@ public class ScrapingDia extends AbsScrapingEmpresas implements IFScrapingEmpres
 		 * utilizando el selector css.
 		 */
 		Elements elements = document.select(liSelectorAtr.get(0));
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 
 		/**
 		 * Se añade la URL base en la lista.

@@ -16,12 +16,15 @@ import java.util.concurrent.TimeoutException;
 
 import javax.persistence.NoResultException;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.diccionario.Diccionario;
 import com.searchitemsapp.dto.EmpresaDTO;
@@ -43,11 +46,6 @@ import com.searchitemsapp.scraping.UrlTreatment;
 public class ListadoProductosService implements IFService<String,String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListadoProductosService.class);  
-	
-	/*
-	 * Constantes Globales
-	 */
-	private static final String SPACE_STRING = " ";
 	
 	/*
 	 * Variables Globales
@@ -103,16 +101,20 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * Se declaran las variables que serán utilizadasa en el
 		 * proceso de ejecución del programa.
 		 */
-		StringBuilder strJsonResult;
+		List<ResultadoDTO> listResultDtoFinal;
 		ScrapingUnit scrapingUnit;
 		int contador = 0;
 
 		/**
 		 * Validación de las variables de entrada.
 		 */
-		if (validaCamposEntrada(didCategoria, producto, didPais, ordenacion, empresas))  {		
-			return getErrorJsonResponse(Thread.currentThread().getStackTrace().toString(),
-					Thread.currentThread().getId());
+		if (Objects.isNull(didCategoria) || 
+				Objects.isNull(producto) ||
+				Objects.isNull(ordenacion) ||
+				Objects.isNull(didPais) ||
+				StringUtils.EMPTY.contentEquals(empresas))  {	
+			
+			return new Gson().toJson(Thread.currentThread().getStackTrace().toString());
 		}
 		
 		/**
@@ -128,9 +130,8 @@ public class ListadoProductosService implements IFService<String,String> {
 			/**
 			 * Se traza el log con el identificador de la categoría.
 			 */
-			StringBuilder debugMessage = new StringBuilder(10);
+			StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 			debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"));
-			debugMessage.append(SPACE_STRING);
 			debugMessage.append(didCategoria);
 
 			if(LOGGER.isInfoEnabled()) {
@@ -154,8 +155,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * bbdd. Si eso sucede se devuelve un error.
 			 */
 			if(Objects.isNull(listTodosSelectoresCss)) {
-				return getErrorJsonResponse(Thread.currentThread().getStackTrace().toString(),
-						Thread.currentThread().getId());
+				return new Gson().toJson(Thread.currentThread().getStackTrace().toString());
 			}			
 			
 			/**
@@ -181,7 +181,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * en cada uno de los supermercados. Habrá un objeto por cada 
 			 * supermercado a rastrear.
 			 */
-			Collection<ScrapingUnit> callablesScrapingUnit = new ArrayList<>(10);
+			Collection<ScrapingUnit> callablesScrapingUnit = new ArrayList<>(NumberUtils.INTEGER_ONE);
 
 			/**
 			 * Habrá tantas iteraciones como URLs contenga cada supermercado.
@@ -204,16 +204,15 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * verdadero para cada elemento de la lista devuelta.
 			 */
 			List<Future<List<ResultadoDTO>>> listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
-			List<ResultadoDTO> listResultDtoFinal = executeFuture(listFutureListResDto);
+			listResultDtoFinal = executeFuture(listFutureListResDto);
 			
 			/**
 			 * Si la lista de resultados está vacía (no ha habido resultados)
 			 * la aplicación devolverá un mensaje notificando el suceso.
 			 */
             if(listResultDtoFinal.isEmpty()) {
-    			return getErrorJsonResponse(Thread.currentThread().getStackTrace().toString()
-    					.concat(new NoResultException(NO_HAY_RESULTADOS).toString()),
-    					Thread.currentThread().getId());
+    			return new Gson().toJson(Thread.currentThread().getStackTrace().toString()
+    					.concat(new NoResultException(NO_HAY_RESULTADOS).getStackTrace().toString()));
             }
 
             /**
@@ -222,22 +221,12 @@ public class ListadoProductosService implements IFService<String,String> {
              * que ordena los objetos por precio o por precio/kilo, según 
              * se haya indicado en la solicitud del servicio.
              */
-            Collections.sort(listResultDtoFinal,new ResultadoDTO());
+            Collections.sort(listResultDtoFinal, new ResultadoDTO());
 
-            /**
-             * Se crea un objeto StringBuilider en el que se concatenarán todos
-             * los productos formateados en JSON. 
-             */
-            strJsonResult = new StringBuilder(10);
-            
-            /**
-             * Se itera sobre los resultados para formar un string con formato
-             * JSON. Cada iteración corresponde a un producto.
-             */
-			for (ResultadoDTO resultadoDTO : listResultDtoFinal) {
-				strJsonResult.append(toJson(resultadoDTO,contador++));
+         	for (int i = 0; i < listResultDtoFinal.size(); i++) {
+				listResultDtoFinal.get(i).setIdentificador(++contador);
 			}
-
+			
 		}catch(IOException | NoResultException | InterruptedException | ExecutionException | URISyntaxException e) {			
 			
 			if(LOGGER.isErrorEnabled()) {
@@ -246,7 +235,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			
 			Thread.currentThread().interrupt();		
 			
-			return getErrorJsonResponse(e.toString(),Thread.currentThread().getId());
+			return new Gson().toJson(e.toString());
 		} finally {
 			
 			/**
@@ -260,10 +249,9 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * (No ha habido resultados) la aplicación devolverá un mensaje
 		 * indicando el suceso.
 		 */
-		if(EMPTY_STRING.contentEquals(strJsonResult.toString())) {
-			return  getErrorJsonResponse(Thread.currentThread().getStackTrace().toString()
-					.concat(new NoResultException(NO_HAY_RESULTADOS).toString()),
-					Thread.currentThread().getId());
+		if(listResultDtoFinal.isEmpty()) {			
+			return  new Gson().toJson(Thread.currentThread().getStackTrace().toString()
+					.concat(new NoResultException(NO_HAY_RESULTADOS).getStackTrace().toString()));
 		}
 		
 		/**
@@ -271,7 +259,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * JSON y que contiene todos los productos ordenados por precio o
 		 * por precio/kilo.
 		 */
-		return toArrayJson(strJsonResult.toString());
+		return new Gson().toJson(listResultDtoFinal);
 	}
 	
 	/*
@@ -291,7 +279,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	private List<ResultadoDTO> executeFuture(final List<Future<List<ResultadoDTO>>> resultList) 
 			throws InterruptedException, ExecutionException {
 		
-		List<ResultadoDTO> listResultFinal = new ArrayList<>(10);
+		List<ResultadoDTO> listResultFinal = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se itera sobre la lista de futuros. Cada ejecución
@@ -320,8 +308,8 @@ public class ListadoProductosService implements IFService<String,String> {
 				 * Se escribe una traza de log indicado el resultado de la ejecución
 				 */
 				if(LOGGER.isInfoEnabled()) {
-					LOGGER.info(future.get().toString().concat(SPACE_STRING)
-							.concat(String.valueOf(future.isDone())));
+					LOGGER.info(future.get().toString());
+					LOGGER.info(String.valueOf(future.isDone()));
 				}
 				
 			}catch(TimeoutException e) {
@@ -332,58 +320,5 @@ public class ListadoProductosService implements IFService<String,String> {
 		}
 		
 		return listResultFinal;
-	}	
-	
-	/**
-	 * Valida los campos recibidos en la solicitud de servicio.
-	 * 
-	 * @param didCategoria
-	 * @param producto
-	 * @param didPais
-	 * @param ordenacion
-	 * @param empresas
-	 * @return boolean
-	 */
-	private boolean validaCamposEntrada(final String didCategoria, 
-			final String producto, final String didPais, 
-			final String ordenacion, final String empresas) {
-		
-		return Objects.isNull(didCategoria) || 
-				Objects.isNull(producto) ||
-				Objects.isNull(ordenacion) ||
-				Objects.isNull(didPais) ||
-				EMPTY_STRING.contentEquals(empresas);
-	}
-	
-	/**
-	 * Crea un arrego JSON en una variable de tipo String.
-	 * 
-	 * @param String
-	 * @return String
-	 */
-	private String toArrayJson(String jsonSinTratar) {
-
-		if (Objects.isNull(jsonSinTratar)) {
-			return "null";
-		}
-
-		String resultado = jsonSinTratar.replaceAll("\\}\\{", "\\},\\{");
-		resultado = "{[".concat(resultado).concat("]}");
-		return resultado.replace("{[", "{\"resultado\":[");
-	}
-	
-	private String getErrorJsonResponse(String error, long id) {
-		return "{\"id\":\"" + id +"\",\"descripcion\":\"" + error + "\"}";
-	}
-	
-	private String toJson(ResultadoDTO resultadoDTO, int contador) {
-		return "{\"identificador\":\"" + ++contador + "\","
-				+ "\"nomProducto\":\"" + resultadoDTO.getNomProducto() + "\","
-				+ "\"didEmpresa\":\"" + resultadoDTO.getDidEmpresa() + "\","
-				+ "\"nomEmpresa\":\"" + resultadoDTO.getNomEmpresa() +  "\","
-				+ "\"imagen\":\"" + resultadoDTO.getImagen() +  "\","
-				+ "\"nomUrl\":\"" + resultadoDTO.getNomUrl() +  "\","
-				+ "\"precio\":\"" + resultadoDTO.getPrecio() + "\","
-				+ "\"precioKilo\":\"" + resultadoDTO.getPrecioKilo() + "\"}";
 	}
 }

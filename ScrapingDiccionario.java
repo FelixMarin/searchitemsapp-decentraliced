@@ -29,8 +29,8 @@ public class ScrapingDiccionario extends Scraping {
 	 * Constantes Globales
 	 */
 	private static final String NULL_STRING = "null";
-	private static final String EMPTY_STRING = "";
-	private static final String SPACE_STRING = " ";
+	
+	
 	
 	/*
 	 * Variables Globales
@@ -84,7 +84,7 @@ public class ScrapingDiccionario extends Scraping {
 		}
 		
 		super.setTbSiaSelectoresCss(urlDto);
-		StringBuilder palabrasResultado = new StringBuilder(10);
+		StringBuilder palabrasResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		String strProductoCorregido;
 		Element elem = null;
 				
@@ -104,8 +104,8 @@ public class ScrapingDiccionario extends Scraping {
             	strProductoCorregido = elementoPorCssSelector(elem, 
             			selectorCss.getSelProducto(),
             			urlDto);
-            	if(!EMPTY_STRING.contentEquals(strProductoCorregido)) {
-            		palabrasResultado.append(strProductoCorregido.concat(SPACE_STRING));
+            	if(!StringUtils.EMPTY.contentEquals(strProductoCorregido)) {
+            		palabrasResultado.append(strProductoCorregido.concat(StringUtils.SPACE));
             	}else {
             		return NULL_STRING;
             	}
@@ -116,7 +116,7 @@ public class ScrapingDiccionario extends Scraping {
 	}
 	
 	private boolean validarParametros() {
-		return !EMPTY_STRING.contentEquals(urlDto.getNomUrl()) ||
-				!EMPTY_STRING.contentEquals(producto);
+		return !StringUtils.EMPTY.contentEquals(urlDto.getNomUrl()) ||
+				!StringUtils.EMPTY.contentEquals(producto);
 	}
 }

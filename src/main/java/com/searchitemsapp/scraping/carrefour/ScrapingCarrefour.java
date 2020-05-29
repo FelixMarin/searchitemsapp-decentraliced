@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -70,7 +71,7 @@ public class ScrapingCarrefour extends AbsScrapingEmpresas implements IFScraping
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");	
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");	
 		
 		/**
 		 * Se obtiene del fichero de propiedades el número máximo de
@@ -82,7 +83,7 @@ public class ScrapingCarrefour extends AbsScrapingEmpresas implements IFScraping
 		 * Se divide el selector de paginación.
 		 */
 		StringTokenizer st = new StringTokenizer(selectorPaginacion,"|");  
-		List<String> liSelectorAtr = new ArrayList<>(10);
+		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
@@ -94,7 +95,7 @@ public class ScrapingCarrefour extends AbsScrapingEmpresas implements IFScraping
 		/**
 		 * Se crea una lista de Strings.
 		 */		
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se divide el selector de paginación.

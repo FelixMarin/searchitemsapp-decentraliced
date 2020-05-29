@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,9 +89,9 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 		/**
 		 * Traza de log que escribe identificador de la URL.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));
-		debugMessage.append(" ");
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(paramsLoginDTO.getDidUrl());
 		
 		if(LOGGER.isInfoEnabled()) {

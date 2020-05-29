@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -23,13 +25,6 @@ import com.searchitemsapp.dto.UrlDTO;
 public class ScrapingDiccionario extends Scraping {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingDiccionario.class);  
-	
-	/*
-	 * Constantes Globales
-	 */
-	private static final String NULL_STRING = "null";
-	private static final String EMPTY_STRING = "";
-	private static final String SPACE_STRING = " ";
 	
 	/*
 	 * Variables Globales
@@ -82,7 +77,7 @@ public class ScrapingDiccionario extends Scraping {
 			isCached=true;
 		}
 		
-		StringBuilder palabrasResultado = new StringBuilder(10);
+		StringBuilder palabrasResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		String strProductoCorregido;
 		Element elem = null;
 				
@@ -91,8 +86,8 @@ public class ScrapingDiccionario extends Scraping {
 		 if(Objects.nonNull(document)) {
 
             Elements entrada = selectScrapPattern(document, 
-            		urlDto.getSelectores().get(0).get("SCRAP_PATTERN"), 
-            		urlDto.getSelectores().get(0).get("SCRAP_NO_PATTERN"));
+            		urlDto.getSelectores().get("SCRAP_PATTERN"), 
+            		urlDto.getSelectores().get("SCRAP_NO_PATTERN"));
             
             if(!entrada.isEmpty()) {
             	elem = entrada.get(0);
@@ -100,11 +95,11 @@ public class ScrapingDiccionario extends Scraping {
             
             if(Objects.nonNull(elem)) {
             	strProductoCorregido = elementoPorCssSelector(elem, 
-            			urlDto.getSelectores().get(0).get("SEL_PRODUCTO"), urlDto);
-            	if(!EMPTY_STRING.contentEquals(strProductoCorregido)) {
-            		palabrasResultado.append(strProductoCorregido.concat(SPACE_STRING));
+            			urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto);
+            	if(!StringUtils.EMPTY.contentEquals(strProductoCorregido)) {
+            		palabrasResultado.append(strProductoCorregido.concat(StringUtils.SPACE));
             	}else {
-            		return NULL_STRING;
+            		return "null";
             	}
             }
 		 }
@@ -113,7 +108,7 @@ public class ScrapingDiccionario extends Scraping {
 	}
 	
 	private boolean validarParametros() {
-		return !EMPTY_STRING.contentEquals(urlDto.getNomUrl()) ||
-				!EMPTY_STRING.contentEquals(producto);
+		return !StringUtils.EMPTY.contentEquals(urlDto.getNomUrl()) ||
+				!StringUtils.EMPTY.contentEquals(producto);
 	}
 }

@@ -1,7 +1,6 @@
 package com.searchitemsapp.dto;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -25,9 +24,9 @@ public class PaisDTO implements IFdto {
 	private String desPais;
 	private String nomPais;
 	
-	private List<LinkedHashMap<Integer, String>> empresas;
-	private List<LinkedHashMap<Integer, String>> marcas;
-	private List<LinkedHashMap<Integer, String>> productos;
+	private LinkedHashMap<Integer, String> empresas;
+	private LinkedHashMap<Integer, String> marcas;
+	private LinkedHashMap<Integer, String> productos;
 	
 	/*
 	 * Constructor
@@ -71,27 +70,27 @@ public class PaisDTO implements IFdto {
 		this.nomPais = nomPais;
 	}
 	
-	public List<LinkedHashMap<Integer, String>> getEmpresas() {
+	public LinkedHashMap<Integer, String> getEmpresas() {
 		return empresas;
 	}
 
-	public void setEmpresas(List<LinkedHashMap<Integer, String>> empresas) {
+	public void setEmpresas(LinkedHashMap<Integer, String> empresas) {
 		this.empresas = empresas;
 	}
 
-	public List<LinkedHashMap<Integer, String>> getMarcas() {
+	public LinkedHashMap<Integer, String> getMarcas() {
 		return marcas;
 	}
 
-	public void setMarcas(List<LinkedHashMap<Integer, String>> marcas) {
+	public void setMarcas(LinkedHashMap<Integer, String> marcas) {
 		this.marcas = marcas;
 	}
 
-	public List<LinkedHashMap<Integer, String>> getProductos() {
+	public LinkedHashMap<Integer, String> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(List<LinkedHashMap<Integer, String>> productos) {
+	public void setProductos(LinkedHashMap<Integer, String> productos) {
 		this.productos = productos;
 	}
 

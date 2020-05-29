@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public class ScrapingHipercor extends AbsScrapingEmpresas implements IFScrapingE
 		/**
 		 * Se crea un string con el selector de paginación.
 		 */
-		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
 		
 		/**
 		 * Se obbtiene del documento el número de resultados. 
@@ -99,7 +100,7 @@ public class ScrapingHipercor extends AbsScrapingEmpresas implements IFScrapingE
 		/**
 		 * Se añade la URL base a la lista en formato string.
 		 */
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		/**

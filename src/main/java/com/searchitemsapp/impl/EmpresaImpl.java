@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,9 +92,9 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(" ");
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(empresaDto.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {

@@ -3,6 +3,7 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +100,7 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<LoginDTO> listDto = new ArrayList<>(10); 
+		List<LoginDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		LoginDTO loginPDto;
 		
 		for (TbSiaLogin tbSiaLogin : lsLoginPDto) {
@@ -128,6 +129,6 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		return new ArrayList<>(10);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

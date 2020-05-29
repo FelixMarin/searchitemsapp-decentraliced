@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,9 +70,9 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 			return null;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(" ");
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(urlDTO.getDid());
 		
 			if(LOGGER.isInfoEnabled()) {
@@ -109,7 +111,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		
 		if(Objects.isNull(paisDto) ||
 				Objects.isNull(categoriaDto) ||
-				"".contentEquals(strIdsEmpresas)) {
+				StringUtils.EMPTY.contentEquals(strIdsEmpresas)) {
 			return null;
 		}
 		
@@ -118,7 +120,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		}
 		
 		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, ",");
-		List<UrlDTO> lsIdsEmpresas = new ArrayList<>(10);
+		List<UrlDTO> lsIdsEmpresas = new ArrayList<>(NumberUtils.INTEGER_ONE);
 				
 		List<UrlDTO> listUrlDTO = urlDao.findAll();
 		
@@ -155,7 +157,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 			return null;
 		}
 		
-		List<String> listaAux = new ArrayList<>(10);
+		List<String> listaAux = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		while (st.hasMoreElements()) {
 			listaAux.add((String) st.nextElement());

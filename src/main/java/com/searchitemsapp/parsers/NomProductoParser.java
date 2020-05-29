@@ -3,6 +3,7 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +93,7 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<NomProductoDTO> listDto = new ArrayList<>(10); 
+		List<NomProductoDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		NomProductoDTO nomProductoDTO;		
 		
 		for (TbSiaNomProducto tbSiaNomProducto : lsTbSiaNomProducto) {
@@ -120,6 +121,6 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		return new ArrayList<>(10);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

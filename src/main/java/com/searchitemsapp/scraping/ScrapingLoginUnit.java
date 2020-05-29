@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -133,7 +135,7 @@ public class ScrapingLoginUnit extends Scraping {
 		List<UrlDTO> listUrlDto = urlImpl.obtenerUrlsLogin(paisDto, categoriaDto);
 		empresaDTO.setDid(iIdEmpresa);
 		
-		List<ResultadoDTO> listResUrlLogin = new ArrayList<>(10);
+		List<ResultadoDTO> listResUrlLogin = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * se crea una lista de resultados a partir de
@@ -223,7 +225,7 @@ public class ScrapingLoginUnit extends Scraping {
 		 * se añaden a la misma todos los parámetros correspondientes
 		 * a la url actual.
 		 */
-		Map<String, String> mapParamsFormLogin = new HashMap<>(10);
+		Map<String, String> mapParamsFormLogin = new HashMap<>(NumberUtils.INTEGER_ONE);
         
         for (ParamsLoginDTO paramsLoginDTO : listParamLoginForm) {
         	if(auxResDto.getDidUrl() == paramsLoginDTO.getDidUrl()) {
@@ -412,7 +414,7 @@ public class ScrapingLoginUnit extends Scraping {
 		}
 		
 		int iResultado = 0;
-		if (!"".contentEquals(pStrCadena)) {
+		if (!StringUtils.EMPTY.contentEquals(pStrCadena)) {
 			try {
 				iResultado = Integer.parseInt(pStrCadena);
 			} catch (NumberFormatException nfe) {

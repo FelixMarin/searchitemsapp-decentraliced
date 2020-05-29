@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
  
@@ -59,7 +61,7 @@ public class GetProperty {
 			return NULL;
 		}
 		
-		StringBuilder debugMessage = new StringBuilder(10);
+		StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		String value = NULL;
 		
 		/**
@@ -85,7 +87,7 @@ public class GetProperty {
 		 * Se traza una entrada de log con 
 		 * el valor del parámetro de entrada.
 		 */
-		debugMessage.append("");
+		debugMessage.append(StringUtils.EMPTY);
 		debugMessage.append("value = ");
 		debugMessage.append(value);
 		

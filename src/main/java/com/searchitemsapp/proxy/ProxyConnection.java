@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public class ProxyConnection {
 	 */
 	public void establecerProxy() {
 		
-		StringBuilder sbResultado = new StringBuilder(10);
+		StringBuilder sbResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		HttpURLConnection conn = null;
 		String[] arStrIpPort = null;
 		String output;

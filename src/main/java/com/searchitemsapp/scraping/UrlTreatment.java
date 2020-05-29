@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +102,7 @@ public class UrlTreatment extends Scraping {
 		/**
 		 * Se crea la variable que almacenará el listado de URLs.
 		 */
-		List<UrlDTO> listUrlDto = new ArrayList<>(10);
+		List<UrlDTO> listUrlDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Bucle que reemplaza el comodín '{1}' por el nombre del
@@ -193,7 +195,7 @@ public class UrlTreatment extends Scraping {
 		}
 
 		int iResultado = 0;
-		if (!"".contentEquals(pStrCadena)) {
+		if (!StringUtils.EMPTY.contentEquals(pStrCadena)) {
 			try {
 				iResultado = Integer.parseInt(pStrCadena);
 			} catch (NumberFormatException nfe) {

@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -39,14 +41,14 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	/*
 	 * Constantes Globales
 	 */	
-	private static final String EMPTY_STRING = "";
+	
 	private static final String SEPARADOR_URL = "%20";
-	private static final String SPACE_STRING = " ";
+	
 	
 	/* 
 	 * Variables Globales
 	 */
-	private static Map<Integer, Map<String, String>> mapaCookies = new HashMap<>(10);
+	private static Map<Integer, Map<String, String>> mapaCookies = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private UrlDTO urlDto; 
 	private String producto;
 	private String didPais; 
@@ -108,7 +110,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 * y procesar según proceda.
 		 */
 		boolean bStatus = urlDto.getBolStatus();
-		String[] arProducto = producto.split(SPACE_STRING);
+		String[] arProducto = producto.split(StringUtils.SPACE);
 		int iIdEmpresa = urlDto.getDidEmpresa();
 		Pattern pattern = createPatternProduct(arProducto);
 		
@@ -140,7 +142,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
         	 */
         	List<Document> listDocuments = getHtmlDocument(urlDto, getCookies(iIdEmpresa), producto);
         	
-        	lResultadoDto = new ArrayList<>(10);
+        	lResultadoDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
         	
         	/**
         	 * Se itera sobre cada uno de los documentos
@@ -165,7 +167,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	        	 */
 	            if(listDocuments.size() == 1 && 
 	            		!validaURL(document.baseUri(),urlDto.getNomUrl()
-	            				.replace(SPACE_STRING, SEPARADOR_URL))) {
+	            				.replace(StringUtils.SPACE, SEPARADOR_URL))) {
 	            	return null;
 	            }
 	            
@@ -174,8 +176,8 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	             * que contiene los datos.
 	             */
 	            entradas = selectScrapPattern(document,
-	            		urlDto.getSelectores().get(0).get("SCRAP_PATTERN"), 
-	            		urlDto.getSelectores().get(0).get("SCRAP_NO_PATTERN"));
+	            		urlDto.getSelectores().get("SCRAP_PATTERN"), 
+	            		urlDto.getSelectores().get("SCRAP_NO_PATTERN"));
 
 	            /**
 	             * De cada elemento se extrae la
@@ -296,11 +298,11 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 */
 		if(Objects.isNull(resDto.getNomProducto()) || iIdEmpresa == 0) {
 			return Boolean.FALSE;
-		} else if(EMPTY_STRING.contentEquals(resDto.getPrecio()) ||
+		} else if(StringUtils.EMPTY.contentEquals(resDto.getPrecio()) ||
 				Objects.isNull(resDto.getPrecio()))  {
 			return Boolean.FALSE; 
 		} else if(Objects.isNull(resDto.getPrecioKilo()) || 
-				EMPTY_STRING.contentEquals(resDto.getPrecioKilo())) {
+				StringUtils.EMPTY.contentEquals(resDto.getPrecioKilo())) {
 			return Boolean.FALSE;
 		}
 		
@@ -317,7 +319,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 				eliminarTildes(strProducto)
 				.toLowerCase().startsWith(
 						eliminarTildes(arProducto[0].trim())
-				.toLowerCase().concat(SPACE_STRING))) {
+				.toLowerCase().concat(StringUtils.SPACE))) {
 			return Boolean.TRUE;			
 		} else if(arProducto.length > 1) {			
 			

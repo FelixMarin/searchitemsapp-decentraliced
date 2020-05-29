@@ -21,7 +21,6 @@ public interface IFService<R, T> {
 	 * Constantes Globales
 	 */
 	public final String  NO_HAY_RESULTADOS= "No hay resultados";
-	public final String EMPTY_STRING = "";
 	
 	/*
 	 * Métodos implementables

@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		}
 		
 		UrlDTO urlPDto = new UrlDTO();
-		List<LinkedHashMap<String, String>> selectores = new ArrayList<>(10);
+		LinkedHashMap<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 		
 		urlPDto.setBolActivo(tbSiaPUrl.getBolActivo());
 		urlPDto.setDesUrl(tbSiaPUrl.getDesUrl());
@@ -57,8 +58,11 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		urlPDto.setNomEmpresa(tbSiaPUrl.getTbSiaEmpresa().getNomEmpresa());
 		urlPDto.setDidEmpresa(tbSiaPUrl.getTbSiaEmpresa().getDid());
 		
-		for (TbSiaSelectoresCss tbSiaSelectoresCsses : tbSiaPUrl.getTbSiaSelectoresCsses()) {
-			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(10);
+		if(!tbSiaPUrl.getTbSiaSelectoresCsses().isEmpty()) {
+			TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaPUrl
+					.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
+			
+			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(NumberUtils.INTEGER_ONE);
 			mapSelectores.put("SCRAP_PATTERN", tbSiaSelectoresCsses.getScrapPattern());
 			mapSelectores.put("SCRAP_NO_PATTERN", tbSiaSelectoresCsses.getScrapNoPattern());
 			mapSelectores.put("SEL_IMAGE", tbSiaSelectoresCsses.getSelImage());
@@ -70,9 +74,8 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 			mapSelectores.put("BOL_ACTIVO", tbSiaSelectoresCsses.getBolActivo().toString());
 			mapSelectores.put("DID", tbSiaSelectoresCsses.getDid().toString());
 			mapSelectores.put("FEC_MODIFICACION", tbSiaSelectoresCsses.getFecModificacion().toString());
-			selectores.add(mapSelectores);
+			urlPDto.setSelectores(selectores);
 		}
-		urlPDto.setSelectores(selectores);
 		
 		return urlPDto;
 	}
@@ -102,21 +105,19 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		tbSiaPUrl.getTbSiaEmpresa().setDid(urlPDto.getDid());
 		tbSiaPUrl.getTbSiaEmpresa().setNomEmpresa(urlPDto.getNomEmpresa());
 		
-		for (LinkedHashMap<String,String> map : urlPDto.getSelectores()) {
-			TbSiaSelectoresCss tselectores = new TbSiaSelectoresCss();
-			tselectores.setDid(Integer.parseInt(map.get("DID")));
-			tselectores.setScrapPattern(map.get("SCRAP_PATTERN"));
-			tselectores.setScrapNoPattern(map.get("SCRAP_NO_PATTERN"));
-			tselectores.setSelImage(map.get("SEL_IMAGE"));
-			tselectores.setSelLinkProd(map.get("SEL_LINK_PROD"));
-			tselectores.setSelPaginacion(map.get("SEL_PAGINACION"));
-			tselectores.setSelPrecio(map.get("SEL_PRECIO"));
-			tselectores.setSelPreKilo(map.get("SEL_PRECIO_KILO"));
-			tselectores.setSelProducto(map.get("SEL_PRODUCTO"));
-			tselectores.setBolActivo(Boolean.parseBoolean(map.get("BOL_ACTIVO")));
-			tselectores.setFecModificacion(LocalDate.parse(map.get("FEC_MODIFICACION")));
-			tbSiaPUrl.getTbSiaSelectoresCsses().add(tselectores);
-		}
+		TbSiaSelectoresCss tselectores = new TbSiaSelectoresCss();
+		tselectores.setDid(Integer.parseInt(urlPDto.getSelectores().get("DID")));
+		tselectores.setScrapPattern(urlPDto.getSelectores().get("SCRAP_PATTERN"));
+		tselectores.setScrapNoPattern(urlPDto.getSelectores().get("SCRAP_NO_PATTERN"));
+		tselectores.setSelImage(urlPDto.getSelectores().get("SEL_IMAGE"));
+		tselectores.setSelLinkProd(urlPDto.getSelectores().get("SEL_LINK_PROD"));
+		tselectores.setSelPaginacion(urlPDto.getSelectores().get("SEL_PAGINACION"));
+		tselectores.setSelPrecio(urlPDto.getSelectores().get("SEL_PRECIO"));
+		tselectores.setSelPreKilo(urlPDto.getSelectores().get("SEL_PRECIO_KILO"));
+		tselectores.setSelProducto(urlPDto.getSelectores().get("SEL_PRODUCTO"));
+		tselectores.setBolActivo(Boolean.parseBoolean(urlPDto.getSelectores().get("BOL_ACTIVO")));
+		tselectores.setFecModificacion(LocalDate.parse(urlPDto.getSelectores().get("FEC_MODIFICACION")));
+		tbSiaPUrl.getTbSiaSelectoresCsses().add(tselectores);
 		
 		return tbSiaPUrl;
 	}
@@ -133,23 +134,26 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<UrlDTO> listDto = new ArrayList<>(10); 
-		List<LinkedHashMap<String, String>> selectores = new ArrayList<>(10);
+		List<UrlDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
+		LinkedHashMap<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 		UrlDTO urlPDto;
 		
-		for (TbSiaUrl urlDto : lsUrls) {
+		for (TbSiaUrl tbSiaUrl : lsUrls) {
 			urlPDto = new UrlDTO();
-			urlPDto.setBolActivo(urlDto.getBolActivo());
-			urlPDto.setDesUrl(urlDto.getDesUrl());
-			urlPDto.setDid(urlDto.getDid());
-			urlPDto.setNomUrl(urlDto.getNomUrl());
-			urlPDto.setBolStatus(urlDto.getBolStatus());
-			urlPDto.setBolLogin(urlDto.getBolLogin());
-			urlPDto.setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
-			urlPDto.setDidEmpresa(urlDto.getTbSiaEmpresa().getDid());
+			urlPDto.setBolActivo(tbSiaUrl.getBolActivo());
+			urlPDto.setDesUrl(tbSiaUrl.getDesUrl());
+			urlPDto.setDid(tbSiaUrl.getDid());
+			urlPDto.setNomUrl(tbSiaUrl.getNomUrl());
+			urlPDto.setBolStatus(tbSiaUrl.getBolStatus());
+			urlPDto.setBolLogin(tbSiaUrl.getBolLogin());
+			urlPDto.setNomEmpresa(tbSiaUrl.getTbSiaEmpresa().getNomEmpresa());
+			urlPDto.setDidEmpresa(tbSiaUrl.getTbSiaEmpresa().getDid());
 			
-			for (TbSiaSelectoresCss tbSiaSelectoresCsses : urlDto.getTbSiaSelectoresCsses()) {
-				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(10);
+			if(!tbSiaUrl.getTbSiaSelectoresCsses().isEmpty()) {
+				TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaUrl
+						.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
+			
+				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(NumberUtils.INTEGER_ONE);
 				mapSelectores.put("SCRAP_PATTERN", tbSiaSelectoresCsses.getScrapPattern());
 				mapSelectores.put("SCRAP_NO_PATTERN", tbSiaSelectoresCsses.getScrapNoPattern());
 				mapSelectores.put("SEL_IMAGE", tbSiaSelectoresCsses.getSelImage());
@@ -161,9 +165,8 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 				mapSelectores.put("BOL_ACTIVO", tbSiaSelectoresCsses.getBolActivo().toString());
 				mapSelectores.put("DID", tbSiaSelectoresCsses.getDid().toString());
 				mapSelectores.put("FEC_MODIFICACION", tbSiaSelectoresCsses.getFecModificacion().toString());
-				selectores.add(mapSelectores);
+				urlPDto.setSelectores(selectores);
 			}
-			urlPDto.setSelectores(selectores);
 			
 			listDto.add(urlPDto);
 		}
@@ -192,7 +195,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		List<UrlDTO> listUrlDto = null;
 		
 		if (!urlList.isEmpty()){ 
-			listUrlDto = new ArrayList<>(10);
+			listUrlDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 			for (Object[] objects : urlList) {
 				urlDto = new UrlDTO();
 				urlDto.setNomUrl(String.valueOf(objects[0]));

@@ -3,6 +3,7 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +95,7 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(10);
+		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		ParamsLoginDTO paramsLoginDto;
 		
 		for (TbSiaParamsHeadersLogin tbSiaParamsFormLogin : listTbSiaParamsFormLogin) {
@@ -121,6 +122,6 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		return new ArrayList<>(10);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

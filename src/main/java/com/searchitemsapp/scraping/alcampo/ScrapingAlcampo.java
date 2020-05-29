@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class ScrapingAlcampo extends AbsScrapingEmpresas implements IFScrapingEm
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");	
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");	
 		String strPaginacion = ZERO_STRING;
 		
 		/**
@@ -83,7 +84,7 @@ public class ScrapingAlcampo extends AbsScrapingEmpresas implements IFScrapingEm
 		/**
 		 * Se crea una lista de Strings.
 		 */
-		List<String> liSelectorAtr = new ArrayList<>(10);
+		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se divide el selector de paginación.
@@ -102,7 +103,7 @@ public class ScrapingAlcampo extends AbsScrapingEmpresas implements IFScrapingEm
 		 * utilizando el selector css.
 		 */
 		Elements elements = document.select(liSelectorAtr.get(0));
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Si la lista de elementos no está vacía

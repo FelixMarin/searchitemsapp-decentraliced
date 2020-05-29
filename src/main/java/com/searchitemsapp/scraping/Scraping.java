@@ -17,6 +17,8 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -78,7 +80,7 @@ public abstract class Scraping {
 	private static final String STRING_ENIE_MAY = "Ñ";
 	private static final String UNICODE_ENIE = "u00f1";
 	private static final String REEMPLAZABLE_TILDES = "[\\p{InCombiningDiacriticalMarks}]";
-	private static final String EMPTY_STRING = "";
+	
 	private static final String LEFT_PARENTHESIS_0 = " (";
 	private static final String DOBLE_BARRA = "//";
 	private static final String HTTPS = "https:";
@@ -94,8 +96,8 @@ public abstract class Scraping {
 	 * Variables Globales
 	 */
 	private static final String SCRIPT = "script";
-	private static Map<String,Integer> mapEmpresas = new HashMap<>(10);
-	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(10);
+	private static Map<String,Integer> mapEmpresas = new HashMap<>(NumberUtils.INTEGER_ONE);
+	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private static List<MarcasDTO> listTodasMarcas;
 	private static List<EmpresaDTO> listEmpresaDto;
 	private static String selectorPrecioECIOffer;
@@ -200,7 +202,7 @@ public abstract class Scraping {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-    	List<Document> listDocuments = new ArrayList<>(10);
+    	List<Document> listDocuments = new ArrayList<>(NumberUtils.INTEGER_ONE);
     	
 		/**
 		 * El identificador de la empresa se añade 
@@ -255,7 +257,7 @@ public abstract class Scraping {
 			final UrlDTO urlDto, final int idEmpresa) 
 					throws MalformedURLException {
 		
-		List<String> listUrlsResultado = new ArrayList<>(10);
+		List<String> listUrlsResultado = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Si el identificador de empresa es el 
@@ -263,7 +265,7 @@ public abstract class Scraping {
 		 * ejecución termina. 
 		 */
 		if(getMapEmpresas().get(DICCIONARIO) == idEmpresa) {
-			return new ArrayList<>(10);
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/**
@@ -322,7 +324,7 @@ public abstract class Scraping {
 		}
 		String resultado = cadena.replace(STRING_ENIE_MAY, UNICODE_ENIE);
 		resultado = Normalizer.normalize(resultado.toLowerCase(), Normalizer.Form.NFD);
-		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, EMPTY_STRING);
+		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, StringUtils.EMPTY);
 		resultado = resultado.replace(UNICODE_ENIE, STRING_ENIE_MIN);
 		return Normalizer.normalize(resultado, Normalizer.Form.NFC);
 		
@@ -338,8 +340,8 @@ public abstract class Scraping {
 	 */
 	protected Pattern createPatternProduct(final String[] arProducto) {
 
-		List<String> tokens = new ArrayList<>(10);
-		StringBuilder pattSb = new StringBuilder(10);
+		List<String> tokens = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		StringBuilder pattSb = new StringBuilder(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se añaden todas las palabras que componen 
@@ -394,11 +396,11 @@ public abstract class Scraping {
 		 * Se comprueba que los parametros de entrada no sean nulos.
 		 * Si nulos retorna nulo.
 		 */
-		if(Objects.isNull(cssSelector) || "".equals(cssSelector)) {
+		if(Objects.isNull(cssSelector) || StringUtils.EMPTY.equals(cssSelector)) {
 			return "null";
 		}
 		
-		List<String> lista = new ArrayList<>(10);
+		List<String> lista = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		String strResult;
 		
 		/**
@@ -566,12 +568,12 @@ public abstract class Scraping {
 		 * en la variable resultado. Los valores son todos los
 		 * que devolverá el servicio.
 		 */
-		resDto.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_IMAGE"), urlDto));
-		resDto.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRODUCTO"), urlDto));
-		resDto.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRODUCTO"), urlDto));
-		resDto.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRECIO"), urlDto));
-		resDto.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_PRECIO_KILO"), urlDto));
-		resDto.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().get(0).get("SEL_LINK_PROD"), urlDto));
+		resDto.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_IMAGE"), urlDto));
+		resDto.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
+		resDto.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
+		resDto.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO"), urlDto));
+		resDto.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO_KILO"), urlDto));
+		resDto.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_LINK_PROD"), urlDto));
 		resDto.setDidEmpresa(urlDto.getDidEmpresa());
 		resDto.setNomEmpresa(urlDto.getNomEmpresa());
 		
@@ -812,12 +814,12 @@ public abstract class Scraping {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		StringBuilder resultado = new StringBuilder(10);
+		StringBuilder resultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se corta el nombre del producto y se añade e un array.
 		 */
-		String[] nomProdSeparado = nomProducto.trim().split(" ");
+		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE);
 		
 		
 		/**
@@ -830,7 +832,7 @@ public abstract class Scraping {
 		
 		for (int i = 0; i < nomProdSeparado.length; i++) {
 			if(!nomProdSeparado[i].equals(nomProdSeparado[i].toUpperCase())) {
-				resultado.append(nomProdSeparado[i]).append(" ");
+				resultado.append(nomProdSeparado[i]).append(StringUtils.SPACE);
 			}
 		}
 		
@@ -936,7 +938,7 @@ public abstract class Scraping {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		final StringBuilder sbResultado = new StringBuilder(10);
+		final StringBuilder sbResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		if (iTipo == 0) {
 			sbResultado.append(strCadena);
 		}
@@ -993,8 +995,8 @@ public abstract class Scraping {
 		
 		String resultado;
 		
-		resultado = cadena.replaceAll(LEFT_PARENTHESIS, EMPTY_STRING);
-		resultado = resultado.replaceAll(RIGTH_PARENTHESIS, EMPTY_STRING);
+		resultado = cadena.replaceAll(LEFT_PARENTHESIS, StringUtils.EMPTY);
+		resultado = resultado.replaceAll(RIGTH_PARENTHESIS, StringUtils.EMPTY);
 		
 		return resultado;
 	}
@@ -1013,29 +1015,29 @@ public abstract class Scraping {
 			return null;
 		}
 		
-		value = value.replaceAll("\\*", EMPTY_STRING);
-		value = value.replaceAll("/", EMPTY_STRING);
-		value = value.replaceAll("//", EMPTY_STRING);
-		value = value.replaceAll("<", EMPTY_STRING).replaceAll(">", EMPTY_STRING);
-		value = value.replaceAll("\\{", EMPTY_STRING).replaceAll("\\}", EMPTY_STRING);
-		value = value.replaceAll("\\[", EMPTY_STRING).replaceAll("\\]", EMPTY_STRING);
-		value = value.replaceAll("\\(", EMPTY_STRING).replaceAll("\\)", EMPTY_STRING);
-		value = value.replaceAll("'", EMPTY_STRING);
-		value = value.replaceAll("eval\\((.*)\\)", EMPTY_STRING);
-		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", EMPTY_STRING);
-		value = value.replaceAll("script", EMPTY_STRING);
-		value = value.replaceAll("select", EMPTY_STRING).replaceAll("SELECT", EMPTY_STRING);
-		value = value.replaceAll("insert", EMPTY_STRING).replaceAll("INSERT", EMPTY_STRING);
-		value = value.replaceAll("delete", EMPTY_STRING).replaceAll("DELETE", EMPTY_STRING);
-		value = value.replaceAll("alter", EMPTY_STRING).replaceAll("ALTER", EMPTY_STRING);
-		value = value.replaceAll("drop", EMPTY_STRING).replaceAll("DROP", EMPTY_STRING);
+		value = value.replaceAll("\\*", StringUtils.EMPTY);
+		value = value.replaceAll("/", StringUtils.EMPTY);
+		value = value.replaceAll("//", StringUtils.EMPTY);
+		value = value.replaceAll("<", StringUtils.EMPTY).replaceAll(">", StringUtils.EMPTY);
+		value = value.replaceAll("\\{", StringUtils.EMPTY).replaceAll("\\}", StringUtils.EMPTY);
+		value = value.replaceAll("\\[", StringUtils.EMPTY).replaceAll("\\]", StringUtils.EMPTY);
+		value = value.replaceAll("\\(", StringUtils.EMPTY).replaceAll("\\)", StringUtils.EMPTY);
+		value = value.replaceAll("'", StringUtils.EMPTY);
+		value = value.replaceAll("eval\\((.*)\\)", StringUtils.EMPTY);
+		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", StringUtils.EMPTY);
+		value = value.replaceAll("script", StringUtils.EMPTY);
+		value = value.replaceAll("select", StringUtils.EMPTY).replaceAll("SELECT", StringUtils.EMPTY);
+		value = value.replaceAll("insert", StringUtils.EMPTY).replaceAll("INSERT", StringUtils.EMPTY);
+		value = value.replaceAll("delete", StringUtils.EMPTY).replaceAll("DELETE", StringUtils.EMPTY);
+		value = value.replaceAll("alter", StringUtils.EMPTY).replaceAll("ALTER", StringUtils.EMPTY);
+		value = value.replaceAll("drop", StringUtils.EMPTY).replaceAll("DROP", StringUtils.EMPTY);
 
 		return value;
 	}
 	
 	private String formatSybol(String cadena) {
 		
-		String resultado = EMPTY_STRING;
+		String resultado = StringUtils.EMPTY;
 		
 		if(Objects.isNull(cadena)) {
 			return resultado;

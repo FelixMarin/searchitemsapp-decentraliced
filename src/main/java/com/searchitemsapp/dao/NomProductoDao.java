@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -60,7 +61,7 @@ public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.nomproducto.select.all"));
 		
 		/**

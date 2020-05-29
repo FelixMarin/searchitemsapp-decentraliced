@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +33,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	/*
 	 * Constantes Globales.
 	 */
-	private static final String SPACE_STRING = " ";
+	
 	
 	/*
 	 * Variables Globales
@@ -92,9 +94,9 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		/**
 		 * Traza de log que escribe todos los valores del objeto selector css.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.valor.dto"));
-		debugMessage.append(SPACE_STRING);
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(selectorCssDto.toString());
 		
 		if(LOGGER.isInfoEnabled()) {
@@ -133,9 +135,9 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.activo"));
-		debugMessage.append(SPACE_STRING);
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(empresaDto.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {

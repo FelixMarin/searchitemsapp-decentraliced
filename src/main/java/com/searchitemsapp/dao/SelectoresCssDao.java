@@ -6,6 +6,8 @@ import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -62,7 +64,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.all"));
 		
 		/**
@@ -118,9 +120,9 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(10);
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.selectorescss.did.txt"));
-		debugMessage.append(" ");
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(did);
 
 		if(LOGGER.isInfoEnabled()) {
@@ -170,7 +172,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaSelectoresCss.class);
 		query.setParameter("didEmpresa", didEmpresa);

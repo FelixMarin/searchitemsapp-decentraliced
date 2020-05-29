@@ -3,6 +3,7 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,7 +113,7 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<SelectoresCssDTO> listDto = new ArrayList<>(10); 
+		List<SelectoresCssDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		SelectoresCssDTO selectoresCssDTO;
 		
 		for (TbSiaSelectoresCss tbSiaSelectoresCss : lsTbSiaSelectoresCss) {
@@ -147,6 +148,6 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		return new ArrayList<>(10);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

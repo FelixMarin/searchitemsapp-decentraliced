@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,13 +71,13 @@ public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmp
 		/**
 		 * Se añade la URL base en la lista.
 		 */
-		List<String> listaUrls = new ArrayList<>(10);
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = urlDto.getSelectores().get(0).get("SEL_PAGINACION");		
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");		
 		String strPaginacion = document.select(selectorPaginacion).text();
 		
 		/**
@@ -88,7 +90,7 @@ public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmp
 		 * Si la variable de paginación no está
 		 * vacía, se continua con el proceso
 		 */
-		if(!"".contentEquals(strPaginacion)) {
+		if(!StringUtils.EMPTY.contentEquals(strPaginacion)) {
 			
 			/**
 			 * Con esta validación se comprueba si la 

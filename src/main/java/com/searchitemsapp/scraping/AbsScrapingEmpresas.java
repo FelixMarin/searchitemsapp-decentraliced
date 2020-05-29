@@ -1,5 +1,6 @@
 package com.searchitemsapp.scraping;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,7 @@ public abstract class AbsScrapingEmpresas {
 		}
 		
 		int iResultado = 0;
-		if (!"".contentEquals(pStrCadena)) {
+		if (!StringUtils.EMPTY.contentEquals(pStrCadena)) {
 			try {
 				iResultado = Integer.parseInt(pStrCadena);
 			} catch (NumberFormatException nfe) {

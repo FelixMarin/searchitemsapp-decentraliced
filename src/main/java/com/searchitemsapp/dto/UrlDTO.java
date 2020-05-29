@@ -1,7 +1,6 @@
 package com.searchitemsapp.dto;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -26,7 +25,7 @@ public class UrlDTO implements IFdto {
 	private Boolean bolStatus;	
 	private Boolean bolLogin;	
 	
-	private List<LinkedHashMap<String, String>> selectores;
+	private LinkedHashMap<String, String> selectores;
 	
 	/*
 	 * Constructor
@@ -102,11 +101,11 @@ public class UrlDTO implements IFdto {
 		this.bolLogin = bolLogin;
 	}
 
-	public List<LinkedHashMap<String, String>> getSelectores() {
+	public LinkedHashMap<String, String> getSelectores() {
 		return selectores;
 	}
 
-	public void setSelectores(List<LinkedHashMap<String, String>> selectores) {
+	public void setSelectores(LinkedHashMap<String, String> selectores) {
 		this.selectores = selectores;
 	}
 

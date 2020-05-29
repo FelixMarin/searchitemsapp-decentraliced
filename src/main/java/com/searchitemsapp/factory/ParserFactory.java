@@ -1,5 +1,6 @@
 package com.searchitemsapp.factory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -90,7 +91,7 @@ public class ParserFactory {
 	 */
 	public IFParser<?, ?> getParser(String nomParser) {
 		
-		if("".contentEquals(nomParser)) {
+		if(StringUtils.EMPTY.contentEquals(nomParser)) {
 			return null;
 		}
 		

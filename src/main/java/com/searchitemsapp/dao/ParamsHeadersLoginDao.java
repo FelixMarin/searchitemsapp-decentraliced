@@ -8,6 +8,7 @@ import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -58,7 +59,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		
 		List<ParamsLoginDTO> resultado = null;
 		
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -89,7 +90,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		
 		List<ParamsLoginDTO> listParamsLoginDto = null;
 		
-		StringBuilder queryBuilder = new StringBuilder(10);
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsHeadersLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
@@ -100,7 +101,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
-			listParamsLoginDto = new ArrayList<>(10);
+			listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		return listParamsLoginDto;
