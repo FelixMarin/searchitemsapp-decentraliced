@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.factory.ParserFactory;
 import com.searchitemsapp.parsers.IFParser;
+import com.searchitemsapp.parsers.ParserFactory;
 
 /**
  * Clase Abstracta que implementan todas las clases

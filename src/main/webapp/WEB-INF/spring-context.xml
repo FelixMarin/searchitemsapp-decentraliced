@@ -169,9 +169,9 @@
       
       <bean id="fillSelectores" class="com.searchitemsapp.fillselectores.FillSelectores"></bean>     
       
-      <bean id="parserFactory" class="com.searchitemsapp.factory.ParserFactory"></bean>
-      <bean id="serviceFactory" class="com.searchitemsapp.factory.ServiceFactory"></bean>
-       <bean id="scrapingEmpFactory" class="com.searchitemsapp.factory.ScrapingEmpFactory"></bean>
+      <bean id="parserFactory" class="com.searchitemsapp.parsers.ParserFactory"></bean>
+      <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>
+       <bean id="scrapingEmpFactory" class="com.searchitemsapp.scraping.ScrapingEmpFactory"></bean>
        
        <bean id="processPrice" class="com.searchitemsapp.processprice.ProcessPrice"></bean>
        <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>

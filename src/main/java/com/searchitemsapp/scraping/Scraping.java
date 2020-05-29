@@ -35,7 +35,6 @@ import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.factory.ScrapingEmpFactory;
 import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.scraping.condis.IFScracpingCondis;
 import com.searchitemsapp.scraping.eroski.IFScrapingEroski;

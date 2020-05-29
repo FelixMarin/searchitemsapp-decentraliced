@@ -17,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.parsers.IFParser;
+import com.searchitemsapp.parsers.ParserFactory;
 
 @SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
