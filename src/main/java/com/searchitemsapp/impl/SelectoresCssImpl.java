@@ -29,11 +29,6 @@ import com.searchitemsapp.dto.SelectoresCssDTO;
 public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, EmpresaDTO> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssImpl.class);  
-
-	/*
-	 * Constantes Globales.
-	 */
-	
 	
 	/*
 	 * Variables Globales

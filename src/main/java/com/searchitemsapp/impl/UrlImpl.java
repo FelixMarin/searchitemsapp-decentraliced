@@ -33,11 +33,6 @@ import com.searchitemsapp.dto.UrlDTO;
 public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlImpl.class);  
-	
-	/*
-	 * Constantes Globales 
-	 */
-	private static final String ALL = "ALL";
 
 	/*
 	 * VAriables Globales
@@ -115,7 +110,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 			return null;
 		}
 		
-		if(ALL.equalsIgnoreCase(strIdsEmpresas)) {
+		if("ALL".equalsIgnoreCase(strIdsEmpresas)) {
 			strIdsEmpresas = CommonsPorperties.getValue("flow.value.all.id.empresa");
 		}
 		
