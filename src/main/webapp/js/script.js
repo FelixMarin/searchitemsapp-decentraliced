@@ -245,7 +245,7 @@ function componerCartas(data) {
             document.getElementById("cajamensajes").style.display = "none";            
         }
 
-        datosJSON.resultado.forEach(element => {           
+        datosJSON.forEach(element => {           
 
             if(contador === 0) {
                 row = document.createElement("div");
@@ -258,13 +258,13 @@ function componerCartas(data) {
             estructuraHTML += '<div class="card card-block crd h-100 showcard">';            
             estructuraHTML += '<h4 class="card-title">';
             estructuraHTML += imagenLogoEmpresa(parseInt(element.didEmpresa));
-            estructuraHTML += '<span class="pt-1 pull-right"><kbd>' + element.identificador + '</kbd></span>';
+            estructuraHTML += colorIdentificador(element.identificador);
             estructuraHTML += '</h4>'
             estructuraHTML += '<a href="' + element.nomUrl + '" target="_blank" rel="noopener noreferrer">';
             estructuraHTML += '<img class="imgprod" src="' + element.imagen + '" alt="Photo of sunset" />';
             estructuraHTML += '</a>';
             estructuraHTML += '<h5 class="card-title p-2">' + element.nomProducto + '</h5>';
-            estructuraHTML += '<p class="text pl-2">Precio: ' + element.precio + '<br />P. Kilo: ' + element.precioKilo + '</p>';     
+            estructuraHTML += '<p class="text pl-2">PVP: ' + element.precio + '<br />P. Kilo: ' + element.precioKilo + '</p>';     
             estructuraHTML += '</div></div>';
 
             let card = document.createRange().createContextualFragment(estructuraHTML);
@@ -280,6 +280,28 @@ function componerCartas(data) {
         document.getElementById("cajamensajes").style.display = "block";      
         console.log(error);
     }
+}
+
+function colorIdentificador(identificador) {
+	
+	let resultado;
+	
+	switch (parseInt(identificador)) {
+	case 1:
+		resultado = '<span class="ident-primero">' + identificador + '</span>';
+		break;
+	case 2:
+		resultado = '<span class="ident-segundo">' + identificador + '</span>';
+		break;
+	case 3:
+		resultado = '<span class="ident-tercero">' + identificador + '</span>';
+		break;
+	default:
+		resultado = '<span class="ident-resto">' + identificador + '</span>';
+		break;
+	}
+	
+	return resultado;
 }
 
 function imagenLogoEmpresa(didEmpresa) {

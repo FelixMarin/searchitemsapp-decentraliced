@@ -101,8 +101,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	private static String selectorPrecioECIOffer;
 	private static String selectorPaginaSiguienteCarrefour;
 	private static String accesoPopupPeso;
-	private static String productLeftContainer;
-	private static String selectorDescriptionText;
 
 	@Autowired
 	private IFImplementacion<EmpresaDTO, CategoriaDTO> iFEmpresaImpl;
@@ -147,7 +145,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
+		} 
 		
 		int iResultado = 0;
 
@@ -492,13 +490,13 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			 * de empresas está vacío. Eso solo pasará una vez
 			 * ya que se trata de una variable estática.
 			 */
-			if(mapEmpresas.size() == 0) {
+			if(mapEmpresas.isEmpty()) {
 				
 				/**
 				 * Se establece la lista de empresas en la 
 				 * variable global estática.
 				 */
-				setListEmpresaDto(iFEmpresaImpl.findAll());
+				listEmpresaDto = iFEmpresaImpl.findAll();
 	
 				/**
 				 * En este punto se establece la lista de empresas
@@ -517,9 +515,9 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 				 * aplicación. Se utilizan durante el proceso de la solicitud.
 				 */
 		
-				setSelectorPrecioECIOffer(CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer"));
-				setSelectorPaginaSiguienteCarrefour(CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour"));
-				setAccesoPopupPeso(CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso"));
+				selectorPrecioECIOffer= CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer");
+				selectorPaginaSiguienteCarrefour = CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour");
+				accesoPopupPeso = CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso");
 			}
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
@@ -600,8 +598,8 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		}
 		
 		String productoTratado = sanitizeValue(producto);
-		productoTratado=ajustarDerecha(productoTratado, 0, Character.MIN_VALUE);
-		productoTratado=ajustarIzquierda(productoTratado, 0, Character.MIN_VALUE);
+		productoTratado=anadirCaracteres(productoTratado, Character.MIN_VALUE, 0, 0);
+		productoTratado=anadirCaracteres(productoTratado, Character.MIN_VALUE, 0, 1);
 		
 		Matcher matcher = Pattern.compile(REGEX_PERCENT_DOLAR).matcher(productoTratado);
 		
@@ -621,7 +619,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	protected void cargarTodasLasMarcas() {
 		try {
 			if(Objects.isNull(listTodasMarcas)) {
-				setListTodasMarcas(iFMarcasImp.findAll());
+				AbstractScraping.listTodasMarcas = iFMarcasImp.findAll();
 			}
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
@@ -630,64 +628,16 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		}
 	}
 	
-	protected boolean isNullProducto(final String[] arProducto) {
-		return Objects.isNull(arProducto) || 
-				arProducto.length == 0;
-	}	
-	
-	protected static void setListTodasMarcas(List<MarcasDTO> listTodasMarcas) {
-		AbstractScraping.listTodasMarcas = listTodasMarcas;
-	}	
-
-	protected static void setSelectorPrecioECIOffer(String selectorPrecioECIOffer) {
-		AbstractScraping.selectorPrecioECIOffer = selectorPrecioECIOffer;
-	}
-
 	protected static String getSelectorPaginaSiguienteCarrefour() {
 		return selectorPaginaSiguienteCarrefour;
-	}
-
-	protected static void setSelectorPaginaSiguienteCarrefour(
-			String selectorPaginaSiguienteCarrefour) {
-		
-		AbstractScraping.selectorPaginaSiguienteCarrefour = 
-				selectorPaginaSiguienteCarrefour;
 	}
 
 	protected static String getAccesoPopupPeso() {
 		return accesoPopupPeso;
 	}
-
-	protected static void setAccesoPopupPeso(String accesoPopupPeso) {
-		AbstractScraping.accesoPopupPeso = accesoPopupPeso;
-	}
-
-	protected static String getProductLeftContainer() {
-		return productLeftContainer;
-	}
-
-	protected static void setProductLeftContainer(String productLeftContainer) {
-		AbstractScraping.productLeftContainer = productLeftContainer;
-	}
-
-	protected static String getSelectorDescriptionText() {
-		return selectorDescriptionText;
-	}
-
-	protected static void setSelectorDescriptionText(String selectorDescriptionText) {
-		AbstractScraping.selectorDescriptionText = selectorDescriptionText;
-	}	
 	
 	protected static Map<String, Integer> getMapEmpresas() {
 		return mapEmpresas;
-	}
-	
-	protected static List<EmpresaDTO> getListEmpresaDto() {
-		return listEmpresaDto;
-	}
-
-	protected static Map<Integer, Boolean> getMapDynScraping() {
-		return mapDynScraping;
 	}
 
 	protected static String getSelectorPrecioECIOffer() {
@@ -876,36 +826,16 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			caracteres = strResult;
 		}
 		
-		return formatoCaracteres(caracteres);
+		String resultado = caracteres.replaceAll(LEFT_PARENTHESIS, StringUtils.EMPTY);
+		resultado = resultado.replaceAll(RIGTH_PARENTHESIS, StringUtils.EMPTY);
+		
+		resultado = resultado.replaceAll("€", " eur");
+		resultado = resultado.replaceAll("Kilo", "kg");
+		resultado = resultado.replaceAll(" / ", "/");
+		resultado = resultado.replaceAll(" \"", "\"");
+		
+		return resultado;
 	}	
-	
-	/**
-	 * Realiza el ajuste de una cadena por la derecha, para proporcionarle una
-	 * longitud determinada mediante la adicion de un tipo de caracter dado
-	 *
-	 * @param pstrCadena   cadena
-	 * @param piLongitud   Longitud de la cadena
-	 * @param pchrCaracter caracter
-	 * @return cadena ajustada
-	 * @modelguid {96426349-1D0C-49A4-AB02-A1AFC0B874CD}
-	 */
-	private String ajustarDerecha(String strCadena, int iLongitud, char chrCaracter) {
-
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return anadirCaracteres(strCadena, chrCaracter, iLongitud, 0);
-	}
-	
-	private String ajustarIzquierda(String strCadena, int iLongitud, char chrCaracter) {
-
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return anadirCaracteres(strCadena, chrCaracter, iLongitud, 1);
-	}
 	
 	/**
 	 * Realiza la adicion de caracteres a una cadena para proporcionarle una
@@ -952,41 +882,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		}
 	}
 	
-	private static void setListEmpresaDto(List<EmpresaDTO> listEmpresaDto) {
-		AbstractScraping.listEmpresaDto = listEmpresaDto;
-	}
-	
-	private String formatoCaracteres(final String cadena) {
-		
-		if(Objects.isNull(cadena)) {
-			return null;
-		}
-		
-		String resultado = replaceParenthesis(cadena);
-		
-		if(Objects.isNull(resultado)) {
-			return null;
-		}
-		
-		resultado = formatSybol(resultado);
-		
-		return resultado;
-	}
-	
-	private static String replaceParenthesis(String cadena) {
-
-		if(Objects.isNull(cadena)) {
-			return null;
-		}
-		
-		String resultado;
-		
-		resultado = cadena.replaceAll(LEFT_PARENTHESIS, StringUtils.EMPTY);
-		resultado = resultado.replaceAll(RIGTH_PARENTHESIS, StringUtils.EMPTY);
-		
-		return resultado;
-	}
-	
 	/**
      * Metodo que contene combinaciones de palabras 
      * no permitidas. Las palabras no permitidas se
@@ -1019,19 +914,5 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		value = value.replaceAll("drop", StringUtils.EMPTY).replaceAll("DROP", StringUtils.EMPTY);
 
 		return value;
-	}
-	
-	private String formatSybol(String cadena) {
-		
-		String resultado = StringUtils.EMPTY;
-		
-		if(Objects.isNull(cadena)) {
-			return resultado;
-		}
-		resultado = cadena.replaceAll("€", " eur");
-		resultado = resultado.replaceAll("Kilo", "kg");
-		resultado = resultado.replaceAll(" / ", "/");
-		resultado = resultado.replaceAll(" \"", "\"");
-		return resultado;
 	}
 }

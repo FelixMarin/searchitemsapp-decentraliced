@@ -125,7 +125,8 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		 * producto solicitado es nulo, termina la 
 		 * ejecucion.
 		 */
-		if(isNullProducto(arProducto)) {
+		if(Objects.isNull(arProducto) || 
+				arProducto.length == 0) {
 			return null;
 		}
 		

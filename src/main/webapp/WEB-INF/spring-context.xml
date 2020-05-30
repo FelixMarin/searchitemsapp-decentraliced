@@ -142,7 +142,7 @@
       <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.model.TbSiaCategoriasEmpresa"></bean>
       <bean id="tbSiaEmpresa" class="com.searchitemsapp.model.TbSiaEmpresa"></bean>
       
-      <bean id="urlTreatment" class="com.searchitemsapp.scraping.UrlTreatment"></bean> 
+      <bean id="urlComposer" class="com.searchitemsapp.scraping.UrlComposer"></bean> 
       <bean id="scrapingUnit" class="com.searchitemsapp.scraping.ScrapingUnit" scope="prototype">
       		<constructor-arg index="0" ref="urlDTO" />
       		<constructor-arg index="1" type="java.lang.String" value="" />
@@ -164,8 +164,6 @@
       <bean id="scrapingAlcampo" class="com.searchitemsapp.scraping.alcampo.ScrapingAlcampo"></bean>
       <bean id="scrapingCaprabo" class="com.searchitemsapp.scraping.caprabo.ScrapingCaprabo"></bean>
       <bean id="scrapingLidl" class="com.searchitemsapp.scraping.lidl.ScrapingLidl"></bean>
-      
-      <bean id="fillSelectores" class="com.searchitemsapp.fillselectores.FillSelectores"></bean>     
       
       <bean id="parserFactory" class="com.searchitemsapp.parsers.ParserFactory"></bean>
       <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>

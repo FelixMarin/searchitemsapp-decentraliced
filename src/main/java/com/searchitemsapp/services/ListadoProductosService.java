@@ -31,7 +31,7 @@ import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.scraping.ScrapingUnit;
-import com.searchitemsapp.scraping.UrlTreatment;
+import com.searchitemsapp.scraping.UrlComposer;
 
 /**
  * @author Felix Marin Ramirez
@@ -54,7 +54,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
 	
 	@Autowired
-	private UrlTreatment urlTreatment;
+	private UrlComposer urlComposer;
 	
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -158,7 +158,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * indicados en la request. Se reemplaza el patron '{1}' por el nombre 
 			 * del producto a buscar.
 			 */
-			Collection<UrlDTO> lResultDtoUrlsTratado = urlTreatment.replaceWildcardCharacter(didPais, 
+			Collection<UrlDTO> lResultDtoUrlsTratado = urlComposer.replaceWildcardCharacter(didPais, 
 					didCategoria, producto, empresas, listTodosSelectoresCss);
 
 			/**

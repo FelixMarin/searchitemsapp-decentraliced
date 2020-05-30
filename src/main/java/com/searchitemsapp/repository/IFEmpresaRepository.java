@@ -19,5 +19,4 @@ public interface IFEmpresaRepository extends Repository<TbSiaEmpresa, Long>{
 	List<EmpresaDTO> findAll() throws IOException;
 	EmpresaDTO findByDid(Integer did) throws IOException;
 	List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, Integer didCatEmpresa) throws IOException;
-	List<EmpresaDTO> findByTbSiaCategoriasEmpresa(Integer didCatEmpresa) throws IOException;
 }

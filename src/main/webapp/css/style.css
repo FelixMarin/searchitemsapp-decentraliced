@@ -20,6 +20,47 @@
     animation: movetotop .5s 1;
     -webkit-animation-fill-mode: forwards;
 }
+
+.ident-primero {
+    background-color: #ff7400;
+    font-size: small;
+    position: absolute;
+    width: 25%;
+    text-align: center;
+    margin: 8px 5px 5px 5px;
+    margin-left: 20%;
+}
+
+.ident-segundo {
+	background-color: #ff9a00;
+    font-size: small;
+    position: absolute;
+    width: 25%;
+    text-align: center;
+    margin: 8px 5px 5px 5px;
+    margin-left: 20%;
+    
+}
+
+.ident-tercero {
+	background-color: #ffc100;
+    font-size: small;
+    position: absolute;
+    width: 25%;
+    text-align: center;
+    margin: 8px 5px 5px 5px;
+    margin-left: 20%;
+}
+
+.ident-resto {
+	background-color: #ddd;
+    font-size: small;
+    position: absolute;
+    width: 25%;
+    text-align: center;
+    margin: 8px 5px 5px 5px;
+    margin-left: 20%;
+}
   
 @keyframes movetotop {
     100% {top: 22%;}
