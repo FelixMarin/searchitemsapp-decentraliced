@@ -15,6 +15,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.SelectoresCssDao;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
+import com.searchitemsapp.repository.IFSelectoresCssRepository;
 
 /**
  * Implementación del dao {@link SelectoresCssDao}.
@@ -34,7 +35,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	 * Variables Globales
 	 */
 	@Autowired
-	private SelectoresCssDao selectoresCssDao;
+	private IFSelectoresCssRepository selectoresCssDao;
 	
 	/*
 	 * Controlador

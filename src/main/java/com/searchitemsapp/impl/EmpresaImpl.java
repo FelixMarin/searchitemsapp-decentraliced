@@ -17,6 +17,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.EmpresaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.repository.IFEmpresaRepository;
 
 /**
  * Implementación del dao {@link EmpresaDao}.
@@ -36,9 +37,9 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	 * Variables Globales
 	 */
 	@Autowired
-	private EmpresaDao empresaDao;
+	private IFEmpresaRepository empresaDao;
 	
-	/*
+	/*o
 	 * Constructor
 	 */
 	public EmpresaImpl() {

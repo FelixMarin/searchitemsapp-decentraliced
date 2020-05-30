@@ -15,6 +15,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.MarcasDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
+import com.searchitemsapp.repository.IFMarcasRepository;
 
 
 /**
@@ -35,7 +36,7 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 	 * Variables Globales
 	 */
 	@Autowired
-	private MarcasDao marcasDao;
+	private IFMarcasRepository marcasDao;
 
 	/*
 	 * Constructor

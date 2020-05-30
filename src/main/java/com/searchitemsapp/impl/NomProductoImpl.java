@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dao.NomProductoDao;
 import com.searchitemsapp.dto.NomProductoDTO;
+import com.searchitemsapp.repository.IFNomProductoRepository;
 
 
 /**
@@ -24,7 +25,7 @@ public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object
 	 * Variables Globales
 	 */
 	@Autowired
-	private NomProductoDao nomProductoDao;
+	private IFNomProductoRepository nomProductoDao;
 	
 	/*
 	 * Constructor

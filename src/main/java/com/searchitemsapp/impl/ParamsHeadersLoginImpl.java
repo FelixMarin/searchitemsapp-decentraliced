@@ -15,6 +15,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.ParamsHeadersLoginDao;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ParamsLoginDTO;
+import com.searchitemsapp.repository.IFParamsHeadersLogin;
 
 
 
@@ -37,7 +38,7 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 	 * Variable Globales
 	 */
 	@Autowired
-	private ParamsHeadersLoginDao paramsHeadersLoginDao;
+	private IFParamsHeadersLogin paramsHeadersLoginDao;
 	
 	/*
 	 * Constructor

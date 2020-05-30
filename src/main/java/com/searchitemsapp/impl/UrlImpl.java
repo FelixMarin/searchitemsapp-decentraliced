@@ -18,6 +18,7 @@ import com.searchitemsapp.dao.UrlDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.repository.IFUrlRepository;
 
 
 /**
@@ -38,7 +39,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	 * VAriables Globales
 	 */
 	@Autowired
-	private UrlDao urlDao;
+	private IFUrlRepository urlDao;
 	
 	/*
 	 * Constructor

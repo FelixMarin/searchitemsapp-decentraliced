@@ -15,6 +15,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.PaisDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
+import com.searchitemsapp.repository.IFPaisRepository;
 
 /**
  * Implementación del dao {@link PaisDao}.
@@ -34,7 +35,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 * Variables Globales
 	 */
 	@Autowired
-	private PaisDao paisDao;
+	private IFPaisRepository paisDao;
 	
 	/*
 	 * Constructor
