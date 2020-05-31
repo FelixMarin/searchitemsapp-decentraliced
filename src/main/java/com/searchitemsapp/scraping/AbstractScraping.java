@@ -619,7 +619,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	protected void cargarTodasLasMarcas() {
 		try {
 			if(Objects.isNull(listTodasMarcas)) {
-				AbstractScraping.listTodasMarcas = iFMarcasImp.findAll();
+				listTodasMarcas = iFMarcasImp.findAll();
 			}
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
