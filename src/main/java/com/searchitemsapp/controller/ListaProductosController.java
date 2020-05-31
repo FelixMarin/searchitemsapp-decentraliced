@@ -84,7 +84,7 @@ public class ListaProductosController {
 		inputData = validator.checkInputParams(inputData);
 		
 		if(validator.validate(inputData)) {
-			return new Gson().toJson("[{'id' : '1', 'descripcion': 'Invalid Input Data'}]");
+			return new Gson().toJson("[{\"id\" : \"1\", \"descripcion\": \"Invalid Input Data\"}]");
 		}
 
 		/**
