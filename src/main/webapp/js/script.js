@@ -56,11 +56,11 @@ function enviar() {
     }
 
     if(elemProducto.value != '') {
-        valProducto = elemProducto.value;
+        valProducto = encodeURIComponent(elemProducto.value);
     } else {
         return;
     }
-
+      
     if(elemEmpresas.length != 0) {
 
         for (let item of elemEmpresas) {
@@ -151,8 +151,6 @@ function enviar() {
 function traerProductos(producto, ordenar, strEmpresas) {	
     $.ajax({
     type: "GET",
-    //url: "http://localhost/accesosia/getData.php",
-    //data:"didPais=101&didCategoria=101&ordenacion="+ ordenar +"&producto="+producto + "&empresa=" + strEmpresas,
     url: "/searchitemsapp/search/101/101/"+ ordenar +"/"+producto + "/" + strEmpresas,
     dataType: "text",
     timeout: 600000,
@@ -184,8 +182,6 @@ function liveSearch(keyword) {
     $.ajax({
         type: "GET",
         url: "http://192.168.0.106:3000/keywords/" + keyword,
-        //url: "http://localhost/accesosia/readProduct.php",
-        //data:"keyword=" + keyword,
         dataType: "text",
         timeout: 600000,
         beforeSend: function(){
@@ -470,8 +466,4 @@ function resize() {
         
 
     }
-}
-
-function clickDivSugerencias() {
-
 }
