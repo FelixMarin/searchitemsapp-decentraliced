@@ -29,6 +29,7 @@ public class ListaProductosValidator {
 			value = value.replaceAll("delete", StringUtils.EMPTY).replaceAll("DELETE", StringUtils.EMPTY);
 			value = value.replaceAll("alter", StringUtils.EMPTY).replaceAll("ALTER", StringUtils.EMPTY);
 			value = value.replaceAll("drop", StringUtils.EMPTY).replaceAll("DROP", StringUtils.EMPTY);
+			value = value.replaceAll("null", StringUtils.EMPTY);
 			output.add(value);
 		}
 		return output;
