@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -117,7 +118,9 @@
         <div class="row">
             <div id="ruleta" class="col-12 text-center pt-5 hidden">
                 <div class="box">
-                    <div class="spinner type2"><span>Loading...</span></div>
+                    <div class="spinner type2">
+                    	<span>Loading...</span>
+                    </div>
                   </div><div class="loading-animation"></div>
             </div>
         </div>     
