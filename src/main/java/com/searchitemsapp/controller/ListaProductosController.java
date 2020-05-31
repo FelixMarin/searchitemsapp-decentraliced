@@ -1,8 +1,13 @@
 package com.searchitemsapp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,8 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.searchitemsapp.services.ListadoProductosService;
 import com.searchitemsapp.services.ServiceFactory;
+import com.searchitemsapp.validator.ListaProductosValidator;
+
 
 /**
  *  Controlador principal de la aplicación. Contiene
@@ -33,6 +41,10 @@ public class ListaProductosController {
 	
 	@Autowired
 	private ServiceFactory serviceFactory;
+	
+	@Autowired
+	@Qualifier("listaProductosValidator")
+	private ListaProductosValidator validator;
 	
 	//@Autowired
 	//private ProxyConnection proxyConnection;
@@ -59,6 +71,21 @@ public class ListaProductosController {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
+		
+		/**
+		 * Validación de los parametros de entrada.
+		 */
+		List<String> inputData = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		inputData.add(didPais);
+		inputData.add(didCategoria);
+		inputData.add(ordenacion);
+		inputData.add(producto);
+		inputData.add(empresas);
+		inputData = validator.checkInputParams(inputData);
+		
+		if(validator.validate(inputData)) {
+			return new Gson().toJson("[{id : 1, descripcion: 'Invalid Input Data'}]");
+		}
 
 		/**
 		 * En este punto se establece la dirección del proxy
@@ -75,6 +102,8 @@ public class ListaProductosController {
 		  */
 		return serviceFactory
 				.getService(LISTA_PRODUCTOS)
-				.service(didPais, didCategoria, ordenacion, producto, empresas);
+				.service(inputData.get(0), inputData.get(1), 
+						inputData.get(2), inputData.get(3), 
+						inputData.get(4));
 	}
 }

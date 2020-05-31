@@ -597,8 +597,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		String productoTratado = sanitizeValue(producto);
-		productoTratado=anadirCaracteres(productoTratado, Character.MIN_VALUE, 0, 0);
+		String productoTratado=anadirCaracteres(producto, Character.MIN_VALUE, 0, 0);
 		productoTratado=anadirCaracteres(productoTratado, Character.MIN_VALUE, 0, 1);
 		
 		Matcher matcher = Pattern.compile(REGEX_PERCENT_DOLAR).matcher(productoTratado);
@@ -880,39 +879,5 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		default:
 			return elem.select(cssSelector).text();
 		}
-	}
-	
-	/**
-     * Metodo que contene combinaciones de palabras 
-     * no permitidas. Las palabras no permitidas se
-     * reemplazan por espacios en blanco.
-     * 
-     * @param value
-     * @return String
-     */
-	private String sanitizeValue(String value) {
-		
-		if(Objects.isNull(value)) {
-			return null;
-		}
-		
-		value = value.replaceAll("\\*", StringUtils.EMPTY);
-		value = value.replaceAll("/", StringUtils.EMPTY);
-		value = value.replaceAll("//", StringUtils.EMPTY);
-		value = value.replaceAll("<", StringUtils.EMPTY).replaceAll(">", StringUtils.EMPTY);
-		value = value.replaceAll("\\{", StringUtils.EMPTY).replaceAll("\\}", StringUtils.EMPTY);
-		value = value.replaceAll("\\[", StringUtils.EMPTY).replaceAll("\\]", StringUtils.EMPTY);
-		value = value.replaceAll("\\(", StringUtils.EMPTY).replaceAll("\\)", StringUtils.EMPTY);
-		value = value.replaceAll("'", StringUtils.EMPTY);
-		value = value.replaceAll("eval\\((.*)\\)", StringUtils.EMPTY);
-		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", StringUtils.EMPTY);
-		value = value.replaceAll("script", StringUtils.EMPTY);
-		value = value.replaceAll("select", StringUtils.EMPTY).replaceAll("SELECT", StringUtils.EMPTY);
-		value = value.replaceAll("insert", StringUtils.EMPTY).replaceAll("INSERT", StringUtils.EMPTY);
-		value = value.replaceAll("delete", StringUtils.EMPTY).replaceAll("DELETE", StringUtils.EMPTY);
-		value = value.replaceAll("alter", StringUtils.EMPTY).replaceAll("ALTER", StringUtils.EMPTY);
-		value = value.replaceAll("drop", StringUtils.EMPTY).replaceAll("DROP", StringUtils.EMPTY);
-
-		return value;
 	}
 }
