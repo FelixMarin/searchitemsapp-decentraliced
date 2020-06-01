@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.MarcasDTO;
-import com.searchitemsapp.model.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaMarcas;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath*:spring-context.xml")

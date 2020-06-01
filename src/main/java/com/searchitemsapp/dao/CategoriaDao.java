@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.CategoriaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.repository.IFCategoriaRepository;
 
 

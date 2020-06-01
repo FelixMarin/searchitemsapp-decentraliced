@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.model.TbSiaParamsFormLogin;
+import com.searchitemsapp.entities.TbSiaParamsFormLogin;
 import com.searchitemsapp.repository.IFParamsFormLogin;
 
 /**

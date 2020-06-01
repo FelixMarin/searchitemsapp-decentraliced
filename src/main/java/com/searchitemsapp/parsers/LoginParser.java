@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.LoginDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaLogin;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaLogin;
 
 
 

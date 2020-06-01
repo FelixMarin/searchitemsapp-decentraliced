@@ -18,9 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.SelectoresCssDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.model.TbSiaUrl;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaSelectoresCss;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath*:spring-context.xml")

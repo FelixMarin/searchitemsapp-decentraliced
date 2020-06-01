@@ -29,16 +29,16 @@
  		<property name="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</property>
  		
         <!-- Annotated entity classes -->
-        <mapping class="com.searchitemsapp.model.TbSiaUrl"/>
-        <mapping class="com.searchitemsapp.model.TbSiaCategoriasEmpresa"/>
-        <mapping class="com.searchitemsapp.model.TbSiaEmpresa"/>
-        <mapping class="com.searchitemsapp.model.TbSiaPais"/>
-        <mapping class="com.searchitemsapp.model.TbSiaLogin"/>
-        <mapping class="com.searchitemsapp.model.TbSiaParamsFormLogin"/>
-        <mapping class="com.searchitemsapp.model.TbSiaParamsHeadersLogin"/>
-        <mapping class="com.searchitemsapp.model.TbSiaMarcas"/>
-        <mapping class='com.searchitemsapp.model.TbSiaNomProducto'/>
-        <mapping class="com.searchitemsapp.model.TbSiaSelectoresCss"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaUrl"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaCategoriasEmpresa"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaEmpresa"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaPais"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaLogin"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaParamsFormLogin"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaParamsHeadersLogin"/>
+        <mapping class="com.searchitemsapp.entities.TbSiaMarcas"/>
+        <mapping class='com.searchitemsapp.entities.TbSiaNomProducto'/>
+        <mapping class="com.searchitemsapp.entities.TbSiaSelectoresCss"/>
         
     </session-factory>
 </hibernate-configuration>

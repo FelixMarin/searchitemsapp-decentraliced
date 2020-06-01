@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.NomProductoDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.model.TbSiaPais;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaPais;
 
 /**
  * Es un componente analizador de software que 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.NomProductoDTO;
-import com.searchitemsapp.model.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaNomProducto;
 import com.searchitemsapp.repository.IFNomProductoRepository;
 
 

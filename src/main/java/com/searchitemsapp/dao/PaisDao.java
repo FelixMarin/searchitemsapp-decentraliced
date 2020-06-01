@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.PaisDTO;
-import com.searchitemsapp.model.TbSiaPais;
+import com.searchitemsapp.entities.TbSiaPais;
 import com.searchitemsapp.repository.IFPaisRepository;
 
 

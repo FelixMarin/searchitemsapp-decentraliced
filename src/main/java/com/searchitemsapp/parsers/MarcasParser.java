@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dto.MarcasDTO;
-import com.searchitemsapp.model.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaMarcas;
 
 /**
  * Es un componente analizador de software que 

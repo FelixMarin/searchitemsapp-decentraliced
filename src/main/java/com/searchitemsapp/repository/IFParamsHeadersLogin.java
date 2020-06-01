@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
 
 /**
  * Interfaz que se encarga de gestionar todas las 

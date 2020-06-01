@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.model.TbSiaParamsFormLogin;
-import com.searchitemsapp.model.TbSiaUrl;
+import com.searchitemsapp.entities.TbSiaParamsFormLogin;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 /**
  * Es un componente analizador de software que 

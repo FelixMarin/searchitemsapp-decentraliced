@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.MarcasDTO;
-import com.searchitemsapp.model.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaMarcas;
 
 /**
  * Interfaz que se encarga de gestionar todas las 

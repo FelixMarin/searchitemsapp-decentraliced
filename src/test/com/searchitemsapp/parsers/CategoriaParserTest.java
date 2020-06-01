@@ -18,10 +18,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.CategoriaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaMarcas;
-import com.searchitemsapp.model.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaNomProducto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring-context.xml")

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
+import com.searchitemsapp.entities.TbSiaSelectoresCss;
 import com.searchitemsapp.repository.IFSelectoresCssRepository;
 
 

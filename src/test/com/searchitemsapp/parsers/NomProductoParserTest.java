@@ -18,9 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.NomProductoDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.model.TbSiaPais;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaPais;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath*:spring-context.xml")

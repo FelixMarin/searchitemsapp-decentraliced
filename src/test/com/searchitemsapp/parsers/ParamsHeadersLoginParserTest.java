@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath*:spring-context.xml")

@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.PaisDTO;
-import com.searchitemsapp.model.TbSiaPais;
+import com.searchitemsapp.entities.TbSiaPais;
 
 /**
  * Interfaz que se encarga de gestionar todas las 

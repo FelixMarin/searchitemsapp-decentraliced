@@ -73,7 +73,7 @@
     <bean id="entityManagerFactory"
         class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
         p:dataSource-ref="dataSource"
-        p:packagesToScan="com.searchitemsapp.model"
+        p:packagesToScan="com.searchitemsapp.entities"
         p:jpaVendorAdapter-ref="jpaAdapter">
 
         <property name="jpaProperties">
@@ -144,8 +144,8 @@
       <bean id="marcasImpl" class="com.searchitemsapp.impl.MarcasImpl"></bean>
        <bean id="selectoresCssImpl" class="com.searchitemsapp.impl.SelectoresCssImpl"></bean>
       
-      <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.model.TbSiaCategoriasEmpresa"></bean>
-      <bean id="tbSiaEmpresa" class="com.searchitemsapp.model.TbSiaEmpresa"></bean>
+      <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.entities.TbSiaCategoriasEmpresa"></bean>
+      <bean id="tbSiaEmpresa" class="com.searchitemsapp.entities.TbSiaEmpresa"></bean>
       
       <bean id="urlTreatment" class="com.searchitemsapp.scraping.UrlTreatment"></bean> 
       <bean id="scrapingLoginUnit" class="com.searchitemsapp.scraping.ScrapingLoginUnit"></bean>

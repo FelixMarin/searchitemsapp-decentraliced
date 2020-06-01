@@ -11,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaPais;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.model.TbSiaUrl;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaPais;
+import com.searchitemsapp.entities.TbSiaSelectoresCss;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 
 

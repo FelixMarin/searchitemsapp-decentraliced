@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.CategoriaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
  
 /**
  * Representa de forma abstracta el objeto que 

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.model.TbSiaUrl;
+import com.searchitemsapp.entities.TbSiaUrl;
 import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFUrlRepository;
 

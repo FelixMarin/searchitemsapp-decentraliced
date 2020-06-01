@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.MarcasDTO;
-import com.searchitemsapp.model.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaMarcas;
 import com.searchitemsapp.repository.IFMarcasRepository;
 
 

@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
-import com.searchitemsapp.model.TbSiaUrl;
+import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 
 
