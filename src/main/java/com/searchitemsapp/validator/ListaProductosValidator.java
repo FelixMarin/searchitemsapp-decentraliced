@@ -1,5 +1,6 @@
 package com.searchitemsapp.validator;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,19 +15,22 @@ public class ListaProductosValidator {
 	
 	private static final String REGEX_SPECIAL = "[\\'|\\?|\\*|\\<|\\>|\\[|\\]|\\{|\\}|"
 			+ "\\.|\\/|\\\\|\\(|\\)|\\$|\\%|\\&|\\=|\\¿|\\@|\\\"|\\!|\\º|"
-			+ "\\ª|\\||\\#|\\_|\\+|\\-|\\·|\\¡|]";
+			+ "\\ª|\\||\\#|\\_|\\+|\\-|\\·|\\¡||\\;|]";
 	
 	private static final String REGEX_WORDS = 
 			"\\b(\\w*java\\w*)|"
 			+ "((\\w*import\\w*))|"
 			+ "((\\w*input\\w*))|"
 			+ "((\\w*function\\w*))|"
+			+ "((\\w*echo\\w*))|"
 			+ "((\\w*select\\w*))|"
 			+ "((\\w*delete\\w*))|"
 			+ "((\\w*update\\w*))|"
 			+ "((\\w*alter\\w*))|"
 			+ "((\\w*drop\\w*))|"
 			+ "((\\w*null\\w*))|"
+			+ "((\\w*from\\w*))|"
+			+ "((\\w*where\\w*))|"
 			+ "((\\w*text\\w*))|"
 			+ "((\\w*eval\\w*))\\b";
 	
@@ -46,9 +50,14 @@ public class ListaProductosValidator {
 	
 	public boolean isParams(final String... input) {
 		
+		if(Objects.isNull(input) || input.length != 5) {
+			return Boolean.FALSE;
+		}
+		
 		for (String value : input) {
 			
-			if(value.length() < 1 || value.length() > 20) {
+			if(value.length() < 1 || value.length() > 20 ||
+					StringUtils.isBlank(value)) {
 				return Boolean.FALSE;
 			}
 			
