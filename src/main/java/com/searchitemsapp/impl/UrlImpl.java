@@ -118,7 +118,11 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, ",");
 		List<UrlDTO> lsIdsEmpresas = new ArrayList<>(NumberUtils.INTEGER_ONE);
 				
-		List<UrlDTO> listUrlDTO = urlDao.findAll();
+		List<UrlDTO> listUrlDTO = urlDao.findByDidAndDesUrl(paisDto.getDid(), String.valueOf(categoriaDto.getDid()));
+		
+		if(Objects.isNull(listUrlDTO)) {
+			return lsIdsEmpresas;
+		}
 		
 		for (String id : arIdsEpresas) {
 			for (UrlDTO urlDTO : listUrlDTO) {

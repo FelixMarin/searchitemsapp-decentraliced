@@ -1,9 +1,5 @@
 package com.searchitemsapp.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.searchitemsapp.services.ListadoProductosService;
 import com.searchitemsapp.services.ServiceFactory;
 import com.searchitemsapp.validator.ListaProductosValidator;
@@ -75,35 +70,45 @@ public class ListaProductosController {
 		/**
 		 * Validación de los parametros de entrada.
 		 */
-		List<String> inputData = new ArrayList<>(NumberUtils.INTEGER_ONE);
-		inputData.add(didPais);
-		inputData.add(didCategoria);
-		inputData.add(ordenacion);
-		inputData.add(producto);
-		inputData.add(empresas);
-		inputData = validator.checkInputParams(inputData);
+		boolean isParams = validator.isEmpresa(empresas) &&	
+		validator.isOrdenacion(ordenacion) &&	
+		validator.isNumeric(didPais, didCategoria) &&
+		validator.isParams(didPais, didCategoria, ordenacion, producto, empresas);
 		
-		if(validator.validate(inputData)) {
-			return new Gson().toJson("[{\"id\" : \"1\", \"descripcion\": \"Invalid Input Data\"}]");
-		}
-
 		/**
-		 * En este punto se establece la dirección del proxy
-		 * que utiliza la apicación para realizar el ratreo
-		 * de páginas web. En cada petición de servicio 
-		 * se solicita una nueva IP de proxy a una API REST
-		 * externa.
+		 * Si los parámetros de entrada no superan la validación 
+		 * termina el proceso y devuelve um mensaje descriptivo
+		 * en formato JSON.
 		 */
-		 //proxyConnection.establecerProxy();
-		
-		 /**
-		  * Llamada al servicio a través del service factory.
-		  * 
-		  */
-		return serviceFactory
-				.getService(LISTA_PRODUCTOS)
-				.service(inputData.get(0), inputData.get(1), 
-						inputData.get(2), inputData.get(3), 
-						inputData.get(4));
+		if(isParams) {
+			
+			/**
+			 * En este punto se establece la dirección del proxy
+			 * que utiliza la apicación para realizar el ratreo
+			 * de páginas web. En cada petición de servicio 
+			 * se solicita una nueva IP de proxy a una API REST
+			 * externa.
+			 */
+			 //proxyConnection.establecerProxy();
+			
+			 /**
+			  * Llamada al servicio a través del service factory.
+			  * 
+			  */
+			return serviceFactory
+					.getService(LISTA_PRODUCTOS)
+					.service(didPais, didCategoria, 
+							ordenacion, producto, empresas);
+		} else {
+			
+			/**
+			 * En el caso de no superar las validaciones, 
+			 * la apliación retornará un mensaje indicando
+			 * el motivo.
+			 */
+			return "[{\"request\": \"Error\", "
+					+ "\"id\" : \"-1\", "
+					+ "\"description\": \"Invalid Input Data\"}]";
+		}
 	}
 }

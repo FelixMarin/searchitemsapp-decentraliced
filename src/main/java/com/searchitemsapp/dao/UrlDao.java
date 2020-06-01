@@ -166,13 +166,14 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			return null;
 		}
 		
-		List<UrlDTO> listResultadoDto = null;
+		List<UrlDTO> listUrlDto = null;
+		IFParser<UrlDTO, Object[]> objParser;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.nom.categoria"));
+		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.pais.categoria"));
 		
 		/**
 		 * Se comprueba que el entity manager esté activado.
@@ -191,14 +192,22 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			listResultadoDto = getParser(URL_PARSER).toListDTO(((List<TbSiaUrl>) query.getSingleResult()));
+			
+			/**
+			 * Como la lista de datos que devuelve la consulta no 
+			 * son todos del mismo tipo, el resultado será una array 
+			 * de objetos. 
+			 */
+			objParser = (IFParser<UrlDTO, Object[]>) getParserFactory().getParser(URL_PARSER);
+			listUrlDto = objParser.toListODTO((List<Object[]>) query.getResultList());
+			
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		
-		return listResultadoDto;
+		return listUrlDto;
 	}
 
 	/**
@@ -224,7 +233,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			return null;
 		}
 		
-		List<UrlDTO> urlDto = null;
+		List<UrlDTO> listUrlDto = null;
 		IFParser<UrlDTO, Object[]> objParser;
 		
 		/**
@@ -256,7 +265,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			 * de objetos. 
 			 */
 			objParser = (IFParser<UrlDTO, Object[]>) getParserFactory().getParser(URL_PARSER);
-			urlDto = objParser.toListODTO((List<Object[]>) query.getResultList());
+			listUrlDto = objParser.toListODTO((List<Object[]>) query.getResultList());
 			
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
@@ -264,6 +273,6 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			}
 		}
 		
-		return urlDto;
+		return listUrlDto;
 	}
 }

@@ -1,48 +1,88 @@
 package com.searchitemsapp.validator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/**
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class ListaProductosValidator {
 	
-	public List<String> checkInputParams(List<String> input) {
-		
-		List<String> output = new ArrayList<String>(NumberUtils.INTEGER_ONE);
+	private static final String REGEX_SPECIAL = "[\\'|\\?|\\*|\\<|\\>|\\[|\\]|\\{|\\}|"
+			+ "\\.|\\/|\\\\|\\(|\\)|\\$|\\%|\\&|\\=|\\¿|\\@|\\\"|\\!|\\º|"
+			+ "\\ª|\\||\\#|\\_|\\+|\\-|\\·|\\¡|]";
+	
+	private static final String REGEX_WORDS = 
+			"\\b(\\w*java\\w*)|"
+			+ "((\\w*import\\w*))|"
+			+ "((\\w*input\\w*))|"
+			+ "((\\w*function\\w*))|"
+			+ "((\\w*select\\w*))|"
+			+ "((\\w*delete\\w*))|"
+			+ "((\\w*update\\w*))|"
+			+ "((\\w*alter\\w*))|"
+			+ "((\\w*drop\\w*))|"
+			+ "((\\w*null\\w*))|"
+			+ "((\\w*text\\w*))|"
+			+ "((\\w*eval\\w*))\\b";
+	
+	private static final String REGEX_EMPRESAS = 
+			"\\b(\\w*101\\w*)|(\\w*102\\w*)"
+			+ "|(\\w*103\\w*)|(\\w*104\\w*)"
+			+ "|(\\w*105\\w*)|(\\w*106\\w*)"
+			+ "|(\\w*107\\w*)|(\\w*108\\w*)"
+			+ "|(\\w*109\\w*)|(\\w*110\\w*)"
+			+ "|(\\w*111\\w*)|(\\w*112\\w*)"
+			+ "|(\\w*113\\w*)|(\\w*114\\w*)"
+			+ "|(\\w*115\\w*)|(\\w*,\\w*)\\b";
+	
+	private static final String REGEX_TRES_CIFRAS = "^10[1-9]|1[1-9]\\d";
+	private static final String REGEX_ORDENACION = "(\\b(1)|(2)\\b)";
+	private static final String REGEX_ALL = "(\\b(\\w*ALL\\w*)\\b)";
+	
+	public boolean isParams(final String... input) {
 		
 		for (String value : input) {
-			value = value.replaceAll("\\*", StringUtils.EMPTY);
-			value = value.replaceAll("/", StringUtils.EMPTY);
-			value = value.replaceAll("//", StringUtils.EMPTY);
-			value = value.replaceAll("<", StringUtils.EMPTY).replaceAll(">", StringUtils.EMPTY);
-			value = value.replaceAll("\\{", StringUtils.EMPTY).replaceAll("\\}", StringUtils.EMPTY);
-			value = value.replaceAll("\\[", StringUtils.EMPTY).replaceAll("\\]", StringUtils.EMPTY);
-			value = value.replaceAll("\\(", StringUtils.EMPTY).replaceAll("\\)", StringUtils.EMPTY);
-			value = value.replaceAll("'", StringUtils.EMPTY);
-			value = value.replaceAll("eval\\((.*)\\)", StringUtils.EMPTY);
-			value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", StringUtils.EMPTY);
-			value = value.replaceAll("script", StringUtils.EMPTY);
-			value = value.replaceAll("select", StringUtils.EMPTY).replaceAll("SELECT", StringUtils.EMPTY);
-			value = value.replaceAll("insert", StringUtils.EMPTY).replaceAll("INSERT", StringUtils.EMPTY);
-			value = value.replaceAll("delete", StringUtils.EMPTY).replaceAll("DELETE", StringUtils.EMPTY);
-			value = value.replaceAll("alter", StringUtils.EMPTY).replaceAll("ALTER", StringUtils.EMPTY);
-			value = value.replaceAll("drop", StringUtils.EMPTY).replaceAll("DROP", StringUtils.EMPTY);
-			value = value.replaceAll("null", StringUtils.EMPTY);
-			output.add(value);
+			
+			if(value.length() < 1 || value.length() > 20) {
+				return Boolean.FALSE;
+			}
+			
+			value = Pattern.compile(REGEX_SPECIAL).matcher(value).find()?StringUtils.EMPTY:value;
+			value = Pattern.compile(REGEX_WORDS).matcher(value.toLowerCase()).find()?StringUtils.EMPTY:value;
+			
+			if(StringUtils.isBlank(value)) {
+				return Boolean.FALSE;
+			}
 		}
-		return output;
+			
+		return Boolean.TRUE;
 	}
 	
-	public boolean validate(List<String> input) {
+	public boolean isNumeric(final String... input) {
 		
 		for (String value : input) {
-			if(StringUtils.isBlank(value)) {
-				return true;
+			if(!NumberUtils.isDigits(value) ||
+					!Pattern.compile(REGEX_TRES_CIFRAS).matcher(value).find()) {
+				return Boolean.FALSE;
 			}
 		}
 		
-		return false;
+		return Boolean.TRUE;
 	}
+	
+	public boolean isOrdenacion(String ordenacion) {
+		return NumberUtils.isDigits(ordenacion) &&
+				Pattern.compile(REGEX_ORDENACION).matcher(ordenacion).find();
+	}
+	
+	public boolean isEmpresa(String empresas) {
+		return Pattern.compile(REGEX_EMPRESAS).matcher(empresas).find() ||
+				Pattern.compile(REGEX_ALL).matcher(empresas).find();
+	}
+	
 }

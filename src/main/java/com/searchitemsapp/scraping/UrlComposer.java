@@ -124,13 +124,13 @@ public class UrlComposer extends AbstractScraping {
 			 */
 			String productoTratado;	
 			if(urlDto.getBolActivo()) {
-				if(getMapEmpresas().get(EROSKI) == urlDto.getDidEmpresa()) {
+				if(getMapEmpresas().get(EROSKI).getDid() == urlDto.getDidEmpresa()) {
 					productoTratado = reemplazarCaracteresEroski(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(SIMPLY) == urlDto.getDidEmpresa()) {
+				} else if(getMapEmpresas().get(SIMPLY).getDid() == urlDto.getDidEmpresa()) {
 					productoTratado = reeplazarCaracteresSimply(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(CONDIS) == urlDto.getDidEmpresa()) {
+				} else if(getMapEmpresas().get(CONDIS).getDid() == urlDto.getDidEmpresa()) {
 					productoTratado = reeplazarTildesCondis(producto);
 					productoTratado = reeplazarCaracteresCondis(productoTratado);
 					productoTratado = tratarProducto(productoTratado);

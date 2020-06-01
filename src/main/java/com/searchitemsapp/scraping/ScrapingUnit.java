@@ -38,16 +38,13 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	
 	/*
 	 * Constantes Globales
-	 */	
-	
+	 */		
 	private static final String SEPARADOR_URL = "%20";
-	
 	
 	/* 
 	 * Variables Globales
 	 */
 	private static Map<Integer, Map<String, String>> mapaCookies = new HashMap<>(NumberUtils.INTEGER_ONE);
-	private static boolean isCached;
 	private UrlDTO urlDto; 
 	private String producto;
 	private String didPais; 
@@ -83,16 +80,6 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		/**
-		 * Se cargan en cache los parametros usados por 
-		 * la aplicación. solo se ejecuta una vez.
-		 */
-		if(!isCached) {
-			staticData();
-			cargarTodasLasMarcas();
-			isCached=true;
 		}
 		
 		/**
