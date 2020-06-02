@@ -4,8 +4,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.MalformedURLException;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class ParserFactoryTest {
 		System.setProperty("log4j.properties", "log4j.properties");
 		System.setProperty("db.properties", "db.properties");
 		System.setProperty("flow.properties", "flow.properties");
-		LOGGER = LogManager.getRootLogger();
+		LOGGER = LoggerFactory.getLogger(ParserFactoryTest.class);  
 	}
 
 	@Test
