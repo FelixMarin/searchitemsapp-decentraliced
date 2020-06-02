@@ -181,3 +181,5 @@ http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
 ```
 
 #### Ejemplo en [vídeo](https://youtu.be/K_4Wp0Poh2Q)
+
+![Licencia](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png)
