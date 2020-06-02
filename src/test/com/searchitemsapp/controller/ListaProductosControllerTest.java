@@ -55,7 +55,7 @@ public class ListaProductosControllerTest {
 		mockMvc.perform( MockMvcRequestBuilders
 			      .get("/search/")
 			      .header("Accept-Language", "en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4")
-			      .accept(MediaType.APPLICATION_JSON_UTF8))
+			      .accept(MediaType.APPLICATION_JSON))
 			      .andDo(MockMvcResultHandlers.print())
 			      .andExpect(MockMvcResultMatchers.status().isOk())
 			      .andReturn();

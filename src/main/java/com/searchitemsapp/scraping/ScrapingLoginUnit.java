@@ -294,7 +294,6 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 	 * @param idUrl
 	 * @return Map<String, String>
 	 */
-	@SuppressWarnings("deprecation")
 	private Map<String, String> obtenerCookiesMethodGet(final String url, 
 			final List<ParamsLoginDTO> listParamLoginHeaders, 
 			final int idUrl) {
@@ -318,7 +317,6 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 					.method(Connection.Method.GET)
 					.referrer(REFFERER_GOOGLE)
 					.ignoreContentType(Boolean.TRUE)
-					.validateTLSCertificates(Boolean.FALSE)
 					.ignoreHttpErrors(Boolean.TRUE)
 					.timeout(100000);
 			

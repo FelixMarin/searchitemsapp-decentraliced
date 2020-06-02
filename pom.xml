@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.3.7.Final</version>
+			<version>5.4.15.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -55,18 +55,18 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.25</version>
+			<version>2.0.0-alpha1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
+			<version>2.0.0-alpha1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.5</version>
+			<version>42.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -90,11 +90,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>5.1.14.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>5.1.14.RELEASE</version>
 		</dependency>
@@ -111,7 +106,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>5.3.7.Final</version>
+			<version>5.4.10.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
@@ -132,7 +127,7 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.11.3</version>
+			<version>1.13.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -142,7 +137,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20180813</version>
+			<version>20200518</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -154,7 +149,6 @@
 			<artifactId>gson</artifactId>
 			<version>2.8.5</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

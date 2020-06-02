@@ -51,7 +51,6 @@ import com.searchitemsapp.scraping.simply.IFScrapingSimply;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("deprecation")
 public abstract class AbstractScraping extends AbstractScrapingDyn {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractScraping.class);   
@@ -709,7 +708,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 					.method(Connection.Method.GET)
 					.referrer(url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost().concat("/")))
 					.ignoreContentType(Boolean.TRUE)
-					.validateTLSCertificates(Boolean.FALSE)
 					.header(ACCEPT_LANGUAGE, ES_ES)
 					.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
 					.header(ACCEPT, ACCEPT_VALUE)

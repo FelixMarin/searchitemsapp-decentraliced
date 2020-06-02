@@ -28,7 +28,6 @@ import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("deprecation")
 public class ScrapingMercadona extends AbstractScrapingEmpresas implements IFScrapingMercadona {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingMercadona.class);  
@@ -184,7 +183,6 @@ public class ScrapingMercadona extends AbstractScrapingEmpresas implements IFScr
 				.method(Connection.Method.POST)
 				.referrer(REFERRER_MERCADONA)
 				.ignoreContentType(Boolean.TRUE)
-				.validateTLSCertificates(Boolean.FALSE)
 				.header(ACCEPT_LANGUAGE, ES_ES)
 				.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
 				.header(ACCEPT, ACEPT_VALUE_JSON)
