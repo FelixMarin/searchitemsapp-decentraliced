@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,8 +66,8 @@ public class ListaProductosController {
 				@RequestParam(value = "pais", defaultValue = "101") String didPais,
 				@RequestParam(value = "categoria", defaultValue = "101") String didCategoria,
 				@RequestParam(value = "ordenacion", defaultValue = "1") String ordenacion, 
-				@RequestParam(value = "producto")String producto, 
-				@RequestParam(value = "empresas") String empresas,
+				@RequestParam(value = "producto") @Validated String producto, 
+				@RequestParam(value = "empresas") @Validated String empresas,
 				Model modelo) {
 		
 		if(LOGGER.isInfoEnabled()) {
