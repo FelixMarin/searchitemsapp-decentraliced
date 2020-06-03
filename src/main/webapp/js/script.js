@@ -151,7 +151,7 @@ function enviar() {
 function traerProductos(producto, ordenar, strEmpresas) {	
     $.ajax({
     type: "GET",
-    url: "/searchitemsapp/search/101/101/"+ ordenar +"/"+producto + "/" + strEmpresas,
+    url: "/searchitemsapp/search?pais=101&categoria=101&ordenacion="+ ordenar +"&producto="+producto + "&empresas=" + strEmpresas,
     dataType: "text",
     timeout: 600000,
     beforeSend: function(){
@@ -260,7 +260,7 @@ function componerCartas(data) {
             estructuraHTML += '<img class="imgprod" src="' + element.imagen + '" alt="Photo of sunset" />';
             estructuraHTML += '</a>';
             estructuraHTML += '<h5 class="card-title p-2">' + element.nomProducto + '</h5>';
-            estructuraHTML += '<p class="text pl-2">PVP: ' + element.precio + '<br />P. Kilo: ' + element.precioKilo + '</p>';     
+            estructuraHTML += '<p class="text pl-2">PVP: ' + element.precio + '<br />PVP/KILO: ' + element.precioKilo + '</p>';     
             estructuraHTML += '</div></div>';
 
             let card = document.createRange().createContextualFragment(estructuraHTML);

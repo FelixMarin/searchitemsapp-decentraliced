@@ -106,9 +106,9 @@
             <div id="radiogroup" class="col-sm-6 col-md-4 col-lg-4 offset-1 hidden">
                 <div class="toggle">
                     <input type="radio" name="sizeBy" value="1" id="precio" checked="checked" />
-                    <label for="precio">Precio</label>
+                    <label for="precio">PVP</label>
                     <input type="radio" name="sizeBy" value="2" id="volumen" />
-                    <label for="volumen">Volumen</label>
+                    <label for="volumen">PVP/KILO</label>
                 </div>
             </div>            
             <div id="button-aceptar" class="col-sm-6 col-md-6 col-lg-5 text-right hidden">

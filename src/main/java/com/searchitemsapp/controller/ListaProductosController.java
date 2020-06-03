@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.searchitemsapp.services.ListadoProductosService;
@@ -57,11 +60,14 @@ public class ListaProductosController {
 	 * @param empresas String
 	 * @return String
 	 */
-	@GetMapping(value = "/search/{didPais}//{didCategoria}/{ordenacion}/{producto}/{empresas}", 
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public String listaProductos( @PathVariable("didPais") String didPais, @PathVariable("didCategoria") 
-	String didCategoria,@PathVariable("ordenacion") String ordenacion, 
-	@PathVariable("producto") String producto, @PathVariable("empresas") String empresas) {
+	@GetMapping(value = "/search", produces={MediaType.APPLICATION_JSON_VALUE})
+	public @ResponseBody String listaProductos(@RequestBody 
+				@RequestParam(value = "pais", defaultValue = "101") String didPais,
+				@RequestParam(value = "categoria", defaultValue = "101") String didCategoria,
+				@RequestParam(value = "ordenacion", defaultValue = "1") String ordenacion, 
+				@RequestParam(value = "producto")String producto, 
+				@RequestParam(value = "empresas") String empresas,
+				Model modelo) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
