@@ -34,6 +34,7 @@ import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
+import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.scraping.condis.IFScracpingCondis;
@@ -100,6 +101,10 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	private static String selectorPrecioECIOffer;
 	private static String selectorPaginaSiguienteCarrefour;
 	private static String accesoPopupPeso;
+	private static List<SelectoresCssDTO> listTodosSelectoresCss;
+	
+	@Autowired
+	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
 
 	@Autowired
 	private IFImplementacion<EmpresaDTO, CategoriaDTO> iFEmpresaImpl;
@@ -127,6 +132,89 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	 */
 	protected AbstractScraping() {
 		super();
+	}
+	
+	/**
+	 * Método que carga los datos estáticos usados en el proceso
+	 * de las peticiones. Este método solo se ejecuta una vez,
+	 * los datos se cachean mientras esté la aplicación activa.
+	 */
+	public void staticData() {
+		
+		try {
+			
+			/**
+			 * El listado de selectores se rellena la primera vez que
+			 * se ejecuta la aplicación. Si es nulo se relealiza una
+			 * consulta a bbdd para traer los selectores css que se
+			 * utilizarán para extraer la información de la páginas
+			 * web revisadas. 
+			 */
+			if(Objects.isNull(listTodosSelectoresCss)) {
+				listTodosSelectoresCss = selectoresCssImpl.findAll();
+			}	
+			
+			/**
+			 * Solo se ejecutará esta condición cuando el mapa 
+			 * de empresas está vacío. Eso solo pasará una vez
+			 * ya que se trata de una variable estática.
+			 */
+			if(mapEmpresas.isEmpty()) {
+				
+				/**
+				 * Se establece la lista de empresas en la 
+				 * variable global estática.
+				 */
+				listEmpresaDto = iFEmpresaImpl.findAll();
+	
+				/**
+				 * En este punto se establece la lista de empresas
+				 * en la variable estática global y se indica en otro
+				 * mapa el tipo de raspado que se va a utilizar en el
+				 * proceso. 
+				 */
+				for (EmpresaDTO empresaDTO : listEmpresaDto) {
+					mapEmpresas.put(empresaDTO.getNomEmpresa(),empresaDTO);
+					mapDynScraping.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
+				}
+				
+				/**
+				 * Se setean algunas variables obtenidas de las propiedades.
+				 * Esta variables se cargan de forma estática al arrancar la
+				 * aplicación. Se utilizan durante el proceso de la solicitud.
+				 */
+		
+				selectorPrecioECIOffer= CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer");
+				selectorPaginaSiguienteCarrefour = CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour");
+				accesoPopupPeso = CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso");
+			}
+		}catch(IOException e) {
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
+		}
+	}
+	
+	/**
+	 * Este metodo carga todas las marcas de 
+	 * productos desde la base de datos. Se
+	 * cachea al principio y dura durante toda
+	 * la ejecución del programa,
+	 */
+	public void cargarTodasLasMarcas() {
+		try {
+			if(Objects.isNull(listTodasMarcas)) {
+				listTodasMarcas = iFMarcasImp.findAll();
+			}
+		}catch(IOException e) {
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
+		}
+	}
+	
+	public List<SelectoresCssDTO> getListTodosSelectoresCss() {
+		return listTodosSelectoresCss;
 	}
 	
 	/**
@@ -475,55 +563,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		return strProducto;
 	}
 	
-	/**
-	 * Método que carga los datos estáticos usados en el proceso
-	 * de las peticiones. Este método solo se ejecuta una vez,
-	 * los datos se cachean mientras esté la aplicación activa.
-	 */
-	public void staticData() {
-		
-		try {
-			
-			/**
-			 * Solo se ejecutará esta condición cuando el mapa 
-			 * de empresas está vacío. Eso solo pasará una vez
-			 * ya que se trata de una variable estática.
-			 */
-			if(mapEmpresas.isEmpty()) {
-				
-				/**
-				 * Se establece la lista de empresas en la 
-				 * variable global estática.
-				 */
-				listEmpresaDto = iFEmpresaImpl.findAll();
 	
-				/**
-				 * En este punto se establece la lista de empresas
-				 * en la variable estática global y se indica en otro
-				 * mapa el tipo de raspado que se va a utilizar en el
-				 * proceso. 
-				 */
-				for (EmpresaDTO empresaDTO : listEmpresaDto) {
-					mapEmpresas.put(empresaDTO.getNomEmpresa(),empresaDTO);
-					mapDynScraping.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
-				}
-				
-				/**
-				 * Se setean algunas variables obtenidas de las propiedades.
-				 * Esta variables se cargan de forma estática al arrancar la
-				 * aplicación. Se utilizan durante el proceso de la solicitud.
-				 */
-		
-				selectorPrecioECIOffer= CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer");
-				selectorPaginaSiguienteCarrefour = CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour");
-				accesoPopupPeso = CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso");
-			}
-		}catch(IOException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-	}
 	
 	/**
 	 * Este método se encarga de extraer cada uno de los datos 
@@ -605,24 +645,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			return productoTratado;
 		} else {
 			return URLEncoder.encode(productoTratado, StandardCharsets.UTF_8.toString());
-		}
-	}
-	
-	/**
-	 * Este metodo carga todas las marcas de 
-	 * productos desde la base de datos. Se
-	 * cachea al principio y dura durante toda
-	 * la ejecución del programa,
-	 */
-	public void cargarTodasLasMarcas() {
-		try {
-			if(Objects.isNull(listTodasMarcas)) {
-				listTodasMarcas = iFMarcasImp.findAll();
-			}
-		}catch(IOException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
 		}
 	}
 	

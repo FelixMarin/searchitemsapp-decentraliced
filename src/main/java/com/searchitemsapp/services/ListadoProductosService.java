@@ -24,11 +24,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.scraping.ScrapingUnit;
 import com.searchitemsapp.scraping.UrlComposer;
 
@@ -47,11 +44,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	/*
 	 * Variables Globales
 	 */
-	private List<SelectoresCssDTO> listTodosSelectoresCss;
 	private static boolean isCached;
-	
-	@Autowired
-	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
 	
 	@Autowired
 	private UrlComposer urlComposer;
@@ -132,34 +125,12 @@ public class ListadoProductosService implements IFService<String,String> {
 			}
 			
 			/**
-			 * El listado de selectores se rellena la primera vez que
-			 * se ejecuta la aplicación. Si es nulo se relealiza una
-			 * consulta a bbdd para traer los selectores css que se
-			 * utilizarán para extraer la información de la páginas
-			 * web revisadas. 
-			 */
-			if(Objects.isNull(listTodosSelectoresCss)) {
-				listTodosSelectoresCss = selectoresCssImpl.findAll();
-			}
-			
-			/**
-			 * Si en este punto el listado de selectores es nulo, 
-			 * significa ha habido un problema en la conexión a
-			 * bbdd. Si eso sucede se devuelve un error.
-			 */
-			if(Objects.isNull(listTodosSelectoresCss)) {
-		 			return "[{\"request\": \"Error\", "
-						+ "\"id\" : \"-1\", "
-						+ "\"description\": \"" + Thread.currentThread().getStackTrace().toString() + "\"}]";
-			}	
-			
-			/**
 			 * En este punto, la aplicación compone las URLs de los supermercados
 			 * indicados en la request. Se reemplaza el patron '{1}' por el nombre 
 			 * del producto a buscar.
 			 */
 			Collection<UrlDTO> lResultDtoUrlsTratado = urlComposer.replaceWildcardCharacter(didPais, 
-					didCategoria, producto, empresas, listTodosSelectoresCss);
+					didCategoria, producto, empresas, urlComposer.getListTodosSelectoresCss());
 
 			/**
 			 * ArrayList que contiene un objeto encargado de scrapear el producto

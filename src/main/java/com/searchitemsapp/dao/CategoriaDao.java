@@ -18,7 +18,6 @@ import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.repository.IFCategoriaRepository;
 
-
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
  * de lógica de negocio necesite interactuar con la base de datos, va 

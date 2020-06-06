@@ -62,8 +62,8 @@ public abstract class AbstractDao<R,T> implements IFDao {
 	}
 
 	/**
-	 * Traza un log indicando si el Entity Manager 
-	 * está abierto.
+	 * Traza un log indicando si el objeto 
+	 * Entity Manager está abierto.
 	 * 
 	 * @param clazz
 	 */
@@ -74,8 +74,8 @@ public abstract class AbstractDao<R,T> implements IFDao {
 	}
 	
 	/**
-	 * Metodo que convierte una clase DAO en una DTO del mimo tipo
-	 * Ejemplo: MarcasDao <=> MarcasDTO
+	 * Metodo que convierte una clase Entity en una DTO del mimo tipo
+	 * Ejemplo:<br/> TbSiaMarcas <=> MarcasDTO
 	 * 
 	 * @param  String
 	 * @return IFParser<R,T>

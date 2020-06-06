@@ -25,7 +25,7 @@ import com.searchitemsapp.impl.IFUrlImpl;
  * @author Felix Marin Ramirez
  *
  */
-public class UrlComposer extends AbstractScraping {
+public class UrlComposer extends ScrapingLoginUnit {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlComposer.class);   
 	

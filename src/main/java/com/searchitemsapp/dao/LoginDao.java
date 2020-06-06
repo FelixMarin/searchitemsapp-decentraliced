@@ -17,7 +17,6 @@ import com.searchitemsapp.dto.LoginDTO;
 import com.searchitemsapp.entities.TbSiaLogin;
 import com.searchitemsapp.repository.IFLoginRepository;
 
-
 /**
  * Método que DAO proporcionará los métodos necesarios para 
  * insertar, actualizar, borrar y consultar la información

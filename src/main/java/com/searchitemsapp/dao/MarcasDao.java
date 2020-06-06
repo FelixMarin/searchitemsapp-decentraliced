@@ -18,7 +18,6 @@ import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.entities.TbSiaMarcas;
 import com.searchitemsapp.repository.IFMarcasRepository;
 
-
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
  * de lógica de negocio necesite interactuar con la base de datos, va 
