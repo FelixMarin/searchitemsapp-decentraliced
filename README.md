@@ -124,7 +124,7 @@ http://[url]:[port]/searchitemsapp/index.jsp
 - **Formato de la URL con la que se realizará la solicitud al servicio:**
 
 ```console
-http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[producto]/[super]
+http://[url]:[port]/searchitemsapp/search?pais=[id_país]&categoria=[id_categoría]&ordenacion=[ordenar]&producto=[producto]&empresas=[id_empresa]
 ```
 
 - **Lista de parámetros de la solicitud:**
@@ -133,7 +133,7 @@ http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[produc
 | --- | --- |
 | __país__ | 101 (España). |
 | __categoría__ | 101 (Supermercados) |
-| __ordenar__ | precio: 1 / volumen: 2 |
+| __ordenar__ | PVP: 1 / PVP/KILO: 2 |
 | __producto__ | (Arroz, Aceite, sal, ...) |
 | __super__ | [101] , [101,103,104] , [ALL] |
  
@@ -143,13 +143,13 @@ http://[url]:[port]/searchitemsapp/search/[país]/[categoría]/[ordenar]/[produc
 Esta URL devolverá un listado de objetos json con los productos de todos los supermercados ordenados por precio. 
 
 ```console
-http://[url]:[port]/searchitemsapp/search/101/101/1/arroz/ALL
+http://[url]:[port]/searchitemsapp/search?pais=101&categoria=101&ordenacion=1&producto=arroz/empresas=ALL
 ```
 
 Esta URL devolverá un listado de objetos json con los productos de un supermercado ordenados por volumen.
 
 ```console
-http://[url]:[port]/searchitemsapp/search/101/101/2/sal/103
+http://[url]:[port]/searchitemsapp/search?pais=101&categoria=101&ordenacion=2&producto=sal&empresas=103
 ```
 
 - **Ejemplo de respuesta:**
