@@ -172,7 +172,7 @@
       <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>
       <bean id="scrapingEmpFactory" class="com.searchitemsapp.scraping.ScrapingEmpresasFactory"></bean>
        
-       <bean id="listaProductosValidator" class=" com.searchitemsapp.validator.ListaProductosValidator"></bean>
+       <bean id="listaProductosValidator" class="com.searchitemsapp.validator.ListaProductosValidator"></bean>
        
       <bean id="processPrice" class="com.searchitemsapp.processprice.ProcessPrice"></bean>
       <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>
