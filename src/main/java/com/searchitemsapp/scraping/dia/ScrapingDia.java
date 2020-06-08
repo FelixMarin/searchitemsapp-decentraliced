@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 
@@ -27,7 +26,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingDia extends AbstractScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingDia implements IFScrapingEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingDia.class);   
 	

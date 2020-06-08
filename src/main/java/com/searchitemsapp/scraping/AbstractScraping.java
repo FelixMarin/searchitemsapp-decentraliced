@@ -506,7 +506,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
 			
 		} else if(getMapEmpresas().get(ELCORTEINGLES).getDid().equals(urlDto.getDidEmpresa()) &&
-				elem.select(getSelectorPrecioECIOffer()).size() > 0) {
+				!elem.select(getSelectorPrecioECIOffer()).isEmpty()) {
 			
 			strResult = elem.selectFirst(getSelectorPrecioECIOffer()).text();
 			

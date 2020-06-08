@@ -22,7 +22,7 @@ import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
 
 /**
- * Esta clase es la encargada de inicializar todo el proceso
+ * Esta clase es la encargada de inicializar el proceso
  * de chequeo de los datos extraidos de las páginas web 
  * rastreadas. El proceso de consulta, extracción y 
  * refinamiento de datos se realiza en tiempo real, lo que
@@ -65,7 +65,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	}
 	
 	/**
-	 * Método que realiza todo el proceso de web scraping.
+	 * Método que realiza el proceso de web scraping.
 	 * Primero obtiene los html de los sitios web, después
 	 * Estrae la información relevante y la inserta en una 
 	 * lista de objetos. Finalmente se devuelve una lista
@@ -119,7 +119,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		
 		/**
 		 * Si la página solicitada está disponible,
-		 * se desencadenará todo el proceso, en otro
+		 * se desencadenará el proceso, en otro
 		 * caso la ejecución termina con nulo por
 		 * respuesta.
 		 */			

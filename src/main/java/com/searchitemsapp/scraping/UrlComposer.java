@@ -123,7 +123,7 @@ public class UrlComposer extends ScrapingLoginUnit {
 			 * El resto de supermercados tienen todos el mismo tratamiento.
 			 */
 			String productoTratado;	
-			if(urlDto.getBolActivo()) {
+			if(urlDto.getBolActivo().booleanValue()) {
 				if(getMapEmpresas().get(EROSKI).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reemplazarCaracteresEroski(producto);
 					productoTratado = tratarProducto(productoTratado);

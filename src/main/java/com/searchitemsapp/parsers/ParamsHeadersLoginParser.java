@@ -30,7 +30,7 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 	ParamsLoginDTO paramsLoginDto;
 	
 	@Autowired
-	TbSiaParamsHeadersLogin tbSiaParamsFormLogin;
+	TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin;
 	
 	/*
 	 * Constructor
@@ -74,25 +74,25 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		tbSiaParamsFormLogin.setDid(paramsLoginDto.getDid());
-		tbSiaParamsFormLogin.setParamClave(paramsLoginDto.getParamClave());
-		tbSiaParamsFormLogin.setParamValor(paramsLoginDto.getParamValor());
-		tbSiaParamsFormLogin.setTbSiaUrl(new TbSiaUrl());
-		tbSiaParamsFormLogin.getTbSiaUrl().setDid(paramsLoginDto.getDidUrl());
-		tbSiaParamsFormLogin.getTbSiaUrl().setNomUrl(paramsLoginDto.getNomUrl());
-		tbSiaParamsFormLogin.setBolActivo(paramsLoginDto.getBolActivo());
+		tbSiaParamsHeadersLogin.setDid(paramsLoginDto.getDid());
+		tbSiaParamsHeadersLogin.setParamClave(paramsLoginDto.getParamClave());
+		tbSiaParamsHeadersLogin.setParamValor(paramsLoginDto.getParamValor());
+		tbSiaParamsHeadersLogin.setTbSiaUrl(new TbSiaUrl());
+		tbSiaParamsHeadersLogin.getTbSiaUrl().setDid(paramsLoginDto.getDidUrl());
+		tbSiaParamsHeadersLogin.getTbSiaUrl().setNomUrl(paramsLoginDto.getNomUrl());
+		tbSiaParamsHeadersLogin.setBolActivo(paramsLoginDto.getBolActivo());
 		
-		return tbSiaParamsFormLogin;
+		return tbSiaParamsHeadersLogin;
 	}
 	
 	/**
 	 * Mapea una lista de de Entities a una lista de DTOs.
 	 * 
-	 * @param List<TbSiaParamsFormLogin>
+	 * @param List<TbSiaParamsHeadersLogin>
 	 * @return List<ParamsLoginDTO>
 	 */
 	@Override
-	public List<ParamsLoginDTO> toListDTO(List<TbSiaParamsHeadersLogin> listTbSiaParamsFormLogin) {
+	public List<ParamsLoginDTO> toListDTO(List<TbSiaParamsHeadersLogin> listTbSiaParamsHeadersLogin) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -100,7 +100,7 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 		
 		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
-		for (TbSiaParamsHeadersLogin tbSiaParamsHeadersLog : listTbSiaParamsFormLogin) {
+		for (TbSiaParamsHeadersLogin tbSiaParamsHeadersLog : listTbSiaParamsHeadersLogin) {
 			paramsLoginDto = new ParamsLoginDTO();
 			paramsLoginDto.setDid(tbSiaParamsHeadersLog.getDid());
 			paramsLoginDto.setParamClave(tbSiaParamsHeadersLog.getParamClave());

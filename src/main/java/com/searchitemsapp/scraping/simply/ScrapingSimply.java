@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -20,7 +19,7 @@ import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingSimply extends AbstractScrapingEmpresas implements IFScrapingSimply {
+public class ScrapingSimply implements IFScrapingSimply {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingSimply.class);  
 	

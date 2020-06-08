@@ -41,6 +41,10 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListadoProductosService.class);  
 	
+	private static final String ERROR_RESULT = "[{\"request\": \"Error\", " 
+			+ "\"id\" : \"-1\", "
+			+ "\"description\": \"No hay resultados\"}]";
+	
 	/*
 	 * Variables Globales
 	 */
@@ -158,7 +162,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			
 			/**
 			 * Ejecuta las tareas dadas, devolviendo una lista de Futuros con su 
-			 * estado y resultados cuando todo esté completo. Future.isDone() es 
+			 * estado y resultados cuando esté completo. Future.isDone() es 
 			 * verdadero para cada elemento de la lista devuelta.
 			 */
 			List<Future<List<ResultadoDTO>>> listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
@@ -169,9 +173,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * la aplicación devolverá un mensaje notificando el suceso.
 			 */
             if(listResultDtoFinal.isEmpty()) {
-    			return "[{\"request\": \"Error\", "
-						+ "\"id\" : \"-1\", "
-						+ "\"description\": \"No hay resultados\"}]";
+    			return ERROR_RESULT;
             }
 
             /**
@@ -212,9 +214,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * indicando el suceso.
 		 */
 		if(listResultDtoFinal.isEmpty()) {			
-			return  "[{\"request\": \"Error\", "
-					+ "\"id\" : \"-1\", "
-					+ "\"description\": \"No hay resultados\"}]";
+			return  ERROR_RESULT;
 		}
 		
 		/**

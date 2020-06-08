@@ -106,7 +106,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		
 		if(!tbSiaPEmpresas.getTbSiaUrls().isEmpty()) {
 			TbSiaUrl tbSiaUrl = tbSiaPEmpresas.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
-			LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			Map<Integer, String> mapUrls = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 			mapUrls.put(tbSiaUrl.getDid(), tbSiaUrl.getNomUrl());
 			empresaPDto.setUrls(mapUrls);
 		}

@@ -36,7 +36,7 @@ public abstract class AbstractScrapingDyn {
 	/*
 	 * Constantes Globales
 	 */
-	private final String SCROLL_DOWN = "window.scrollTo(0, document.body.scrollHeight);";	
+	private static final String SCROLLDOWN = "window.scrollTo(0, document.body.scrollHeight);";	
 	
 	/*
 	 * Variables Globales
@@ -93,7 +93,7 @@ public abstract class AbstractScrapingDyn {
 		} else {
 			webDriver.navigate().to(strUrl);
 			JavascriptExecutor js = (JavascriptExecutor) webDriver;
-			js.executeScript(SCROLL_DOWN);
+			js.executeScript(SCROLLDOWN);
 			resultado = webDriver.getPageSource();
 		}
 		

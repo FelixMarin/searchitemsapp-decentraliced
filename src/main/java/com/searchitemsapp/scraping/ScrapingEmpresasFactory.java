@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.dao.PaisDao;
 import com.searchitemsapp.scraping.alcampo.ScrapingAlcampo;
 import com.searchitemsapp.scraping.caprabo.ScrapingCaprabo;
 import com.searchitemsapp.scraping.carrefour.ScrapingCarrefour;
@@ -32,7 +31,7 @@ import com.searchitemsapp.scraping.ulabox.ScrapingUlabox;
  */
 public class ScrapingEmpresasFactory {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(PaisDao.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingEmpresasFactory.class);  
 	
 	/*
 	 * Constantes Globales
