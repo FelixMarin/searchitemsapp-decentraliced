@@ -83,8 +83,7 @@ public class Log4jInit extends HttpServlet {
 			PropertyConfigurator.configure(props);
 		} catch (IOException e) {
 			if(LOGGER.isInfoEnabled()) {
-				LOGGER.error("Could not read configuration file [" + filePath + "].",InitCache.class,e);
-				LOGGER.error("Ignoring configuration file [" + filePath + "].",InitCache.class,e);
+				LOGGER.error(filePath,InitCache.class,e);
 			}
 		}
 	}

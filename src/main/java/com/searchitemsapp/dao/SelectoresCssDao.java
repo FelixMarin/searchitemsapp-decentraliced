@@ -1,5 +1,6 @@
 package com.searchitemsapp.dao;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,11 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFSelectoresCssRepository;
 
 /**
@@ -27,15 +30,16 @@ import com.searchitemsapp.repository.IFSelectoresCssRepository;
  */
 @SuppressWarnings("unchecked")
 @Repository
-public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelectoresCss> implements IFSelectoresCssRepository {
+public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepository {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssDao.class);  
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales
 	 */
-	private static final String SELECTORES_PARSER = "SELECTORES_PARSER";
-
+	@Autowired
+	private IFParser<SelectoresCssDTO, TbSiaSelectoresCss> parser;
+	
 	/*
 	 * Constructor
 	 */
@@ -61,29 +65,25 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.all"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
-		
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.all"));
+				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaSelectoresCss.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaSelectoresCss.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			resultado = getParser(SELECTORES_PARSER).toListDTO(((List<TbSiaSelectoresCss>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaSelectoresCss>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -108,7 +108,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(did)) {
-			return null;
+			return new SelectoresCssDTO();
 		}
 		
 		SelectoresCssDTO resultado = null;
@@ -117,13 +117,11 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.selectorescss.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(did);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.did.txt"))
+		.append(StringUtils.SPACE).append(did);
 
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 			
 		/**
@@ -131,12 +129,14 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			resultado = getParser(SELECTORES_PARSER).toDTO(getEntityManager().find(TbSiaSelectoresCss.class, did));
+			resultado = parser.toDTO(entityManager.find(TbSiaSelectoresCss.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -160,7 +160,7 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * termina y retorna nulo.
 		 */
 		if (Objects.isNull(didEmpresa)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		List<TbSiaSelectoresCss> selectoresCssList = null;
@@ -169,9 +169,8 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
-		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaSelectoresCss.class);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
+		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaSelectoresCss.class);
 		query.setParameter("didEmpresa", didEmpresa);
 
 		/**
@@ -186,9 +185,11 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 			}
 		}
 		
+		stringBuilder.setLength(0);
+		
 		/**
 		 * Se parsea el objeto obtenido a formato DTO y se retorna.
 		 */
-		return getParser(SELECTORES_PARSER).toListDTO((selectoresCssList));
+		return parser.toListDTO((selectoresCssList));
 	}	
 }

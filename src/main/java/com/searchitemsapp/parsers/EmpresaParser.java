@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
@@ -29,7 +30,28 @@ import com.searchitemsapp.entities.TbSiaUrl;
  */
 public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaParser.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaParser.class); 
+	
+	private static final String FEC_MODIFICACION = "FEC_MODIFICACION";
+	private static final String BOL_ACTIVO = "BOL_ACTIVO";
+	private static final String SEL_PRODUCTO = "SEL_PRODUCTO";
+	private static final String SEL_PRECIO_KILO = "SEL_PRECIO_KILO";
+	private static final String SEL_PRECIO = "SEL_PRECIO";
+	private static final String SEL_PAGINACION = "SEL_PAGINACION";
+	private static final String SEL_LINK_PROD = "SEL_LINK_PROD";
+	private static final String SEL_IMAGE = "SEL_IMAGE";
+	private static final String SCRAP_NO_PATTERN = "SCRAP_NO_PATTERN";
+	private static final String SCRAP_PATTERN = "SCRAP_PATTERN";
+	private static final String DID = "DID";
+	
+	/*
+	 * Variables Globales
+	 */
+	@Autowired
+	EmpresaDTO empresaPDto;
+	
+	@Autowired
+	TbSiaEmpresa tbSiaPEmpresas;
 	
 	/*
 	 * Constructor
@@ -51,8 +73,6 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		EmpresaDTO empresaPDto = new EmpresaDTO();
-				
 		empresaPDto.setBolActivo(tbSiaPEmpresas.getBolActivo());
 		empresaPDto.setDesEmpresa(tbSiaPEmpresas.getDesEmpresa());
 		empresaPDto.setDid(tbSiaPEmpresas.getDid());
@@ -69,24 +89,24 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaPEmpresas
 					.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 			
-			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(NumberUtils.INTEGER_ONE);
-			mapSelectores.put("SCRAP_PATTERN", tbSiaSelectoresCsses.getScrapPattern());
-			mapSelectores.put("SCRAP_NO_PATTERN", tbSiaSelectoresCsses.getScrapNoPattern());
-			mapSelectores.put("SEL_IMAGE", tbSiaSelectoresCsses.getSelImage());
-			mapSelectores.put("SEL_LINK_PROD", tbSiaSelectoresCsses.getSelLinkProd());
-			mapSelectores.put("SEL_PAGINACION", tbSiaSelectoresCsses.getSelPaginacion());
-			mapSelectores.put("SEL_PRECIO", tbSiaSelectoresCsses.getSelPrecio());
-			mapSelectores.put("SEL_PRECIO_KILO", tbSiaSelectoresCsses.getSelPreKilo());
-			mapSelectores.put("SEL_PRODUCTO", tbSiaSelectoresCsses.getSelProducto());
-			mapSelectores.put("BOL_ACTIVO", tbSiaSelectoresCsses.getBolActivo().toString());
-			mapSelectores.put("DID", tbSiaSelectoresCsses.getDid().toString());
-			mapSelectores.put("FEC_MODIFICACION", tbSiaSelectoresCsses.getFecModificacion().toString());
+			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
+			mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
+			mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
+			mapSelectores.put(SEL_LINK_PROD, tbSiaSelectoresCsses.getSelLinkProd());
+			mapSelectores.put(SEL_PAGINACION, tbSiaSelectoresCsses.getSelPaginacion());
+			mapSelectores.put(SEL_PRECIO, tbSiaSelectoresCsses.getSelPrecio());
+			mapSelectores.put(SEL_PRECIO_KILO, tbSiaSelectoresCsses.getSelPreKilo());
+			mapSelectores.put(SEL_PRODUCTO, tbSiaSelectoresCsses.getSelProducto());
+			mapSelectores.put(BOL_ACTIVO, tbSiaSelectoresCsses.getBolActivo().toString());
+			mapSelectores.put(DID, tbSiaSelectoresCsses.getDid().toString());
+			mapSelectores.put(FEC_MODIFICACION, tbSiaSelectoresCsses.getFecModificacion().toString());
 			empresaPDto.setSelectores(mapSelectores);
 		}
 		
 		if(!tbSiaPEmpresas.getTbSiaUrls().isEmpty()) {
 			TbSiaUrl tbSiaUrl = tbSiaPEmpresas.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
-			LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+			LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 			mapUrls.put(tbSiaUrl.getDid(), tbSiaUrl.getNomUrl());
 			empresaPDto.setUrls(mapUrls);
 		}
@@ -107,15 +127,13 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		TbSiaEmpresa tbSiaPEmpresas = new TbSiaEmpresa();
-		
 		tbSiaPEmpresas.setBolActivo(empresaPDto.getBolActivo());
 		tbSiaPEmpresas.setDesEmpresa(empresaPDto.getDesEmpresa());
 		tbSiaPEmpresas.setDid(empresaPDto.getDid());
 		tbSiaPEmpresas.setNomEmpresa(empresaPDto.getNomEmpresa());
 		tbSiaPEmpresas.setBolDynScrap(empresaPDto.getBolDynScrap());
 		tbSiaPEmpresas.setTbSiaUrls(new ArrayList<TbSiaUrl>());
-		tbSiaPEmpresas.setTbSiaSelectoresCsses(new ArrayList<TbSiaSelectoresCss>());
+		tbSiaPEmpresas.setTbSiaSelectoresCsses(new ArrayList<>());
 		tbSiaPEmpresas.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaPEmpresas.setTbSiaPais(new TbSiaPais());
 		
@@ -126,24 +144,24 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		
 		for (Map.Entry<Integer,String> e  : empresaPDto.getUrls().entrySet()) {
 			TbSiaUrl tburl = new TbSiaUrl();
-			tburl.setDid((int) e.getKey());
-			tburl.setNomUrl((String) e.getValue());
+			tburl.setDid(e.getKey());
+			tburl.setNomUrl(e.getValue());
 			tbSiaPEmpresas.getTbSiaUrls().add(tburl);
 		}
 		
-		LinkedHashMap<String,String> map = empresaPDto.getSelectores();
+		Map<String,String> map = empresaPDto.getSelectores();
 		TbSiaSelectoresCss tselectores = new TbSiaSelectoresCss();
-		tselectores.setDid(Integer.parseInt(map.get("DID")));
-		tselectores.setScrapPattern(map.get("SCRAP_PATTERN"));
-		tselectores.setScrapNoPattern(map.get("SCRAP_NO_PATTERN"));
-		tselectores.setSelImage(map.get("SEL_IMAGE"));
-		tselectores.setSelLinkProd(map.get("SEL_LINK_PROD"));
-		tselectores.setSelPaginacion(map.get("SEL_PAGINACION"));
-		tselectores.setSelPrecio(map.get("SEL_PRECIO"));
-		tselectores.setSelPreKilo(map.get("SEL_PRECIO_KILO"));
-		tselectores.setSelProducto(map.get("SEL_PRODUCTO"));
-		tselectores.setBolActivo(Boolean.parseBoolean(map.get("BOL_ACTIVO")));
-		tselectores.setFecModificacion(LocalDate.parse(map.get("FEC_MODIFICACION")));
+		tselectores.setDid(Integer.parseInt(map.get(DID)));
+		tselectores.setScrapPattern(map.get(SCRAP_PATTERN));
+		tselectores.setScrapNoPattern(map.get(SCRAP_NO_PATTERN));
+		tselectores.setSelImage(map.get(SEL_IMAGE));
+		tselectores.setSelLinkProd(map.get(SEL_LINK_PROD));
+		tselectores.setSelPaginacion(map.get(SEL_PAGINACION));
+		tselectores.setSelPrecio(map.get(SEL_PRECIO));
+		tselectores.setSelPreKilo(map.get(SEL_PRECIO_KILO));
+		tselectores.setSelProducto(map.get(SEL_PRODUCTO));
+		tselectores.setBolActivo(Boolean.parseBoolean(map.get(BOL_ACTIVO)));
+		tselectores.setFecModificacion(LocalDate.parse(map.get(FEC_MODIFICACION)));
 		tbSiaPEmpresas.getTbSiaSelectoresCsses().add(tselectores);
 		
 		
@@ -164,7 +182,6 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		}
 		
 		List<EmpresaDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
-		EmpresaDTO empresaPDto;
 		
 		for (TbSiaEmpresa tbSiaEmpresa : lsEmpresas) {
 			empresaPDto = new EmpresaDTO();
@@ -184,24 +201,24 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 				TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaEmpresa
 						.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 				
-				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<String, String>(NumberUtils.INTEGER_ONE);
-				mapSelectores.put("SCRAP_PATTERN", tbSiaSelectoresCsses.getScrapPattern());
-				mapSelectores.put("SCRAP_NO_PATTERN", tbSiaSelectoresCsses.getScrapNoPattern());
-				mapSelectores.put("SEL_IMAGE", tbSiaSelectoresCsses.getSelImage());
-				mapSelectores.put("SEL_LINK_PROD", tbSiaSelectoresCsses.getSelLinkProd());
-				mapSelectores.put("SEL_PAGINACION", tbSiaSelectoresCsses.getSelPaginacion());
-				mapSelectores.put("SEL_PRECIO", tbSiaSelectoresCsses.getSelPrecio());
-				mapSelectores.put("SEL_PRECIO_KILO", tbSiaSelectoresCsses.getSelPreKilo());
-				mapSelectores.put("SEL_PRODUCTO", tbSiaSelectoresCsses.getSelProducto());
-				mapSelectores.put("BOL_ACTIVO", tbSiaSelectoresCsses.getBolActivo().toString());
-				mapSelectores.put("DID", tbSiaSelectoresCsses.getDid().toString());
-				mapSelectores.put("FEC_MODIFICACION", tbSiaSelectoresCsses.getFecModificacion().toString());
+				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
+				mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
+				mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
+				mapSelectores.put(SEL_LINK_PROD, tbSiaSelectoresCsses.getSelLinkProd());
+				mapSelectores.put(SEL_PAGINACION, tbSiaSelectoresCsses.getSelPaginacion());
+				mapSelectores.put(SEL_PRECIO, tbSiaSelectoresCsses.getSelPrecio());
+				mapSelectores.put(SEL_PRECIO_KILO, tbSiaSelectoresCsses.getSelPreKilo());
+				mapSelectores.put(SEL_PRODUCTO, tbSiaSelectoresCsses.getSelProducto());
+				mapSelectores.put(BOL_ACTIVO, tbSiaSelectoresCsses.getBolActivo().toString());
+				mapSelectores.put(DID, tbSiaSelectoresCsses.getDid().toString());
+				mapSelectores.put(FEC_MODIFICACION, tbSiaSelectoresCsses.getFecModificacion().toString());
 				empresaPDto.setSelectores(mapSelectores);
 			}
 			
 			if(!tbSiaEmpresa.getTbSiaUrls().isEmpty()) {
 				TbSiaUrl tbSiaUrl = tbSiaEmpresa.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
-				LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+				LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 				mapUrls.put(tbSiaUrl.getDid(), tbSiaUrl.getNomUrl());
 				empresaPDto.setUrls(mapUrls);
 			}

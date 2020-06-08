@@ -85,11 +85,11 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaParamsHeadersLogin> lsParamsHeadersLogin = new ArrayList<TbSiaParamsHeadersLogin>();
+		List<TbSiaParamsHeadersLogin> lsParamsHeadersLogin = new ArrayList<>();
 		lsParamsHeadersLogin.add(new TbSiaParamsHeadersLogin());
 		lsParamsHeadersLogin.add(new TbSiaParamsHeadersLogin());
 		
-		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<ParamsLoginDTO>();
+		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<>();
 		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		listParamsHeadersLoginDTO = parser.toListDTO(lsParamsHeadersLogin);
 		
@@ -105,11 +105,11 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsParamsHeadersLogin = new ArrayList<Object[]>();
+		List<Object[]> lsParamsHeadersLogin = new ArrayList<>();
 		lsParamsHeadersLogin.add(new Object[5]);
 		lsParamsHeadersLogin.add(new Object[4]);
 		
-		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<ParamsLoginDTO>();
+		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<>();
 		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		listParamsHeadersLoginDTO = parser.toListODTO(lsParamsHeadersLogin);
 			

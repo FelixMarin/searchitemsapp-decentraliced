@@ -1,20 +1,24 @@
 package com.searchitemsapp.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsFormLogin;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFParamsFormLogin;
 
 /**
@@ -27,15 +31,16 @@ import com.searchitemsapp.repository.IFParamsFormLogin;
  */
 @SuppressWarnings("unchecked")
 @Repository
-public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsFormLogin> implements IFParamsFormLogin {
+public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsFormLoginDao.class);     
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales.
 	 */
-	private static final String PARAMS_FORM_PARSER = "PARAMS_FORM_PARSER";
-
+	@Autowired
+	private IFParser<ParamsLoginDTO, TbSiaParamsFormLogin> parser;
+	
 	/*
 	 * Constructor
 	 */
@@ -61,29 +66,25 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.all"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
-		
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.all"));
+				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsFormLogin.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsFormLogin.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			resultado = getParser(PARAMS_FORM_PARSER).toListDTO(((List<TbSiaParamsFormLogin>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaParamsFormLogin>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;		
 	}
@@ -107,7 +108,7 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(didUrl)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		List<ParamsLoginDTO> listParamsLoginDto = null;
@@ -116,9 +117,8 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.by.url"));
-		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsFormLogin.class);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.by.url"));
+		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsFormLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
 		List<TbSiaParamsFormLogin> formLoginList = query.getResultList();	
 		
@@ -127,12 +127,14 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			listParamsLoginDto = getParser(PARAMS_FORM_PARSER).toListDTO(formLoginList);
+			listParamsLoginDto = parser.toListDTO(formLoginList);
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return listParamsLoginDto;
 	}
@@ -145,6 +147,6 @@ public class ParamsFormLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsF
 	 */
 	@Override
 	public ParamsLoginDTO findByDid(Integer did) throws IOException {
-		return getParser(PARAMS_FORM_PARSER).toDTO(getEntityManager().find(TbSiaParamsFormLogin.class, did));
+		throw new NotImplementedException();
 	}	
 }

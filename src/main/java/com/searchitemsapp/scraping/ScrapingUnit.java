@@ -88,7 +88,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		 * devolviendo nulo.
 		 */
 		if(validaUrlDto()) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/*
@@ -114,7 +114,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		 */
 		if(Objects.isNull(arProducto) || 
 				arProducto.length == 0) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/**
@@ -167,7 +167,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	            if(listDocuments.size() == 1 && 
 	            		!validaURL(document.baseUri(),urlDto.getNomUrl()
 	            				.replace(StringUtils.SPACE, SEPARADOR_URL))) {
-	            	return null;
+	            	return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	            }
 	            
 	            /**
@@ -212,7 +212,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		        }
         	}	
         } else {
-        	return null;
+        	return new ArrayList<>(NumberUtils.INTEGER_ONE);
         }   
         
         return lResultadoDto;

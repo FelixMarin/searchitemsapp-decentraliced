@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,11 +24,20 @@ import com.searchitemsapp.entities.TbSiaNomProducto;
 import com.searchitemsapp.entities.TbSiaPais;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class NomProductoParserTest {
 	
 	 private static Logger LOGGER = null;
+	 
+	 @Autowired
+	 TbSiaNomProducto tbSiaNomProducto;
+	 
+	 @Autowired
+	 NomProductoParser parser;
+	 
+	 @Autowired
+	 NomProductoDTO nomProductoDto;
 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -43,13 +53,10 @@ public class NomProductoParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaNomProducto tbSiaNomProducto = new TbSiaNomProducto();
-		
 		tbSiaNomProducto.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaNomProducto.setTbSiaPais(new TbSiaPais());
 		tbSiaNomProducto.setNomProducto("test");
 		
-		NomProductoParser parser = new NomProductoParser();
 		NomProductoDTO nomProductoDto = parser.toDTO(tbSiaNomProducto);
 		
 		//- Equals -//
@@ -76,11 +83,9 @@ public class NomProductoParserTest {
 	@Test
 	public void toTbSia() {
 		
-		NomProductoDTO nomProductoDto = new NomProductoDTO();
-		
+		nomProductoDto.setDid(101);
 		nomProductoDto.setNomProducto("test");
 		
-		NomProductoParser parser = new NomProductoParser();
 		TbSiaNomProducto tbSiaNomProducto = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
@@ -107,12 +112,12 @@ public class NomProductoParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaNomProducto> lsNomProducto = new ArrayList<TbSiaNomProducto>();
-		lsNomProducto.add(new TbSiaNomProducto());
-		lsNomProducto.add(new TbSiaNomProducto());
+		List<TbSiaNomProducto> lsNomProducto = new ArrayList<>();
+		tbSiaNomProducto.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
+		tbSiaNomProducto.setTbSiaPais(new TbSiaPais());
+		lsNomProducto.add(tbSiaNomProducto);
 		
-		List<NomProductoDTO> listNomProductoDTO = new ArrayList<NomProductoDTO>();
-		NomProductoParser parser = new NomProductoParser();
+		List<NomProductoDTO> listNomProductoDTO = new ArrayList<>();
 		listNomProductoDTO = parser.toListDTO(lsNomProducto);
 		
 		assertEquals("size", 
@@ -125,14 +130,12 @@ public class NomProductoParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsNomProducto = new ArrayList<Object[]>();
+		List<Object[]> lsNomProducto = new ArrayList<>();
 		lsNomProducto.add(new Object[5]);
-		lsNomProducto.add(new Object[4]);
 		
-		List<NomProductoDTO> listNomProductoDTO = new ArrayList<NomProductoDTO>();
-		NomProductoParser parser = new NomProductoParser();
+		List<NomProductoDTO> listNomProductoDTO = new ArrayList<>();
 		listNomProductoDTO = parser.toListODTO(lsNomProducto);
-			
+		
 		assertNotEquals(lsNomProducto, listNomProductoDTO);
 	}
 }

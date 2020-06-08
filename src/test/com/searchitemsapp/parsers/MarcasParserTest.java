@@ -13,20 +13,32 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.MarcasDTO;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaPais;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class MarcasParserTest {
 	
 	 private static Logger LOGGER = null;
-
+	 
+	 @Autowired
+	 TbSiaMarcas tbSiaMarcas;
+	 
+	 @Autowired
+	 MarcasParser parser;
+	 
+	 @Autowired
+	 MarcasDTO marcasDto;
+	 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
     	org.apache.log4j.BasicConfigurator.configure();
@@ -41,12 +53,11 @@ public class MarcasParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaMarcas tbSiaMarcas = new TbSiaMarcas();
-		
 		tbSiaMarcas.setNomMarca("test");
 		tbSiaMarcas.setDid(1111);
+		tbSiaMarcas.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
+		tbSiaMarcas.setTbSiaPais(new TbSiaPais());
 		
-		MarcasParser parser = new MarcasParser();
 		MarcasDTO marcasDto = parser.toDTO(tbSiaMarcas);
 		
 		//- Equals -//
@@ -68,12 +79,9 @@ public class MarcasParserTest {
 	@Test
 	public void toTbSia() {
 		
-		MarcasDTO marcasDto = new MarcasDTO();
-		
 		marcasDto.setNomMarca("test");
 		marcasDto.setDid(1111);
 		
-		MarcasParser parser = new MarcasParser();
 		TbSiaMarcas tbSiaMarcas = parser.toTbSia(marcasDto);
 		
 		//- Equals -//
@@ -95,12 +103,13 @@ public class MarcasParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaMarcas> lsMarcas = new ArrayList<TbSiaMarcas>();
-		lsMarcas.add(new TbSiaMarcas());
-		lsMarcas.add(new TbSiaMarcas());
+		List<TbSiaMarcas> lsMarcas = new ArrayList<>();
+		tbSiaMarcas.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
+		tbSiaMarcas.setTbSiaPais(new TbSiaPais());
+		tbSiaMarcas.setDid(101);
+		lsMarcas.add(tbSiaMarcas);
 		
-		List<MarcasDTO> listMarcasDTO = new ArrayList<MarcasDTO>();
-		MarcasParser parser = new MarcasParser();
+		List<MarcasDTO> listMarcasDTO = new ArrayList<>();
 		listMarcasDTO = parser.toListDTO(lsMarcas);
 		
 		assertEquals("size", 
@@ -113,12 +122,10 @@ public class MarcasParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsMarcas = new ArrayList<Object[]>();
+		List<Object[]> lsMarcas = new ArrayList<>();
 		lsMarcas.add(new Object[5]);
-		lsMarcas.add(new Object[4]);
 		
-		List<MarcasDTO> listMarcasDTO = new ArrayList<MarcasDTO>();
-		MarcasParser parser = new MarcasParser();
+		List<MarcasDTO> listMarcasDTO = new ArrayList<>();
 		listMarcasDTO = parser.toListODTO(lsMarcas);
 			
 		assertNotEquals(lsMarcas, listMarcasDTO);

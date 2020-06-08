@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +36,9 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	@Autowired
 	private IFPaisRepository paisDao;
 	
+	@Autowired
+	private StringBuilder stringBuilder;
+	
 	/*
 	 * Constructor
 	 */
@@ -64,19 +66,18 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(paisDto)) {
-			return null;
+			return new PaisDTO();
 		}
 		
 		/**
 		 * Traza de log que escribe identificador del pais.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.pais.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(paisDto.getDid());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.pais.did.txt"))
+		.append(StringUtils.SPACE)
+		.append(paisDto.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**

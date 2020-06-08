@@ -26,7 +26,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
- 	<jpa:repositories base-package="com.searchitemsapp.**.repository" />
+ 	<jpa:repositories base-package="com.searchitemsapp.repository" />
  	
  	<mvc:annotation-driven /> 	
  	<context:annotation-config /> 	
@@ -100,6 +100,8 @@
         class="org.springframework.orm.jpa.JpaTransactionManager"
         p:entityManagerFactory-ref="entityManagerFactory" />
         
+      <bean id="stringBuilder" class="java.lang.StringBuilder"></bean>  
+        
       <bean id="categoriaDTO" class="com.searchitemsapp.dto.CategoriaDTO"></bean>  
       <bean id="empresaDTO" class="com.searchitemsapp.dto.EmpresaDTO"></bean> 
       <bean id="paisDTO" class="com.searchitemsapp.dto.PaisDTO"></bean>
@@ -109,6 +111,8 @@
       <bean id="loginDTO" class="com.searchitemsapp.dto.LoginDTO"></bean>
       <bean id="paramsLoginDTO" class="com.searchitemsapp.dto.ParamsLoginDTO"></bean>
       <bean id="marcasDTO" class="com.searchitemsapp.dto.MarcasDTO"></bean>
+      <bean id="selectoresCssDTO" class="com.searchitemsapp.dto.SelectoresCssDTO"></bean>
+       <bean id="nomProductoDTO" class="com.searchitemsapp.dto.NomProductoDTO"></bean>
       
       <bean id="categoriaParser" class="com.searchitemsapp.parsers.CategoriaParser"></bean>
       <bean id="empresaParser" class="com.searchitemsapp.parsers.EmpresaParser"></bean>
@@ -144,6 +148,14 @@
       
       <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.entities.TbSiaCategoriasEmpresa"></bean>
       <bean id="tbSiaEmpresa" class="com.searchitemsapp.entities.TbSiaEmpresa"></bean>
+      <bean id="tbSiaLogin" class="com.searchitemsapp.entities.TbSiaLogin"></bean>
+      <bean id="tbSiaMarcas" class="com.searchitemsapp.entities.TbSiaMarcas"></bean>
+      <bean id="tbSiaNomProducto" class="com.searchitemsapp.entities.TbSiaNomProducto"></bean>
+      <bean id="tbSiaPais" class="com.searchitemsapp.entities.TbSiaPais"></bean>
+      <bean id="tbSiaParamsFormLogin" class="com.searchitemsapp.entities.TbSiaParamsFormLogin"></bean>
+      <bean id="tbSiaParamsHeadersLogin" class="com.searchitemsapp.entities.TbSiaParamsHeadersLogin"></bean>
+      <bean id="tbSiaSelectoresCss" class="com.searchitemsapp.entities.TbSiaSelectoresCss"></bean>
+      <bean id="tbSiaUrl" class="com.searchitemsapp.entities.TbSiaUrl"></bean>
       
       <bean id="urlComposer" class="com.searchitemsapp.scraping.UrlComposer"></bean> 
       <bean id="scrapingUnit" class="com.searchitemsapp.scraping.ScrapingUnit" scope="prototype">
@@ -168,7 +180,6 @@
       <bean id="scrapingCaprabo" class="com.searchitemsapp.scraping.caprabo.ScrapingCaprabo"></bean>
       <bean id="scrapingLidl" class="com.searchitemsapp.scraping.lidl.ScrapingLidl"></bean>
       
-      <bean id="parserFactory" class="com.searchitemsapp.parsers.ParserFactory"></bean>
       <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>
       <bean id="scrapingEmpFactory" class="com.searchitemsapp.scraping.ScrapingEmpresasFactory"></bean>
        

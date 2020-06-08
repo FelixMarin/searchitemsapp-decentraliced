@@ -1,6 +1,7 @@
 package com.searchitemsapp.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -29,14 +31,15 @@ import com.searchitemsapp.repository.IFUrlRepository;
  */
 @SuppressWarnings("unchecked")
 @Repository
-public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlRepository {
+public class UrlDao extends AbstractDao implements IFUrlRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlDao.class);  
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales
 	 */
-	private static final String URL_PARSER = "URL_PARSER";
+	@Autowired
+	private IFParser<UrlDTO, TbSiaUrl> parser;
 
 	/*
 	 * Constructor
@@ -62,29 +65,25 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.all"));		
-
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.all"));		
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en objeto de tipo query
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaUrl.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaUrl.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			resultado = getParser(URL_PARSER).toListDTO(((List<TbSiaUrl>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaUrl>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -107,7 +106,7 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		 * termina y retorna nulo.
 		 */
 		if (Objects.isNull(did)) {
-			return null;
+			return new UrlDTO();
 		}
 		
 		UrlDTO urlDto = null;
@@ -116,13 +115,11 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(did);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		.append(StringUtils.SPACE).append(did);
 
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -130,12 +127,14 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			urlDto = getParser(URL_PARSER).toDTO(getEntityManager().find(TbSiaUrl.class, did));
+			urlDto = parser.toDTO(entityManager.find(TbSiaUrl.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 
 		return urlDto;
 	}
@@ -160,28 +159,22 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		 * termina y retorna nulo.
 		 */
 		if (Objects.isNull(didCategoria)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		List<UrlDTO> listUrlDto = null;
-		IFParser<UrlDTO, Object[]> objParser;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.pais.categoria"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
-		
+		stringBuilder.setLength(0);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.pais.categoria"));
+				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 * Se le asignan los parámetros de entrada.
 		 */
-		Query query = getEntityManager().createNativeQuery(queryBuilder.toString());
+		Query query = entityManager.createNativeQuery(stringBuilder.toString());
 		query.setParameter(CommonsPorperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
 		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didPais.key"), didPais);
 		
@@ -195,14 +188,15 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			 * son todos del mismo tipo, el resultado será una array 
 			 * de objetos. 
 			 */
-			objParser = (IFParser<UrlDTO, Object[]>) getParserFactory().getParser(URL_PARSER);
-			listUrlDto = objParser.toListODTO((List<Object[]>) query.getResultList());
+			listUrlDto = parser.toListODTO((List<Object[]>) query.getResultList());
 			
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return listUrlDto;
 	}
@@ -227,27 +221,20 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 		 * termina y retorna nulo.
 		 */
 		if (Objects.isNull(didCategoria)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		List<UrlDTO> listUrlDto = null;
-		IFParser<UrlDTO, Object[]> objParser;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.bollogin"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.bollogin"));
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
-		Query query = getEntityManager().createNativeQuery(queryBuilder.toString());
+		Query query = entityManager.createNativeQuery(stringBuilder.toString());
 		query.setParameter(CommonsPorperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
 		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didPais.key"), didPais);
 
@@ -261,14 +248,15 @@ public class UrlDao extends AbstractDao<UrlDTO, TbSiaUrl> implements IFUrlReposi
 			 * son todos del mismo tipo, el resultado será una array 
 			 * de objetos. 
 			 */
-			objParser = (IFParser<UrlDTO, Object[]>) getParserFactory().getParser(URL_PARSER);
-			listUrlDto = objParser.toListODTO((List<Object[]>) query.getResultList());
+			listUrlDto = parser.toListODTO((List<Object[]>) query.getResultList());
 			
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return listUrlDto;
 	}

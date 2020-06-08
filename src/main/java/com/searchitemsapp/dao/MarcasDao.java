@@ -8,14 +8,15 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.entities.TbSiaMarcas;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFMarcasRepository;
 
 /**
@@ -28,14 +29,15 @@ import com.searchitemsapp.repository.IFMarcasRepository;
  */
 @SuppressWarnings("unchecked")
 @Repository
-public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IFMarcasRepository {
+public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MarcasDao.class);     
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales
 	 */
-	private static final String MARCAS_PARSER = "MARCAS_PARSER";
+	@Autowired
+	private IFParser<MarcasDTO, TbSiaMarcas> parser;	
 
 	public MarcasDao() {
 		super();
@@ -58,29 +60,25 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.marcas.select.all"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.select.all"));
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaMarcas.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaMarcas.class);
 		
 		try {
 			/**
 			 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 			 */
-			resultado = getParser(MARCAS_PARSER).toListDTO(((List<TbSiaMarcas>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaMarcas>) q.getResultList()));
 		}catch(NoResultException e) {			
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 			}
 		}		
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -102,7 +100,7 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(did)) {
-			return null;
+			return new MarcasDTO();
 		}		
 		
 		MarcasDTO resultado = null;
@@ -111,13 +109,11 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.marcas.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(did);	
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.did.txt"))
+		.append(StringUtils.SPACE).append(did);	
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -125,12 +121,14 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			resultado = getParser(MARCAS_PARSER).toDTO(getEntityManager().find(TbSiaMarcas.class, did));
+			resultado = parser.toDTO(entityManager.find(TbSiaMarcas.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}	

@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,11 +23,20 @@ import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaLogin;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class LoginParserTest {
 	
 	 private static Logger LOGGER = null;
+	 
+	 @Autowired
+	 TbSiaLogin tbSiaLogin;
+	 
+	 @Autowired
+	 LoginParser parser;
+	 
+	 @Autowired
+	 LoginDTO loginDto;
 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -42,13 +52,10 @@ public class LoginParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaLogin tbSiaLogin = new TbSiaLogin();
-		
 		tbSiaLogin.setTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaLogin.setCodPostal(30430);
 		tbSiaLogin.setDid(1111);
 		
-		LoginParser parser = new LoginParser();
 		LoginDTO loginDto = parser.toDTO(tbSiaLogin);
 		
 		//- Equals -//
@@ -75,9 +82,7 @@ public class LoginParserTest {
 	@Test
 	public void toTbSia() {
 		
-		LoginDTO loginDto = new LoginDTO();
-				
-		LoginParser parser = new LoginParser();
+		loginDto.setDid(101);
 		TbSiaLogin tbSiaLogin = parser.toTbSia(loginDto);
 		
 		assertEquals("getDid", 
@@ -103,12 +108,11 @@ public class LoginParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaLogin> lsLogin = new ArrayList<TbSiaLogin>();
-		lsLogin.add(new TbSiaLogin());
-		lsLogin.add(new TbSiaLogin());
+		List<TbSiaLogin> lsLogin = new ArrayList<>();
+		tbSiaLogin.setTbSiaEmpresa(new TbSiaEmpresa());
+		lsLogin.add(tbSiaLogin);
 		
-		List<LoginDTO> listLoginDTO = new ArrayList<LoginDTO>();
-		LoginParser parser = new LoginParser();
+		List<LoginDTO> listLoginDTO = new ArrayList<>();
 		listLoginDTO = parser.toListDTO(lsLogin);
 		
 		assertEquals("size", 
@@ -121,12 +125,11 @@ public class LoginParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsLogin = new ArrayList<Object[]>();
+		List<Object[]> lsLogin = new ArrayList<>();
 		lsLogin.add(new Object[5]);
 		lsLogin.add(new Object[4]);
 		
-		List<LoginDTO> listLoginDTO = new ArrayList<LoginDTO>();
-		LoginParser parser = new LoginParser();
+		List<LoginDTO> listLoginDTO = new ArrayList<>();
 		listLoginDTO = parser.toListODTO(lsLogin);
 			
 		assertNotEquals(lsLogin, listLoginDTO);

@@ -94,11 +94,11 @@ public class SelectoresCssParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaSelectoresCss> lsSelectoresCssParser = new ArrayList<TbSiaSelectoresCss>();
+		List<TbSiaSelectoresCss> lsSelectoresCssParser = new ArrayList<>();
 		lsSelectoresCssParser.add(new TbSiaSelectoresCss());
 		lsSelectoresCssParser.add(new TbSiaSelectoresCss());
 		
-		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<SelectoresCssDTO>();
+		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<>();
 		SelectoresCssParser parser = new SelectoresCssParser();
 		listSelectoresCssParserDTO = parser.toListDTO(lsSelectoresCssParser);
 		
@@ -112,11 +112,11 @@ public class SelectoresCssParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsSelectoresCssParser = new ArrayList<Object[]>();
+		List<Object[]> lsSelectoresCssParser = new ArrayList<>();
 		lsSelectoresCssParser.add(new Object[5]);
 		lsSelectoresCssParser.add(new Object[4]);
 		
-		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<SelectoresCssDTO>();
+		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<>();
 		SelectoresCssParser parser = new SelectoresCssParser();
 		listSelectoresCssParserDTO = parser.toListODTO(lsSelectoresCssParser);
 			

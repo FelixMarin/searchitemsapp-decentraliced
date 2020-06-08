@@ -1,6 +1,7 @@
 package com.searchitemsapp.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,11 +12,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFEmpresaRepository;
 
 /**
@@ -28,12 +31,19 @@ import com.searchitemsapp.repository.IFEmpresaRepository;
  */
 @SuppressWarnings("unchecked")
 @Repository
-public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements IFEmpresaRepository {
+public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaDao.class);     
 	
-	private static final String EMPRESA_PARSER = "EMPRESA_PARSER";
-
+	/*
+	 * Variables Globales
+	 */	
+	@Autowired
+	private IFParser<EmpresaDTO, TbSiaEmpresa> parser;
+		
+	/*
+	 * Constructor.
+	 */
 	public EmpresaDao() {
 		super();
 	}
@@ -55,29 +65,25 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.all"));		
-
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.all"));		
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en objeto de tipo query
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaEmpresa.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaEmpresa.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			resultado = getParser(EMPRESA_PARSER).toListDTO(((List<TbSiaEmpresa>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -100,7 +106,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(did)) {
-			return null;
+			return new EmpresaDTO();
 		}
 		
 		EmpresaDTO empresaDto = null;
@@ -109,13 +115,11 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(did);	
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		.append(StringUtils.SPACE).append(did);	
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -123,12 +127,14 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			empresaDto = getParser(EMPRESA_PARSER).toDTO(getEntityManager().find(TbSiaEmpresa.class, did));
+			empresaDto = parser.toDTO(entityManager.find(TbSiaEmpresa.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return empresaDto;
 	}
@@ -154,7 +160,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(didEmpresa) || Objects.isNull(didCatEmpresa)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		List<EmpresaDTO> listEmpresaDto = null;
@@ -162,14 +168,13 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.empresa.y.categoria"));
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.empresa.y.categoria"));
 			
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 * A la consulta se le pasan como parametros los identificadores.
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString());		
+		Query q = entityManager.createQuery(stringBuilder.toString());		
 		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);	
 		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), didCatEmpresa);	
 		
@@ -177,12 +182,14 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			listEmpresaDto = getParser(EMPRESA_PARSER).toListDTO(((List<TbSiaEmpresa>) q.getSingleResult()));
+			listEmpresaDto = parser.toListDTO(((List<TbSiaEmpresa>) q.getSingleResult()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return listEmpresaDto;
 	}

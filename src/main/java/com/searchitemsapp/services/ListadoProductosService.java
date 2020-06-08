@@ -51,6 +51,9 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
+	
+	@Autowired
+	private StringBuilder stringBuilder;
 
 	/*
 	 * Constructor
@@ -116,12 +119,11 @@ public class ListadoProductosService implements IFService<String,String> {
 			/**
 			 * Se traza el log con el identificador de la categoría.
 			 */
-			StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-			debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"));
-			debugMessage.append(didCategoria);
+			stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"))
+			.append(didCategoria);
 
 			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(debugMessage.toString(), this.getClass());
+				LOGGER.info(stringBuilder.toString(), this.getClass());
 			}
 			
 			/**

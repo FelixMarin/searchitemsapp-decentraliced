@@ -11,11 +11,13 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFParamsHeadersLogin;
 
 /**
@@ -28,15 +30,16 @@ import com.searchitemsapp.repository.IFParamsHeadersLogin;
  */
 @SuppressWarnings("unchecked")
 @Repository
-public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsHeadersLogin> implements IFParamsHeadersLogin {
+public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeadersLogin {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsHeadersLoginDao.class);  
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales
 	 */
-	private static final String PARAMS_HEADERS_PARSER = "PARAMS_HEADERS_PARSER";
-
+	@Autowired
+	private IFParser<ParamsLoginDTO, TbSiaParamsHeadersLogin> parser;
+	
 	/*
 	 * Constructor
 	 */
@@ -58,20 +61,19 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		
 		List<ParamsLoginDTO> resultado = null;
 		
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
 		
-		isEntityManagerOpen(this.getClass());
-		
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsHeadersLogin.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsHeadersLogin.class);
 		
 		try {
-			resultado = getParser(PARAMS_HEADERS_PARSER).toListDTO(((List<TbSiaParamsHeadersLogin>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaParamsHeadersLogin>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -84,24 +86,25 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		}
 		
 		if(Objects.isNull(didUrl)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		List<ParamsLoginDTO> listParamsLoginDto = null;
 		
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
-		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsHeadersLogin.class);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
+		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsHeadersLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
 		
 		try {
-			listParamsLoginDto = getParser(PARAMS_HEADERS_PARSER).toListDTO((List<TbSiaParamsHeadersLogin>) query.getResultList());
+			listParamsLoginDto = parser.toListDTO((List<TbSiaParamsHeadersLogin>) query.getResultList());
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 			listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return listParamsLoginDto;
 	}
@@ -114,6 +117,6 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 	 */
 	@Override
 	public ParamsLoginDTO findByDid(Integer did) throws IOException {
-		return getParser(PARAMS_HEADERS_PARSER).toDTO(getEntityManager().find(TbSiaParamsHeadersLogin.class, did));
+		return parser.toDTO(entityManager.find(TbSiaParamsHeadersLogin.class, did));
 	}		
 }

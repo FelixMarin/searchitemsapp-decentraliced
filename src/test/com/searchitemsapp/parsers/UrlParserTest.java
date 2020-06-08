@@ -94,11 +94,11 @@ public class UrlParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaUrl> lsUrl = new ArrayList<TbSiaUrl>();
+		List<TbSiaUrl> lsUrl = new ArrayList<>();
 		lsUrl.add(new TbSiaUrl());
 		lsUrl.add(new TbSiaUrl());
 		
-		List<UrlDTO> listUrlDTO = new ArrayList<UrlDTO>();
+		List<UrlDTO> listUrlDTO = new ArrayList<>();
 		UrlParser parser = new UrlParser();
 		listUrlDTO = parser.toListDTO(lsUrl);
 		
@@ -112,7 +112,7 @@ public class UrlParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsUrl = new ArrayList<Object[]>();
+		List<Object[]> lsUrl = new ArrayList<>();
 		Object[] objTest = {"test","1","2","test","test",
 				"test","test","test","test","test"};
 		

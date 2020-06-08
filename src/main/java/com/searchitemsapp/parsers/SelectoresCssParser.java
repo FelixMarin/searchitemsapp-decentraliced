@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
@@ -24,6 +25,12 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssParser.class);  
 	
+	@Autowired 
+	SelectoresCssDTO selectoresCssDTO;
+	
+	@Autowired
+	TbSiaSelectoresCss tbSiaSelectoresCss;
+	
 	/*
 	 * Constructor
 	 */
@@ -38,29 +45,27 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	 * @return SelectoresCssDTO
 	 */
 	@Override
-	public SelectoresCssDTO toDTO(TbSiaSelectoresCss tbSiaSelectoresCss) {
+	public SelectoresCssDTO toDTO(TbSiaSelectoresCss tbSiaSelectores) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		SelectoresCssDTO selectoresCssDTO = new SelectoresCssDTO();
-		
-		selectoresCssDTO.setDid(tbSiaSelectoresCss.getDid());
-		selectoresCssDTO.setBolActivo(tbSiaSelectoresCss.getBolActivo());
-		selectoresCssDTO.setFecModificacion(tbSiaSelectoresCss.getFecModificacion());
-		selectoresCssDTO.setScrapNoPattern(tbSiaSelectoresCss.getScrapNoPattern());
-		selectoresCssDTO.setScrapPattern(tbSiaSelectoresCss.getScrapPattern());
-		selectoresCssDTO.setSelImage(tbSiaSelectoresCss.getSelImage());
-		selectoresCssDTO.setSelLinkProd(tbSiaSelectoresCss.getSelLinkProd());
-		selectoresCssDTO.setSelPrecio(tbSiaSelectoresCss.getSelPrecio());
-		selectoresCssDTO.setSelPreKilo(tbSiaSelectoresCss.getSelPreKilo());
-		selectoresCssDTO.setSelProducto(tbSiaSelectoresCss.getSelProducto());
-		selectoresCssDTO.setDidEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getDid());
-		selectoresCssDTO.setNomEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getNomEmpresa());		
-		selectoresCssDTO.setDidUrl(tbSiaSelectoresCss.getTbSiaUrl().getDid());
-		selectoresCssDTO.setNomUrl(tbSiaSelectoresCss.getTbSiaUrl().getNomUrl());
-		selectoresCssDTO.setSelPaginacion(tbSiaSelectoresCss.getSelPaginacion());
+		selectoresCssDTO.setDid(tbSiaSelectores.getDid());
+		selectoresCssDTO.setBolActivo(tbSiaSelectores.getBolActivo());
+		selectoresCssDTO.setFecModificacion(tbSiaSelectores.getFecModificacion());
+		selectoresCssDTO.setScrapNoPattern(tbSiaSelectores.getScrapNoPattern());
+		selectoresCssDTO.setScrapPattern(tbSiaSelectores.getScrapPattern());
+		selectoresCssDTO.setSelImage(tbSiaSelectores.getSelImage());
+		selectoresCssDTO.setSelLinkProd(tbSiaSelectores.getSelLinkProd());
+		selectoresCssDTO.setSelPrecio(tbSiaSelectores.getSelPrecio());
+		selectoresCssDTO.setSelPreKilo(tbSiaSelectores.getSelPreKilo());
+		selectoresCssDTO.setSelProducto(tbSiaSelectores.getSelProducto());
+		selectoresCssDTO.setDidEmpresa(tbSiaSelectores.getTbSiaEmpresa().getDid());
+		selectoresCssDTO.setNomEmpresa(tbSiaSelectores.getTbSiaEmpresa().getNomEmpresa());		
+		selectoresCssDTO.setDidUrl(tbSiaSelectores.getTbSiaUrl().getDid());
+		selectoresCssDTO.setNomUrl(tbSiaSelectores.getTbSiaUrl().getNomUrl());
+		selectoresCssDTO.setSelPaginacion(tbSiaSelectores.getSelPaginacion());
 		
 		return selectoresCssDTO;
 	}
@@ -78,8 +83,6 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		TbSiaSelectoresCss tbSiaSelectoresCss = new TbSiaSelectoresCss();
-
 		tbSiaSelectoresCss.setDid(selectoresCssDTO.getDid());
 		tbSiaSelectoresCss.setBolActivo(selectoresCssDTO.getBolActivo());
 		tbSiaSelectoresCss.setFecModificacion(selectoresCssDTO.getFecModificacion());
@@ -114,25 +117,24 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 		}
 		
 		List<SelectoresCssDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
-		SelectoresCssDTO selectoresCssDTO;
 		
-		for (TbSiaSelectoresCss tbSiaSelectoresCss : lsTbSiaSelectoresCss) {
+		for (TbSiaSelectoresCss tbSiaSelectores : lsTbSiaSelectoresCss) {
 			selectoresCssDTO = new SelectoresCssDTO();
-			selectoresCssDTO.setDid(tbSiaSelectoresCss.getDid());
-			selectoresCssDTO.setBolActivo(tbSiaSelectoresCss.getBolActivo());
-			selectoresCssDTO.setFecModificacion(tbSiaSelectoresCss.getFecModificacion());
-			selectoresCssDTO.setScrapNoPattern(tbSiaSelectoresCss.getScrapNoPattern());
-			selectoresCssDTO.setScrapPattern(tbSiaSelectoresCss.getScrapPattern());
-			selectoresCssDTO.setSelImage(tbSiaSelectoresCss.getSelImage());
-			selectoresCssDTO.setSelLinkProd(tbSiaSelectoresCss.getSelLinkProd());
-			selectoresCssDTO.setSelPrecio(tbSiaSelectoresCss.getSelPrecio());
-			selectoresCssDTO.setSelPreKilo(tbSiaSelectoresCss.getSelPreKilo());
-			selectoresCssDTO.setSelProducto(tbSiaSelectoresCss.getSelProducto());
-			selectoresCssDTO.setSelPaginacion(tbSiaSelectoresCss.getSelPaginacion());
-			selectoresCssDTO.setDidEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getDid());
-			selectoresCssDTO.setNomEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getNomEmpresa());		
-			selectoresCssDTO.setDidUrl(tbSiaSelectoresCss.getTbSiaUrl().getDid());
-			selectoresCssDTO.setNomUrl(tbSiaSelectoresCss.getTbSiaUrl().getNomUrl());
+			selectoresCssDTO.setDid(tbSiaSelectores.getDid());
+			selectoresCssDTO.setBolActivo(tbSiaSelectores.getBolActivo());
+			selectoresCssDTO.setFecModificacion(tbSiaSelectores.getFecModificacion());
+			selectoresCssDTO.setScrapNoPattern(tbSiaSelectores.getScrapNoPattern());
+			selectoresCssDTO.setScrapPattern(tbSiaSelectores.getScrapPattern());
+			selectoresCssDTO.setSelImage(tbSiaSelectores.getSelImage());
+			selectoresCssDTO.setSelLinkProd(tbSiaSelectores.getSelLinkProd());
+			selectoresCssDTO.setSelPrecio(tbSiaSelectores.getSelPrecio());
+			selectoresCssDTO.setSelPreKilo(tbSiaSelectores.getSelPreKilo());
+			selectoresCssDTO.setSelProducto(tbSiaSelectores.getSelProducto());
+			selectoresCssDTO.setSelPaginacion(tbSiaSelectores.getSelPaginacion());
+			selectoresCssDTO.setDidEmpresa(tbSiaSelectores.getTbSiaEmpresa().getDid());
+			selectoresCssDTO.setNomEmpresa(tbSiaSelectores.getTbSiaEmpresa().getNomEmpresa());		
+			selectoresCssDTO.setDidUrl(tbSiaSelectores.getTbSiaUrl().getDid());
+			selectoresCssDTO.setNomUrl(tbSiaSelectores.getTbSiaUrl().getNomUrl());
 			listDto.add(selectoresCssDTO);
 		}
 		return listDto;

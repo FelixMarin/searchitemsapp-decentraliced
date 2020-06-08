@@ -124,13 +124,13 @@ public class UrlComposer extends ScrapingLoginUnit {
 			 */
 			String productoTratado;	
 			if(urlDto.getBolActivo()) {
-				if(getMapEmpresas().get(EROSKI).getDid() == urlDto.getDidEmpresa()) {
+				if(getMapEmpresas().get(EROSKI).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reemplazarCaracteresEroski(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(SIMPLY).getDid() == urlDto.getDidEmpresa()) {
+				} else if(getMapEmpresas().get(SIMPLY).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reeplazarCaracteresSimply(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(CONDIS).getDid() == urlDto.getDidEmpresa()) {
+				} else if(getMapEmpresas().get(CONDIS).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reeplazarTildesCondis(producto);
 					productoTratado = reeplazarCaracteresCondis(productoTratado);
 					productoTratado = tratarProducto(productoTratado);
@@ -198,13 +198,13 @@ public class UrlComposer extends ScrapingLoginUnit {
 			SelectoresCssDTO selectoresCssDTO = null;
 			
 			for (SelectoresCssDTO elementNodesDTO : listTodosElementNodes) {
-				if (empDidEnUlrs == elementNodesDTO.getDidEmpresa()) {
+				if (elementNodesDTO.getDidEmpresa().equals(empDidEnUlrs)) {
 					selectoresCssDTO = elementNodesDTO;
 				}
 			}
 			
 			if(Objects.nonNull(selectoresCssDTO)) {	
-				LinkedHashMap<String, String> mapSelectores  = new LinkedHashMap<String, String>();
+				LinkedHashMap<String, String> mapSelectores  = new LinkedHashMap<>();
 				mapSelectores.put("SCRAP_PATTERN", selectoresCssDTO.getScrapPattern());
 				mapSelectores.put("SCRAP_NO_PATTERN", selectoresCssDTO.getScrapNoPattern());
 				mapSelectores.put("SEL_IMAGE", selectoresCssDTO.getSelImage());

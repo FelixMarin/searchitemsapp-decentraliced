@@ -6,14 +6,15 @@ import java.util.Objects;
 import javax.persistence.NoResultException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.entities.TbSiaPais;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFPaisRepository;
 
 /**
@@ -25,14 +26,15 @@ import com.searchitemsapp.repository.IFPaisRepository;
  *
  */
 @Repository
-public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRepository {
+public class PaisDao extends AbstractDao implements IFPaisRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PaisDao.class);     
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales
 	 */
-	private static final String PAIS_PARSER = "PAIS_PARSER";
+	@Autowired
+	private IFParser<PaisDTO, TbSiaPais> parser;
 
 	/*
 	 * Constructor 
@@ -59,7 +61,7 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(did)) {
-			return null;
+			return new PaisDTO();
 		}
 		
 		PaisDTO paisDto = null;
@@ -68,13 +70,11 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(did);	
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		.append(StringUtils.SPACE).append(did);	
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -82,12 +82,14 @@ public class PaisDao extends AbstractDao<PaisDTO, TbSiaPais> implements IFPaisRe
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			paisDto = getParser(PAIS_PARSER).toDTO(getEntityManager().find(TbSiaPais.class, did));
+			paisDto = parser.toDTO(entityManager.find(TbSiaPais.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return paisDto;
 	}

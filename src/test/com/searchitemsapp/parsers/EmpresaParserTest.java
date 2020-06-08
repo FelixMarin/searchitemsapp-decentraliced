@@ -6,6 +6,7 @@ import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -21,15 +23,23 @@ import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaPais;
-import com.searchitemsapp.entities.TbSiaSelectoresCss;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class EmpresaParserTest {
 	
 	 private static Logger LOGGER = null;
+	 
+	 @Autowired
+	 EmpresaParser parser;
 
+	 @Autowired
+	 TbSiaEmpresa tbSiaEmpresa;
+	 
+	 @Autowired
+	 EmpresaDTO empresaDto;
+	 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
     	org.apache.log4j.BasicConfigurator.configure();
@@ -44,13 +54,10 @@ public class EmpresaParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaEmpresa tbSiaEmpresa = new TbSiaEmpresa();
-		
 		tbSiaEmpresa.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaEmpresa.setTbSiaPais(new TbSiaPais());
-		tbSiaEmpresa.setTbSiaSelectoresCsses(new ArrayList<TbSiaSelectoresCss>());
+		tbSiaEmpresa.setTbSiaSelectoresCsses(new ArrayList<>());
 		
-		EmpresaParser parser = new EmpresaParser();
 		EmpresaDTO empresaDto = parser.toDTO(tbSiaEmpresa);
 		
 		//- Equals -//
@@ -77,9 +84,13 @@ public class EmpresaParserTest {
 	@Test
 	public void toTbSia() {
 		
-		EmpresaDTO empresaDto = new EmpresaDTO();
-				
-		EmpresaParser parser = new EmpresaParser();
+		empresaDto.setDid(101);
+		empresaDto.setUrls(new LinkedHashMap<>());
+		LinkedHashMap<String, String> lhm = new LinkedHashMap<>();
+		lhm.put("DID", "101");
+		lhm.put("BOL_ACTIVO", "true");
+		lhm.put("FEC_MODIFICACION", "2020-06-05");
+		empresaDto.setSelectores(lhm);
 		TbSiaEmpresa tbSiaEmpresa = parser.toTbSia(empresaDto);
 		
 		//- Equals -//
@@ -106,13 +117,14 @@ public class EmpresaParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaEmpresa> lsEmpresas = new ArrayList<TbSiaEmpresa>();
-		lsEmpresas.add(new TbSiaEmpresa());
-		lsEmpresas.add(new TbSiaEmpresa());
+		List<TbSiaEmpresa> lsEmpresas = new ArrayList<>();
+		tbSiaEmpresa.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
+		tbSiaEmpresa.setTbSiaPais(new TbSiaPais());
+		tbSiaEmpresa.setTbSiaSelectoresCsses(new ArrayList<>());
+		tbSiaEmpresa.setTbSiaUrls(new ArrayList<>());
+		lsEmpresas.add(tbSiaEmpresa);
 		
-		List<EmpresaDTO> listEmpresaDTO = new ArrayList<EmpresaDTO>();
-		EmpresaParser parser = new EmpresaParser();
-		listEmpresaDTO = parser.toListDTO(lsEmpresas);
+		List<EmpresaDTO> listEmpresaDTO = parser.toListDTO(lsEmpresas);
 		
 		assertEquals("size", 
 				lsEmpresas.size(), listEmpresaDTO.size());
@@ -124,12 +136,11 @@ public class EmpresaParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsEmpresas = new ArrayList<Object[]>();
+		List<Object[]> lsEmpresas = new ArrayList<>();
 		lsEmpresas.add(new Object[5]);
 		lsEmpresas.add(new Object[4]);
 		
-		List<EmpresaDTO> listEmpresaDTO = new ArrayList<EmpresaDTO>();
-		EmpresaParser parser = new EmpresaParser();
+		List<EmpresaDTO> listEmpresaDTO = new ArrayList<>();
 		listEmpresaDTO = parser.toListODTO(lsEmpresas);
 			
 		assertNotEquals(lsEmpresas, listEmpresaDTO);

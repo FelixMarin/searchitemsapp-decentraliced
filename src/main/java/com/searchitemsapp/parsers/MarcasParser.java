@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.entities.TbSiaMarcas;
 
@@ -21,7 +21,13 @@ import com.searchitemsapp.entities.TbSiaMarcas;
  */
 public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaDao.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(MarcasParser.class);  
+	
+	@Autowired
+	MarcasDTO marcasDto;
+	
+	@Autowired
+	TbSiaMarcas tbSiaMarcas;
 	
 	/*
 	 * Constructor
@@ -42,13 +48,13 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		MarcasDTO marcasDto = new MarcasDTO();
-		
 		marcasDto.setDid(tbSiaMarcas.getDid());
 		marcasDto.setNomMarca(tbSiaMarcas.getNomMarca());
-		marcasDto.setDidCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getDid());
+		boolean isNull = null == tbSiaMarcas.getTbSiaCategoriasEmpresa().getDid();
+		marcasDto.setDidCatEmpresas(isNull?101:tbSiaMarcas.getTbSiaCategoriasEmpresa().getDid());
 		marcasDto.setNomCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
-		marcasDto.setDidPais(tbSiaMarcas.getTbSiaPais().getDid());
+		isNull = null == tbSiaMarcas.getTbSiaPais().getDid();
+		marcasDto.setDidPais(isNull?101:tbSiaMarcas.getTbSiaPais().getDid());
 		marcasDto.setNomPais(tbSiaMarcas.getTbSiaPais().getNomPais());
 		
 		return marcasDto;
@@ -65,8 +71,6 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		
-		TbSiaMarcas tbSiaMarcas = new TbSiaMarcas();
 		
 		tbSiaMarcas.setDid(marcasDto.getDid());
 		tbSiaMarcas.setNomMarca(marcasDto.getNomMarca());
@@ -87,16 +91,17 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 		}
 		
 		List<MarcasDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
-		MarcasDTO marcasDto;
 		
-		for (TbSiaMarcas tbSiaMarcas : lsTbSiaMarcas) {
+		for (TbSiaMarcas tbSiaMarc : lsTbSiaMarcas) {
 			marcasDto = new MarcasDTO();
-			marcasDto.setDid(tbSiaMarcas.getDid());
-			marcasDto.setNomMarca(tbSiaMarcas.getNomMarca());
-			marcasDto.setDidCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getDid());
-			marcasDto.setNomCatEmpresas(tbSiaMarcas.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
-			marcasDto.setDidPais(tbSiaMarcas.getTbSiaPais().getDid());
-			marcasDto.setNomPais(tbSiaMarcas.getTbSiaPais().getNomPais());
+			marcasDto.setDid(tbSiaMarc.getDid());
+			marcasDto.setNomMarca(tbSiaMarc.getNomMarca());
+			boolean isNull =  null == tbSiaMarc.getTbSiaCategoriasEmpresa().getDid();
+			marcasDto.setDidCatEmpresas(isNull?101:tbSiaMarc.getTbSiaCategoriasEmpresa().getDid());
+			marcasDto.setNomCatEmpresas(tbSiaMarc.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			isNull = null == tbSiaMarc.getTbSiaPais().getDid();
+			marcasDto.setDidPais(isNull?101:tbSiaMarc.getTbSiaPais().getDid());
+			marcasDto.setNomPais(tbSiaMarc.getTbSiaPais().getNomPais());
 			
 			listDto.add(marcasDto);
 		}

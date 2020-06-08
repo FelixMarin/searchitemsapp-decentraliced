@@ -8,9 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 
@@ -34,6 +34,12 @@ public class ProxyConnection {
 	private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 	
 	/*
+	 * Variables Globales
+	 */
+	@Autowired
+	private StringBuilder stringBuilder;
+	
+	/*
 	 * Constructor
 	 */
 	public ProxyConnection() {
@@ -47,7 +53,6 @@ public class ProxyConnection {
 	 */
 	public void establecerProxy() {
 		
-		StringBuilder sbResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		HttpURLConnection conn = null;
 		String[] arStrIpPort = null;
 		String output;
@@ -65,13 +70,13 @@ public class ProxyConnection {
 			try (BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())))) {
 				
 				while (Objects.nonNull(output = br.readLine())) {
-					sbResultado.append(output);
+					stringBuilder.append(output);
 				}
 			}
 			
-			if(sbResultado.length() > 0) {
-				arStrIpPort = sbResultado.toString().split(":");
-			}
+			if(stringBuilder.length() > 0) {
+				arStrIpPort = stringBuilder.toString().split(":");
+			} 
 		} catch (IOException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
@@ -89,12 +94,7 @@ public class ProxyConnection {
 		} 
 
 		System.setProperty("https.proxyHost",arStrIpPort[0]);
-		System.setProperty("https.proxyPort",arStrIpPort[1]);
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info("Proxy IP:" + arStrIpPort[0] + ":" + arStrIpPort[1]);
-		}
-		
+		System.setProperty("https.proxyPort",arStrIpPort[1]);		
 		System.setProperty("java.net.useSystemProxies", "true");
 	}
 }

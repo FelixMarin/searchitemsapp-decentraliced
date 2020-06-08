@@ -97,7 +97,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	private static Map<String,EmpresaDTO> mapEmpresas = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private static List<MarcasDTO> listTodasMarcas;
-	private static List<EmpresaDTO> listEmpresaDto;
 	private static String selectorPrecioECIOffer;
 	private static String selectorPaginaSiguienteCarrefour;
 	private static String accesoPopupPeso;
@@ -126,6 +125,9 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		
 	@Autowired
 	private ScrapingEmpresasFactory scrapingEmpFactory;
+	
+	@Autowired
+	private StringBuilder stringBuilder;
 	
 	/*
 	 * Constructor
@@ -165,7 +167,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 				 * Se establece la lista de empresas en la 
 				 * variable global estática.
 				 */
-				listEmpresaDto = iFEmpresaImpl.findAll();
+				List<EmpresaDTO> listEmpresaDto = iFEmpresaImpl.findAll();
 	
 				/**
 				 * En este punto se establece la lista de empresas
@@ -387,7 +389,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	protected String eliminarTildes(final String cadena) {
 		
 		if(Objects.isNull(cadena)) {
-			return null;
+			return StringUtils.EMPTY;
 		}
 		
 		if(cadena.indexOf(CHAR_ENIE_COD) != -1) {
@@ -412,7 +414,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	protected Pattern createPatternProduct(final String[] arProducto) {
 
 		List<String> tokens = new ArrayList<>(NumberUtils.INTEGER_ONE);
-		StringBuilder pattSb = new StringBuilder(NumberUtils.INTEGER_ONE);
+		stringBuilder.setLength(0);
 		
 		/**
 		 * Se añaden todas las palabras que componen 
@@ -423,20 +425,20 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		}
 		
 		//INI - Bloque de código donde se forma el patrón.
-		pattSb.append("(");
+		stringBuilder.append("(");
 		for (String string : tokens) {
-			pattSb.append(".*").append(string);
+			stringBuilder.append(".*").append(string);
 		}
-		pattSb.append(")");
+		stringBuilder.append(")");
 		
 		Collections.reverse(tokens);
 		
-		pattSb.append("|(");
+		stringBuilder.append("|(");
 		for (String string : tokens) {
-			pattSb.append(".*")
+			stringBuilder.append(".*")
 			.append(string);
 		}
-		pattSb.append(")");
+		stringBuilder.append(")");
 		//FIN - Bloque de código donde se forma el patrón.
 		
 		
@@ -445,7 +447,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		 * patrón creado a partir del patrón
 		 * en formato String. 
 		 */
-		return Pattern.compile(pattSb.toString());
+		return Pattern.compile(stringBuilder.toString());
 	}
 	
 	/**
@@ -494,16 +496,16 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		/**
 		 * El método de extracción de datos es diferente en cada empresa.
 		 */
-		if(getMapEmpresas().get(MERCADONA).getDid() == urlDto.getDidEmpresa()) {
+		if(getMapEmpresas().get(MERCADONA).getDid().equals(urlDto.getDidEmpresa())) {
 			
 			strResult = scrapingMercadona.getResult(elem, cssSelector);
 			
-		} else if(getMapEmpresas().get(CONDIS).getDid() == urlDto.getDidEmpresa() &&
+		} else if(getMapEmpresas().get(CONDIS).getDid().equals(urlDto.getDidEmpresa()) &&
 				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
 			
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
 			
-		} else if(getMapEmpresas().get(ELCORTEINGLES).getDid() == urlDto.getDidEmpresa() &&
+		} else if(getMapEmpresas().get(ELCORTEINGLES).getDid().equals(urlDto.getDidEmpresa()) &&
 				elem.select(getSelectorPrecioECIOffer()).size() > 0) {
 			
 			strResult = elem.selectFirst(getSelectorPrecioECIOffer()).text();
@@ -769,7 +771,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		StringBuilder resultado = new StringBuilder(NumberUtils.INTEGER_ONE);
+		stringBuilder.setLength(0);
 		
 		/**
 		 * Se corta el nombre del producto y se añade e un array.
@@ -786,12 +788,12 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		}
 		
 		for (int i = 0; i < nomProdSeparado.length; i++) {
-			if(!nomProdSeparado[i].equals(nomProdSeparado[i].toUpperCase())) {
-				resultado.append(nomProdSeparado[i]).append(StringUtils.SPACE);
+			if(!nomProdSeparado[i].equalsIgnoreCase(nomProdSeparado[i])) {
+				stringBuilder.append(nomProdSeparado[i]).append(StringUtils.SPACE);
 			}
 		}
 		
-		return resultado.toString();
+		return stringBuilder.toString();
 	}	
 	
 	/**
@@ -806,7 +808,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			final String strUrl) throws MalformedURLException {
 		
 		int iend = -1;
-		String caracteres;
 		
 		/**
 		 * Se valida el párametro de entrada.
@@ -837,22 +838,23 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		/**
 		 * En este punto se compone la URL de la imagen del producto.
 		 */
+		String caracteres = StringUtils.EMPTY;
 		if(Objects.nonNull(strResult) && strResult.trim().startsWith(DOBLE_BARRA)) {
 			caracteres = HTTPS.concat(strResult);
 		} else if(Objects.nonNull(strResult) && strResult.trim().startsWith(BARRA)) {
 			caracteres = strUrlEmpresa.concat(strResult); 
-		} else {
+		} else if(Objects.nonNull(strResult)){
 			caracteres = strResult;
 		}
-		
+		 
 		String resultado = caracteres.replaceAll(LEFT_PARENTHESIS, StringUtils.EMPTY);
 		resultado = resultado.replaceAll(RIGTH_PARENTHESIS, StringUtils.EMPTY);
 		
-		resultado = resultado.replaceAll("€", " eur");
-		resultado = resultado.replaceAll("Kilo", "kg");
-		resultado = resultado.replaceAll(" / ", "/");
-		resultado = resultado.replaceAll(" \"", "\"");
-		
+		resultado = resultado.replace("€", " eur");
+		resultado = resultado.replace("Kilo", "kg");
+		resultado = resultado.replace(" / ", "/");
+		resultado = resultado.replace(" \"", "\"");
+		 
 		return resultado;
 	}	
 	
@@ -873,20 +875,21 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		final StringBuilder sbResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
+		stringBuilder.setLength(0);
+		
 		if (iTipo == 0) {
-			sbResultado.append(strCadena);
+			stringBuilder.append(strCadena);
 		}
 		final int dif = iLongitud - strCadena.length();
 		for (int i = 0; i < dif; i++) {
-			sbResultado.append(chrCaracter);
+			stringBuilder.append(chrCaracter);
 		}
 
 		if (iTipo == 1) {
-			sbResultado.append(strCadena);
+			stringBuilder.append(strCadena);
 		}
 
-		return sbResultado.toString();
+		return stringBuilder.toString();
 	}
 	
 	private String extraerValorDelElemento(int l, Element elem, List<String> lista, String cssSelector) {

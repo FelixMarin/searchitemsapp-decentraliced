@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
@@ -25,6 +26,12 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsHeadersLoginParser.class);  
 	
+	@Autowired
+	ParamsLoginDTO paramsLoginDto;
+	
+	@Autowired
+	TbSiaParamsHeadersLogin tbSiaParamsFormLogin;
+	
 	/*
 	 * Constructor
 	 */
@@ -38,20 +45,18 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 	 * @param TbSiaParamsHeadersLogin
 	 * @return ParamsLoginDTO
 	 */
-	public ParamsLoginDTO toDTO(TbSiaParamsHeadersLogin tbSiaParamsFormLogin) {
+	public ParamsLoginDTO toDTO(TbSiaParamsHeadersLogin tbSiaParamsHeadersLog) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		ParamsLoginDTO paramsLoginDto = new ParamsLoginDTO();
-		
-		paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
-		paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
-		paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-		paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
-		paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());
-		paramsLoginDto.setBolActivo(tbSiaParamsFormLogin.getBolActivo());
+		paramsLoginDto.setDid(tbSiaParamsHeadersLog.getDid());
+		paramsLoginDto.setParamClave(tbSiaParamsHeadersLog.getParamClave());
+		paramsLoginDto.setParamValor(tbSiaParamsHeadersLog.getParamValor());
+		paramsLoginDto.setDidUrl(tbSiaParamsHeadersLog.getTbSiaUrl().getDid());
+		paramsLoginDto.setNomUrl(tbSiaParamsHeadersLog.getTbSiaUrl().getNomUrl());
+		paramsLoginDto.setBolActivo(tbSiaParamsHeadersLog.getBolActivo());
 		
 		return paramsLoginDto;
 	}
@@ -68,8 +73,6 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		
-		TbSiaParamsHeadersLogin tbSiaParamsFormLogin = new TbSiaParamsHeadersLogin();
 		
 		tbSiaParamsFormLogin.setDid(paramsLoginDto.getDid());
 		tbSiaParamsFormLogin.setParamClave(paramsLoginDto.getParamClave());
@@ -96,16 +99,15 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 		}
 		
 		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
-		ParamsLoginDTO paramsLoginDto;
 		
-		for (TbSiaParamsHeadersLogin tbSiaParamsFormLogin : listTbSiaParamsFormLogin) {
+		for (TbSiaParamsHeadersLogin tbSiaParamsHeadersLog : listTbSiaParamsFormLogin) {
 			paramsLoginDto = new ParamsLoginDTO();
-			paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
-			paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
-			paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-			paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
-			paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());	
-			paramsLoginDto.setBolActivo(tbSiaParamsFormLogin.getBolActivo());
+			paramsLoginDto.setDid(tbSiaParamsHeadersLog.getDid());
+			paramsLoginDto.setParamClave(tbSiaParamsHeadersLog.getParamClave());
+			paramsLoginDto.setParamValor(tbSiaParamsHeadersLog.getParamValor());
+			paramsLoginDto.setDidUrl(tbSiaParamsHeadersLog.getTbSiaUrl().getDid());
+			paramsLoginDto.setNomUrl(tbSiaParamsHeadersLog.getTbSiaUrl().getNomUrl());	
+			paramsLoginDto.setBolActivo(tbSiaParamsHeadersLog.getBolActivo());
 			listParamsLoginDto.add(paramsLoginDto);
 		}
 		

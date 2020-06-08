@@ -6,14 +6,16 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.NomProductoDTO;
 import com.searchitemsapp.entities.TbSiaNomProducto;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFNomProductoRepository;
 
 /**
@@ -26,15 +28,16 @@ import com.searchitemsapp.repository.IFNomProductoRepository;
  */
 @SuppressWarnings("unchecked")
 @Repository
-public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto> implements IFNomProductoRepository {
+public class NomProductoDao extends AbstractDao implements IFNomProductoRepository {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(NomProductoDao.class);     
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales
 	 */
-	private static final String NOM_PRODUCTO_PARSER = "NOM_PRODUCTO_PARSER";
-
+	@Autowired
+	private IFParser<NomProductoDTO, TbSiaNomProducto> parser;
+		
 	/*
 	 * Constructor
 	 */
@@ -60,29 +63,25 @@ public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.nomproducto.select.all"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
-		
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.nomproducto.select.all"));
+				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaNomProducto.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaNomProducto.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			resultado = getParser(NOM_PRODUCTO_PARSER).toListDTO(((List<TbSiaNomProducto>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaNomProducto>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -96,6 +95,6 @@ public class NomProductoDao extends AbstractDao<NomProductoDTO, TbSiaNomProducto
 	 */
 	@Override
 	public NomProductoDTO findByDid(Integer did) throws IOException {
-		return getParser(NOM_PRODUCTO_PARSER).toDTO(getEntityManager().find(TbSiaNomProducto.class, did));
+		throw new NotImplementedException();
 	}
 }

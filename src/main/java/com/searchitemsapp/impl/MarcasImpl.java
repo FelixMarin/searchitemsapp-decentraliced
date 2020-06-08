@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +36,9 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 	 */
 	@Autowired
 	private IFMarcasRepository marcasDao;
+	
+	@Autowired
+	private StringBuilder stringBuilder;
 
 	/*
 	 * Constructor
@@ -85,19 +87,18 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(marcasDTO)) {
-			return null;
+			return new MarcasDTO();
 		}		
 		
 		/**
 		 * Traza de log que escribe identificador de la marca.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.marcas.dto.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(marcasDTO.getDid());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.dto.txt"))
+		.append(StringUtils.SPACE)
+		.append(marcasDTO.getDid());
 
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**

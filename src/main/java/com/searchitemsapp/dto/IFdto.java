@@ -1,7 +1,7 @@
 package com.searchitemsapp.dto;
 
 /**
- * Interfaz implementada por todos
+ * Interfaz implementada por all
  * las clases de tipo Data Transfer 
  * Object (DTO).
  * 

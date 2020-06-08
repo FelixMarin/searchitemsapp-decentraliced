@@ -41,6 +41,9 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	@Autowired
 	private IFUrlRepository urlDao;
 	
+	@Autowired
+	private StringBuilder stringBuilder;
+	
 	/*
 	 * Constructor
 	 */
@@ -63,16 +66,15 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		}
 		
 		if(Objects.isNull(urlDTO)) {
-			return null;
+			return new UrlDTO();
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(urlDTO.getDid());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		.append(StringUtils.SPACE)
+		.append(urlDTO.getDid());
 		
 			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(debugMessage.toString(),this.getClass());
+				LOGGER.info(stringBuilder.toString(),this.getClass());
 			}
 			
 		return urlDao.findByDid(urlDTO.getDid());
@@ -108,7 +110,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		if(Objects.isNull(paisDto) ||
 				Objects.isNull(categoriaDto) ||
 				StringUtils.EMPTY.contentEquals(strIdsEmpresas)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		if("ALL".equalsIgnoreCase(strIdsEmpresas)) {
@@ -151,12 +153,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	
 	private String[] tokenizeString(final String cadena, final String token) {
 		
-		StringTokenizer st = new StringTokenizer(cadena, token); 
-		
-		if(Objects.isNull(st)) {
-			return null;
-		}
-		
+		StringTokenizer st = new StringTokenizer(cadena, token); 		
 		List<String> listaAux = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		while (st.hasMoreElements()) {

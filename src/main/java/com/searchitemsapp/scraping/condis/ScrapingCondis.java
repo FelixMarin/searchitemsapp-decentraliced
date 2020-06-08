@@ -125,7 +125,7 @@ public class ScrapingCondis extends AbstractScrapingEmpresas implements IFScracp
 							resultado.length()).length()  == 2) {
 				resultado += ZERO_STRING;
 			}else {
-				resultado.concat(DECIMALES_STRING);
+				resultado = resultado.concat(DECIMALES_STRING);
 			}
 		}
 		

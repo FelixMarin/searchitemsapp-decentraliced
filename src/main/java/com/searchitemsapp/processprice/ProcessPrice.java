@@ -105,7 +105,7 @@ public class ProcessPrice {
 				
 				/**
 				 * Se formatea el precio. Se quita la información
-				 * no relevante y se deja estandarizado para todos
+				 * no relevante y se deja estandarizado for all
 				 * los productos en el mismo formato.
 				 */
 				estilizarPrecios(a,b);
@@ -141,7 +141,7 @@ public class ProcessPrice {
 				
 				/**
 				 * Se formatea el precio. Se quita la información
-				 * no relevante y se deja estandarizado para todos
+				 * no relevante y se deja estandarizado for all
 				 * los productos en el mismo formato.
 				 */
 				estilizarPrecios(a,b);

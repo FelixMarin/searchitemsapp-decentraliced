@@ -15,7 +15,7 @@ import com.searchitemsapp.services.IFService;
 import com.searchitemsapp.services.ServiceFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/context-servicefactory-test.xml"})
+@ContextConfiguration(locations={"file:src/main/resources/context-servicefactory-test.xml"})
 @WebAppConfiguration
 public class ServiceFactoryTest {
 	

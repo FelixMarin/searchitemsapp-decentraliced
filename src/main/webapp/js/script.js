@@ -17,6 +17,8 @@ function init() {
     }, false);
 
     $("img.imglogo").imgCheckbox();
+    
+    return this;
 }
 
 function desplazarbarra() {
@@ -466,4 +468,6 @@ function resize() {
         
 
     }
+    
+    return this;
 }

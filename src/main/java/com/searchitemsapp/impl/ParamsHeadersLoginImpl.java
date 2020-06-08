@@ -1,6 +1,7 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,9 +17,6 @@ import com.searchitemsapp.dao.ParamsHeadersLoginDao;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.repository.IFParamsHeadersLogin;
-
-
-
 
 /**
  * Implementación del dao {@link ParamsHeadersLoginDao}.
@@ -39,6 +37,9 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 	 */
 	@Autowired
 	private IFParamsHeadersLogin paramsHeadersLoginDao;
+	
+	@Autowired
+	private StringBuilder stringBuilder;
 	
 	/*
 	 * Constructor
@@ -85,19 +86,18 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(paramsLoginDTO) || Objects.isNull(empresaDTO)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/**
 		 * Traza de log que escribe identificador de la URL.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(paramsLoginDTO.getDidUrl());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.did.txt"))
+		.append(StringUtils.SPACE)
+		.append(paramsLoginDTO.getDidUrl());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**

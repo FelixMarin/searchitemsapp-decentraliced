@@ -37,6 +37,9 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	 */
 	@Autowired
 	private IFLoginRepository loginDao;
+	
+	@Autowired
+	private StringBuilder stringBuilder;
 		
 	/*
 	 * Constructor
@@ -85,19 +88,17 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(loginDTO)) {
-			return null;
+			return new LoginDTO();
 		}
 		
 		/**
 		 * Traza de log que escribe identificador del login.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.login.dto.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(loginDTO.getDid());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.dto.txt"))
+		.append(StringUtils.SPACE).append(loginDTO.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -125,19 +126,18 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(loginDTO) || Objects.isNull(empresaDTO)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}		
 		
 		/**
 		 * Traza de log que escribe identificador de la empresa.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(empresaDTO.getDid());
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		.append(StringUtils.SPACE)
+		.append(empresaDTO.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
