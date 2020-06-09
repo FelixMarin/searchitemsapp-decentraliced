@@ -37,9 +37,6 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 	@Autowired
 	private IFMarcasRepository marcasDao;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-
 	/*
 	 * Constructor
 	 */
@@ -93,6 +90,7 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 		/**
 		 * Traza de log que escribe identificador de la marca.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.dto.txt"))
 		.append(StringUtils.SPACE)
 		.append(marcasDTO.getDid());
@@ -114,6 +112,7 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<MarcasDTO> findByTbSia(MarcasDTO r, CategoriaDTO t) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 }

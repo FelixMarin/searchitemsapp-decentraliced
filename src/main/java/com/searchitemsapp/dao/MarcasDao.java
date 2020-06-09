@@ -60,6 +60,7 @@ public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.select.all"));
 		
 		/**
@@ -109,6 +110,7 @@ public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.did.txt"))
 		.append(StringUtils.SPACE).append(did);	
 		

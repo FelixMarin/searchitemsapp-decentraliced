@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -86,7 +87,7 @@ public class EmpresaParserTest {
 		
 		empresaDto.setDid(101);
 		empresaDto.setUrls(new LinkedHashMap<>());
-		LinkedHashMap<String, String> lhm = new LinkedHashMap<>();
+		Map<String, String> lhm = new LinkedHashMap<>();
 		lhm.put("DID", "101");
 		lhm.put("BOL_ACTIVO", "true");
 		lhm.put("FEC_MODIFICACION", "2020-06-05");

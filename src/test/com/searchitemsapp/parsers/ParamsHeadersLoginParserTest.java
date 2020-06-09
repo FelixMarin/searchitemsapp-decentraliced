@@ -13,19 +13,30 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class ParamsHeadersLoginParserTest {
 	
 	 private static Logger LOGGER = null;
+	 
+	 @Autowired
+	 TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin;
+	 
+	 @Autowired
+	 ParamsHeadersLoginParser parser;
+	 
+	 @Autowired
+	 ParamsLoginDTO nomProductoDto;
 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -41,12 +52,9 @@ public class ParamsHeadersLoginParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin = new TbSiaParamsHeadersLogin();
-		
 		tbSiaParamsHeadersLogin.setParamClave("clave-test");
 		tbSiaParamsHeadersLogin.setParamValor("valor-test");
 		
-		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		ParamsLoginDTO nomProductoDto = parser.toDTO(tbSiaParamsHeadersLogin);
 		
 		//- Equals -//
@@ -63,12 +71,9 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toTbSia() {
 		
-		ParamsLoginDTO nomProductoDto = new ParamsLoginDTO();
-		
 		nomProductoDto.setParamClave("clave-test");
 		nomProductoDto.setParamValor("valor-test");
 		
-		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
@@ -86,11 +91,10 @@ public class ParamsHeadersLoginParserTest {
 	public void toListDTO() {
 		
 		List<TbSiaParamsHeadersLogin> lsParamsHeadersLogin = new ArrayList<>();
-		lsParamsHeadersLogin.add(new TbSiaParamsHeadersLogin());
-		lsParamsHeadersLogin.add(new TbSiaParamsHeadersLogin());
+		tbSiaParamsHeadersLogin.setTbSiaUrl(new TbSiaUrl());
+		lsParamsHeadersLogin.add(tbSiaParamsHeadersLogin);
 		
 		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<>();
-		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		listParamsHeadersLoginDTO = parser.toListDTO(lsParamsHeadersLogin);
 		
 		assertEquals("size", 

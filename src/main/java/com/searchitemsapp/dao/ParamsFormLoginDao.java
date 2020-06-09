@@ -66,6 +66,7 @@ public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.all"));
 				
 		/**
@@ -117,6 +118,7 @@ public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.by.url"));
 		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsFormLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);

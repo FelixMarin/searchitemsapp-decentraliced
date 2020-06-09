@@ -37,10 +37,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	@Autowired
 	private IFEmpresaRepository empresaDao;
 	
-	@Autowired
-	protected StringBuilder stringBuilder;
-	
-	/*o
+	/*
 	 * Constructor
 	 */
 	public EmpresaImpl() {
@@ -92,6 +89,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE).append(empresaDto.getDid());
 		

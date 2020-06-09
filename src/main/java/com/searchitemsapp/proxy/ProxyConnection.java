@@ -10,7 +10,6 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 
@@ -32,12 +31,6 @@ public class ProxyConnection {
 	private static final String GET = "GET";
 	private static final String ACCEPT = "Accept";
 	private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-	
-	/*
-	 * Variables Globales
-	 */
-	@Autowired
-	private StringBuilder stringBuilder;
 	
 	/*
 	 * Constructor
@@ -67,6 +60,7 @@ public class ProxyConnection {
 				throw new ConnectException("HTTP error code : " + conn.getResponseCode());
 			}
 			
+			StringBuilder stringBuilder = new StringBuilder(1);
 			try (BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())))) {
 				
 				while (Objects.nonNull(output = br.readLine())) {

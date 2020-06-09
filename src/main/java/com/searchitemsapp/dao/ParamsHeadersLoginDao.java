@@ -61,6 +61,7 @@ public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeader
 		
 		List<ParamsLoginDTO> resultado = null;
 		
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
 		
 		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsHeadersLogin.class);
@@ -91,6 +92,7 @@ public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeader
 		
 		List<ParamsLoginDTO> listParamsLoginDto = null;
 		
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
 		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsHeadersLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);

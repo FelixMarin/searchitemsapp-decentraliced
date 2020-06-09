@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -124,13 +125,13 @@ public class UrlComposer extends ScrapingLoginUnit {
 			 */
 			String productoTratado;	
 			if(urlDto.getBolActivo().booleanValue()) {
-				if(getMapEmpresas().get(EROSKI).getDid().equals(urlDto.getDidEmpresa())) {
+				if(mapEmpresas.get(EROSKI).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reemplazarCaracteresEroski(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(SIMPLY).getDid().equals(urlDto.getDidEmpresa())) {
+				} else if(mapEmpresas.get(SIMPLY).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reeplazarCaracteresSimply(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(CONDIS).getDid().equals(urlDto.getDidEmpresa())) {
+				} else if(mapEmpresas.get(CONDIS).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reeplazarTildesCondis(producto);
 					productoTratado = reeplazarCaracteresCondis(productoTratado);
 					productoTratado = tratarProducto(productoTratado);
@@ -204,7 +205,7 @@ public class UrlComposer extends ScrapingLoginUnit {
 			}
 			
 			if(Objects.nonNull(selectoresCssDTO)) {	
-				LinkedHashMap<String, String> mapSelectores  = new LinkedHashMap<>();
+				Map<String, String> mapSelectores  = new LinkedHashMap<>();
 				mapSelectores.put("SCRAP_PATTERN", selectoresCssDTO.getScrapPattern());
 				mapSelectores.put("SCRAP_NO_PATTERN", selectoresCssDTO.getScrapNoPattern());
 				mapSelectores.put("SEL_IMAGE", selectoresCssDTO.getSelImage());

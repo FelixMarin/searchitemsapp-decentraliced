@@ -36,9 +36,6 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	@Autowired
 	private IFCategoriaRepository categoriaDao;
 	
-	@Autowired
-	protected StringBuilder stringBuilder;
-	
 	/*
 	 * Constructor
 	 */
@@ -87,6 +84,7 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.dto.txt"))
 		.append(StringUtils.SPACE).append(categoriaDto.toString());
 		
@@ -107,6 +105,7 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	 */
 	@Override
 	public List<CategoriaDTO> findByTbSia(CategoriaDTO categoriaDTO, EmpresaDTO empresaDTO) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 }

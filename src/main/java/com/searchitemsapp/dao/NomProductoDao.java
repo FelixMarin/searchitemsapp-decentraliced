@@ -63,6 +63,7 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.nomproducto.select.all"));
 				
 		/**

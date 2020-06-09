@@ -64,6 +64,7 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.all"));		
 
 		
@@ -129,8 +130,6 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
-		
-		stringBuilder.setLength(0);
 		
 		return categoriaDTO;
 	}

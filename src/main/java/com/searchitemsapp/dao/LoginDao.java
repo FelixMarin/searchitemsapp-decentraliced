@@ -63,6 +63,7 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.select.all"));
 				
 		/**
@@ -125,8 +126,6 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
-		
 		return loginDto;
 	}
 
@@ -161,6 +160,7 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.select.by.did.categoria"));
 		
 		/**

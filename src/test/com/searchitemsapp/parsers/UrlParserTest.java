@@ -5,26 +5,41 @@ import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaSelectoresCss;
 import com.searchitemsapp.entities.TbSiaUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class UrlParserTest {
 	
 	 private static Logger LOGGER = null;
+	 
+	 @Autowired
+	 TbSiaUrl tbSiaUrl;
+	 
+	 @Autowired
+	 UrlParser parser;
+	 
+	 
+	 @Autowired
+	 UrlDTO urlDto;
 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -40,12 +55,9 @@ public class UrlParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaUrl tbSiaUrl = new TbSiaUrl();
-		
 		tbSiaUrl.setNomUrl("test");
 		tbSiaUrl.setDid(1111);
 		
-		UrlParser parser = new UrlParser();
 		UrlDTO urlDto = parser.toDTO(tbSiaUrl);
 		
 		//- Equals -//
@@ -67,12 +79,15 @@ public class UrlParserTest {
 	@Test
 	public void toTbSia() {
 		
-		UrlDTO urlDto = new UrlDTO();
-		
 		urlDto.setNomUrl("test");
 		urlDto.setDid(1111);
+		urlDto.setDidEmpresa(101);
+		Map<String, String> lhm = new LinkedHashMap<>();
+		lhm.put("DID", "101");
+		lhm.put("BOL_ACTIVO", "true");
+		lhm.put("FEC_MODIFICACION", "2020-06-05");
+		urlDto.setSelectores(lhm);
 		
-		UrlParser parser = new UrlParser();
 		TbSiaUrl tbSiaUrl = parser.toTbSia(urlDto);
 		
 		//- Equals -//
@@ -95,11 +110,11 @@ public class UrlParserTest {
 	public void toListDTO() {
 		
 		List<TbSiaUrl> lsUrl = new ArrayList<>();
-		lsUrl.add(new TbSiaUrl());
-		lsUrl.add(new TbSiaUrl());
+		tbSiaUrl.setTbSiaEmpresa(new TbSiaEmpresa());
+		tbSiaUrl.setTbSiaSelectoresCsses(new ArrayList<TbSiaSelectoresCss>());
+		lsUrl.add(tbSiaUrl);
 		
 		List<UrlDTO> listUrlDTO = new ArrayList<>();
-		UrlParser parser = new UrlParser();
 		listUrlDTO = parser.toListDTO(lsUrl);
 		
 		assertEquals("size", 
@@ -117,9 +132,7 @@ public class UrlParserTest {
 				"test","test","test","test","test"};
 		
 		lsUrl.add(objTest);
-		lsUrl.add(objTest);
 		
-		UrlParser parser = new UrlParser();
 		List<UrlDTO> listUrlDTO = parser.toListODTO(lsUrl);
 			
 		assertEquals(lsUrl.get(0)[0], "test");

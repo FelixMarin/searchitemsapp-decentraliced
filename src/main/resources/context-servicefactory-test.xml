@@ -102,7 +102,9 @@
         
         <bean id="listaProductosController" class="com.searchitemsapp.controller.ListaProductosController"></bean>
         
-            <bean id="stringBuilder" class="java.lang.StringBuilder"></bean>  
+      <util:map id="mapDynScraping" map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="java.lang.Boolean"></util:map>
+	  <util:map id="mapEmpresas" map-class="java.util.HashMap" key-type="java.lang.String" value-type="com.searchitemsapp.dto.EmpresaDTO"></util:map>
+      <util:list id="listTodasMarcas" value-type="com.searchitemsapp.dto.MarcasDTO"></util:list>
         
       <bean id="categoriaDTO" class="com.searchitemsapp.dto.CategoriaDTO"></bean>  
       <bean id="empresaDTO" class="com.searchitemsapp.dto.EmpresaDTO"></bean> 

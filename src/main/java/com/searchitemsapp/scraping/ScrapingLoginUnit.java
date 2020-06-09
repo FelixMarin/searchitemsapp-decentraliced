@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
@@ -101,11 +102,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 	public Map<String, String> checkingHtmlLoginDocument(
 			String didPais, String didCategoria, int iIdEmpresa,  
 			Map<Integer,Map<String,String>> mapaCookies) throws IOException {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
+			
 		ResultadoDTO auxResDto = null;
 		
 		/**
@@ -264,7 +261,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		 * con el que se va a logear la aplicaión al sitio web.
 		 */
 		List<LoginDTO> listloginDto = loginImpl.findByTbSia(loginDTO, empresaDTO);
-		String b64login = "null";
+		String b64login = StringUtils.EMPTY;
         
 		/**
 		 * Se concatenan tanto el usuario como la contraseña 

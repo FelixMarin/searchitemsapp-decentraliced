@@ -45,8 +45,8 @@ public class ListaProductosController {
 	@Qualifier("listaProductosValidator")
 	private ListaProductosValidator validator;
 	
-	//@Autowired
-	//private ProxyConnection proxyConnection;
+//	@Autowired
+//	private ProxyConnection proxyConnection;
 	
 	/**
 	 * @GetMapping para asignar solicitudes HTTP GET a métodos de 
@@ -96,7 +96,7 @@ public class ListaProductosController {
 			 * se solicita una nueva IP de proxy a una API REST
 			 * externa.
 			 */
-			 //proxyConnection.establecerProxy();
+//			 proxyConnection.establecerProxy();
 			
 			 /**
 			  * Llamada al servicio a través del service factory.

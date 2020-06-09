@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
+import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.scraping.ScrapingUnit;
 import com.searchitemsapp.scraping.UrlComposer;
@@ -41,6 +42,9 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListadoProductosService.class);  
 	
+	/*
+	 * Constantes Globales
+	 */
 	private static final String ERROR_RESULT = "[{\"request\": \"Error\", " 
 			+ "\"id\" : \"-1\", "
 			+ "\"description\": \"No hay resultados\"}]";
@@ -48,17 +52,12 @@ public class ListadoProductosService implements IFService<String,String> {
 	/*
 	 * Variables Globales
 	 */
-	private static boolean isCached;
-	
 	@Autowired
 	private UrlComposer urlComposer;
 	
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-
 	/*
 	 * Constructor
 	 */
@@ -86,11 +85,8 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * Se cargan en cache los parametros usados por 
 		 * la aplicación. solo se ejecuta una vez.
 		 */
-		if(!isCached) {
-			urlComposer.staticData();
-			urlComposer.cargarTodasLasMarcas();
-			isCached=true;
-		}
+		  urlComposer.applicationData();
+		  urlComposer.cargarTodasLasMarcas();
 		
 		/**
 		 * En este punto se recogen los parametros de entrada
@@ -123,6 +119,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			/**
 			 * Se traza el log con el identificador de la categoría.
 			 */
+			 StringBuilder stringBuilder = new StringBuilder(1);
 			stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"))
 			.append(didCategoria);
 
@@ -135,8 +132,9 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * indicados en la request. Se reemplaza el patron '{1}' por el nombre 
 			 * del producto a buscar.
 			 */
+			List<SelectoresCssDTO> lselectores = urlComposer.listSelectoresCssPorEmpresa(empresas);
 			Collection<UrlDTO> lResultDtoUrlsTratado = urlComposer.replaceWildcardCharacter(didPais, 
-					didCategoria, producto, empresas, urlComposer.getListTodosSelectoresCss());
+					didCategoria, producto, empresas, lselectores);
 
 			/**
 			 * ArrayList que contiene un objeto encargado de scrapear el producto

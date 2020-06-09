@@ -38,9 +38,6 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	@Autowired
 	private IFLoginRepository loginDao;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-		
 	/*
 	 * Constructor
 	 */
@@ -94,6 +91,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		/**
 		 * Traza de log que escribe identificador del login.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.dto.txt"))
 		.append(StringUtils.SPACE).append(loginDTO.getDid());
 		
@@ -132,6 +130,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		/**
 		 * Traza de log que escribe identificador de la empresa.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(empresaDTO.getDid());

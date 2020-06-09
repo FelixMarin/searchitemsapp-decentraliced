@@ -70,6 +70,7 @@ public class PaisDao extends AbstractDao implements IFPaisRepository {
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE).append(did);	
 		

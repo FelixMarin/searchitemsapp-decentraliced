@@ -65,6 +65,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.all"));		
 		
 		/**
@@ -115,6 +116,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE).append(did);
 
@@ -167,7 +169,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		stringBuilder.setLength(0);
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.pais.categoria"));
 				
 		/**
@@ -229,6 +231,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.bollogin"));
 		
 		/**

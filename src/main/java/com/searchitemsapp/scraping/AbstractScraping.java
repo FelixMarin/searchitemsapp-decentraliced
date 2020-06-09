@@ -9,13 +9,14 @@ import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -89,18 +90,19 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	private static final String DOT_STRING = ".";
 	private static final String COMMA_STRING = ",";
 	private static final String PIPE_STRING = "|";
+	private static final String SCRIPT = "script";
 	
 	/*
 	 * Variables Globales
 	 */
-	private static final String SCRIPT = "script";
-	private static Map<String,EmpresaDTO> mapEmpresas = new HashMap<>(NumberUtils.INTEGER_ONE);
-	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(NumberUtils.INTEGER_ONE);
-	private static List<MarcasDTO> listTodasMarcas;
-	private static String selectorPrecioECIOffer;
-	private static String selectorPaginaSiguienteCarrefour;
-	private static String accesoPopupPeso;
-	private static List<SelectoresCssDTO> listTodosSelectoresCss;
+	@Resource(name="listTodasMarcas")
+	private List<MarcasDTO> listTodasMarcas;
+	
+	@Resource(name="mapEmpresas")
+	protected Map<String,EmpresaDTO> mapEmpresas;
+	
+	@Resource(name="mapDynScraping")
+	private Map<Integer,Boolean> mapDynScraping;
 	
 	@Autowired
 	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
@@ -126,9 +128,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	@Autowired
 	private ScrapingEmpresasFactory scrapingEmpFactory;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-	
 	/*
 	 * Constructor
 	 */
@@ -141,55 +140,32 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	 * de las peticiones. Este método solo se ejecuta una vez,
 	 * los datos se cachean mientras esté la aplicación activa.
 	 */
-	public void staticData() {
+	public void applicationData() {
 		
 		try {
 			
 			/**
-			 * El listado de selectores se rellena la primera vez que
-			 * se ejecuta la aplicación. Si es nulo se relealiza una
-			 * consulta a bbdd para traer los selectores css que se
-			 * utilizarán para extraer la información de la páginas
-			 * web revisadas. 
+			 * Se cargan todas las marcas de 
+			 * productos desde la base de datos.
 			 */
-			if(Objects.isNull(listTodosSelectoresCss)) {
-				listTodosSelectoresCss = selectoresCssImpl.findAll();
-			}	
+			listTodasMarcas = iFMarcasImp.findAll();
 			
 			/**
-			 * Solo se ejecutará esta condición cuando el mapa 
-			 * de empresas está vacío. Eso solo pasará una vez
-			 * ya que se trata de una variable estática.
+			 * Se establece la lista de empresas en la 
+			 * variable global estática.
 			 */
-			if(mapEmpresas.isEmpty()) {
-				
-				/**
-				 * Se establece la lista de empresas en la 
-				 * variable global estática.
-				 */
-				List<EmpresaDTO> listEmpresaDto = iFEmpresaImpl.findAll();
-	
-				/**
-				 * En este punto se establece la lista de empresas
-				 * en la variable estática global y se indica en otro
-				 * mapa el tipo de raspado que se va a utilizar en el
-				 * proceso. 
-				 */
-				for (EmpresaDTO empresaDTO : listEmpresaDto) {
-					mapEmpresas.put(empresaDTO.getNomEmpresa(),empresaDTO);
-					mapDynScraping.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
-				}
-				
-				/**
-				 * Se setean algunas variables obtenidas de las propiedades.
-				 * Esta variables se cargan de forma estática al arrancar la
-				 * aplicación. Se utilizan durante el proceso de la solicitud.
-				 */
-		
-				selectorPrecioECIOffer= CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer");
-				selectorPaginaSiguienteCarrefour = CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour");
-				accesoPopupPeso = CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso");
-			}
+			List<EmpresaDTO> listEmpresaDto = iFEmpresaImpl.findAll();
+
+			/**
+			 * En este punto se establece la lista de empresas
+			 * en la variable estática global y se indica en otro
+			 * mapa el tipo de raspado que se va a utilizar en el
+			 * proceso. 
+			 */
+			for (EmpresaDTO empresaDTO : listEmpresaDto) {
+				mapEmpresas.put(empresaDTO.getNomEmpresa(), empresaDTO);
+				mapDynScraping.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
+			}		
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
@@ -215,9 +191,38 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		}
 	}
 	
-	public List<SelectoresCssDTO> getListTodosSelectoresCss() {
-		return listTodosSelectoresCss;
+	public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(final String didEmpresas) throws IOException {
+
+		String emp;
+		
+		if("ALL".equalsIgnoreCase(didEmpresas)) {
+			emp = CommonsPorperties.getValue("flow.value.all.id.empresa");
+		} else {
+			emp = didEmpresas;
+		}
+				
+		StringTokenizer st = new StringTokenizer(emp, COMMA_STRING); 			
+		SelectoresCssDTO selectoresCssDto = new SelectoresCssDTO();
+		List<Integer> listaAux = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		
+		while (st.hasMoreElements()) {
+			listaAux.add(Integer.parseInt(String.valueOf(st.nextElement())));
+			
+		}
+		
+		List<SelectoresCssDTO> listaSelectoresResultado = new ArrayList<>();
+		
+		for (Integer didEmpresa : listaAux) {
+			EmpresaDTO empresaDto = new EmpresaDTO();
+			empresaDto.setDid(didEmpresa);			
+			List<SelectoresCssDTO> lsel = selectoresCssImpl.findByTbSia(selectoresCssDto, empresaDto);
+			listaSelectoresResultado.addAll(lsel);
+		}
+
+		
+		return listaSelectoresResultado;
 	}
+	
 	
 	/**
 	 * Con esta metodo se comprueba el Status code de la respuesta que recibo al hacer
@@ -414,7 +419,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	protected Pattern createPatternProduct(final String[] arProducto) {
 
 		List<String> tokens = new ArrayList<>(NumberUtils.INTEGER_ONE);
-		stringBuilder.setLength(0);
 		
 		/**
 		 * Se añaden todas las palabras que componen 
@@ -425,6 +429,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		}
 		
 		//INI - Bloque de código donde se forma el patrón.
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append("(");
 		for (String string : tokens) {
 			stringBuilder.append(".*").append(string);
@@ -470,7 +475,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		 * Si nulos retorna nulo.
 		 */
 		if(Objects.isNull(cssSelector) || StringUtils.EMPTY.equals(cssSelector)) {
-			return "null";
+			return StringUtils.EMPTY;
 		}
 		
 		List<String> lista = new ArrayList<>(NumberUtils.INTEGER_ONE);
@@ -496,20 +501,17 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		/**
 		 * El método de extracción de datos es diferente en cada empresa.
 		 */
-		if(getMapEmpresas().get(MERCADONA).getDid().equals(urlDto.getDidEmpresa())) {
+		if(mapEmpresas.get(MERCADONA).getDid().equals(urlDto.getDidEmpresa())) {
 			
 			strResult = scrapingMercadona.getResult(elem, cssSelector);
 			
-		} else if(getMapEmpresas().get(CONDIS).getDid().equals(urlDto.getDidEmpresa()) &&
+		} else if(mapEmpresas.get(CONDIS).getDid().equals(urlDto.getDidEmpresa()) &&
 				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
 			
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
 			
-		} else if(getMapEmpresas().get(ELCORTEINGLES).getDid().equals(urlDto.getDidEmpresa()) &&
-				!elem.select(getSelectorPrecioECIOffer()).isEmpty()) {
-			
-			strResult = elem.selectFirst(getSelectorPrecioECIOffer()).text();
-			
+		} else if(mapEmpresas.get(ELCORTEINGLES).getDid().equals(urlDto.getDidEmpresa())) {
+			strResult = elem.selectFirst(CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer")).text();
 		} else {
 			strResult = extraerValorDelElemento(listaSize, elem, lista, cssSelector);
 		}
@@ -536,9 +538,9 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		 * Se comprueba de que marca es el producto, dependiendo
 		 * de la misma, se ejecutará un proceso u otro.
 		 */
-		if(iIdEmpresa == getMapEmpresas().get(HIPERCOR).getDid() ||
-				iIdEmpresa == getMapEmpresas().get(DIA).getDid() ||
-				iIdEmpresa == getMapEmpresas().get(ELCORTEINGLES).getDid()) {
+		if(iIdEmpresa == mapEmpresas.get(HIPERCOR).getDid() ||
+				iIdEmpresa == mapEmpresas.get(DIA).getDid() ||
+				iIdEmpresa == mapEmpresas.get(ELCORTEINGLES).getDid()) {
 			strProducto = eliminarMarcaPrincipio(nomProducto);
 		} else {
 			strProducto = nomProducto;
@@ -606,7 +608,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		 * Dependiendo de la empresa, el tratamiento de las URLs 
 		 * extraidas del elemento se realiza de diferente forma.
 		 */
-		if(idEmpresaActual == getMapEmpresas().get(MERCADONA).getDid()) {
+		if(idEmpresaActual == mapEmpresas.get(MERCADONA).getDid()) {
 			resDto.setNomUrlAllProducts(scrapingMercadona.getUrlAll(resDto));
 			resDto.setImagen(resDto.getImagen().replace(COMMA_STRING, DOT_STRING));
 		}else {
@@ -648,22 +650,6 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		} else {
 			return URLEncoder.encode(productoTratado, StandardCharsets.UTF_8.toString());
 		}
-	}
-	
-	protected static String getSelectorPaginaSiguienteCarrefour() {
-		return selectorPaginaSiguienteCarrefour;
-	}
-
-	protected static String getAccesoPopupPeso() {
-		return accesoPopupPeso;
-	}
-	
-	protected static Map<String, EmpresaDTO> getMapEmpresas() {
-		return mapEmpresas;
-	}
-
-	protected static String getSelectorPrecioECIOffer() {
-		return selectorPrecioECIOffer;
 	}
 	
 	protected String reeplazarTildesCondis(final String producto) {
@@ -711,7 +697,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		/**
 		 * Variables con los valores necesarios para el proceso.
 		 */
-		boolean isMercadona = didEmpresa == getMapEmpresas().get(MERCADONA).getDid();	
+		boolean isMercadona = didEmpresa == mapEmpresas.get(MERCADONA).getDid();	
 		boolean bDynScrap = mapDynScraping.get(didEmpresa);
 		URL url = new URL(strUrl);
 		 
@@ -771,26 +757,28 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		stringBuilder.setLength(0);
-		
 		/**
 		 * Se corta el nombre del producto y se añade e un array.
 		 */
 		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE);
-		
 		
 		/**
 		 * Se valida el array. En caso de que sea nulo
 		 * termina el proceso.
 		 */
 		if(Objects.isNull(nomProdSeparado)) {
-			return "null";
+			return StringUtils.EMPTY;
 		}
 		
+		StringBuilder stringBuilder = new StringBuilder(1);
 		for (int i = 0; i < nomProdSeparado.length; i++) {
-			if(!nomProdSeparado[i].equalsIgnoreCase(nomProdSeparado[i])) {
-				stringBuilder.append(nomProdSeparado[i]).append(StringUtils.SPACE);
+			
+			String may = nomProdSeparado[i].toUpperCase();			
+			if(nomProdSeparado[i].equals(may)) {
+				continue;
 			}
+			
+			stringBuilder.append(nomProdSeparado[i]).append(StringUtils.SPACE);
 		}
 		
 		return stringBuilder.toString();
@@ -875,7 +863,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		stringBuilder.setLength(0);
+		StringBuilder stringBuilder = new StringBuilder(1);
 		
 		if (iTipo == 0) {
 			stringBuilder.append(strCadena);

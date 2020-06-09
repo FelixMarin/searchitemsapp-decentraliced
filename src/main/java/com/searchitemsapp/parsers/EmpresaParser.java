@@ -89,7 +89,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaPEmpresas
 					.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 			
-			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 			mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 			mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 			mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
@@ -201,7 +201,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 				TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaEmpresa
 						.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 				
-				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 				mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 				mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 				mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());

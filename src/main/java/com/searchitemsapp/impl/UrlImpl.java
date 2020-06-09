@@ -34,15 +34,18 @@ import com.searchitemsapp.repository.IFUrlRepository;
 public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlImpl.class);  
+	
+	/*
+	 * Constante Globales
+	 */
+	private static final String COMA = ",";
+	private static final String ALL = "ALL";
 
 	/*
-	 * VAriables Globales
+	 * Variables Globales
 	 */
 	@Autowired
 	private IFUrlRepository urlDao;
-	
-	@Autowired
-	private StringBuilder stringBuilder;
 	
 	/*
 	 * Constructor
@@ -69,6 +72,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 			return new UrlDTO();
 		}
 		
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(urlDTO.getDid());
@@ -113,11 +117,11 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
-		if("ALL".equalsIgnoreCase(strIdsEmpresas)) {
+		if(ALL.equalsIgnoreCase(strIdsEmpresas)) {
 			strIdsEmpresas = CommonsPorperties.getValue("flow.value.all.id.empresa");
 		}
 		
-		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, ",");
+		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, COMA);
 		List<UrlDTO> lsIdsEmpresas = new ArrayList<>(NumberUtils.INTEGER_ONE);
 				
 		List<UrlDTO> listUrlDTO = urlDao.findByDidAndDesUrl(paisDto.getDid(), String.valueOf(categoriaDto.getDid()));
@@ -139,12 +143,14 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 
 	@Override
 	public List<UrlDTO> findAll() throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 
 	@Override
 	public List<UrlDTO> findByTbSia(UrlDTO r, CategoriaDTO t) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 	
 	/*

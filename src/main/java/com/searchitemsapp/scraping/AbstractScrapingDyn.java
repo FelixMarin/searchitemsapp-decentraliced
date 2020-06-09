@@ -2,7 +2,6 @@ package com.searchitemsapp.scraping;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -40,13 +39,7 @@ public abstract class AbstractScrapingDyn {
 	
 	/*
 	 * Variables Globales
-	 */
-	/**
-	 * El web driver es estático porque 
-	 * solo se tiene que crear una sola vez.
-	 */
-	private static WebDriver webDriver;
-	
+	 */	
 	@Autowired
 	private IFScrapingConsum scrapingConsum;
 	
@@ -86,7 +79,8 @@ public abstract class AbstractScrapingDyn {
 		/**
 		 * Se inicilaiza y configura el driver.
 		 */
-		initWebDriver(0);
+		WebDriver webDriver = initWebDriver(0);
+		cleanWindows(webDriver);
 		
 		if(didConsum == didEmpresa) {			
 			resultado = scrapingConsum.getHtmlContent(webDriver, strUrl);
@@ -97,9 +91,7 @@ public abstract class AbstractScrapingDyn {
 			resultado = webDriver.getPageSource();
 		}
 		
-		if(Objects.nonNull(webDriver)) {
-			cleanWindows();
-		}
+		cleanWindows(webDriver);
 		 
 		return resultado;
 	}
@@ -116,11 +108,11 @@ public abstract class AbstractScrapingDyn {
 	 * 
 	 * @param selector
 	 */
-	private void initWebDriver(final int selector) {
+	private WebDriver initWebDriver(final int selector) {
 		if(selector == 1) {
-			setupWebDriverChrome();
+			return setupWebDriverChrome();
 		} else {
-			setupWebDriverFirefox();
+			return setupWebDriverFirefox();
 		}
 	}
 	
@@ -131,9 +123,7 @@ public abstract class AbstractScrapingDyn {
 	 * automatizar extraciones de datos de 
 	 * aplicaciones Web.
 	 */
-	private void setupWebDriverChrome() {
-		
-		if(Objects.isNull(webDriver)) {
+	private WebDriver setupWebDriverChrome() {
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--headless");
 			options.addArguments("--incognito");
@@ -146,11 +136,12 @@ public abstract class AbstractScrapingDyn {
                     .build();
 			dc.setCapability(ChromeOptions.CAPABILITY, options);
 			options.merge(dc);
-			webDriver = new ChromeDriver(chromeService, options);
+			WebDriver webDriver = new ChromeDriver(chromeService, options);
 			webDriver.manage().window().maximize();
 			webDriver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 			webDriver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
-		}
+			
+			return webDriver;
 	}
 	
 	/**
@@ -160,27 +151,27 @@ public abstract class AbstractScrapingDyn {
 	 * automatizar extraciones de datos de 
 	 * aplicaciones Web.
 	 */
-	private void setupWebDriverFirefox() {
+	private WebDriver setupWebDriverFirefox() {
 		
-		if(Objects.isNull(webDriver)) {
 			FirefoxOptions options = new FirefoxOptions();
 			options.setBinary(CommonsPorperties.getValue("folw.value.firefox.ejecutable.path"));
 			options.addArguments("-headless");
 			DesiredCapabilities dc = DesiredCapabilities.firefox();
 			dc.setCapability("moz:firefoxOptions", options);
 			options.merge(dc);
-			webDriver = new FirefoxDriver(options);
+			WebDriver webDriver = new FirefoxDriver(options);
 			webDriver.manage().window().maximize();
 			webDriver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
-			webDriver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);			
-		}
+			webDriver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);	
+			
+			return webDriver;
 	}
 	
 	/**
 	 * Funcionalidad para cerrar las ventanas que puedan
 	 * quedar abiertas en el buscador headless.
 	 */
-	private void cleanWindows() {            
+	private void cleanWindows(WebDriver webDriver) {            
         Set<String> windows = webDriver.getWindowHandles();
         Iterator<String> iter = windows.iterator();
         String[] winNames=new String[windows.size()];

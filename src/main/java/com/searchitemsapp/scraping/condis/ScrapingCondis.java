@@ -98,7 +98,7 @@ public class ScrapingCondis implements IFScracpingCondis {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		String resultado = "null";
+		String resultado = StringUtils.EMPTY;
 		Matcher matcher;
 		
 		if(Objects.isNull(elem) || StringUtils.EMPTY.contentEquals(cssSelector)) {

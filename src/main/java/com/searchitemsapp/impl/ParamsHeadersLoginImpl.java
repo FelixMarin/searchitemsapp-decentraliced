@@ -38,9 +38,6 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 	@Autowired
 	private IFParamsHeadersLogin paramsHeadersLoginDao;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-	
 	/*
 	 * Constructor
 	 */
@@ -92,6 +89,7 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 		/**
 		 * Traza de log que escribe identificador de la URL.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(paramsLoginDTO.getDidUrl());
@@ -113,6 +111,7 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 	 */
 	@Override
 	public ParamsLoginDTO findByDid(ParamsLoginDTO objeto) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}	
 }

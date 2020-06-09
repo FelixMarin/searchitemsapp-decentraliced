@@ -36,9 +36,6 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	@Autowired
 	private IFPaisRepository paisDao;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-	
 	/*
 	 * Constructor
 	 */
@@ -72,6 +69,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 		/**
 		 * Traza de log que escribe identificador del pais.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.pais.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(paisDto.getDid());
@@ -93,7 +91,8 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<PaisDTO> findAll() throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 
 	/**
@@ -103,6 +102,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<PaisDTO> findByTbSia(PaisDTO paisDTO, CategoriaDTO categoriaDTO) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 }

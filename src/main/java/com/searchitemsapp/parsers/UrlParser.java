@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -68,7 +69,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		LinkedHashMap<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+		Map<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 		
 		urlPDto.setBolActivo(tbSiaPUrl.getBolActivo());
 		urlPDto.setDesUrl(tbSiaPUrl.getDesUrl());
@@ -83,7 +84,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 			TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaPUrl
 					.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 			
-			LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 			mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 			mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 			mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
@@ -153,7 +154,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		}
 		
 		List<UrlDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
-		LinkedHashMap<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+		Map<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 		
 		for (TbSiaUrl tbSiaUrl : lsUrls) {
 			urlPDto = new UrlDTO();
@@ -170,7 +171,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 				TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaUrl
 						.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 			
-				LinkedHashMap<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
 				mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 				mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 				mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());

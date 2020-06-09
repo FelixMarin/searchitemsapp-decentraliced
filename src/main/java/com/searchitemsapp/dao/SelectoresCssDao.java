@@ -65,6 +65,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.all"));
 				
 		/**
@@ -117,6 +118,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.did.txt"))
 		.append(StringUtils.SPACE).append(did);
 
@@ -169,6 +171,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
 		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaSelectoresCss.class);
 		query.setParameter("didEmpresa", didEmpresa);

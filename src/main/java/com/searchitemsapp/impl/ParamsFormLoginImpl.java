@@ -39,9 +39,6 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	@Autowired
 	private IFParamsFormLogin paramsFormLoginDao;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-	
 	/*
 	 * Constructor
 	 */
@@ -94,6 +91,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 		/**
 		 * Traza de log que escribe identificador de la URL.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(paramsLoginDTO.getDidUrl());
@@ -115,6 +113,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	 */
 	@Override
 	public ParamsLoginDTO findByDid(ParamsLoginDTO paramsLoginDTO) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 }

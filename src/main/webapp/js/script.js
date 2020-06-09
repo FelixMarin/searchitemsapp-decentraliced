@@ -459,14 +459,12 @@ function resize() {
         }
     }
 
-    let cardinal = document.getElementsByClassName('cardinal');
+    let element = document.getElementsByClassName('cardinal');
 
-    for (let index = 0; index < cardinal.length; index++) {
-        cardinal[index].classList.remove('w-50');
-        cardinal[index].classList.remove('w-75');
-        cardinal[index].classList.add('w-100');
-        
-
+    for (let index = 0; index < element.length; index++) {
+    	element[index].classList.remove('w-50');
+    	element[index].classList.remove('w-75');
+    	element[index].classList.add('w-100');
     }
     
     return this;

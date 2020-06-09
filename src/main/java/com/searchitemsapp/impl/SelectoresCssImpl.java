@@ -38,9 +38,6 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	@Autowired
 	private IFSelectoresCssRepository selectoresCssDao;
 	
-	@Autowired
-	private StringBuilder stringBuilder;
-	
 	/*
 	 * Controlador
 	 */
@@ -94,6 +91,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		/**
 		 * Traza de log que escribe todos los valores del objeto selector css.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.valor.dto"))
 		.append(StringUtils.SPACE)
 		.append(selectorCssDto.toString());
@@ -134,6 +132,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
+		StringBuilder stringBuilder = new StringBuilder(1);
 		stringBuilder.append(CommonsPorperties.getValue("flow.value.activo"))
 		.append(StringUtils.SPACE)
 		.append(empresaDto.getDid());
