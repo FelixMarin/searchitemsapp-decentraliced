@@ -27,8 +27,8 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.ScrapingUnit;
-import com.searchitemsapp.scraping.UrlComposer;
+import com.searchitemsapp.processdata.ProcessDataModule;
+import com.searchitemsapp.processdata.UrlComposer;
 
 /**
  * @author Felix Marin Ramirez
@@ -68,7 +68,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	
 	/**
 	 * Método principal de servicio web.  Este método contiene 
-	 * toda la lógica de negocio del servicio. {@link ScrapingUnit}
+	 * toda la lógica de negocio del servicio. {@link ProcessDataModule}
 	 */
 	public String service(final String... str) {
 
@@ -103,7 +103,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * proceso de ejecución del programa.
 		 */
 		List<ResultadoDTO> listResultDtoFinal;
-		ScrapingUnit scrapingUnit;
+		ProcessDataModule scrapingUnit;
 		int contador = 0;
 		
 		/**
@@ -141,7 +141,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * en cada uno de los supermercados. Habrá un objeto por cada 
 			 * supermercado a rastrear.
 			 */
-			Collection<ScrapingUnit> callablesScrapingUnit = new ArrayList<>(NumberUtils.INTEGER_ONE);
+			Collection<ProcessDataModule> callablesScrapingUnit = new ArrayList<>(NumberUtils.INTEGER_ONE);
 
 			/**
 			 * Habrá tantas iteraciones como URLs contenga cada supermercado.
@@ -152,7 +152,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			for (UrlDTO urlDto : lResultDtoUrlsTratado) {
 				
 				scrapingUnit = applicationContext
-						.getBean(ScrapingUnit.class, urlDto, producto, 
+						.getBean(ProcessDataModule.class, urlDto, producto, 
 								didPais, didCategoria, ordenacion);
 	
 				callablesScrapingUnit.add(scrapingUnit);	

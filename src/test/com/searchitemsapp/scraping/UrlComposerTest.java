@@ -23,6 +23,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.SelectoresCssImpl;
 import com.searchitemsapp.parsers.CategoriaParserTest;
+import com.searchitemsapp.processdata.UrlComposer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")

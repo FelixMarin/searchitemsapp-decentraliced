@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.parsers.CategoriaParserTest;
+import com.searchitemsapp.processdata.ProcessDataModule;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
@@ -24,7 +25,7 @@ public class ScrapingUnitTest {
 	private static Logger LOGGER = null;
 	
 	@Autowired
-	ScrapingUnit scrapingUnit;
+	ProcessDataModule scrapingUnit;
 	
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
