@@ -79,7 +79,7 @@ public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 			}
 		}		
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}
@@ -130,7 +130,7 @@ public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}	

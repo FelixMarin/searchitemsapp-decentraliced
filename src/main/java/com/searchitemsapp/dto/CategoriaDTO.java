@@ -109,11 +109,6 @@ public class CategoriaDTO implements IFdto {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return Objects.equals(this, obj);
-	}
-
-	@Override
 	public String toString() {
 		return "CategoriaDTO [did=" + did + ", bolActivo=" + bolActivo + ", desCatEmpresa=" + desCatEmpresa
 				+ ", nomCatEmpresa=" + nomCatEmpresa + ", empresas=" + empresas + ", marcas=" + marcas + ", productos="

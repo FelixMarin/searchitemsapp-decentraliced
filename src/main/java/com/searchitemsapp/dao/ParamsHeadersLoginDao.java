@@ -74,7 +74,7 @@ public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeader
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}
@@ -106,7 +106,7 @@ public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeader
 			listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return listParamsLoginDto;
 	}

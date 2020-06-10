@@ -90,7 +90,7 @@ public class PaisDao extends AbstractDao implements IFPaisRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return paisDto;
 	}

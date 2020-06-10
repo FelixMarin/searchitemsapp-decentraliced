@@ -199,7 +199,11 @@ public abstract class ProcessDataAbstract {
 		} else {
 			emp = didEmpresas;
 		}
-				
+
+		if(StringUtils.isAllEmpty(emp)) {
+			return new ArrayList<>();
+		}
+		
 		StringTokenizer st = new StringTokenizer(emp, COMMA_STRING); 			
 		SelectoresCssDTO selectoresCssDto = new SelectoresCssDTO();
 		List<Integer> listaAux = new ArrayList<>(NumberUtils.INTEGER_ONE);
@@ -860,6 +864,10 @@ public abstract class ProcessDataAbstract {
 
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		if(StringUtils.isAllEmpty(strCadena)) {
+			return StringUtils.EMPTY;
 		}
 		
 		StringBuilder stringBuilder = new StringBuilder(1);

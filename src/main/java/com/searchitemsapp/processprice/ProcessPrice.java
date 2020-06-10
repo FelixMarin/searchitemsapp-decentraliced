@@ -165,13 +165,6 @@ public class ProcessPrice {
 	private static Double convertirDouble(final String strPrecioKilo) {
 		
 		/**
-		 * Comprueba que el parametro de entrada sea valido.
-		 */
-		if(StringUtils.EMPTY.contentEquals(strPrecioKilo)) {
-			return Double.parseDouble(DECIMALES);
-		}
-		
-		/**
 		 * Extrae el valor numérico de la cadena de caracteres.
 		 */
 		String strPrecioKiloRes = extraerDecimal(strPrecioKilo);
@@ -370,6 +363,8 @@ public class ProcessPrice {
 		 * Se formatea el precio. Se quita la información
 		 * no relevante.
 		 */
+		if(!StringUtils.isAllEmpty(a.getPrecio()) &&
+				!StringUtils.isAllEmpty(a.getPrecio())) {
 		a.setPrecio(extraerDecimal(a.getPrecio())
 				.concat(EURO_SYMBOL)
 				.replace(DOT_STRING,COMMA_STRING));	
@@ -377,14 +372,19 @@ public class ProcessPrice {
 		b.setPrecio(extraerDecimal(b.getPrecio())
 				.concat(EURO_SYMBOL)
 				.replace(DOT_STRING,COMMA_STRING));
+		}
 		
 		//precio Kilo
-		a.setPrecioKilo(extraerDecimal(a.getPrecioKilo())
+		if(!StringUtils.isAllEmpty(a.getPrecioKilo()) &&
+				!StringUtils.isAllEmpty(a.getPrecioKilo())) {
+				a.setPrecioKilo(extraerDecimal(a.getPrecioKilo())
 				.concat(BARRA_KILO_GRAM)
 				.replace(DOT_STRING,COMMA_STRING));	
 		
-		b.setPrecioKilo(extraerDecimal(b.getPrecioKilo())
+				b.setPrecioKilo(extraerDecimal(b.getPrecioKilo())
 				.concat(BARRA_KILO_GRAM)
-				.replace(DOT_STRING,COMMA_STRING));
+				.replace(DOT_STRING,COMMA_STRING));	
+		}
+
 	}
 }

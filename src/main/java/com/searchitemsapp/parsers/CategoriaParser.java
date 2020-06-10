@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -62,22 +63,29 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 		categoriaPDto.setDid(tbSiaPCategorias.getDid());
 		categoriaPDto.setNomCatEmpresa(tbSiaPCategorias.getNomCatEmpresa());
 		
-		TbSiaEmpresa tbSiaEmpresa = tbSiaPCategorias.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
-		LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-		mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
-		categoriaPDto.setEmpresas(mapEmpresa);
+		if(Objects.nonNull(tbSiaPCategorias.getTbSiaEmpresas()) &&
+				!tbSiaPCategorias.getTbSiaEmpresas().isEmpty()) {
+			TbSiaEmpresa tbSiaEmpresa = tbSiaPCategorias.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
+			categoriaPDto.setEmpresas(mapEmpresa);
+		}
 		
-		TbSiaMarcas tbSiaMarcas = tbSiaPCategorias.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
-		LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-		mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
-		categoriaPDto.setMarcas(mapMarcas);
+		if(Objects.nonNull(tbSiaPCategorias.getTbSiaMarcas()) &&
+				!tbSiaPCategorias.getTbSiaMarcas().isEmpty()) {
+			TbSiaMarcas tbSiaMarcas = tbSiaPCategorias.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
+			categoriaPDto.setMarcas(mapMarcas);
+		}
 		
-		
-		TbSiaNomProducto tbSiaNomProductos = tbSiaPCategorias.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
-		LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-		mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
-		categoriaPDto.setProductos(mapProductos);
-		
+		if(Objects.nonNull(tbSiaPCategorias.getTbSiaNomProductos()) &&
+				!tbSiaPCategorias.getTbSiaNomProductos().isEmpty()) {
+			TbSiaNomProducto tbSiaNomProductos = tbSiaPCategorias.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
+			categoriaPDto.setProductos(mapProductos);
+		}
 		return categoriaPDto;
 	}
 	
@@ -148,20 +156,29 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 			categoriaPDto.setDid(tbSiaCategoriasEmpresa.getDid());
 			categoriaPDto.setNomCatEmpresa(tbSiaCategoriasEmpresa.getNomCatEmpresa());
 			
-			TbSiaEmpresa tbSiaEmpresa = tbSiaCategoriasEmpresa.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
-			LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-			mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
-			categoriaPDto.setEmpresas(mapEmpresa);
+			if(Objects.nonNull(tbSiaCategoriasEmpresa.getTbSiaEmpresas()) &&
+					!tbSiaCategoriasEmpresa.getTbSiaEmpresas().isEmpty()) {
+				TbSiaEmpresa tbSiaEmpresa = tbSiaCategoriasEmpresa.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
+				Map<Integer, String> mapEmpresa = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
+				categoriaPDto.setEmpresas(mapEmpresa);
+			}
 			
-			TbSiaMarcas tbSiaMarcas = tbSiaCategoriasEmpresa.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
-			LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-			mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
-			categoriaPDto.setMarcas(mapMarcas);
+			if(Objects.nonNull(tbSiaCategoriasEmpresa.getTbSiaMarcas()) &&
+			!tbSiaCategoriasEmpresa.getTbSiaMarcas().isEmpty()) {
+				TbSiaMarcas tbSiaMarcas = tbSiaCategoriasEmpresa.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
+				Map<Integer, String> mapMarcas = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
+				categoriaPDto.setMarcas(mapMarcas);
+			}
 			
-			TbSiaNomProducto tbSiaNomProductos = tbSiaCategoriasEmpresa.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
-			LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-			mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
-			categoriaPDto.setProductos(mapProductos);
+			if(Objects.nonNull(tbSiaCategoriasEmpresa.getTbSiaNomProductos()) &&
+					!tbSiaCategoriasEmpresa.getTbSiaNomProductos().isEmpty()) {
+				TbSiaNomProducto tbSiaNomProductos = tbSiaCategoriasEmpresa.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
+				Map<Integer, String> mapProductos = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
+				categoriaPDto.setProductos(mapProductos);
+			}
 			
 			listDto.add(categoriaPDto);
 		}

@@ -1,4 +1,4 @@
-package com.searchitemsapp.factory;
+package com.searchitemsapp.services;
 
 import static org.junit.Assert.assertNotNull;
 

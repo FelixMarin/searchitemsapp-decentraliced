@@ -82,7 +82,7 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}

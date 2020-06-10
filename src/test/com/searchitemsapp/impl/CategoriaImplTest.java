@@ -1,4 +1,4 @@
-package com.searchitemsapp.scraping;
+package com.searchitemsapp.impl;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,43 +21,33 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.SelectoresCssImpl;
-import com.searchitemsapp.parsers.CategoriaParserTest;
-import com.searchitemsapp.processdata.UrlComposer;
+import com.searchitemsapp.dto.CategoriaDTO;
+import com.searchitemsapp.dto.EmpresaDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
-public class UrlComposerTest {
+public class CategoriaImplTest {
 	
-	private static Logger LOGGER = null;
-	
-	@Autowired
-	UrlComposer urlComposer;
-	
-	@Autowired
-	SelectoresCssImpl selectores;
+	private static Logger LOGGER = LoggerFactory.getLogger(CategoriaImplTest.class); 
 	
     @Autowired
-    ServletContext context;
-
+    private ServletContext context;
+    
+    @Autowired
+    CategoriaImpl categoriaImpl;
+	
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
     	org.apache.log4j.BasicConfigurator.configure();
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LoggerFactory.getLogger(CategoriaParserTest.class);  
     }
-	
-	@Test
-	public void testReplaceWildcardCharacter() throws IOException {
-
-		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-		
-		ServletContextEvent sve =  new ServletContextEvent(context);
-		List<UrlDTO> url = null;
+    
+    @Before
+    public void init() throws IOException {
+    	ServletContextEvent sve =  new ServletContextEvent(context);
 		
 		CommonsPorperties.loadPropertiesFile(
 				"E:\\eclipse-workspace\\properties\\flow.properties",
@@ -65,16 +56,43 @@ public class UrlComposerTest {
 		CommonsPorperties.loadPropertiesFile(
 				"E:\\eclipse-workspace\\properties\\db.properties",
 				"db.properties", sve);
-		try {
-			urlComposer.applicationData();
-			urlComposer.cargarTodasLasMarcas();
-			url = urlComposer.replaceWildcardCharacter("101","101","sal","101",selectores.findAll());
-		} catch (IOException e) {
-			LOGGER.error("ERROR",e);
-		}
+    }
+
+	@Test
+	public void testFindAll() throws IOException {
+
+		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
-		assertNotNull(url);
+		List<CategoriaDTO> cdto = categoriaImpl.findAll();
 		
+		assertNotNull(cdto);
+	}
+
+	@Test
+	public void testFindByDid() throws IOException {
+		
+		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
+		
+		CategoriaDTO categoriaDTO = new CategoriaDTO();
+		categoriaDTO.setDid(101);
+		CategoriaDTO cdto = categoriaImpl.findByDid(categoriaDTO);
+		
+		assertNotNull(cdto);
+		
+	}
+
+	@Test
+	public void testFindByTbSia() throws IOException {
+
+		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
+		
+		CategoriaDTO categoriaDTO = new CategoriaDTO();
+		EmpresaDTO empresaDTO = new EmpresaDTO();
+		categoriaDTO.setDid(101);
+		empresaDTO.setDid(101);
+		List<CategoriaDTO> cdto = categoriaImpl.findByTbSia(categoriaDTO, empresaDTO);
+		
+		assertNotNull(cdto);
 		
 	}
 

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFCategoriaRepository;
 
@@ -71,7 +70,7 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
-		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaEmpresa.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaCategoriasEmpresa.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
@@ -84,7 +83,6 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
 		
 		return resultado;
 	}

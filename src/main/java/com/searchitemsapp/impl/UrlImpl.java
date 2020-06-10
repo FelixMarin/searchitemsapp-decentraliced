@@ -113,6 +113,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		
 		if(Objects.isNull(paisDto) ||
 				Objects.isNull(categoriaDto) ||
+				StringUtils.isAllEmpty(strIdsEmpresas) ||
 				StringUtils.EMPTY.contentEquals(strIdsEmpresas)) {
 			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}

@@ -103,7 +103,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * proceso de ejecución del programa.
 		 */
 		List<ResultadoDTO> listResultDtoFinal;
-		ProcessDataModule scrapingUnit;
+		ProcessDataModule processDataModule;
 		int contador = 0;
 		
 		/**
@@ -151,11 +151,11 @@ public class ListadoProductosService implements IFService<String,String> {
 			 */
 			for (UrlDTO urlDto : lResultDtoUrlsTratado) {
 				
-				scrapingUnit = applicationContext
+				processDataModule = applicationContext
 						.getBean(ProcessDataModule.class, urlDto, producto, 
 								didPais, didCategoria, ordenacion);
 	
-				callablesScrapingUnit.add(scrapingUnit);	
+				callablesScrapingUnit.add(processDataModule);	
 			}
 			
 			/**

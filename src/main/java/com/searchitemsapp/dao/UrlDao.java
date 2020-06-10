@@ -84,7 +84,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}
@@ -136,7 +136,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 
 		return urlDto;
 	}
@@ -198,7 +198,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return listUrlDto;
 	}
@@ -259,7 +259,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return listUrlDto;
 	}
