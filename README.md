@@ -1,8 +1,9 @@
 
-# Comparador de precios de supermercados online
+# Lista de precios de productos de supermercados online
 
-Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación. La característica principal de la aplicación es la extracción de datos usando la técnica del web scraping.
-La aplicación es una API REST, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
+Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un listado de precios de productos de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada por precio con productos vendidos en supermercados online. La característica principal de la aplicación es la extracción de datos en de los sitios web se realiza en tiempo real.
+
+La aplicación es una API RESTFul, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
 
 # Herramientas
 
