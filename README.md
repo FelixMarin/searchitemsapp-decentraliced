@@ -1,5 +1,5 @@
 
-# Lista de precios de productos de supermercados online
+# Web service para obtener una lista de precios de productos de supermercados online
 
 Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un listado de precios de productos de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada por precio con productos vendidos en supermercados online. La característica principal de la aplicación es la extracción de datos en de los sitios web se realiza en tiempo real.
 
