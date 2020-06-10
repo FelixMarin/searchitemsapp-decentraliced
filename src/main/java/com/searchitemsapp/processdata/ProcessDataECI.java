@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata.hipercor;
+package com.searchitemsapp.processdata;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -13,18 +13,17 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.IFProcessDataEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
- * extracción de datos del sitio web de Hipercor.
+ * extracción de datos del sitio web de ECI.
  * 
  * @author Felix Marin Ramirez
  *
  */
-public class ProcessDataHipercor implements IFProcessDataEmpresas {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataHipercor.class);  
+public class ProcessDataECI implements IFProcessDataEmpresas {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataECI.class);  
 	
 	/*
 	 * Constasntes Globales
@@ -34,12 +33,12 @@ public class ProcessDataHipercor implements IFProcessDataEmpresas {
 	/*
 	 * Constructor
 	 */
-	public ProcessDataHipercor() {
+	public ProcessDataECI() {
 		super();
 	}
-	
+
 	/**
-	 * Compone una lista de URLs de la web de Hipercor.
+	 * Compone una lista de URLs de la empresa ECI.
 	 * Con estas URLs se realizarán las peticiones al
 	 * sitio web para extraer los datos. 
 	 * 
@@ -56,7 +55,6 @@ public class ProcessDataHipercor implements IFProcessDataEmpresas {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
 		 * del conjunto de páginas obtenidas como resultado
@@ -69,7 +67,7 @@ public class ProcessDataHipercor implements IFProcessDataEmpresas {
 		 * Se crea un string con el selector de paginación.
 		 */
 		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
-		
+
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
@@ -78,15 +76,15 @@ public class ProcessDataHipercor implements IFProcessDataEmpresas {
 		/**
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
-		 */		
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.hipercor"));
+		 */
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.eci"));
 		
 		/**
 		 * Si el elemento de paginación coincide con el patrón es
 		 * que hay más de una página web que hay que solicitar al 
 		 * sitio web.
 		 */
-		Matcher m = Pattern.compile(PATTERN).matcher(strPaginacion);		
+		Matcher m = Pattern.compile(PATTERN).matcher(strPaginacion);	
 		if(m.find()) {
 			strPaginacion=m.group(1);
 		}
@@ -119,7 +117,7 @@ public class ProcessDataHipercor implements IFProcessDataEmpresas {
 		 */
 		if(numresultados > 0 && numresultados <= listaUrls.size()) {
 			listaUrls = listaUrls.subList(0, numresultados);
-		}		
+		}	
 		
 		return listaUrls;
 	}

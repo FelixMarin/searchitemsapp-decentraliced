@@ -1,11 +1,10 @@
-package com.searchitemsapp.processdata.mercadona;
+package com.searchitemsapp.processdata;
 
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.processdata.IFProcessDataEmpresas;
 
 public interface IFProcessDataMercadona extends IFProcessDataEmpresas {
 	

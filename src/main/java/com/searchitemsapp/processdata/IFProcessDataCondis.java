@@ -1,8 +1,6 @@
-package com.searchitemsapp.processdata.condis;
+package com.searchitemsapp.processdata;
 
 import org.jsoup.nodes.Element;
-
-import com.searchitemsapp.processdata.IFProcessDataEmpresas;
 
 public interface IFProcessDataCondis extends IFProcessDataEmpresas {
 

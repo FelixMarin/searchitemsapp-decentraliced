@@ -100,7 +100,7 @@
         class="org.springframework.orm.jpa.JpaTransactionManager"
         p:entityManagerFactory-ref="entityManagerFactory" />
         
-	  <util:map id="mapDynScraping" map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="java.lang.Boolean"></util:map>
+	  <util:map id="mapDynEmpresas" map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="java.lang.Boolean"></util:map>
 	  <util:map id="mapEmpresas" map-class="java.util.HashMap" key-type="java.lang.String" value-type="com.searchitemsapp.dto.EmpresaDTO"></util:map>
       <util:list id="listTodasMarcas" value-type="com.searchitemsapp.dto.MarcasDTO"></util:list>
       
@@ -160,7 +160,7 @@
       <bean id="tbSiaUrl" class="com.searchitemsapp.entities.TbSiaUrl"></bean>
       
       <bean id="urlComposer" class="com.searchitemsapp.processdata.UrlComposer"></bean> 
-      <bean id="scrapingUnit" class="com.searchitemsapp.processdata.ProcessDataModule" scope="prototype">
+      <bean id="processDataModule" class="com.searchitemsapp.processdata.ProcessDataModule" scope="prototype">
       		<constructor-arg index="0" ref="urlDTO" />
       		<constructor-arg index="1" type="java.lang.String" value="" />
       		<constructor-arg index="2" type="java.lang.String" value="" />
@@ -168,19 +168,19 @@
       		<constructor-arg index="4" type="java.lang.String" value="" />
       </bean>
       
-      <bean id="scrapingConsum" class="com.searchitemsapp.processdata.consum.ProcessDataConsum"></bean>
-      <bean id="scrapingEroski" class="com.searchitemsapp.processdata.eroski.ProcessDataEroski"></bean>
-      <bean id="scrapingSimply" class="com.searchitemsapp.processdata.simply.ProcessDataSimply"></bean>
-      <bean id="scrapingMercadona" class="com.searchitemsapp.processdata.mercadona.ProcessDataMercadona"></bean>
-      <bean id="scrapingCondis" class="com.searchitemsapp.processdata.condis.ProcessDataCondis"></bean>
-      <bean id="scrapingHipercor" class="com.searchitemsapp.processdata.hipercor.ProcessDataHipercor"></bean>
-      <bean id="scrapingCarrefour" class="com.searchitemsapp.processdata.carrefour.ProcessDataCarrefour"></bean>
-      <bean id="scrapingDia" class="com.searchitemsapp.processdata.dia.ProcessDataDia"></bean>
-      <bean id="scrapingECI" class="com.searchitemsapp.processdata.eci.ProcessDataECI"></bean>
-      <bean id="scrapingUlabox" class="com.searchitemsapp.processdata.ulabox.ProcessDataUlabox"></bean>
-      <bean id="scrapingAlcampo" class="com.searchitemsapp.processdata.alcampo.ProcessDataAlcampo"></bean>
-      <bean id="scrapingCaprabo" class="com.searchitemsapp.processdata.caprabo.ProcessDataCaprabo"></bean>
-      <bean id="scrapingLidl" class="com.searchitemsapp.processdata.lidl.ProcessDataLidl"></bean>
+      <bean id="processDataConsum" class="com.searchitemsapp.processdata.ProcessDataConsum"></bean>
+      <bean id="processDataEroski" class="com.searchitemsapp.processdata.ProcessDataEroski"></bean>
+      <bean id="processDataSimply" class="com.searchitemsapp.processdata.ProcessDataSimply"></bean>
+      <bean id="processDataMercadona" class="com.searchitemsapp.processdata.ProcessDataMercadona"></bean>
+      <bean id="processDataCondis" class="com.searchitemsapp.processdata.ProcessDataCondis"></bean>
+      <bean id="processDataHipercor" class="com.searchitemsapp.processdata.ProcessDataHipercor"></bean>
+      <bean id="processDataCarrefour" class="com.searchitemsapp.processdata.ProcessDataCarrefour"></bean>
+      <bean id="processDataDia" class="com.searchitemsapp.processdata.ProcessDataDia"></bean>
+      <bean id="processDataECI" class="com.searchitemsapp.processdata.ProcessDataECI"></bean>
+      <bean id="processDataUlabox" class="com.searchitemsapp.processdata.ProcessDataUlabox"></bean>
+      <bean id="processDataAlcampo" class="com.searchitemsapp.processdata.ProcessDataAlcampo"></bean>
+      <bean id="processDataCaprabo" class="com.searchitemsapp.processdata.ProcessDataCaprabo"></bean>
+      <bean id="processDataLidl" class="com.searchitemsapp.processdata.ProcessDataLidl"></bean>
       <bean id="procesDataDynamic" class="com.searchitemsapp.processdata.ProcessDataDynamic"></bean>
       
       <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>

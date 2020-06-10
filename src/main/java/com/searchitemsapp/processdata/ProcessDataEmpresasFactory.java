@@ -5,20 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.processdata.alcampo.ProcessDataAlcampo;
-import com.searchitemsapp.processdata.caprabo.ProcessDataCaprabo;
-import com.searchitemsapp.processdata.carrefour.ProcessDataCarrefour;
-import com.searchitemsapp.processdata.condis.ProcessDataCondis;
-import com.searchitemsapp.processdata.consum.ProcessDataConsum;
-import com.searchitemsapp.processdata.dia.ProcessDataDia;
-import com.searchitemsapp.processdata.eci.ProcessDataECI;
-import com.searchitemsapp.processdata.eroski.ProcessDataEroski;
-import com.searchitemsapp.processdata.hipercor.ProcessDataHipercor;
-import com.searchitemsapp.processdata.lidl.ProcessDataLidl;
-import com.searchitemsapp.processdata.mercadona.ProcessDataMercadona;
-import com.searchitemsapp.processdata.simply.ProcessDataSimply;
-import com.searchitemsapp.processdata.ulabox.ProcessDataUlabox;
-
 
 
 /**

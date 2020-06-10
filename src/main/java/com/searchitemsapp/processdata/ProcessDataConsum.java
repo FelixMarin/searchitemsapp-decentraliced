@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata.consum;
+package com.searchitemsapp.processdata;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;

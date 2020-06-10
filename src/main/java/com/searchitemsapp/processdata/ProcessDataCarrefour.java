@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata.carrefour;
+package com.searchitemsapp.processdata;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.IFProcessDataEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 

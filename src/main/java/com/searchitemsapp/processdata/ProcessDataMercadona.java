@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata.mercadona;
+package com.searchitemsapp.processdata;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;

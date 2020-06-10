@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata.caprabo;
+package com.searchitemsapp.processdata;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.IFProcessDataEmpresas;
 
 
 /**

@@ -38,10 +38,6 @@ import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.IFImplementacion;
-import com.searchitemsapp.processdata.condis.IFProcessDataCondis;
-import com.searchitemsapp.processdata.eroski.IFProcessDataEroski;
-import com.searchitemsapp.processdata.mercadona.IFProcessDataMercadona;
-import com.searchitemsapp.processdata.simply.IFProcessDataSimply;
 
 
 /**
@@ -101,8 +97,8 @@ public abstract class ProcessDataAbstract {
 	@Resource(name="mapEmpresas")
 	protected Map<String,EmpresaDTO> mapEmpresas;
 	
-	@Resource(name="mapDynScraping")
-	private Map<Integer,Boolean> mapDynScraping;
+	@Resource(name="mapDynEmpresas")
+	private Map<Integer,Boolean> mapDynEmpresas;
 	
 	@Autowired 
 	ProcessDataDynamic procesDataDynamic;
@@ -167,7 +163,7 @@ public abstract class ProcessDataAbstract {
 			 */
 			for (EmpresaDTO empresaDTO : listEmpresaDto) {
 				mapEmpresas.put(empresaDTO.getNomEmpresa(), empresaDTO);
-				mapDynScraping.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
+				mapDynEmpresas.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
 			}		
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
@@ -701,7 +697,7 @@ public abstract class ProcessDataAbstract {
 		 * Variables con los valores necesarios para el proceso.
 		 */
 		boolean isMercadona = didEmpresa == mapEmpresas.get(MERCADONA).getDid();	
-		boolean bDynScrap = mapDynScraping.get(didEmpresa);
+		boolean bDynScrap = mapDynEmpresas.get(didEmpresa);
 		URL url = new URL(strUrl);
 		 
 		/**

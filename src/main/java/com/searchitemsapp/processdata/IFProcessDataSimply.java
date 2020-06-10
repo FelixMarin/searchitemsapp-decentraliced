@@ -1,6 +1,4 @@
-package com.searchitemsapp.processdata.simply;
-
-import com.searchitemsapp.processdata.IFProcessDataEmpresas;
+package com.searchitemsapp.processdata;
 
 public interface IFProcessDataSimply extends IFProcessDataEmpresas {
 	String reemplazarCaracteres(final String producto);

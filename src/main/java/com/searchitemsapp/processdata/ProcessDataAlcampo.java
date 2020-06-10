@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata.alcampo;
+package com.searchitemsapp.processdata;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.IFProcessDataEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
