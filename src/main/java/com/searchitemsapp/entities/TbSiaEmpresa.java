@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,6 +13,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.TypeDef;
 
 /**
@@ -77,10 +78,12 @@ public class TbSiaEmpresa implements Serializable {
 	private TbSiaPais tbSiaPais;
 
 	//bi-directional many-to-one association to TbSiaUrl
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="tbSiaEmpresa")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="tbSiaEmpresa")
 	private List<TbSiaUrl> tbSiaUrls;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="tbSiaEmpresa")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="tbSiaEmpresa")
 	private List<TbSiaSelectoresCss> tbSiaSelectoresCsses;	
 
 	@Column(name="bol_dyn_scrap")

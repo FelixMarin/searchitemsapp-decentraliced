@@ -1,9 +1,10 @@
-package com.searchitemsapp.validator;
+package com.searchitemsapp.impl;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -20,19 +21,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.dto.CategoriaDTO;
+import com.searchitemsapp.dto.ParamsLoginDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
-public class ListaProductosValidatorTest {
-
-	private static Logger LOGGER = LoggerFactory.getLogger(ListaProductosValidatorTest.class); 
-		
+public class ParamsFormLoginImplTest {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(ParamsFormLoginImplTest.class); 
+	
     @Autowired
     private ServletContext context;
     
     @Autowired
-    ListaProductosValidator listaProductosValidator;
+    ParamsFormLoginImpl paramsFormLoginImpl;
 	
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -54,46 +57,43 @@ public class ListaProductosValidatorTest {
 				"E:\\eclipse-workspace\\properties\\db.properties",
 				"db.properties", sve);
     }
-    
+
 	@Test
-	public void testIsParams() {
+	public void testFindAll() throws IOException {
 
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
-		boolean b = listaProductosValidator.isParams("101","101","1","miel","ALL");
+		List<ParamsLoginDTO> cdto = paramsFormLoginImpl.findAll();
 		
-		assertTrue(b);
+		assertNotNull(cdto);
+	}
+
+	@Test
+	public void testFindByDid() throws IOException {
+		
+		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
+		
+		ParamsLoginDTO paramsLoginDTO = new ParamsLoginDTO();
+		paramsLoginDTO.setDid(101);
+		ParamsLoginDTO cdto = paramsFormLoginImpl.findByDid(paramsLoginDTO);
+		
+		assertNotNull(cdto);
 		
 	}
 
 	@Test
-	public void testIsNumeric() {
-		
-		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-		
-		boolean b = listaProductosValidator.isNumeric("101");
-		
-		assertTrue(b);
-	}
-
-	@Test
-	public void testIsOrdenacion() {
+	public void testFindByTbSia() throws IOException {
 
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-
-		boolean b = listaProductosValidator.isOrdenacion("101");
 		
-		assertTrue(b);
-	}
-
-	@Test
-	public void testIsEmpresa() {
-
-		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-
-		boolean b = listaProductosValidator.isEmpresa("101");
-				
-		assertTrue(b);
+		ParamsLoginDTO paramsLoginDTO = new ParamsLoginDTO();
+		CategoriaDTO categoriaDTO = new CategoriaDTO();
+		categoriaDTO.setDid(101);
+		paramsLoginDTO.setDid(101);
+		List<ParamsLoginDTO> cdto = paramsFormLoginImpl.findByTbSia(paramsLoginDTO, categoriaDTO);
+		
+		assertNotNull(cdto);
+		
 	}
 
 }

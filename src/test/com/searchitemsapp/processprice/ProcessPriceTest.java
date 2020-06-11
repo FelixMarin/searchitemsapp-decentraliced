@@ -14,14 +14,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.parsers.CategoriaParserTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
 public class ProcessPriceTest {
 	
-	private static Logger LOGGER = LoggerFactory.getLogger(CategoriaParserTest.class); 
+	private static Logger LOGGER = LoggerFactory.getLogger(ProcessPriceTest.class); 
 	    	
     @BeforeClass
     public static void setLogger() throws MalformedURLException {

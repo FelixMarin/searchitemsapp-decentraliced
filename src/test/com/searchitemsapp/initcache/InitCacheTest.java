@@ -18,14 +18,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.parsers.CategoriaParserTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
 public class InitCacheTest {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaParserTest.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(InitCacheTest.class);  
 	
     @Autowired
     private ServletContext context;

@@ -1,8 +1,10 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dao.NomProductoDao;
@@ -46,8 +48,7 @@ public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object
 
 	@Override
 	public List<NomProductoDTO> findByTbSia(NomProductoDTO r, Object t) throws IOException {
-		throw new UnsupportedOperationException(Thread
-				.currentThread().getStackTrace()[1].toString());
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 
 }

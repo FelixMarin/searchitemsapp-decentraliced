@@ -1,9 +1,10 @@
-package com.searchitemsapp.validator;
+package com.searchitemsapp.impl;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -20,19 +21,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.dto.CategoriaDTO;
+import com.searchitemsapp.dto.EmpresaDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
-public class ListaProductosValidatorTest {
-
-	private static Logger LOGGER = LoggerFactory.getLogger(ListaProductosValidatorTest.class); 
-		
+public class EmpresaImplTest {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(EmpresaImplTest.class); 
+	
     @Autowired
     private ServletContext context;
     
     @Autowired
-    ListaProductosValidator listaProductosValidator;
+    EmpresaImpl empresaImpl;
 	
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -54,46 +57,43 @@ public class ListaProductosValidatorTest {
 				"E:\\eclipse-workspace\\properties\\db.properties",
 				"db.properties", sve);
     }
-    
+
 	@Test
-	public void testIsParams() {
+	public void testFindAll() throws IOException {
 
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
-		boolean b = listaProductosValidator.isParams("101","101","1","miel","ALL");
+		List<EmpresaDTO> cdto = empresaImpl.findAll();
 		
-		assertTrue(b);
+		assertNotNull(cdto);
+	}
+
+	@Test
+	public void testFindByDid() throws IOException {
+		
+		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
+		
+		EmpresaDTO categoriaDTO = new EmpresaDTO();
+		categoriaDTO.setDid(101);
+		EmpresaDTO cdto = empresaImpl.findByDid(categoriaDTO);
+		
+		assertNotNull(cdto);
 		
 	}
 
 	@Test
-	public void testIsNumeric() {
-		
-		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-		
-		boolean b = listaProductosValidator.isNumeric("101");
-		
-		assertTrue(b);
-	}
-
-	@Test
-	public void testIsOrdenacion() {
+	public void testFindByTbSia() throws IOException {
 
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-
-		boolean b = listaProductosValidator.isOrdenacion("101");
 		
-		assertTrue(b);
-	}
-
-	@Test
-	public void testIsEmpresa() {
-
-		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-
-		boolean b = listaProductosValidator.isEmpresa("101");
-				
-		assertTrue(b);
+		CategoriaDTO categoriaDTO = new CategoriaDTO();
+		EmpresaDTO empresaDTO = new EmpresaDTO();
+		categoriaDTO.setDid(101);
+		empresaDTO.setDid(101);
+		List<EmpresaDTO> cdto = empresaImpl.findByTbSia(empresaDTO, categoriaDTO);
+		
+		assertNotNull(cdto);
+		
 	}
 
 }

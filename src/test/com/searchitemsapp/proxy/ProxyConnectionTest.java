@@ -18,14 +18,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.parsers.CategoriaParserTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
 public class ProxyConnectionTest {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(CategoriaParserTest.class); 
+	private static Logger LOGGER = LoggerFactory.getLogger(ProxyConnectionTest.class); 
 	
 	@Autowired
 	ProxyConnection proxyConnection;

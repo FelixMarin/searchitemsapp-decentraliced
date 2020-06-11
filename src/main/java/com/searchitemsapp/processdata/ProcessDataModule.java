@@ -265,9 +265,9 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 		 *  del producto no sean nulos.
 		 */
 		if(Objects.isNull(resDto.getNomProducto()) || iIdEmpresa == 0 ||
-				StringUtils.EMPTY.contentEquals(resDto.getPrecio()) ||
+				StringUtils.isAllEmpty(resDto.getPrecio()) ||
 				Objects.isNull(resDto.getPrecioKilo()) || 
-				StringUtils.EMPTY.contentEquals(resDto.getPrecioKilo())) {
+				StringUtils.isAllEmpty(resDto.getPrecioKilo())) {
 			return Boolean.FALSE;
 		} 
 		

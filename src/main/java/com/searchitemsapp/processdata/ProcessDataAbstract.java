@@ -38,6 +38,10 @@ import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.IFImplementacion;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataCondis;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataEroski;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataMercadona;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataSimply;
 
 
 /**

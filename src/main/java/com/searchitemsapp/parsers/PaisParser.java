@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -58,21 +59,29 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 		paisPDto.setDid(tbSiaPPais.getDid());
 		paisPDto.setNomPais(tbSiaPPais.getNomPais());
 		
-		TbSiaEmpresa tbSiaEmpresa = tbSiaPPais.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
-		LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-		mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
-		paisPDto.setEmpresas(mapEmpresa);
+		if(Objects.nonNull(tbSiaPPais.getTbSiaEmpresas()) &&
+				!tbSiaPPais.getTbSiaEmpresas().isEmpty()) {
+			TbSiaEmpresa tbSiaEmpresa = tbSiaPPais.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
+			paisPDto.setEmpresas(mapEmpresa);
+		}
 		
-		TbSiaMarcas tbSiaMarcas = tbSiaPPais.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
-		LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-		mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
-		paisPDto.setMarcas(mapMarcas);
+		if(Objects.nonNull(tbSiaPPais.getTbSiaMarcas()) &&
+				!tbSiaPPais.getTbSiaMarcas().isEmpty()) {
+			TbSiaMarcas tbSiaMarcas = tbSiaPPais.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
+			paisPDto.setMarcas(mapMarcas);
+		}
 		
-		
-		TbSiaNomProducto tbSiaNomProductos = tbSiaPPais.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
-		LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
-		mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
-		paisPDto.setProductos(mapProductos);
+		if(Objects.nonNull(tbSiaPPais.getTbSiaNomProductos()) &&
+				!tbSiaPPais.getTbSiaNomProductos().isEmpty()) {
+			TbSiaNomProducto tbSiaNomProductos = tbSiaPPais.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
+			paisPDto.setProductos(mapProductos);
+		}
 		
 		return paisPDto;
 	}

@@ -43,7 +43,7 @@ public class CategoriaDaoTest {
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LoggerFactory.getLogger(CategoriaParserTest.class);  
+        LOGGER = LoggerFactory.getLogger(CategoriaDao.class);  
     }
     
     @Before

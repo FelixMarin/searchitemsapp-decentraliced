@@ -1,10 +1,12 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +114,6 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<MarcasDTO> findByTbSia(MarcasDTO r, CategoriaDTO t) throws IOException {
-		throw new UnsupportedOperationException(Thread
-				.currentThread().getStackTrace()[1].toString());
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

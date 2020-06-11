@@ -25,7 +25,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.parsers.CategoriaParserTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
@@ -46,7 +45,7 @@ public class ProcessDataModuleTest {
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LoggerFactory.getLogger(CategoriaParserTest.class);  
+        LOGGER = LoggerFactory.getLogger(ProcessDataModuleTest.class);  
     }
 
 	@Test

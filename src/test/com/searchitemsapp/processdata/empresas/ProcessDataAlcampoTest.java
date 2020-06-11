@@ -1,14 +1,17 @@
-package com.searchitemsapp.processdata;
+package com.searchitemsapp.processdata.empresas;
 
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
+import org.jsoup.nodes.Document;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,40 +24,38 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.SelectoresCssImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
-public class UrlComposerTest {
+public class ProcessDataAlcampoTest {
 	
 	private static Logger LOGGER = null;
 	
-	@Autowired
-	UrlComposer urlComposer;
-	
-	@Autowired
-	SelectoresCssImpl selectores;
-	
-    @Autowired
-    ServletContext context;
+	 @Autowired
+	 ServletContext context;
+	 	 
+	 @Autowired
+	 ProcessDataAlcampo pda;
+	 
+	 @Autowired
+	 UrlDTO urlDTO;
+	 
+	    @BeforeClass
+	    public static void setLogger() throws MalformedURLException {
+	    	org.apache.log4j.BasicConfigurator.configure();
+	        System.setProperty("log4j.properties","log4j.properties");
+	        System.setProperty("db.properties","db.properties");
+	        System.setProperty("flow.properties","flow.properties");
+	        LOGGER = LoggerFactory.getLogger(ProcessDataAlcampoTest.class);  
+	    }
 
-    @BeforeClass
-    public static void setLogger() throws MalformedURLException {
-    	org.apache.log4j.BasicConfigurator.configure();
-        System.setProperty("log4j.properties","log4j.properties");
-        System.setProperty("db.properties","db.properties");
-        System.setProperty("flow.properties","flow.properties");
-        LOGGER = LoggerFactory.getLogger(UrlComposerTest.class);  
-    }
-	
 	@Test
-	public void testReplaceWildcardCharacter() throws IOException {
+	public void testGetListaUrls() throws IOException {
 
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
 		ServletContextEvent sve =  new ServletContextEvent(context);
-		List<UrlDTO> url = null;
 		
 		CommonsPorperties.loadPropertiesFile(
 				"E:\\eclipse-workspace\\properties\\flow.properties",
@@ -63,17 +64,16 @@ public class UrlComposerTest {
 		CommonsPorperties.loadPropertiesFile(
 				"E:\\eclipse-workspace\\properties\\db.properties",
 				"db.properties", sve);
-		try {
-			urlComposer.applicationData();
-			urlComposer.cargarTodasLasMarcas();
-			url = urlComposer.replaceWildcardCharacter("101","101","sal","101",selectores.findAll());
-		} catch (IOException e) {
-			LOGGER.error("ERROR",e);
-		}
 		
-		assertNotNull(url);
+		Map<String,String> map = new HashMap<>();
+		map.put("SEL_PAGINACION", "div|href");
+		urlDTO.setSelectores(map); 
+		Document document = new Document("<html></html>");
+		document.appendElement("div");
 		
+		List<String> lurl = pda.getListaUrls(document, urlDTO);
 		
+		assertNotNull(lurl);
 	}
 
 }

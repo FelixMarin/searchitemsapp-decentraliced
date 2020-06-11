@@ -149,6 +149,7 @@
       <bean id="paramsHeadersLoginImpl" class="com.searchitemsapp.impl.ParamsHeadersLoginImpl"></bean>
       <bean id="marcasImpl" class="com.searchitemsapp.impl.MarcasImpl"></bean>
        <bean id="selectoresCssImpl" class="com.searchitemsapp.impl.SelectoresCssImpl"></bean>
+      <bean id="nomProductoImpl" class="com.searchitemsapp.impl.NomProductoImpl"></bean>
       
       <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.entities.TbSiaCategoriasEmpresa"></bean>
       <bean id="tbSiaEmpresa" class="com.searchitemsapp.entities.TbSiaEmpresa"></bean>
@@ -170,19 +171,19 @@
       		<constructor-arg index="4" type="java.lang.String" value="" />
       </bean>
       
-      <bean id="processDataConsum" class="com.searchitemsapp.processdata.ProcessDataConsum"></bean>
-      <bean id="processDataEroski" class="com.searchitemsapp.processdata.ProcessDataEroski"></bean>
-      <bean id="processDataSimply" class="com.searchitemsapp.processdata.ProcessDataSimply"></bean>
-      <bean id="processDataMercadona" class="com.searchitemsapp.processdata.ProcessDataMercadona"></bean>
-      <bean id="processDataCondis" class="com.searchitemsapp.processdata.ProcessDataCondis"></bean>
-      <bean id="processDataHipercor" class="com.searchitemsapp.processdata.ProcessDataHipercor"></bean>
-      <bean id="processDataCarrefour" class="com.searchitemsapp.processdata.ProcessDataCarrefour"></bean>
-      <bean id="processDataDia" class="com.searchitemsapp.processdata.ProcessDataDia"></bean>
-      <bean id="processDataECI" class="com.searchitemsapp.processdata.ProcessDataECI"></bean>
-      <bean id="processDataUlabox" class="com.searchitemsapp.processdata.ProcessDataUlabox"></bean>
-      <bean id="processDataAlcampo" class="com.searchitemsapp.processdata.ProcessDataAlcampo"></bean>
-      <bean id="processDataCaprabo" class="com.searchitemsapp.processdata.ProcessDataCaprabo"></bean>
-      <bean id="processDataLidl" class="com.searchitemsapp.processdata.ProcessDataLidl"></bean>
+      <bean id="processDataConsum" class="com.searchitemsapp.processdata.empresas.ProcessDataConsum"></bean>
+      <bean id="processDataEroski" class="com.searchitemsapp.processdata.empresas.ProcessDataEroski"></bean>
+      <bean id="processDataSimply" class="com.searchitemsapp.processdata.empresas.ProcessDataSimply"></bean>
+      <bean id="processDataMercadona" class="com.searchitemsapp.processdata.empresas.ProcessDataMercadona"></bean>
+      <bean id="processDataCondis" class="com.searchitemsapp.processdata.empresas.ProcessDataCondis"></bean>
+      <bean id="processDataHipercor" class="com.searchitemsapp.processdata.empresas.ProcessDataHipercor"></bean>
+      <bean id="processDataCarrefour" class="com.searchitemsapp.processdata.empresas.ProcessDataCarrefour"></bean>
+      <bean id="processDataDia" class="com.searchitemsapp.processdata.empresas.ProcessDataDia"></bean>
+      <bean id="processDataECI" class="com.searchitemsapp.processdata.empresas.ProcessDataECI"></bean>
+      <bean id="processDataUlabox" class="com.searchitemsapp.processdata.empresas.ProcessDataUlabox"></bean>
+      <bean id="processDataAlcampo" class="com.searchitemsapp.processdata.empresas.ProcessDataAlcampo"></bean>
+      <bean id="processDataCaprabo" class="com.searchitemsapp.processdata.empresas.ProcessDataCaprabo"></bean>
+      <bean id="processDataLidl" class="com.searchitemsapp.processdata.empresas.ProcessDataLidl"></bean>
       <bean id="procesDataDynamic" class="com.searchitemsapp.processdata.ProcessDataDynamic"></bean>
       
       <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>

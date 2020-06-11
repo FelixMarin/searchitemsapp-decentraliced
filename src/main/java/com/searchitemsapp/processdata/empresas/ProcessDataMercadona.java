@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata;
+package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataMercadona;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -130,7 +131,7 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 		 * y retorna nulo. En otro caso, el XML es limpiado
 		 * de caracteres especiales.
 		 */
-		if(StringUtils.EMPTY.contentEquals(xml)) {
+		if(StringUtils.isAllEmpty(xml)) {
 			return new Document(StringUtils.EMPTY);
 		} else {
 			xml = CABECERA_XML.concat(TAG_INI_ROOT).concat(xml).concat(TAG_FIN_ROOT);
@@ -205,7 +206,7 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 		 * unicode que lo representa.<br> 
 		 * "  " => "%20"
  		 */
-		if(!StringUtils.EMPTY.contentEquals(resDto.getNomProducto())) {
+		if(!StringUtils.isAllEmpty(resDto.getNomProducto())) {
 			productoAux= resDto.getNomProducto()
 				.replace(StringUtils.SPACE, SEPARADOR_URL);
 		}

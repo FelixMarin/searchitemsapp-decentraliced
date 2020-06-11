@@ -125,14 +125,14 @@ public class TbSiaCategoriasEmpresa implements Serializable {
 	}
 
 	public TbSiaEmpresa addTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		getTbSiaEmpresas().add(tbSiaEmpresa);
+		this.tbSiaEmpresas.add(tbSiaEmpresa);
 		tbSiaEmpresa.setTbSiaCategoriasEmpresa(this);
 
 		return tbSiaEmpresa;
 	}
 
 	public TbSiaEmpresa removeTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		getTbSiaEmpresas().remove(tbSiaEmpresa);
+		this.tbSiaEmpresas.remove(tbSiaEmpresa);
 		tbSiaEmpresa.setTbSiaCategoriasEmpresa(null);
 
 		return tbSiaEmpresa;

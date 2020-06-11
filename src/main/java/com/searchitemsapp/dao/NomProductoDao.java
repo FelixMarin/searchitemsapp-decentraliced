@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +95,6 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 	 */
 	@Override
 	public NomProductoDTO findByDid(Integer did) throws IOException {
-		throw new NotImplementedException();
+		return new NomProductoDTO();
 	}
 }

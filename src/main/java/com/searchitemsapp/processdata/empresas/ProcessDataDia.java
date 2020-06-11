@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata;
+package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,32 +15,35 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataEmpresas;
+
+
 
 /**
  * Módulo de scraping especifico diseñado para la 
- * extracción de datos del sitio web de Carrefour.
+ * extracción de datos del sitio web de Dia.
  * 
  * @author Felix Marin Ramirez
  *
  */
-public class ProcessDataCarrefour implements IFProcessDataEmpresas {
+public class ProcessDataDia implements IFProcessDataEmpresas {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataCarrefour.class);   
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataDia.class);   
+	
 	/*
-	 * Constantes Glogables
+	 * Constantes Globales
 	 */
 	private static final String PROTOCOL_ACCESSOR ="://";
-	
+
 	/*
 	 * Constructor
 	 */
-	public ProcessDataCarrefour() {
+	public ProcessDataDia() {
 		super();
 	}
 
 	/**
-	 * Compone una lista de URLs de la empresa Carrefour.
+	 * Compone una lista de URLs de la empresa Consum.
 	 * Con estas URLs se realizarán las peticiones al
 	 * sitio web para extraer los datos. 
 	 * 
@@ -51,9 +54,9 @@ public class ProcessDataCarrefour implements IFProcessDataEmpresas {
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, 
-			final UrlDTO urlDto) throws MalformedURLException {
-		
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto) 
+					throws MalformedURLException {
+
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
@@ -65,46 +68,34 @@ public class ProcessDataCarrefour implements IFProcessDataEmpresas {
 		 * se generan las de paginación.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		
-		/**
-		 * Se obbtiene del documento el número de resultados. 
-		 */
-		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");	
-		
-		/**
-		 * Se obtiene del fichero de propiedades el número máximo de
-		 * páginas que se van a pedir al sitio web.
-		 */	
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.carrefour"));
-		
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
+
 		/**
 		 * Se divide el selector de paginación.
 		 */
-		StringTokenizer st = new StringTokenizer(selectorPaginacion,"|");  
+		StringTokenizer st = new StringTokenizer(selectorPaginacion, "|");
 		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
-		
+
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
 		 */
-		while (st.hasMoreTokens()) {  
+		while (st.hasMoreTokens()) {
 			liSelectorAtr.add(st.nextToken());
 		}
-		
+
 		/**
-		 * Se crea una lista de Strings.
-		 */		
-		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
-		
-		/**
-		 * Se divide el selector de paginación.
+		 * Se obtienen todos los elementos que interesan del documento
+		 * utilizando el selector css.
 		 */
 		Elements elements = document.select(liSelectorAtr.get(0));
-		
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
+
 		/**
-		 * Se asigna la url base a la lista.
+		 * Se añade la URL base en la lista.
 		 */
 		listaUrls.add(urlBase);
-		
+
 		/**
 		 * Se crea un objeto de tipo URL a partir de la URL base.
 		 * y después se crea una cadena con una nueva URL. Esto
@@ -112,13 +103,12 @@ public class ProcessDataCarrefour implements IFProcessDataEmpresas {
 		 * 
 		 */
 		URL url = new URL(urlBase);
-		String strUrlEmpresa = url.getProtocol()
-				.concat(PROTOCOL_ACCESSOR).concat(url.getHost());
-		
+		String strUrlEmpresa = url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost());
+
 		for (Element element : elements) {
 			listaUrls.add(strUrlEmpresa.concat(element.attr(liSelectorAtr.get(1))));
 		}
-		
+
 		/**
 		 * Se limita el número de sitios a los que realizar
 		 * solicitudes html para optimizar el rendimiento.

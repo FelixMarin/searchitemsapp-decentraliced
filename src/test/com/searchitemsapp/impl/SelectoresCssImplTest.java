@@ -1,9 +1,10 @@
-package com.searchitemsapp.validator;
+package com.searchitemsapp.impl;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -20,19 +21,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.dto.SelectoresCssDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
-public class ListaProductosValidatorTest {
-
-	private static Logger LOGGER = LoggerFactory.getLogger(ListaProductosValidatorTest.class); 
-		
+public class SelectoresCssImplTest {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(SelectoresCssImplTest.class); 
+	
     @Autowired
     private ServletContext context;
     
     @Autowired
-    ListaProductosValidator listaProductosValidator;
+    SelectoresCssImpl selectoresCssImpl;
 	
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -54,46 +57,40 @@ public class ListaProductosValidatorTest {
 				"E:\\eclipse-workspace\\properties\\db.properties",
 				"db.properties", sve);
     }
-    
+
 	@Test
-	public void testIsParams() {
+	public void testFindAll() throws IOException {
 
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
-		boolean b = listaProductosValidator.isParams("101","101","1","miel","ALL");
+		List<SelectoresCssDTO> cdto = selectoresCssImpl.findAll();
 		
-		assertTrue(b);
-		
+		assertNotNull(cdto);
 	}
 
 	@Test
-	public void testIsNumeric() {
+	public void testFindByDid() throws IOException {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
-		boolean b = listaProductosValidator.isNumeric("101");
+		SelectoresCssDTO selectoresCssDTO = new SelectoresCssDTO();
+		selectoresCssDTO.setDid(101);
+		SelectoresCssDTO cdto = selectoresCssImpl.findByDid(selectoresCssDTO);
 		
-		assertTrue(b);
+		assertNotNull(cdto);
 	}
 
 	@Test
-	public void testIsOrdenacion() {
+	public void testFindByTbSia() throws IOException {
 
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-
-		boolean b = listaProductosValidator.isOrdenacion("101");
 		
-		assertTrue(b);
+		SelectoresCssDTO selectoresCssDTO = new SelectoresCssDTO();
+		EmpresaDTO empresaDTO = new EmpresaDTO();
+		empresaDTO.setDid(101);
+		selectoresCssDTO.setDid(101);
+		List<SelectoresCssDTO> cdto = selectoresCssImpl.findByTbSia(selectoresCssDTO, empresaDTO);
+		
+		assertNotNull(cdto);
 	}
-
-	@Test
-	public void testIsEmpresa() {
-
-		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
-
-		boolean b = listaProductosValidator.isEmpresa("101");
-				
-		assertTrue(b);
-	}
-
 }

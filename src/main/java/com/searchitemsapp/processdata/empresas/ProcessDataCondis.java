@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata;
+package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataCondis;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -101,7 +102,7 @@ public class ProcessDataCondis implements IFProcessDataCondis {
 		String resultado = StringUtils.EMPTY;
 		Matcher matcher;
 		
-		if(Objects.isNull(elem) || StringUtils.EMPTY.contentEquals(cssSelector)) {
+		if(Objects.isNull(elem) || StringUtils.isAllEmpty(cssSelector)) {
 			return resultado;
 		}
 		resultado = elem.select(cssSelector).html().replace(DOT_STRING, COMMA_STRING);
@@ -148,7 +149,7 @@ public class ProcessDataCondis implements IFProcessDataCondis {
 	 */
 	public String eliminarTildesProducto(final String producto) {
 		
-		if(StringUtils.EMPTY.contentEquals(producto)) {
+		if(StringUtils.isAllEmpty(producto)) {
 			return producto;
 		}
 		

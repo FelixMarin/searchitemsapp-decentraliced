@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataConsum;
 
 /**
  * Módulo de web para el procesamiento de datos dinámico. 

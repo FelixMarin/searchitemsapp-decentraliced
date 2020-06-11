@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata;
+package com.searchitemsapp.processdata.interfaces;
 
 import java.net.MalformedURLException;
 import java.util.List;

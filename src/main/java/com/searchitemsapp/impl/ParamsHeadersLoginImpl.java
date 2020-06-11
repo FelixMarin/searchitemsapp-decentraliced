@@ -111,7 +111,6 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 	 */
 	@Override
 	public ParamsLoginDTO findByDid(ParamsLoginDTO objeto) throws IOException {
-		throw new UnsupportedOperationException(Thread
-				.currentThread().getStackTrace()[1].toString());
+		return new ParamsLoginDTO();
 	}	
 }

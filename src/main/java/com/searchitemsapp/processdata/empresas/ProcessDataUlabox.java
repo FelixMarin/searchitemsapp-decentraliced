@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata;
+package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -88,7 +89,7 @@ public class ProcessDataUlabox implements IFProcessDataEmpresas {
 		 * Si la variable de paginación no está
 		 * vacía, se continua con el proceso
 		 */
-		if(!StringUtils.EMPTY.contentEquals(strPaginacion)) {
+		if(!StringUtils.isAllEmpty(strPaginacion)) {
 			
 			/**
 			 * Con esta validación se comprueba si la 

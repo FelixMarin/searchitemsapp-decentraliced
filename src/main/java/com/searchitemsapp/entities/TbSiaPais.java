@@ -10,6 +10,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.TypeDef;
 
 /**
@@ -63,14 +65,17 @@ public class TbSiaPais implements Serializable {
 	private String nomPais;
 
 	//bi-directional many-to-one association to TbSiaEmpresa
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="tbSiaPais")
 	private List<TbSiaEmpresa> tbSiaEmpresas;
 
 	//bi-directional many-to-one association to TbSiaMarca
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="tbSiaPais")
 	private List<TbSiaMarcas> tbSiaMarcas;
 
 	//bi-directional many-to-one association to TbSiaNomProducto
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="tbSiaPais")
 	private List<TbSiaNomProducto> tbSiaNomProductos;
 

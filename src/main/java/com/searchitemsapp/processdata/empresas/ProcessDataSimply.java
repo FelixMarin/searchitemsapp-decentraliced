@@ -1,4 +1,4 @@
-package com.searchitemsapp.processdata;
+package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -11,34 +11,34 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.processdata.interfaces.IFProcessDataSimply;
+
 /**
  * Módulo de scraping especifico diseñado para la 
- * extracción de datos del sitio web de Eroski.
+ * extracción de datos del sitio web de Simply.
  * 
  * @author Felix Marin Ramirez
  *
  */
-public class ProcessDataEroski implements IFProcessDataEroski {
+public class ProcessDataSimply implements IFProcessDataSimply {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataEroski.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataSimply.class);  
 	
 	/*
 	 * Constantes Globales
 	 */
 	private static final String STRING_ENIE_MIN = "ñ";
-	private static final String ENIE_EROSKI = "$00f1";
-	private static final String[] ARRAY_TILDES_EROSKI = {"$00e1","$00e9","$00ed","$00f3","$00fa"};
-	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
+	private static final String ENIE_URL = "%F1";
 	
 	/*
-	 * Constructor 
+	 * Constructor
 	 */
-	private ProcessDataEroski() {
+	private ProcessDataSimply() {
 		super();
 	}
 	
 	/**
-	 * Compone una lista de URLs de la empresa Eroski.
+	 * Compone una lista de URLs de la web de Simply.
 	 * Con estas URLs se realizarán las peticiones al
 	 * sitio web para extraer los datos. 
 	 * 
@@ -49,12 +49,20 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto) 
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto)
 			throws MalformedURLException {
-		
+  
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
+		
+		/*
+		 * Variable locales
+		 */
+		String urlAux;
+		int fin = 30;
+		int max = 10;
+		int incremento = 2;
 		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
@@ -68,39 +76,48 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.eroski"));
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.simply"));
 		
 		/**
-		 * Se añade la URL base a la lista en formato string.
+		 * Se asigna la url base a la lista.
 		 */
 		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		/**
-		 * Se compone la lista de URLs que se van a solicitar 
-		 * al sitio web.
+		 * Bucle que compone la lista de URLs de las que se va a
+		 * realizar la extracción de datos.
 		 */
-		for (int i = 1; i <= 20; i++) {
-			listaUrls.add(urlBase.replace("=0&", "=".concat(String.valueOf(i).concat("&"))));
+		for (int i = 2; i <= max; i++) {
+			urlAux = urlBase.replace("=1&", "=".concat(String.valueOf(i).concat("&")));
+			
+			if(i == 2) {
+				urlAux = urlAux.replace("&fin=10", "&fin=" + fin);
+			} else {
+				urlAux = urlAux.replace("&fin=10", "&fin=" + fin*incremento++);
+			}
+			
+			listaUrls.add(urlAux);
 		}
 		
 		/**
-		 * Se eliminan las URLs que superen el número maximo
-		 * de resultados permitidos indicados en la variable
-		 * 'numeroresultados'.
+		 * Se limita el número de sitios a los que realizar
+		 * solicitudes html para optimizar el rendimiento.
+		 * Este parámetro sed configura en el fichero de
+		 * properties.
 		 */
 		if(numresultados > 0 && numresultados <= listaUrls.size()) {
 			listaUrls = listaUrls.subList(0, numresultados);
-		}		
+		}
 		
 		return listaUrls;
 	}
 
 	/**
-	 * Reemplaza los caracteres especiales que pueda tener
-	 * el nombre del producto por sus correspondientes unicode. 
-	 * <br>Ejemplo: "ñ" -> "$00f1".
-	 *  
+	 * Reemplaza los caracteres especiales y los transforma en
+	 * caracteres unicode.<br>
+	 * Ejemplo: <b>"ñ" => "%F1"</b>
+	 * 
 	 * @param producto
 	 * @return String
 	 */
@@ -110,14 +127,6 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		String productoTratado = producto
-				.replace(STRING_ENIE_MIN, ENIE_EROSKI);
-		
-		for (int i = 0; i < ARRAY_TILDES_EROSKI.length; i++) {
-			productoTratado = productoTratado
-					.replace(ARRAY_TILDES_NORMALES_MIN[i], ARRAY_TILDES_EROSKI[i]);
-		}
-		
-		return productoTratado;
+		return producto.replace(STRING_ENIE_MIN, ENIE_URL);
 	}
 }
