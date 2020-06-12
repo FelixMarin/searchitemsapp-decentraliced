@@ -95,17 +95,17 @@ public abstract class ProcessDataAbstract {
 	/*
 	 * Variables Globales
 	 */
-	@Resource(name="listTodasMarcas")
-	private List<MarcasDTO> listTodasMarcas;
-	
 	@Resource(name="mapEmpresas")
 	protected Map<String,EmpresaDTO> mapEmpresas;
+	
+	@Resource(name="listTodasMarcas")
+	private List<MarcasDTO> listTodasMarcas;
 	
 	@Resource(name="mapDynEmpresas")
 	private Map<Integer,Boolean> mapDynEmpresas;
 	
 	@Autowired 
-	ProcessDataDynamic procesDataDynamic;
+	private ProcessDataDynamic procesDataDynamic;
 	
 	@Autowired
 	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;

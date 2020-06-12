@@ -22,7 +22,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.CategoriaDTO;
-import com.searchitemsapp.parsers.CategoriaParserTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")

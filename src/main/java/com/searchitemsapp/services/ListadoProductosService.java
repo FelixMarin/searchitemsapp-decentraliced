@@ -102,7 +102,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * Se declaran las variables que serán utilizadasa en el
 		 * proceso de ejecución del programa.
 		 */
-		List<ResultadoDTO> listResultDtoFinal;
+		List<ResultadoDTO> listResultDtoFinal = new ArrayList<>();
 		ProcessDataModule processDataModule;
 		int contador = 0;
 		
@@ -192,11 +192,14 @@ public class ListadoProductosService implements IFService<String,String> {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}		
 			
+			/**
+			 * Interrupts this thread. 
+			 * Unless the current thread is interrupting itself, 
+			 * which isalways permitted, the checkAccess methodof 
+			 * this thread is invoked, which may cause a SecurityException 
+			 * to be thrown. 
+			 */
 			Thread.currentThread().interrupt();		
-			
-			return "[{\"request\": \"Error\", "
-			+ "\"id\" : \"-1\", "
-			+ "\"description\": \"" + e.toString() + "\"}]";
 			
 		} finally {
 			
