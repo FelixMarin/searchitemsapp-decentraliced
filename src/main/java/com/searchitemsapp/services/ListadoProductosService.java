@@ -13,8 +13,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.persistence.NoResultException;
-
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +68,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	 * Método principal de servicio web.  Este método contiene 
 	 * toda la lógica de negocio del servicio. {@link ProcessDataModule}
 	 */
-	public String service(final String... str) {
+	public String service(final String... params) {
 
 		/**
 		 * Esto configurará log4j para que saque los mensajes de log por la 
@@ -92,11 +90,18 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * En este punto se recogen los parametros de entrada
 		 * en variables para manejarlos mejor.
 		 */
-		String didPais = str[0];
-		String didCategoria = str[1];
-		String ordenacion = str[2];
-		String producto = str[3];
-		String empresas = str[4];
+		String didPais = params[0];
+		String didCategoria = params[1];
+		String ordenacion = params[2];
+		String producto = params[3];
+		String empresas = params[4];
+		
+		StringBuilder sbParams = new StringBuilder(1);
+		sbParams.append("Pais: ").append(didPais);
+		sbParams.append(" Categoria: ").append(didCategoria);
+		sbParams.append(" Ordenacio: ").append(didPais);
+		sbParams.append(" Producto: ").append(producto);
+		sbParams.append(" Empresas: ").append(empresas);
 
 		/**
 		 * Se declaran las variables que serán utilizadasa en el
@@ -108,7 +113,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		
 		/**
 		 * Crea un grupo de subprocesos que crea nuevos subprocesos según 
-		 * sea necesario, pero reutilizará los subprocesos construidos 
+		 * sea necesario, pero reutilizarán los subprocesos construidos 
 		 * previamente cuando estén disponibles. Mejora el rendimiento de 
 		 * aplicaciones que ejecutan muchas tareas asincronas de corta duración.
 		 */
@@ -141,7 +146,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * en cada uno de los supermercados. Habrá un objeto por cada 
 			 * supermercado a rastrear.
 			 */
-			Collection<ProcessDataModule> callablesScrapingUnit = new ArrayList<>(NumberUtils.INTEGER_ONE);
+			Collection<ProcessDataModule> colPDMcallables = new ArrayList<>(NumberUtils.INTEGER_ONE);
 
 			/**
 			 * Habrá tantas iteraciones como URLs contenga cada supermercado.
@@ -155,7 +160,7 @@ public class ListadoProductosService implements IFService<String,String> {
 						.getBean(ProcessDataModule.class, urlDto, producto, 
 								didPais, didCategoria, ordenacion);
 	
-				callablesScrapingUnit.add(processDataModule);	
+				colPDMcallables.add(processDataModule);	
 			}
 			
 			/**
@@ -163,7 +168,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * estado y resultados cuando esté completo. Future.isDone() es 
 			 * verdadero para cada elemento de la lista devuelta.
 			 */
-			List<Future<List<ResultadoDTO>>> listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
+			List<Future<List<ResultadoDTO>>> listFutureListResDto = executorService.invokeAll(colPDMcallables);
 			listResultDtoFinal = executeFuture(listFutureListResDto);
 			
 			/**
@@ -171,6 +176,12 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * la aplicación devolverá un mensaje notificando el suceso.
 			 */
             if(listResultDtoFinal.isEmpty()) {
+            	
+    			if(LOGGER.isErrorEnabled()) {
+    				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString());
+    				LOGGER.error("Sin resultados para: ".concat(sbParams.toString()));
+    			}
+            	
     			return ERROR_RESULT;
             }
 
@@ -186,20 +197,16 @@ public class ListadoProductosService implements IFService<String,String> {
 				listResultDtoFinal.get(i).setIdentificador(++contador);
 			}
 			
-		}catch(IOException | NoResultException | InterruptedException | ExecutionException e) {			
-			
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}		
+		}catch(IOException | InterruptedException | ExecutionException e) {
 			
 			/**
-			 * Interrupts this thread. 
-			 * Unless the current thread is interrupting itself, 
-			 * which isalways permitted, the checkAccess methodof 
-			 * this thread is invoked, which may cause a SecurityException 
-			 * to be thrown. 
+			 * Interrumpe este subproceso. 
+			 * A menos que el subproceso actual se interrumpa a sí mismo, 
+			 * lo que siempre se permite, se invoca el método checkAccess 
+			 * de este subproceso, lo que puede provocar una excepción 
+			 * SecurityException.
 			 */
-			Thread.currentThread().interrupt();		
+			Thread.currentThread().interrupt();	
 			
 		} finally {
 			
@@ -207,15 +214,6 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * Se deshabilita el executor hasta la próxima solicitud de servicio.
 			 */
 			executorService.shutdown();
-		}
-
-		/**
-		 * Si el objeto que contiene el resultado en JSON está vacío
-		 * (No ha habido resultados) la aplicación devolverá un mensaje
-		 * indicando el suceso.
-		 */
-		if(listResultDtoFinal.isEmpty()) {			
-			return  ERROR_RESULT;
 		}
 		
 		/**
