@@ -3,7 +3,7 @@
 
 Una aplicación web desarrollada en java EE, Spring Framework e Hibernate. El servicio web recibe una solicitud y la aplicación devolverá una estructura en formato JSON con una lista ordenada por precio con productos vendidos en supermercados online. La característica principal del servicio es la utilizaciión de internet como fuente de datos, dichos datos son obtenidos en tiempo real, lo que permite tener siempre la información atualizada. El servicio es una API RESTFul, con lo que para obtener la informcación habrá que solicitarla mediante una petición sobre el protocolo HTTP.
 
-# Herramientas
+## Herramientas
 
 - [Ubuntu Server 18.04](https://ubuntu.com/download/server)
 - [Eclipse IDE for J2EE](https://www.eclipse.org/ide/)
@@ -14,7 +14,7 @@ Una aplicación web desarrollada en java EE, Spring Framework e Hibernate. El se
 - [SmartBear SoapUI](https://www.soapui.org/)
 - [Oracle VirtualBox](https://www.virtualbox.org/)
 
-# Lenguajes
+## Lenguajes
 
 - JAVA – J2EE
 - HTML
@@ -22,16 +22,16 @@ Una aplicación web desarrollada en java EE, Spring Framework e Hibernate. El se
 - JAVASCRIPT
 - SQL
 
-# Arquitectura
+## Arquitectura
 
 - RestFul
 
-# Frameworks
+## Frameworks
 
 - Spring web MVC, DATA
 - Hibernate
 
-# Técnica de extracción de datos
+## Técnica de extracción de datos
 
 - [Web Scraping](https://es.wikipedia.org/wiki/Web_scraping)
 
