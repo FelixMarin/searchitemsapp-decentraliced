@@ -14,6 +14,27 @@ Una aplicación web desarrollada en java EE, Spring Framework e Hibernate. El se
 - [SmartBear SoapUI](https://www.soapui.org/)
 - [Oracle VirtualBox](https://www.virtualbox.org/)
 
+# Lenguajes
+
+- JAVA – J2EE
+- HTML
+- CSS
+- JAVASCRIPT
+- SQL
+
+# Arquitectura
+
+- RestFul
+
+# Frameworks
+
+- Spring web MVC, DATA
+- Hibernate
+
+# Técnica de extracción de datos
+
+- [Web Scraping](https://es.wikipedia.org/wiki/Web_scraping)
+
 # Preparación del Entorno
 
 ## Instalación del SGBD  
