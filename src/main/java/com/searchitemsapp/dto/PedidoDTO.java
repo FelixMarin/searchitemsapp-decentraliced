@@ -2,7 +2,7 @@ package com.searchitemsapp.dto;
 
 import java.util.Objects;
 
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -54,8 +54,8 @@ public class PedidoDTO implements IFdto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((StringUtils.validateNull(categoria)) ? 0 : categoria.hashCode());
-		result = prime * result + ((StringUtils.validateNull(producto)) ? 0 : producto.hashCode());
+		result = prime * result + ((Objects.isNull(categoria)) ? 0 : categoria.hashCode());
+		result = prime * result + ((Objects.isNull(producto)) ? 0 : producto.hashCode());
 		return result;
 	}
 

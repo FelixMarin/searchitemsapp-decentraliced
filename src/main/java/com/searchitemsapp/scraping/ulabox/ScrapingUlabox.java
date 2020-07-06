@@ -1,18 +1,21 @@
 package com.searchitemsapp.scraping.ulabox;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -21,7 +24,9 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingUlabox implements IFScrapingEmpresas {
+public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingUlabox.class);  
 	
 	/*
 	 * Constantes Globales
@@ -49,9 +54,11 @@ public class ScrapingUlabox implements IFScrapingEmpresas {
 	 */
 	@Override
 	public List<String> getListaUrls(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto) {
+			final UrlDTO urlDto) throws MalformedURLException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
@@ -64,26 +71,26 @@ public class ScrapingUlabox implements IFScrapingEmpresas {
 		/**
 		 * Se añade la URL base en la lista.
 		 */
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = selectorCssDto.getSelPaginacion();		
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");		
 		String strPaginacion = document.select(selectorPaginacion).text();
 		
 		/**
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.ulabox"));
+		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.ulabox"));
 		
 		/**
 		 * Si la variable de paginación no está
 		 * vacía, se continua con el proceso
 		 */
-		if(!StringUtils.isEmpty(strPaginacion)) {
+		if(!StringUtils.EMPTY.contentEquals(strPaginacion)) {
 			
 			/**
 			 * Con esta validación se comprueba si la 
@@ -91,10 +98,10 @@ public class ScrapingUlabox implements IFScrapingEmpresas {
 			 */
 			if(strPaginacion.contains(CHARSET)) {
 				
-				Matcher m = StringUtils.matcher(PATTERN, strPaginacion);
+				Matcher m = Pattern.compile(PATTERN).matcher(strPaginacion);
 				
 				if(m.find()) {
-					strPaginacion=m.group(ClaseUtils.ONE_INT);
+					strPaginacion=m.group(1);
 				}
 				
 			} else {
@@ -107,12 +114,12 @@ public class ScrapingUlabox implements IFScrapingEmpresas {
 			 * el sitio web. Se formatea a numérico y se asigna a 
 			 * una variable.
 			 */
-			int intPaginacion = StringUtils.desformatearEntero(strPaginacion.trim());
+			int intPaginacion = desformatearEntero(strPaginacion.trim());
 
 			/**
 			 * Se crean tantas URLs como indique el número de paginación.
 			 */
-			for (int i = ClaseUtils.TWO_INT; i <= intPaginacion; i++) {
+			for (int i = 2; i <= intPaginacion; i++) {
 				listaUrls.add(urlBase.concat("&p=") + i);
 			}	
 			
@@ -122,8 +129,8 @@ public class ScrapingUlabox implements IFScrapingEmpresas {
 			 * Este parámetro sed configura en el fichero de
 			 * properties.
 			 */
-			if(numresultados > ClaseUtils.ZERO_INT && numresultados <= listaUrls.size()) {
-				listaUrls = listaUrls.subList(ClaseUtils.ZERO_INT, numresultados);
+			if(numresultados > 0 && numresultados <= listaUrls.size()) {
+				listaUrls = listaUrls.subList(0, numresultados);
 			}
 		}
 		

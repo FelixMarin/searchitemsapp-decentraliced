@@ -1,14 +1,15 @@
 package com.searchitemsapp.processprice;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.UnsupportedAttributeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Clase que prepara los precios precios de los productos
@@ -21,6 +22,25 @@ import com.searchitemsapp.util.StringUtils;
  */
 public class ProcessPrice {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessPrice.class);  
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String DECIMALES = ".00";
+	private static final String DEFAULT_STR_PRICE = "1000.00";
+	private static final String REGEX_NUMERO_DECIMAL = "(\\d*[,][0-9]*)|([0-9]{1,9})";
+	private static final String REGEX_INTEGER = "\\d+";
+	private static final String BARRA_KILO_GRAM = "/kg";
+	private static final double DEFAULT_PRICE = 1000.00;
+	
+	private static final String NULL_STRING = "null";
+	private static final String PIPE_STRING = "|";
+	private static final String COMMA_STRING = ",";
+	private static final String DOT_STRING = ".";
+	
+	private static final String EURO_SYMBOL = "/Eur";
+	
 	/*
 	 * Constructor 
 	 */
@@ -40,15 +60,13 @@ public class ProcessPrice {
 	 */
 	public static int processPrice(final ResultadoDTO a, final ResultadoDTO b) {
 		
-		int i= ClaseUtils.ZERO_INT;
-		
+		int i= 0;
 
 		/**
 		 * Se comprueba que el valor de ordenación sea válido.
 		 */
-		boolean bCheck = a.getOrdenacion() == ClaseUtils.ONE_INT || a.getOrdenacion() == ClaseUtils.TWO_INT;
+		boolean bCheck = a.getOrdenacion() == 1 || a.getOrdenacion() == 2;
 		
-
 		/**
 		 * Si el valor de la ordenación es válido, se ejecuta el algoritmo,
 		 * en otro caso, se genera una excepcion de tipo 'UnsupportedAttributeException'.
@@ -63,7 +81,7 @@ public class ProcessPrice {
 			 *  	1. Precio
 			 *  	2. Precio/Kilo
 			 */
-			if(a.getOrdenacion() == ClaseUtils.ONE_INT) {
+			if(a.getOrdenacion() == 1) {
 				
 				/**
 				 * En el caso de que el precio esté vacío,
@@ -71,8 +89,8 @@ public class ProcessPrice {
 				 * por defecto hará que el producto se vaya al final 
 				 * de los resultados.
 				 */
-				if(StringUtils.isEmpty(a.getPrecio())) {
-					a.setPrecio(String.valueOf(ClaseUtils.DEFAULT_PRICE));
+				if(StringUtils.EMPTY.contentEquals(a.getPrecio())) {
+					a.setPrecio(String.valueOf(DEFAULT_PRICE));
 				}
 				
 				/**
@@ -85,7 +103,14 @@ public class ProcessPrice {
 				i = convertirDouble(a.getPrecio())
 						.compareTo(convertirDouble(b.getPrecio()));
 				
-			} else if(a.getOrdenacion() == ClaseUtils.TWO_INT) {
+				/**
+				 * Se formatea el precio. Se quita la información
+				 * no relevante y se deja estandarizado para todos
+				 * los productos en el mismo formato.
+				 */
+				estilizarPrecios(a,b);
+				
+			} else if(a.getOrdenacion() == 2) {
 				
 				/**
 				 * En el caso de que el precio esté vacío,
@@ -93,14 +118,15 @@ public class ProcessPrice {
 				 * por defecto hará que el producto se vaya al final 
 				 * de los resultados.
 				 */
-				if(StringUtils.isEmpty(a.getPrecioKilo())) {
-					a.setPrecioKilo(String.valueOf(ClaseUtils.DEFAULT_PRICE));
+				if(Objects.isNull(a.getPrecioKilo()) || 
+						StringUtils.EMPTY.contentEquals(a.getPrecioKilo())) {
+					a.setPrecioKilo(String.valueOf(DEFAULT_PRICE));
 				}
 				
 				/**
-				 * 
+				 * en el caso de que no vaya informado el precio por
+				 * kilo, se le pone el precio por unidad por defecto.
 				 */
-				comprobarPrecioKilo(a,b);
 				mismoPrecioYPrecioKilo(a, b);
 				
 				/**
@@ -112,10 +138,19 @@ public class ProcessPrice {
 				 */
 				i = convertirDouble(a.getPrecioKilo())
 						.compareTo(convertirDouble(b.getPrecioKilo()));
+				
+				/**
+				 * Se formatea el precio. Se quita la información
+				 * no relevante y se deja estandarizado para todos
+				 * los productos en el mismo formato.
+				 */
+				estilizarPrecios(a,b);
 			}
 		} else {
 			UnsupportedAttributeException e = new UnsupportedAttributeException("Error en el parametro de ordenacion", String.valueOf(a.getOrdenacion()));
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),ProcessPrice.class,e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 			throw e;
 		}
 		
@@ -133,8 +168,8 @@ public class ProcessPrice {
 		/**
 		 * Comprueba que el parametro de entrada sea valido.
 		 */
-		if(StringUtils.isEmpty(strPrecioKilo)) {
-			return Double.parseDouble(StringUtils.DECIMALES);
+		if(StringUtils.EMPTY.contentEquals(strPrecioKilo)) {
+			return Double.parseDouble(DECIMALES);
 		}
 		
 		/**
@@ -146,7 +181,7 @@ public class ProcessPrice {
 		 * Si extraer decimal no ha resultado, 
 		 * se saca el valor numérico entero.
 		 */
-		if(StringUtils.isEmpty(strPrecioKiloRes)) {
+		if(StringUtils.EMPTY.contentEquals(strPrecioKiloRes)) {
 			strPrecioKiloRes = extraerEntero(strPrecioKilo);
 		}
  
@@ -173,32 +208,38 @@ public class ProcessPrice {
 		 * Si la cadena de entrada está vacía o contiene una
 		 * coma se retorna nulo.
 		 */
-		if(StringUtils.isEmpty(cadena)) {
-			return StringUtils.NULL_STRING;
-		}else if(StringUtils.COMMA_STRING.equals(cadena)) {
-			return StringUtils.DEFAULT_STR_PRICE;
+		if(StringUtils.EMPTY.contentEquals(cadena)) {
+			return NULL_STRING;
+		}else if(COMMA_STRING.equals(cadena)) {
+			return DEFAULT_STR_PRICE;
 		}
 	     
-	  String resultado = StringUtils.NULL_STRING;
+	  String resultado = NULL_STRING;
 	  
 	  /**
 	   * Se reemplazan los puntos por espacios vacíos.
 	   */
-	  String cadenaAux = cadena.replace(StringUtils.DOT_STRING, StringUtils.EMPTY_STRING);
+	  String cadenaAux = cadena.replace(DOT_STRING, StringUtils.EMPTY);
 	  
 	  /**
-	   * Si la cadena contiene un pipe, se extrae de la misma
-	   * la parte posterior de dicho pipe de la cadena. 
+	   * Si la cadena contiene un "|", se extrae de la misma
+	   * la parte posterior de dicho "|" de la cadena. 
 	   */
-	  if(cadenaAux.contains(StringUtils.PIPE)) {
-		  cadenaAux = cadenaAux.substring(cadenaAux.lastIndexOf(StringUtils.PIPE),cadenaAux.length());
+	  if(cadenaAux.contains(PIPE_STRING)) {
+		  cadenaAux = cadenaAux.substring(
+				  cadenaAux.lastIndexOf(PIPE_STRING)+1,
+				  cadenaAux.length()).trim().
+				  replaceAll(StringUtils.SPACE
+						  .concat(StringUtils.SPACE),
+						  StringUtils.SPACE);
 	  }
 	  
 	  /**
 	   * Se comprueba si el valor extraido de la cadena es válido
 	   * aplicándole el patrón regex para un número decimal. 
 	   */
-	  Matcher mDecimal = StringUtils.matcher(StringUtils.REGEX_NUMERO_DECIMAL, cadenaAux, Pattern.MULTILINE);
+	  Matcher mDecimal = Pattern.compile(
+			  REGEX_NUMERO_DECIMAL, Pattern.MULTILINE).matcher(cadenaAux);
 	  
 	  /**
 	   * Si hay match, se asigna el valor a la variable de retorno.
@@ -206,7 +247,7 @@ public class ProcessPrice {
 	   * el valor de resultado será vacío.
 	   */
 	  if (mDecimal.find()) {
-	     resultado = mDecimal.group(ClaseUtils.ZERO_INT);
+	     resultado = mDecimal.group(0);
 	  }
 	  
 	  /**
@@ -214,8 +255,8 @@ public class ProcessPrice {
 	   * comas por puntos. En otro caso, la cadena auxiliar se 
 	   * procesará como número entero.
 	   */
-	  if(!StringUtils.isEmpty(resultado)) {	  
-		  resultado = resultado.replace(StringUtils.COMMA_STRING, StringUtils.DOT_STRING);
+	  if(!StringUtils.EMPTY.contentEquals(resultado)) {	  
+		  resultado = resultado.replace(COMMA_STRING, DOT_STRING);
 	  } else {
 		  return extraerEntero(cadenaAux);
 	  }
@@ -237,17 +278,17 @@ public class ProcessPrice {
 		 * Se comprueba que el parámetro de entrada no sea nulo.
 		 * 
 		 */
-		if(StringUtils.isEmpty(cadena)) {
-			return StringUtils.NULL_STRING;
+		if(StringUtils.EMPTY.contentEquals(cadena)) {
+			return NULL_STRING;
 		}	
 		
-		String resultado = StringUtils.NULL_STRING;
+		String resultado = NULL_STRING;
 		
 		  /**
 		   * Se comprueba si el valor extraido de la cadena es válido
 		   * aplicándole el patrón regex para un número entero. 
 		   */
-		Matcher mEntero = StringUtils.matcher(StringUtils.REGEX_NUMERO_DECIMAL, cadena, Pattern.MULTILINE);
+		Matcher mEntero = Pattern.compile(REGEX_NUMERO_DECIMAL, Pattern.MULTILINE).matcher(cadena);
 		
 		/**
 		 * El valor en esta punto no puede ser decimal,
@@ -257,19 +298,19 @@ public class ProcessPrice {
 		 * 
 		 */
 		  if(mEntero.find()) {
-			  return StringUtils.DECIMALES;
+			  return DECIMALES;
 		  }
 		 
 		  /**
 		   * Se reemplazan los puntos pro espacios en blanco
 		   */
-		String cadenaAux = cadena.replace(StringUtils.DOT_STRING, StringUtils.EMPTY_STRING);
+		String cadenaAux = cadena.replace(DOT_STRING, StringUtils.EMPTY);
 		
 		  /**
 		   * Se comprueba si el valor extraido de la cadena es decimal
 		   * aplicándole el patrón regex. 
 		   */
-		mEntero = StringUtils.matcher(StringUtils.REGEX_NUMERO_DECIMAL, cadenaAux, Pattern.MULTILINE);
+		mEntero = Pattern.compile(REGEX_NUMERO_DECIMAL, Pattern.MULTILINE).matcher(cadenaAux);
 		
 		/**
 		 * En el caso de que haya habido match, se extrae
@@ -278,7 +319,7 @@ public class ProcessPrice {
 		 */
 	    if(mEntero.find()) {
 		   resultado = mEntero.group();
-		   resultado = resultado.concat(StringUtils.DECIMALES);
+		   resultado = resultado.concat(DECIMALES);
 	    }
 
 		/**
@@ -286,9 +327,8 @@ public class ProcessPrice {
 		 * se le vuelve a aplicar un patrón regex pero esta vez
 		 * para un numero entero.
 		 */
-		if(StringUtils.isEmpty(resultado)) {
-			  mEntero = StringUtils.matcher(StringUtils.REGEX_INTEGER, cadenaAux, Pattern.MULTILINE);
-			  
+		if(StringUtils.EMPTY.contentEquals(resultado)) {
+			  mEntero = Pattern.compile(REGEX_INTEGER, Pattern.MULTILINE).matcher(cadenaAux);
 				/**
 				 * En el caso de que haya habido match, se extrae
 				 * el primer grupo de valores que representan la parte
@@ -296,51 +336,11 @@ public class ProcessPrice {
 				 */
 			if(mEntero.find()) {
 				  resultado = mEntero.group();
-				  resultado = resultado.concat(StringUtils.DECIMALES);
+				  resultado = resultado.concat(DECIMALES);
 			}
 		}
 		
 		return resultado;
-	}
-	
-	/**
-	 * Si el valor del precio por kilo está vacío se pone 
-	 * el precio por unidad su lugar.
-	 * 
-	 * @param a
-	 * @param b
-	 */
-	private static void comprobarPrecioKilo(ResultadoDTO a, ResultadoDTO b) {
-		
-		int iIndexOfA = ClaseUtils.ONE_NEGATIVE_INT;
-		int iIndexOfB = ClaseUtils.ONE_NEGATIVE_INT;
-		
-		/**
-		 * En el caso de que el valor del precio/kilo no esté vacío,
-		 * se comprueba si dicho valor contiene el acronimo 'kg'. Si
-		 * contiene dicho acronimo, es que la variable viene informada
-		 * con el valor correcto.
-		 * 
-		 */
-		if(StringUtils.isEmpty(a.getPrecioKilo()) &&
-				!StringUtils.isEmpty(a.getPrecio())) {
-			iIndexOfA = a.getPrecio().toLowerCase().indexOf(StringUtils.KILO_GRAM);
-		}
-		if(StringUtils.isEmpty(b.getPrecioKilo()) &&
-				!StringUtils.isEmpty(b.getPrecio())) {
-			iIndexOfB = b.getPrecio().toLowerCase().indexOf(StringUtils.KILO_GRAM);
-		}
-		
-		/**
-		 * Si el valor index es negativo, se setea 
-		 * el valor del precio por unidad al precio por kilo.
-		 */
-		if(iIndexOfA != ClaseUtils.ONE_NEGATIVE_INT) {
-			a.setPrecioKilo( a.getPrecio());
-		}		
-		if(iIndexOfB != ClaseUtils.ONE_NEGATIVE_INT) {
-			b.setPrecioKilo( b.getPrecio());
-		}
 	}
 	
 	/**
@@ -352,18 +352,40 @@ public class ProcessPrice {
 	 */
 	private static void mismoPrecioYPrecioKilo(ResultadoDTO a, ResultadoDTO b) {
 		
-		if(StringUtils.isEmpty(a.getPrecioKilo()) &&
-				!StringUtils.isEmpty(a.getPrecio())) {
+		if(StringUtils.EMPTY.contentEquals(a.getPrecioKilo()) &&
+				!StringUtils.EMPTY.contentEquals(a.getPrecio())) {
 			a.setPrecioKilo(extraerDecimal(a.getPrecio())
-					.concat(StringUtils.BARRA_KILO_GRAM));
+					.concat(BARRA_KILO_GRAM));
 		}
 		
-		if(StringUtils.isEmpty(b.getPrecioKilo()) &&
-				!StringUtils.isEmpty(b.getPrecio())) {
+		if(StringUtils.EMPTY.contentEquals(b.getPrecioKilo()) &&
+				!StringUtils.EMPTY.contentEquals(b.getPrecio())) {
 			b.setPrecioKilo(extraerDecimal(b.getPrecio())
-					.concat(StringUtils.BARRA_KILO_GRAM));
+					.concat(BARRA_KILO_GRAM));
 		}
 	}
-
-
+	
+	private static void estilizarPrecios(final ResultadoDTO a, final ResultadoDTO b) {
+		
+		/**
+		 * Se formatea el precio. Se quita la información
+		 * no relevante.
+		 */
+		a.setPrecio(extraerDecimal(a.getPrecio())
+				.concat(EURO_SYMBOL)
+				.replace(DOT_STRING,COMMA_STRING));	
+		
+		b.setPrecio(extraerDecimal(b.getPrecio())
+				.concat(EURO_SYMBOL)
+				.replace(DOT_STRING,COMMA_STRING));
+		
+		//precio Kilo
+		a.setPrecioKilo(extraerDecimal(a.getPrecioKilo())
+				.concat(BARRA_KILO_GRAM)
+				.replace(DOT_STRING,COMMA_STRING));	
+		
+		b.setPrecioKilo(extraerDecimal(b.getPrecioKilo())
+				.concat(BARRA_KILO_GRAM)
+				.replace(DOT_STRING,COMMA_STRING));
+	}
 }

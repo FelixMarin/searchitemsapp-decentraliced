@@ -59,23 +59,23 @@ public class PaisParserTest {
 		PaisDTO nomProductoDto = parser.toDTO(tbSiaPais);
 		
 		//- Equals -//
-		assertEquals("getTbSiaEmpresas", 
-				tbSiaPais.getTbSiaEmpresas(), 
-				nomProductoDto.getTbSiaEmpresas());		
-		assertEquals("getTbSiaMarcas", 
-				tbSiaPais.getTbSiaMarcas(), 
-				nomProductoDto.getTbSiaMarcas());
+		assertEquals("getDid", 
+				tbSiaPais.getDid(), 
+				nomProductoDto.getDid());		
+		assertEquals("getDid", 
+				tbSiaPais.getDid(), 
+				nomProductoDto.getDid());
 		assertEquals("getetTbSiaNomProductos", 
-				tbSiaPais.getTbSiaNomProductos(), 
-				nomProductoDto.getTbSiaNomProductos());
+				tbSiaPais.getDid(), 
+				nomProductoDto.getDid());
 		
 		//- Same -//
-		assertSame(tbSiaPais.getTbSiaMarcas(), 
-				nomProductoDto.getTbSiaMarcas());
-		assertSame(tbSiaPais.getTbSiaEmpresas(), 
-				nomProductoDto.getTbSiaEmpresas());
-		assertSame(tbSiaPais.getTbSiaNomProductos(), 
-				nomProductoDto.getTbSiaNomProductos());
+		assertSame(tbSiaPais.getDid(), 
+				nomProductoDto.getDid());
+		assertSame(tbSiaPais.getDid(), 
+				nomProductoDto.getDid());
+		assertSame(tbSiaPais.getDid(), 
+				nomProductoDto.getDid());
 		
 	}
 	
@@ -83,36 +83,28 @@ public class PaisParserTest {
 	public void toTbSia() {
 		
 		PaisDTO nomProductoDto = new PaisDTO();
-		
-		nomProductoDto.setTbSiaEmpresas(new ArrayList<TbSiaEmpresa>());
-		nomProductoDto.setTbSiaMarcas(new ArrayList<TbSiaMarcas>());
-		nomProductoDto.setTbSiaNomProductos(new ArrayList<TbSiaNomProducto>());
-		
-		nomProductoDto.getTbSiaEmpresas().add(new TbSiaEmpresa());
-		nomProductoDto.getTbSiaMarcas().add(new TbSiaMarcas());
-		nomProductoDto.getTbSiaNomProductos().add(new TbSiaNomProducto());
-		
+						
 		PaisParser parser = new PaisParser();
 		TbSiaPais tbSiaPais = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
-		assertEquals("getTbSiaEmpresas", 
-			nomProductoDto.getTbSiaEmpresas(), 
-				tbSiaPais.getTbSiaEmpresas());	
-		assertEquals("getTbSiaMarcas", 
-				nomProductoDto.getTbSiaMarcas(), 
-				tbSiaPais.getTbSiaMarcas());
+		assertEquals("getDid", 
+			nomProductoDto.getDid(), 
+				tbSiaPais.getDid());	
+		assertEquals("getDid", 
+				nomProductoDto.getDid(), 
+				tbSiaPais.getDid());
 		assertEquals("getetTbSiaNomProductos", 
-				nomProductoDto.getTbSiaNomProductos(), 
-				tbSiaPais.getTbSiaNomProductos());
+				nomProductoDto.getDid(), 
+				tbSiaPais.getDid());
 		
 		//- Same -//
-		assertSame(nomProductoDto.getTbSiaMarcas(), 
-				tbSiaPais.getTbSiaMarcas());
-		assertSame(nomProductoDto.getTbSiaEmpresas(), 
-				tbSiaPais.getTbSiaEmpresas());
-		assertSame(nomProductoDto.getTbSiaNomProductos(), 
-				tbSiaPais.getTbSiaNomProductos());
+		assertSame(nomProductoDto.getDid(), 
+				tbSiaPais.getDid());
+		assertSame(nomProductoDto.getDid(), 
+				tbSiaPais.getDid());
+		assertSame(nomProductoDto.getDid(), 
+				tbSiaPais.getDid());
 		
 	}
 	

@@ -2,10 +2,14 @@ package com.searchitemsapp.dao;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -13,9 +17,7 @@ import com.searchitemsapp.dto.LoginDTO;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaLogin;
 import com.searchitemsapp.repository.IFLoginRepository;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Método que DAO proporcionará los métodos necesarios para 
@@ -29,6 +31,8 @@ import com.searchitemsapp.util.StringUtils;
 @Repository
 public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLoginRepository {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginDao.class);     
+	
 	/*
 	 * Variables Globales
 	 */
@@ -50,14 +54,16 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 	@Override
 	public List<LoginDTO> findAll() throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<LoginDTO> resultado = (List<LoginDTO>) ClaseUtils.NULL_OBJECT;
+		List<LoginDTO> resultado = null;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.all"));
 		
 		/**
@@ -76,7 +82,9 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		try {
 			resultado = getParser(LOGIN_PARSER).toListDTO(((List<TbSiaLogin>) q.getResultList()));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isInfoEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;
@@ -91,19 +99,23 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 	@Override
 	public LoginDTO findByDid(Integer did) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(did)) {
-			return (LoginDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(did)) {
+			return null;
 		}
 		
-		LoginDTO loginDto = (LoginDTO) ClaseUtils.NULL_OBJECT;
+		LoginDTO loginDto = null;
 		
-		LogsUtils.escribeLogDebug(String.valueOf(did),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(String.valueOf(did),this.getClass());
+		}
 		
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
@@ -112,7 +124,9 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		try {
 			loginDto = getParser(LOGIN_PARSER).toDTO(getEntityManager().find(TbSiaLogin.class, did));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isInfoEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return loginDto;
@@ -128,23 +142,28 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 	@Override
 	public LoginDTO findByTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa)  throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(tbSiaEmpresa)) {
-			return (LoginDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(tbSiaEmpresa)) {
+			return null;
 		}
-		LogsUtils.escribeLogDebug(String.valueOf(tbSiaEmpresa.toString()),this.getClass());
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(String.valueOf(tbSiaEmpresa.toString()),this.getClass());
+		}
 		
-		LoginDTO resultado = (LoginDTO) ClaseUtils.NULL_OBJECT;
+		LoginDTO resultado = null;
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.by.did.categoria"));
 		
 		/**
@@ -161,7 +180,9 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		try {
 			resultado = getParser(LOGIN_PARSER).toDTO((TbSiaLogin) query.getSingleResult());
 		} catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isInfoEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;

@@ -3,11 +3,12 @@ package com.searchitemsapp.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.factory.ParserFactory;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Clase Abstracta que implementan todas las clases
@@ -22,22 +23,24 @@ import com.searchitemsapp.util.LogsUtils;
  */
 @SuppressWarnings({"rawtypes","unchecked"})
 public abstract class AbstractDao<R,T> implements IFDao {
-
-	/**
-	 * Constructor
-	 */
-	public AbstractDao() {
-		super();
-	}
 	
-	/**
-	 * Variables
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDao.class);     
+
+	/*
+	 * Variables Globales
 	 */
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	@Autowired
 	private ParserFactory parserFactory;
+	
+	/*
+	 * Constructor
+	 */
+	public AbstractDao() {
+		super();
+	}
 	
 
 	/**
@@ -65,7 +68,9 @@ public abstract class AbstractDao<R,T> implements IFDao {
 	 * @param clazz
 	 */
 	public void isEntityManagerOpen(Class clazz) {
-		LogsUtils.escribeLogDebug("entityManager is open: ".concat(String.valueOf(entityManager.isOpen())), clazz);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info("entityManager is open: ".concat(String.valueOf(entityManager.isOpen())), clazz);
+		}
 	}
 	
 	/**

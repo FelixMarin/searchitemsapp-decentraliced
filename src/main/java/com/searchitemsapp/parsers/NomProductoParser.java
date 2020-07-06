@@ -3,10 +3,14 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.NomProductoDTO;
+import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.model.TbSiaPais;
 
 /**
  * Es un componente analizador de software que 
@@ -18,6 +22,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProducto> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(NomProductoParser.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -33,14 +39,18 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 */
 	public NomProductoDTO toDTO(TbSiaNomProducto tbSiaNomProducto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		NomProductoDTO nomProductoDTO = new NomProductoDTO();
 		
 		nomProductoDTO.setDid(tbSiaNomProducto.getDid());
-		nomProductoDTO.setNomProducto(tbSiaNomProducto.getNomProducto());
-		nomProductoDTO.setTbSiaCategoriasEmpresa(tbSiaNomProducto.getTbSiaCategoriasEmpresa());
-		nomProductoDTO.setTbSiaPais(tbSiaNomProducto.getTbSiaPais());
+		nomProductoDTO.setNomProducto(tbSiaNomProducto.getNomProducto());		
+		nomProductoDTO.setDidCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getDid());
+		nomProductoDTO.setNomCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+		nomProductoDTO.setDidPais(tbSiaNomProducto.getTbSiaPais().getDid());
+		nomProductoDTO.setNomPais(tbSiaNomProducto.getTbSiaPais().getNomPais());
 		
 		return nomProductoDTO;
 	}
@@ -53,14 +63,20 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 */
 	public TbSiaNomProducto toTbSia(NomProductoDTO nomProductoDTO) { 
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaNomProducto tbSiaNomProducto = new TbSiaNomProducto();
 		
 		tbSiaNomProducto.setDid(nomProductoDTO.getDid());
 		tbSiaNomProducto.setNomProducto(nomProductoDTO.getNomProducto());
-		tbSiaNomProducto.setTbSiaCategoriasEmpresa(nomProductoDTO.getTbSiaCategoriasEmpresa());
-		tbSiaNomProducto.setTbSiaPais(nomProductoDTO.getTbSiaPais());
+		tbSiaNomProducto.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
+		tbSiaNomProducto.setTbSiaPais(new TbSiaPais());		
+		tbSiaNomProducto.getTbSiaCategoriasEmpresa().setDid(nomProductoDTO.getDid());
+		tbSiaNomProducto.getTbSiaCategoriasEmpresa().setNomCatEmpresa(nomProductoDTO.getNomCatEmpresas());
+		tbSiaNomProducto.getTbSiaPais().setDid(nomProductoDTO.getDid());
+		tbSiaNomProducto.getTbSiaPais().setNomPais(nomProductoDTO.getNomPais());
 		
 		return tbSiaNomProducto;
 	}
@@ -73,17 +89,21 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 */
 	public List<NomProductoDTO> toListDTO(List<TbSiaNomProducto> lsTbSiaNomProducto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<NomProductoDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<NomProductoDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		NomProductoDTO nomProductoDTO;		
 		
 		for (TbSiaNomProducto tbSiaNomProducto : lsTbSiaNomProducto) {
 			nomProductoDTO = new NomProductoDTO();
 			nomProductoDTO.setDid(tbSiaNomProducto.getDid());
 			nomProductoDTO.setNomProducto(tbSiaNomProducto.getNomProducto());
-			nomProductoDTO.setTbSiaCategoriasEmpresa(tbSiaNomProducto.getTbSiaCategoriasEmpresa());
-			nomProductoDTO.setTbSiaPais(tbSiaNomProducto.getTbSiaPais());
+			nomProductoDTO.setDidCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getDid());
+			nomProductoDTO.setNomCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			nomProductoDTO.setDidPais(tbSiaNomProducto.getTbSiaPais().getDid());
+			nomProductoDTO.setNomPais(tbSiaNomProducto.getTbSiaPais().getNomPais());
 			listDto.add(nomProductoDTO);
 		}
 		
@@ -97,8 +117,10 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	@Override
 	public List<NomProductoDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),NomProductoParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

@@ -3,10 +3,13 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsFormLogin;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.model.TbSiaUrl;
 
 /**
  * Es un componente analizador de software que 
@@ -18,6 +21,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaParamsFormLogin> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsFormLoginParser.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -33,14 +38,17 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	 */
 	public ParamsLoginDTO toDTO(TbSiaParamsFormLogin tbSiaParamsFormLogin) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		ParamsLoginDTO paramsLoginDto = new ParamsLoginDTO();
 		
 		paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 		paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 		paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-		paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());
+		paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+		paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());
 		
 		return paramsLoginDto;
 	}
@@ -53,14 +61,18 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	 */
 	public TbSiaParamsFormLogin toTbSia(ParamsLoginDTO paramsLoginDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaParamsFormLogin tbSiaParamsFormLogin = new TbSiaParamsFormLogin();
 		
 		tbSiaParamsFormLogin.setDid(paramsLoginDto.getDid());
 		tbSiaParamsFormLogin.setParamClave(paramsLoginDto.getParamClave());
 		tbSiaParamsFormLogin.setParamValor(paramsLoginDto.getParamValor());
-		tbSiaParamsFormLogin.setTbSiaUrl(paramsLoginDto.getTbSiaUrl());
+		tbSiaParamsFormLogin.setTbSiaUrl(new TbSiaUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setDid(paramsLoginDto.getDidUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setNomUrl(paramsLoginDto.getNomUrl());
 		
 		return tbSiaParamsFormLogin;		
 	}
@@ -73,9 +85,11 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	 */
 	public List<ParamsLoginDTO> toListDTO(List<TbSiaParamsFormLogin> listTbSiaParamsFormLogin) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		ParamsLoginDTO paramsLoginDto;
 		
 		for (TbSiaParamsFormLogin tbSiaParamsFormLogin : listTbSiaParamsFormLogin) {
@@ -83,7 +97,8 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 			paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 			paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 			paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-			paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());			
+			paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+			paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());	
 			listParamsLoginDto.add(paramsLoginDto);
 		}
 		
@@ -96,8 +111,10 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	@Override
 	public List<ParamsLoginDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

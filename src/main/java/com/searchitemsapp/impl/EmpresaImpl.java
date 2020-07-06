@@ -4,18 +4,21 @@ package com.searchitemsapp.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.EmpresaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Implementación del dao {@link EmpresaDao}.
@@ -30,6 +33,7 @@ import com.searchitemsapp.util.StringUtils;
 @Aspect
 public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaImpl.class);  
 	/*
 	 * Variables Globales
 	 */
@@ -52,8 +56,9 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	@Override
 	public List<EmpresaDTO> findAll() throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		/**
 		 * Ejeculta la llamada al dao y devuelve el resultado.
 		 */
@@ -70,27 +75,31 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	@Override
 	public EmpresaDTO findByDid(EmpresaDTO empresaDto) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
 		/**
 		 * Si los parámetros de entrada son nulos, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(empresaDto) ||
-				ClaseUtils.isNullObject(empresaDto.getDid())) {
+		if(Objects.isNull(empresaDto) ||
+				Objects.isNull(empresaDto.getDid())) {
 			
-			return (EmpresaDTO) ClaseUtils.NULL_OBJECT;
+			return null;
 		}
 		
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(empresaDto.getDid());
 		
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Ejecuta la llamada al dao y devuelve el resultado.
@@ -109,19 +118,24 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	@Override
 	public List<EmpresaDTO> findByTbSia(EmpresaDTO empresaDto, CategoriaDTO categoriaDto) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si los parámetros de entrada son nulos, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(empresaDto) || ClaseUtils.isNullObject(categoriaDto)) {
+		if(Objects.isNull(empresaDto) || Objects.isNull(categoriaDto)) {
 			return new ArrayList();
 		}
+		
+		TbSiaCategoriasEmpresa ce = new TbSiaCategoriasEmpresa();
+		ce.setDid(categoriaDto.getDid());
 		
 		/**
 		 * Ejecuta la llamada al dao y devuelve el resultado.
 		 */
-		return empresaDao.findByTbSiaCategoriasEmpresa(empresaDto.getDid(), categoriaDto.getDid());
+		return empresaDao.findByDidAndTbSiaCategoriasEmpresa(empresaDto.getDid(), ce);
 	}	
 }

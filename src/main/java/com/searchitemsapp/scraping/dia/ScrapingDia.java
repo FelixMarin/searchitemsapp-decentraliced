@@ -2,20 +2,23 @@ package com.searchitemsapp.scraping.dia;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
+
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -24,7 +27,14 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingDia  implements IFScrapingEmpresas {
+public class ScrapingDia extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingDia.class);   
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String PROTOCOL_ACCESSOR ="://";
 
 	/*
 	 * Constructor
@@ -45,12 +55,13 @@ public class ScrapingDia  implements IFScrapingEmpresas {
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto,
-			final SelectoresCssDTO selectorCssDto) 
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto) 
 					throws MalformedURLException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(), this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
 		 * del conjunto de páginas obtenidas como resultado
@@ -58,14 +69,14 @@ public class ScrapingDia  implements IFScrapingEmpresas {
 		 * se generan las de paginación.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		String selectorPaginacion = selectorCssDto.getSelPaginacion();
-		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
+		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
 
 		/**
 		 * Se divide el selector de paginación.
 		 */
-		StringTokenizer st = new StringTokenizer(selectorPaginacion, StringUtils.PIPE);
-		List<String> liSelectorAtr = StringUtils.getNewListString();
+		StringTokenizer st = new StringTokenizer(selectorPaginacion, "|");
+		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
 
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
@@ -78,8 +89,8 @@ public class ScrapingDia  implements IFScrapingEmpresas {
 		 * Se obtienen todos los elementos que interesan del documento
 		 * utilizando el selector css.
 		 */
-		Elements elements = document.select(liSelectorAtr.get(ClaseUtils.ZERO_INT));
-		List<String> listaUrls = StringUtils.getNewListString();
+		Elements elements = document.select(liSelectorAtr.get(0));
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 
 		/**
 		 * Se añade la URL base en la lista.
@@ -93,10 +104,10 @@ public class ScrapingDia  implements IFScrapingEmpresas {
 		 * 
 		 */
 		URL url = new URL(urlBase);
-		String strUrlEmpresa = url.getProtocol().concat(StringUtils.PROTOCOL_ACCESSOR).concat(url.getHost());
+		String strUrlEmpresa = url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost());
 
 		for (Element element : elements) {
-			listaUrls.add(strUrlEmpresa.concat(element.attr(liSelectorAtr.get(ClaseUtils.ONE_INT))));
+			listaUrls.add(strUrlEmpresa.concat(element.attr(liSelectorAtr.get(1))));
 		}
 
 		/**
@@ -105,8 +116,8 @@ public class ScrapingDia  implements IFScrapingEmpresas {
 		 * Este parámetro sed configura en el fichero de
 		 * properties.
 		 */
-		if(numresultados > ClaseUtils.ZERO_INT && numresultados <= listaUrls.size()) {
-			listaUrls = listaUrls.subList(ClaseUtils.ZERO_INT, numresultados);
+		if(numresultados > 0 && numresultados <= listaUrls.size()) {
+			listaUrls = listaUrls.subList(0, numresultados);
 		}
 		
 		return listaUrls;

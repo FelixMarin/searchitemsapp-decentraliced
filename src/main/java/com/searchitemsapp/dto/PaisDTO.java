@@ -1,13 +1,9 @@
 package com.searchitemsapp.dto;
 
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaMarcas;
-import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -27,9 +23,10 @@ public class PaisDTO implements IFdto {
 	private Boolean bolActivo;
 	private String desPais;
 	private String nomPais;
-	private List<TbSiaEmpresa> tbSiaEmpresas;
-	private List<TbSiaMarcas> tbSiaMarcas;
-	private List<TbSiaNomProducto> tbSiaNomProductos;
+	
+	private LinkedHashMap<Integer, String> empresas;
+	private LinkedHashMap<Integer, String> marcas;
+	private LinkedHashMap<Integer, String> productos;
 	
 	/*
 	 * Constructor
@@ -72,29 +69,29 @@ public class PaisDTO implements IFdto {
 	public void setNomPais(String nomPais) {
 		this.nomPais = nomPais;
 	}
-
-	public List<TbSiaEmpresa> getTbSiaEmpresas() {
-		return tbSiaEmpresas;
-	}
-
-	public void setTbSiaEmpresas(List<TbSiaEmpresa> tbSiaEmpresas) {
-		this.tbSiaEmpresas = tbSiaEmpresas;
-	}
 	
-	public List<TbSiaMarcas> getTbSiaMarcas() {
-		return tbSiaMarcas;
+	public LinkedHashMap<Integer, String> getEmpresas() {
+		return empresas;
 	}
 
-	public void setTbSiaMarcas(List<TbSiaMarcas> tbSiaMarcas) {
-		this.tbSiaMarcas = tbSiaMarcas;
+	public void setEmpresas(LinkedHashMap<Integer, String> empresas) {
+		this.empresas = empresas;
 	}
 
-	public List<TbSiaNomProducto> getTbSiaNomProductos() {
-		return tbSiaNomProductos;
+	public LinkedHashMap<Integer, String> getMarcas() {
+		return marcas;
 	}
 
-	public void setTbSiaNomProductos(List<TbSiaNomProducto> tbSiaNomProductos) {
-		this.tbSiaNomProductos = tbSiaNomProductos;
+	public void setMarcas(LinkedHashMap<Integer, String> marcas) {
+		this.marcas = marcas;
+	}
+
+	public LinkedHashMap<Integer, String> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(LinkedHashMap<Integer, String> productos) {
+		this.productos = productos;
 	}
 
 	/*
@@ -104,13 +101,10 @@ public class PaisDTO implements IFdto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ClaseUtils.isNullObject(bolActivo)) ? 0 : bolActivo.hashCode());
-		result = prime * result + ((StringUtils.validateNull(desPais)) ? 0 : desPais.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(did)) ? 0 : did.hashCode());
-		result = prime * result + ((StringUtils.validateNull(nomPais)) ? 0 : nomPais.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaEmpresas)) ? 0 : tbSiaEmpresas.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaMarcas)) ? 0 : tbSiaMarcas.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaNomProductos)) ? 0 : tbSiaNomProductos.hashCode());		
+		result = prime * result + ((Objects.isNull(bolActivo)) ? 0 : bolActivo.hashCode());
+		result = prime * result + ((Objects.isNull(desPais)) ? 0 : desPais.hashCode());
+		result = prime * result + ((Objects.isNull(did)) ? 0 : did.hashCode());
+		result = prime * result + ((Objects.isNull(nomPais)) ? 0 : nomPais.hashCode());
 		return result;
 	}
 
@@ -122,7 +116,6 @@ public class PaisDTO implements IFdto {
 	@Override
 	public String toString() {
 		return "PaisDTO [did=" + did + ", bolActivo=" + bolActivo + ", desPais=" + desPais + ", nomPais=" + nomPais
-				+ ", tbSiaEmpresas=" + tbSiaEmpresas + ", tbSiaMarcas=" + tbSiaMarcas + ", tbSiaNomProductos="
-				+ tbSiaNomProductos + "]";
+				 + "]";
 	}
 }

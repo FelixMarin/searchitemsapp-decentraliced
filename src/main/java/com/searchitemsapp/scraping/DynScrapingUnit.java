@@ -2,6 +2,7 @@ package com.searchitemsapp.scraping;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -13,11 +14,12 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+import com.searchitemsapp.scraping.consum.IFScrapingConsum;
 
 /**
  * Módulo de web scraping dinámico. Esta clase contiene la
@@ -27,19 +29,26 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class DynScrapingUnit extends Scraping {
+public class DynScrapingUnit {
 	
-	
-	/*
-	 * Variables Globales
-	 */
-	private static WebDriver webDriver;
+	private static final Logger LOGGER = LoggerFactory.getLogger(DynScrapingUnit.class);  
 	
 	/*
 	 * Constantes Globales
 	 */
-	private static final String SCROLL_DOWN = "window.scrollTo(0, document.body.scrollHeight);";	
-	private static final int SELECTOR = 0;
+	private final String SCROLL_DOWN = "window.scrollTo(0, document.body.scrollHeight);";	
+	
+	/*
+	 * Variables Globales
+	 */
+	/**
+	 * El web driver es estático porque 
+	 * solo se tiene que crear una sola vez.
+	 */
+	private static WebDriver webDriver;
+	
+	@Autowired
+	private IFScrapingConsum scrapingConsum;
 	
 	/*
 	 * Constructor
@@ -60,23 +69,27 @@ public class DynScrapingUnit extends Scraping {
 	 */
 	public String getDynHtmlContent(final String strUrl, final int didEmpresa) throws InterruptedException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),DynScrapingUnit.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		String resultado;	
+		int didConsum = Integer.parseInt(CommonsPorperties.getValue("flow.value.did.empresa.consum"));
+		
 		
 		/**
 		 * Se añade el driver a las propiedades globales del sistema.
 		 */
-		System.getProperties().setProperty(initDriver(SELECTOR), 
+		System.getProperties().setProperty(initDriver(0), 
 				CommonsPorperties.getValue("flow.value.firefox.driver.path"));
 		
 		/**
 		 * Se inicilaiza y configura el driver.
 		 */
-		initWebDriver(SELECTOR);
+		initWebDriver(0);
 		
-		if(getMapEmpresas().get(StringUtils.CONSUM) == didEmpresa) {			
-			resultado = getHtmlContextConsum(webDriver, strUrl);
+		if(didConsum == didEmpresa) {			
+			resultado = scrapingConsum.getHtmlContent(webDriver, strUrl);
 		} else {
 			webDriver.navigate().to(strUrl);
 			JavascriptExecutor js = (JavascriptExecutor) webDriver;
@@ -84,8 +97,8 @@ public class DynScrapingUnit extends Scraping {
 			resultado = webDriver.getPageSource();
 		}
 		
-		if(!ClaseUtils.isNullObject(webDriver)) {
-			clieanWindows();
+		if(Objects.nonNull(webDriver)) {
+			cleanWindows();
 		}
 		 
 		return resultado;
@@ -120,7 +133,7 @@ public class DynScrapingUnit extends Scraping {
 	 */
 	private void setupWebDriverChrome() {
 		
-		if(ClaseUtils.isNullObject(getWebDriver())) {
+		if(Objects.isNull(webDriver)) {
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--headless");
 			options.addArguments("--incognito");
@@ -133,10 +146,10 @@ public class DynScrapingUnit extends Scraping {
                     .build();
 			dc.setCapability(ChromeOptions.CAPABILITY, options);
 			options.merge(dc);
-			setWebDriver(new ChromeDriver(chromeService, options));	
-			getWebDriver().manage().window().maximize();
-			getWebDriver().manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
-			getWebDriver().manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
+			webDriver = new ChromeDriver(chromeService, options);
+			webDriver.manage().window().maximize();
+			webDriver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			webDriver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
 		}
 	}
 	
@@ -149,17 +162,17 @@ public class DynScrapingUnit extends Scraping {
 	 */
 	private void setupWebDriverFirefox() {
 		
-		if(ClaseUtils.isNullObject(getWebDriver())) {
+		if(Objects.isNull(webDriver)) {
 			FirefoxOptions options = new FirefoxOptions();
 			options.setBinary(CommonsPorperties.getValue("folw.value.firefox.ejecutable.path"));
 			options.addArguments("-headless");
 			DesiredCapabilities dc = DesiredCapabilities.firefox();
 			dc.setCapability("moz:firefoxOptions", options);
 			options.merge(dc);
-			setWebDriver(new FirefoxDriver(options));
-			getWebDriver().manage().window().maximize();
-			getWebDriver().manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
-			getWebDriver().manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);			
+			webDriver = new FirefoxDriver(options);
+			webDriver.manage().window().maximize();
+			webDriver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			webDriver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);			
 		}
 	}
 	
@@ -167,23 +180,23 @@ public class DynScrapingUnit extends Scraping {
 	 * Funcionalidad para cerrar las ventanas que puedan
 	 * quedar abiertas en el buscador headless.
 	 */
-	private void clieanWindows() {            
-        Set<String> windows = getWebDriver().getWindowHandles();
+	private void cleanWindows() {            
+        Set<String> windows = webDriver.getWindowHandles();
         Iterator<String> iter = windows.iterator();
         String[] winNames=new String[windows.size()];
-        int i=ClaseUtils.ZERO_INT;
+        int i=0;
         while (iter.hasNext()) {
             winNames[i]=iter.next();
             i++;
         }
 
-        if(winNames.length > ClaseUtils.ONE_INT) {
-            for(i = winNames.length; i > ClaseUtils.ONE_INT; i--) {
-            	getWebDriver().switchTo().window(winNames[i - ClaseUtils.ONE_INT]);
-            	getWebDriver().close();
+        if(winNames.length > 1) {
+            for(i = winNames.length; i > 1; i--) {
+            	webDriver.switchTo().window(winNames[i - 1]);
+            	webDriver.close();
             }
         }
-        getWebDriver().switchTo().window(winNames[ClaseUtils.ZERO_INT]);
+        webDriver.switchTo().window(winNames[0]);
     }
 	
 	/**
@@ -199,16 +212,5 @@ public class DynScrapingUnit extends Scraping {
 			return CommonsPorperties.getValue("flow.value.firefox.driver");
 		}
 	}
-
-	/**
-	 * 
-	 * @return {@link WebDriver}
-	 */
-	public static WebDriver getWebDriver() {
-		return webDriver;
-	}
-	public static void setWebDriver(WebDriver webDriver) {
-		DynScrapingUnit.webDriver = webDriver;
-	}	
 }
 

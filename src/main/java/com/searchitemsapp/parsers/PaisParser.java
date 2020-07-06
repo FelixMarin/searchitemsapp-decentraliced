@@ -1,12 +1,19 @@
 package com.searchitemsapp.parsers;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.PaisDTO;
+import com.searchitemsapp.model.TbSiaEmpresa;
+import com.searchitemsapp.model.TbSiaMarcas;
+import com.searchitemsapp.model.TbSiaNomProducto;
 import com.searchitemsapp.model.TbSiaPais;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Es un componente analizador de software que 
@@ -17,6 +24,8 @@ import com.searchitemsapp.util.LogsUtils;
  *
  */
 public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PaisParser.class);  
 	
 	/*
 	 * Constructor
@@ -33,7 +42,9 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	 */
 	public PaisDTO toDTO(TbSiaPais tbSiaPPais) {	
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		PaisDTO paisPDto = new PaisDTO();
 		
@@ -41,9 +52,22 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 		paisPDto.setDesPais(tbSiaPPais.getDesPais());
 		paisPDto.setDid(tbSiaPPais.getDid());
 		paisPDto.setNomPais(tbSiaPPais.getNomPais());
-		paisPDto.setTbSiaEmpresas(tbSiaPPais.getTbSiaEmpresas());
-		paisPDto.setTbSiaMarcas(tbSiaPPais.getTbSiaMarcas());
-		paisPDto.setTbSiaNomProductos(tbSiaPPais.getTbSiaNomProductos());
+		
+		TbSiaEmpresa tbSiaEmpresa = tbSiaPPais.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
+		LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+		mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
+		paisPDto.setEmpresas(mapEmpresa);
+		
+		TbSiaMarcas tbSiaMarcas = tbSiaPPais.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
+		LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+		mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
+		paisPDto.setMarcas(mapMarcas);
+		
+		
+		TbSiaNomProducto tbSiaNomProductos = tbSiaPPais.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
+		LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+		mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
+		paisPDto.setProductos(mapProductos);
 		
 		return paisPDto;
 	}
@@ -56,7 +80,9 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	 */
 	public TbSiaPais toTbSia(PaisDTO paisPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaPais tbSiaPPais = new TbSiaPais();
 		
@@ -64,9 +90,27 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 		tbSiaPPais.setDesPais(paisPDto.getDesPais());
 		tbSiaPPais.setDid(paisPDto.getDid());
 		tbSiaPPais.setNomPais(paisPDto.getNomPais());
-		tbSiaPPais.setTbSiaEmpresas(paisPDto.getTbSiaEmpresas());
-		tbSiaPPais.setTbSiaMarcas(paisPDto.getTbSiaMarcas());
-		tbSiaPPais.setTbSiaNomProductos(paisPDto.getTbSiaNomProductos());
+
+		for (Map.Entry<Integer,String> e  : paisPDto.getEmpresas().entrySet()) {
+			TbSiaEmpresa tbempresa = new TbSiaEmpresa();
+			tbempresa.setDid((int) e.getKey());
+			tbempresa.setNomEmpresa((String) e.getValue());
+			tbSiaPPais.getTbSiaEmpresas().add(tbempresa);
+		}
+		
+		for (Map.Entry<Integer,String> e  : paisPDto.getMarcas().entrySet()) {
+			TbSiaMarcas tbmarcas = new TbSiaMarcas();
+			tbmarcas.setDid((int) e.getKey());
+			tbmarcas.setNomMarca((String) e.getValue());
+			tbSiaPPais.getTbSiaMarcas().add(tbmarcas);
+		}
+		
+		for (Map.Entry<Integer,String> e  : paisPDto.getProductos().entrySet()) {
+			TbSiaNomProducto tbproductos = new TbSiaNomProducto();
+			tbproductos.setDid((int) e.getKey());
+			tbproductos.setNomProducto((String) e.getValue());
+			tbSiaPPais.getTbSiaNomProductos().add(tbproductos);
+		}
 		
 		return tbSiaPPais;
 	}
@@ -77,9 +121,11 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	@Override
 	public List<PaisDTO> toListDTO(List<TbSiaPais> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 	
 	/**
@@ -88,8 +134,10 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	@Override
 	public List<PaisDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

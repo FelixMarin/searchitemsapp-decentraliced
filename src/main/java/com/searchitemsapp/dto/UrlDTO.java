@@ -1,9 +1,6 @@
 package com.searchitemsapp.dto;
 
-import java.util.List;
-
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
+import java.util.LinkedHashMap;
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -23,17 +20,34 @@ public class UrlDTO implements IFdto {
 	private Boolean bolActivo;
 	private String desUrl;
 	private String nomUrl;
-	private TbSiaEmpresa tbSiaEmpresa;
+	private Integer didEmpresa;
+	private String nomEmpresa;
 	private Boolean bolStatus;	
 	private Boolean bolLogin;	
-	private List<TbSiaSelectoresCss> tbSiaSelectoresCsses;
+	
+	private LinkedHashMap<String, String> selectores;
 	
 	/*
 	 * Constructor
 	 */
 	public UrlDTO() {
 		super();
-		tbSiaEmpresa = new TbSiaEmpresa();
+	}
+
+	public Integer getDidEmpresa() {
+		return didEmpresa;
+	}
+
+	public void setDidEmpresa(Integer didEmpresa) {
+		this.didEmpresa = didEmpresa;
+	}
+
+	public String getNomEmpresa() {
+		return nomEmpresa;
+	}
+
+	public void setNomEmpresa(String nomEmpresa) {
+		this.nomEmpresa = nomEmpresa;
 	}
 
 	/*
@@ -71,14 +85,6 @@ public class UrlDTO implements IFdto {
 		this.nomUrl = nomUrl;
 	}
 
-	public TbSiaEmpresa getTbSiaEmpresa() {
-		return tbSiaEmpresa;
-	}
-
-	public void setTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		this.tbSiaEmpresa = tbSiaEmpresa;
-	}
-
 	public Boolean getBolStatus() {
 		return this.bolStatus;
 	}
@@ -94,13 +100,13 @@ public class UrlDTO implements IFdto {
 	public void setBolLogin(Boolean bolLogin) {
 		this.bolLogin = bolLogin;
 	}
-	
-	public List<TbSiaSelectoresCss> getTbSiaSelectoresCsses() {
-		return tbSiaSelectoresCsses;
+
+	public LinkedHashMap<String, String> getSelectores() {
+		return selectores;
 	}
 
-	public void setTbSiaSelectoresCsses(List<TbSiaSelectoresCss> tbSiaSelectoresCsses) {
-		this.tbSiaSelectoresCsses = tbSiaSelectoresCsses;
+	public void setSelectores(LinkedHashMap<String, String> selectores) {
+		this.selectores = selectores;
 	}
 
 	/*
@@ -109,7 +115,7 @@ public class UrlDTO implements IFdto {
 	@Override
 	public String toString() {
 		return "UrlDTO [did=" + did + ", bolActivo=" + bolActivo + ", desUrl=" + desUrl + ", nomUrl=" + nomUrl
-				+ ", tbSiaEmpresa=" + tbSiaEmpresa + ", bolStatus=" + bolStatus + ", bolLogin=" + bolLogin
-				+ ", tbSiaSelectoresCsses=" + tbSiaSelectoresCsses + "]";
+				+ ", bolStatus=" + bolStatus + ", bolLogin=" + bolLogin
+				 + "]";
 	}
 }

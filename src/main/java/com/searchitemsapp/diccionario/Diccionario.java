@@ -2,21 +2,25 @@ package com.searchitemsapp.diccionario;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.Normalizer;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.UrlImpl;
-import com.searchitemsapp.model.TbSiaEmpresa;
+import com.searchitemsapp.fillselectores.FillSelectores;
+import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.scraping.ScrapingDiccionario;
 import com.searchitemsapp.scraping.UrlTreatment;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * 
@@ -31,14 +35,28 @@ import com.searchitemsapp.util.StringUtils;
  */
 public class Diccionario {
 	
-	/**
+	private static final Logger LOGGER = LoggerFactory.getLogger(Diccionario.class);  
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String STRING_ENIE_MAY = "Ñ";
+	private static final String UNICODE_ENIE = "u00f1";
+	private static final char CHAR_ENIE_COD = '\u00f1';
+	private static final String REEMPLAZABLE_TILDES = "[\\p{InCombiningDiacriticalMarks}]";
+	private static final String STRING_ENIE_MIN = "ñ";
+	
+	private static final String NULL_STRING = "null";
+	
+	
+	/*
 	 * Variables
 	 */
 	private static UrlDTO urlDTODiccionario;
 	private static UrlDTO urlDto;
 
 	@Autowired
-	private UrlImpl urlImpl;
+	private IFImplementacion<UrlDTO, CategoriaDTO> urlImpl;
 	
 	@Autowired
 	private FillSelectores fillSelectores;
@@ -73,22 +91,20 @@ public class Diccionario {
 		 * Traza en el fichero de logs que indica por donde
 		 * pasa el flujo del aplicación.
 		 */
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Variables de ambito local
 		 */
-		ScrapingDiccionario scrapingDiccionario;		
-		String urlAux;
-		String strResultadoProducto;
-		UrlDTO urlDtoAux;
-		StringBuilder strResultado = StringUtils.getNewStringBuilder();
+		StringBuilder strResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Si el nombre del producto consta de más de una palabra,
-		 * se divide y se añaden a un array.
+		 * se divide y se añaden a un array.oo
 		 */
-		String[] arPalabras = producto.split(StringUtils.SPACE_STRING);
+		String[] arPalabras = producto.split(StringUtils.SPACE);
 		
 		/**
 		 * En este loop, se realiza la comprobación de cada una
@@ -102,14 +118,13 @@ public class Diccionario {
 			 * se carga una vez y ya se queda cargado mientras la aplicacion
 			 * esté en funcionamiento.
 			 */
-			if(ClaseUtils.isNullObject(urlDTODiccionario)) {
-				urlDtoAux = new UrlDTO();
+			if(Objects.isNull(urlDTODiccionario)) {
+				UrlDTO urlDtoAux = new UrlDTO();
 				urlDtoAux.setDid(Integer.parseInt(CommonsPorperties.getValue("flow.value.url.did.diccionario")));
-				urlDtoAux.setTbSiaEmpresa(new TbSiaEmpresa());
-				urlDtoAux.getTbSiaEmpresa().setDid(Integer.parseInt(CommonsPorperties.getValue("flow.value.empresa.did.diccionario")));
+				urlDtoAux.setDidEmpresa(Integer.parseInt(CommonsPorperties.getValue("flow.value.empresa.did.diccionario")));
 				setResultadoDTODiccionario(urlDtoAux);
 				setUrlDto(urlImpl.findByDid(urlDtoAux));
-				urlDTODiccionario.getTbSiaEmpresa().setDid(urlDtoAux.getTbSiaEmpresa().getDid());
+				urlDTODiccionario.setDidEmpresa(urlDtoAux.getDidEmpresa());
 				fillSelectores.fillSelectoresCss(urlDTODiccionario, listTodosSelectoresCss);
 			}
 			
@@ -118,9 +133,8 @@ public class Diccionario {
 			 * en wordReference.
 			 * Se reemplaza el patron '{1}' por la palabra a buscar.
 			 */
-			urlAux = urlTreatment.replaceWildcardCharacterDiccionario(urlDto.getNomUrl(), arPalabras[i]);
+			String urlAux = urlTreatment.replaceWildcardCharacterDiccionario(urlDto.getNomUrl(), arPalabras[i]);
 			urlDTODiccionario.setNomUrl(urlAux);
-			setTbSiaSelectoresCss(urlDTODiccionario);
 			
 			/**
 			 * Se obtiene una instancia de la clase que realiza el scriping. 
@@ -128,22 +142,22 @@ public class Diccionario {
 			 * objeto con los datos reacionados con la url en la que se va
 			 * a realizar la búsqueda.
 			 */
-			scrapingDiccionario =  applicationContext
+			ScrapingDiccionario scrapingDiccionario =  applicationContext
 					.getBean(ScrapingDiccionario.class, urlDTODiccionario, arPalabras[i]);
 			
 			/**
 			 * Se obtiene la palabra analizada y se añade en una varible.
 			 */
-			strResultadoProducto = scrapingDiccionario
+			String strResultadoProducto = scrapingDiccionario
 					.checkingHtmlDocument();
 			
 			/**
 			 * Si el resultado de la validación es positivo, a partir de este momento 
 			 * la palabra resultante será la utilizada para realizar la busqueda.
 			 */
-			strResultado.append(StringUtils.NULL_STRING==strResultadoProducto?
+			strResultado.append(NULL_STRING==strResultadoProducto?
 					producto:strResultadoProducto)
-					.append(StringUtils.SPACE_STRING);
+					.append(StringUtils.SPACE);
 		}
 		
 		/**
@@ -151,9 +165,9 @@ public class Diccionario {
 		 * con tilde y sin tilde, se dará como invalia y se dejará la 
 		 * palabra original.
 		 */
-		if(StringUtils.isEmpty(strResultado.toString()) ||
-				!StringUtils.eliminarTildes(strResultado.toString().trim()).equalsIgnoreCase(producto)) {
-			strResultado = StringUtils.getNewStringBuilder().append(producto);
+		if(StringUtils.EMPTY.contentEquals(strResultado.toString()) ||
+				!eliminarTildes(strResultado.toString().trim()).equalsIgnoreCase(producto)) {
+			strResultado = new StringBuilder(10).append(producto);
 		}
 		
 		/**
@@ -165,7 +179,7 @@ public class Diccionario {
 	/**
 	 * Método set para añadir un nuevo objeto URL DTO.
 	 */
-	public static void setResultadoDTODiccionario(UrlDTO urlDTODiccionario) {
+	private void setResultadoDTODiccionario(UrlDTO urlDTODiccionario) {
 		Diccionario.urlDTODiccionario = urlDTODiccionario;
 	}
 	
@@ -174,23 +188,26 @@ public class Diccionario {
 	 * 
 	 * @param urlDto
 	 */
-	public static void setUrlDto(UrlDTO urlDto) {
+	private void setUrlDto(UrlDTO urlDto) {
 		Diccionario.urlDto = urlDto;
-		setTbSiaSelectoresCss(Diccionario.urlDto);
 	}
-	
-	/**
-	 * Sa añade la URL al objeto al objeto que contiene
-	 * los selectores para escrapear la web del diccionario.
-	 * 
-	 * @param urlDto
-	 */
-	private static void setTbSiaSelectoresCss(UrlDTO urlDto) {
-		if(!ClaseUtils.isNullObject(urlDto) &&
-				!ClaseUtils.isNullObject(Diccionario.urlDto.getTbSiaEmpresa())) {
-			urlDto.setTbSiaSelectoresCsses(
-					Diccionario.urlDto.getTbSiaEmpresa().getTbSiaSelectoresCsses());
+			
+	private String eliminarTildes(final String cadena) {
+		
+		if(Objects.isNull(cadena)) {
+			return NULL_STRING;
 		}
+		
+		if(cadena.indexOf(CHAR_ENIE_COD) != -1) {
+			return cadena;
+		}
+		
+		String resultado = cadena.replace(STRING_ENIE_MAY, UNICODE_ENIE);
+		resultado = Normalizer.normalize(resultado.toLowerCase(), Normalizer.Form.NFD);
+		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, StringUtils.EMPTY);
+		resultado = resultado.replace(UNICODE_ENIE, STRING_ENIE_MIN);
+		return Normalizer.normalize(resultado, Normalizer.Form.NFC);
+		
 	}
 
 }

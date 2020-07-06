@@ -2,18 +2,17 @@ package com.searchitemsapp.scraping;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Map;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Esta clase se encarga de realizar la consulta al sitio web
@@ -23,12 +22,14 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("unchecked")
 public class ScrapingDiccionario extends Scraping {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingDiccionario.class);  
+	
 	/*
 	 * Variables Globales
 	 */
+	private static boolean isCached;
     private UrlDTO urlDto;
     private String producto;
 	
@@ -54,49 +55,51 @@ public class ScrapingDiccionario extends Scraping {
 	 */
 	public String checkingHtmlDocument() throws IOException, URISyntaxException, InterruptedException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Valida los parametros introducidos
 		 *  a través del constructor.
 		 */
-		if(validarParametros()) {
-			return (String) ClaseUtils.NULL_OBJECT;
+		if(!validarParametros()) {
+			return null;
 		}
 		
 		/**
-		 * Se inicializan todas las propiedes necesarias para
-		 * la ejecución de la aplicación
+		 * Se cargan en cache los parametros usados por 
+		 * la aplicación. solo se ejecuta una vez.
 		 */
-		super.staticData();
-		super.cargarTodasLasMarcas();
-		super.setTbSiaSelectoresCss(urlDto);
+		if(!isCached) {
+			staticData();
+			cargarTodasLasMarcas();
+			isCached=true;
+		}
+		
+		StringBuilder palabrasResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
 		String strProductoCorregido;
-		StringBuilder palabrasResultado = StringUtils.getNewStringBuilder();
+		Element elem = null;
 				
-		Element elem = (Element) ClaseUtils.NULL_OBJECT;
-				
-		Document document = getHtmlDocument(urlDto, (Map<String, String>) ClaseUtils.NULL_OBJECT,producto,
-						(SelectoresCssDTO) ClaseUtils.NULL_OBJECT).get(ClaseUtils.ZERO_INT);
+		Document document = getHtmlDocument(urlDto, null, producto).get(0);
 			
-		 if(!ClaseUtils.isNullObject(document)) {
-            TbSiaSelectoresCss selectorCss = urlDto
-            		.getTbSiaSelectoresCsses().get(ClaseUtils.ZERO_INT);
-            
-        Elements entrada = selectScrapPattern(document,selectorCss.getScrapPattern(), selectorCss.getScrapNoPattern());
+		 if(Objects.nonNull(document)) {
+
+            Elements entrada = selectScrapPattern(document, 
+            		urlDto.getSelectores().get("SCRAP_PATTERN"), 
+            		urlDto.getSelectores().get("SCRAP_NO_PATTERN"));
             
             if(!entrada.isEmpty()) {
-            	elem = entrada.get(ClaseUtils.ZERO_INT);
+            	elem = entrada.get(0);
             }
             
-            if(!ClaseUtils.isNullObject(elem)) {
+            if(Objects.nonNull(elem)) {
             	strProductoCorregido = elementoPorCssSelector(elem, 
-            			selectorCss.getSelProducto(),
-            			urlDto);
-            	if(!StringUtils.isEmpty(strProductoCorregido)) {
-            		palabrasResultado.append(strProductoCorregido.concat(StringUtils.SPACE_STRING));
+            			urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto);
+            	if(!StringUtils.EMPTY.contentEquals(strProductoCorregido)) {
+            		palabrasResultado.append(strProductoCorregido.concat(StringUtils.SPACE));
             	}else {
-            		return StringUtils.NULL_STRING;
+            		return "null";
             	}
             }
 		 }
@@ -104,8 +107,8 @@ public class ScrapingDiccionario extends Scraping {
 		return palabrasResultado.toString().trim();
 	}
 	
-	public boolean validarParametros() {
-		return StringUtils.isEmpty(urlDto.getNomUrl()) ||
-				StringUtils.isEmpty(producto);
+	private boolean validarParametros() {
+		return !StringUtils.EMPTY.contentEquals(urlDto.getNomUrl()) ||
+				!StringUtils.EMPTY.contentEquals(producto);
 	}
 }

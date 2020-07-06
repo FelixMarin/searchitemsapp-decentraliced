@@ -7,7 +7,6 @@ import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
-import com.searchitemsapp.model.TbSiaUrl;
 
 /**
  * Interfaz que se encarga de gestionar todas las 
@@ -19,6 +18,6 @@ import com.searchitemsapp.model.TbSiaUrl;
  */
 public interface IFParamsHeadersLogin extends Repository<TbSiaParamsHeadersLogin, Long>{
 	List<ParamsLoginDTO> findAll() throws IOException;
-	List<ParamsLoginDTO> findByTbSiaUrl(TbSiaUrl tbSiaUrl) throws IOException;
+	List<ParamsLoginDTO> findByTbSiaUrl(Integer did) throws IOException;
 	ParamsLoginDTO findByDid(Integer did) throws IOException;
 }

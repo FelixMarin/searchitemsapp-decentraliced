@@ -16,5 +16,14 @@ import org.springframework.stereotype.Service;
 @FunctionalInterface
 @Service
 public interface IFService<R, T> {
+	
+	/*
+	 * Constantes Globales
+	 */
+	public final String  NO_HAY_RESULTADOS= "No hay resultados";
+	
+	/*
+	 * Métodos implementables
+	 */
 	public R service(final T... str);
 }

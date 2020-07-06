@@ -3,20 +3,21 @@ package com.searchitemsapp.dao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
-import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.repository.IFParamsHeadersLogin;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -29,6 +30,8 @@ import com.searchitemsapp.util.StringUtils;
 @SuppressWarnings("unchecked")
 @Repository
 public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsHeadersLogin> implements IFParamsHeadersLogin {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsHeadersLoginDao.class);  
 	
 	/*
 	 * Constantes Globales
@@ -50,11 +53,13 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 	@Override
 	public List<ParamsLoginDTO> findAll() throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<ParamsLoginDTO> resultado = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
+		List<ParamsLoginDTO> resultado = null;
 		
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -64,33 +69,39 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		try {
 			resultado = getParser(PARAMS_HEADERS_PARSER).toListDTO(((List<TbSiaParamsHeadersLogin>) q.getResultList()));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;
 	}
 
 	@Override
-	public List<ParamsLoginDTO> findByTbSiaUrl(TbSiaUrl tbSiaUrl) throws IOException {
+	public List<ParamsLoginDTO> findByTbSiaUrl(Integer didUrl) throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-		
-		if(ClaseUtils.isNullObject(tbSiaUrl)) {
-			return (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<ParamsLoginDTO> listParamsLoginDto = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(didUrl)) {
+			return null;
+		}
 		
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		List<ParamsLoginDTO> listParamsLoginDto = null;
+		
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsHeadersLogin.class);
-		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), tbSiaUrl.getDid());
+		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
 		
 		try {
 			listParamsLoginDto = getParser(PARAMS_HEADERS_PARSER).toListDTO((List<TbSiaParamsHeadersLogin>) query.getResultList());
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
-			listParamsLoginDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
+			listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		return listParamsLoginDto;

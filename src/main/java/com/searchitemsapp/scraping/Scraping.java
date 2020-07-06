@@ -6,22 +6,27 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.commons.CommonsPorperties;
@@ -29,18 +34,14 @@ import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.factory.ScrapingEmpFactory;
 import com.searchitemsapp.impl.IFImplementacion;
-import com.searchitemsapp.scraping.condis.ScrapingCondis;
-import com.searchitemsapp.scraping.consum.ScrapingConsum;
-import com.searchitemsapp.scraping.eroski.ScrapingEroski;
-import com.searchitemsapp.scraping.mercadona.ScrapingMercadona;
-import com.searchitemsapp.scraping.simply.ScrapingSimply;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+import com.searchitemsapp.scraping.condis.IFScracpingCondis;
+import com.searchitemsapp.scraping.eroski.IFScrapingEroski;
+import com.searchitemsapp.scraping.mercadona.IFScrapingMercadona;
+import com.searchitemsapp.scraping.simply.IFScrapingSimply;
+
 
 /**
  * Clase abstracta que cotiene métodos 
@@ -53,10 +54,50 @@ import com.searchitemsapp.util.StringUtils;
  */
 @SuppressWarnings("deprecation")
 public abstract class Scraping {
-
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(Scraping.class);   
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String AGENT_ALL = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36";
+	private static final String REFFERER_GOOGLE = "http://www.google.com";
+	private static final String ACCEPT_LANGUAGE = "Accept-Language";	
+	private static final String ES_ES = "es-ES,es;q=0.8";
+	private static final String ACCEPT_ENCODING = "Accept-Encoding";
+	private static final String ACCEPT = "Accept";
+	private static final String PROTOCOL_ACCESSOR ="://";
+	private static final String GZIP_DEFLATE_SDCH = "gzip, deflate, sdch";
+	private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+	private static final String DICCIONARIO = "DICCIONARIO";
+	private static final String HIPERCOR = "HIPERCOR";
+	private static final String ELCORTEINGLES = "ELCORTEINGLES";
+	private static final String DIA = "DIA";
+	private static final String CONDIS = "CONDIS";
+	private static final String MERCADONA = "MERCADONA";
+	private static final char CHAR_ENIE_COD = '\u00f1';
+	private static final String STRING_ENIE_MIN = "ñ";
+	private static final String STRING_ENIE_MAY = "Ñ";
+	private static final String UNICODE_ENIE = "u00f1";
+	private static final String REEMPLAZABLE_TILDES = "[\\p{InCombiningDiacriticalMarks}]";
+	
+	private static final String LEFT_PARENTHESIS_0 = " (";
+	private static final String DOBLE_BARRA = "//";
+	private static final String HTTPS = "https:";
+	private static final String BARRA = "/";
+	private static final String RIGTH_PARENTHESIS = "\\)";
+	private static final String LEFT_PARENTHESIS = "\\(";
+	private static final String REGEX_PERCENT_DOLAR = "(\\%|\\$00)";
+	private static final String DOT_STRING = ".";
+	private static final String COMMA_STRING = ",";
+	private static final String PIPE_STRING = "|";
+	
+	/*
+	 * Variables Globales
+	 */
 	private static final String SCRIPT = "script";
-	private static Map<String,Integer> mapEmpresas = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
-	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
+	private static Map<String,Integer> mapEmpresas = new HashMap<>(NumberUtils.INTEGER_ONE);
+	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private static List<MarcasDTO> listTodasMarcas;
 	private static List<EmpresaDTO> listEmpresaDto;
 	private static String selectorPrecioECIOffer;
@@ -64,10 +105,7 @@ public abstract class Scraping {
 	private static String accesoPopupPeso;
 	private static String productLeftContainer;
 	private static String selectorDescriptionText;
-	
-	/*
-	 * Variables Globales
-	 */
+
 	@Autowired
 	private IFImplementacion<EmpresaDTO, CategoriaDTO> iFEmpresaImpl;
 	
@@ -78,19 +116,16 @@ public abstract class Scraping {
 	private DynScrapingUnit dynScrapingUnit;
 	
 	@Autowired
-	private ScrapingMercadona scrapingMercadona;
+	private IFScrapingMercadona scrapingMercadona;
 				
 	@Autowired
-	private ScrapingCondis scrapingCondis;
+	private IFScracpingCondis scrapingCondis;
 	
 	@Autowired
-	private ScrapingEroski scrapingEroski;
+	private IFScrapingEroski scrapingEroski;
 	
 	@Autowired
-	private ScrapingSimply scrapingSimply;
-	
-	@Autowired
-	private ScrapingConsum scrapingConsum;
+	private IFScrapingSimply scrapingSimply;
 		
 	@Autowired
 	private ScrapingEmpFactory scrapingEmpFactory;
@@ -115,9 +150,11 @@ public abstract class Scraping {
 	 */
 	protected int getStatusConnectionCode(final String url) {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
-		int iResultado = ClaseUtils.ZERO_INT;
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		int iResultado = 0;
 
 		try {
 			/**
@@ -125,19 +162,22 @@ public abstract class Scraping {
 			 * descargarlos y manipularlos a través de un DOM virtual.
 			 */
 			iResultado = Jsoup.connect(url)
-					.userAgent(StringUtils.AGENT_ALL)
+					.userAgent(AGENT_ALL)
 					.method(Connection.Method.GET)
-					.referrer(StringUtils.REFFERER_GOOGLE)
-					.header(StringUtils.ACCEPT_LANGUAGE, StringUtils.ES_ES)
-					.header(StringUtils.ACCEPT_ENCODING, StringUtils.GZIP_DEFLATE_SDCH)
-					.header(StringUtils.ACCEPT, StringUtils.ACCEPT_VALUE)
-					.maxBodySize(ClaseUtils.ZERO_INT)
-					.timeout(ClaseUtils.TIME_OUT)
+					.referrer(REFFERER_GOOGLE)
+					.header(ACCEPT_LANGUAGE, ES_ES)
+					.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
+					.header(ACCEPT, ACCEPT_VALUE)
+					.maxBodySize(0)
+					.timeout(100000)
 					.ignoreHttpErrors(Boolean.TRUE)
 					.execute()
 					.statusCode();
+			
 		} catch (IOException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		return iResultado;
 	}
@@ -155,19 +195,20 @@ public abstract class Scraping {
 	 */
 	protected List<Document> getHtmlDocument(final UrlDTO urlDto, 
 			final Map<String, String> mapLoginPageCookies,
-			final String producto,
-			final SelectoresCssDTO selectorCssDto) 
+			final String producto) 
 					throws IOException, URISyntaxException, InterruptedException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
-    	List<Document> listDocuments = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+    	List<Document> listDocuments = new ArrayList<>(NumberUtils.INTEGER_ONE);
     	
 		/**
 		 * El identificador de la empresa se añade 
 		 * a una variable.
 		 */
-		int idEmpresa = urlDto.getTbSiaEmpresa().getDid();			
+		int idEmpresa = urlDto.getDidEmpresa();			
     	
 		/**
 		 * Objeto Document con el contenido del
@@ -180,7 +221,7 @@ public abstract class Scraping {
     	 * Se extrae el listado de URLs que se van a utlizar
     	 * para extraer los datos.
     	 */
-    	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, selectorCssDto, idEmpresa);
+    	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, idEmpresa);
    		
     	/**
     	 * Se obtienen los documets de la llamadas a las
@@ -213,18 +254,18 @@ public abstract class Scraping {
 	 * @throws MalformedURLException
 	 */
 	protected List<String> urlsPaginacion(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto, 
-			final int idEmpresa) throws MalformedURLException {
+			final UrlDTO urlDto, final int idEmpresa) 
+					throws MalformedURLException {
 		
-		List<String> listUrlsResultado = StringUtils.getNewListString();
+		List<String> listUrlsResultado = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Si el identificador de empresa es el 
 		 * que corresponde al diccionario, la
 		 * ejecución termina. 
 		 */
-		if(getMapEmpresas().get(StringUtils.DICCIONARIO) == idEmpresa) {
-			return StringUtils.getNewListString();
+		if(getMapEmpresas().get(DICCIONARIO) == idEmpresa) {
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/**
@@ -233,88 +274,11 @@ public abstract class Scraping {
 		 * solicitud.
 		 */
 		listUrlsResultado.addAll(scrapingEmpFactory
-				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto, selectorCssDto));
+				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto));
 		
 		return listUrlsResultado;
 	}
 	
-	/**
-	 * Este método devuelve un objeto de la clase Document con el contenido del
-	 * HTML de la web.
-	 * 
-	 * @param strUrl
-	 * @param didEmpresa
-	 * @param producto
-	 * @param mapLoginPageCookies
-	 * @return Document
-	 * @throws InterruptedException
-	 * @throws URISyntaxException
-	 * @throws IOException
-	 */
-	private Document getDocument(final String strUrl, 
-			final int didEmpresa, final String producto,
-			final Map<String, String> mapLoginPageCookies) 
-					throws InterruptedException, URISyntaxException, IOException {
-	
-		Document document = (Document) ClaseUtils.NULL_OBJECT;
-		Connection connection  = (Connection) ClaseUtils.NULL_OBJECT;
-		Response response = (Response) ClaseUtils.NULL_OBJECT;
-		
-		/**
-		 * Variables con los valores necesarios para el proceso.
-		 */
-		boolean isMercadona = didEmpresa == getMapEmpresas().get(StringUtils.MERCADONA);	
-		boolean bDynScrap = mapDynScraping.get(didEmpresa);
-		URL url = new URL(strUrl);
-		 
-		/**
-		  * Si está activo el indicador de scraping dinámico asociado a la empresa
-		  * la llamada a las webs se realizará mediante web driver. Si no, se usará
-		  * la librería JSOUP.
-		  */
-		if(bDynScrap) {
-			LogsUtils.escribeLogDebug(DynScrapingUnit.class.toString(),Scraping.class);
-			document = Jsoup.parse(dynScrapingUnit.getDynHtmlContent(strUrl, didEmpresa), 
-					new URL(strUrl).toURI().toString());
-		} else if(isMercadona) {
-			LogsUtils.escribeLogDebug(ScrapingMercadona.class.toString(),Scraping.class);
-			connection = scrapingMercadona.getConnection(strUrl, producto);	
-			response = connection.execute();
-		} else {
-			LogsUtils.escribeLogDebug(ScrapingUnit.class.toString(),Scraping.class);
-
-				connection = Jsoup.connect(strUrl)
-						.userAgent(StringUtils.AGENT_ALL)
-						.method(Connection.Method.GET)
-						.referrer(url.getProtocol().concat(StringUtils.PROTOCOL_ACCESSOR).concat(url.getHost().concat("/")))
-						.ignoreContentType(Boolean.TRUE)
-						.validateTLSCertificates(Boolean.FALSE)
-						.header(StringUtils.ACCEPT_LANGUAGE, StringUtils.ES_ES)
-						.header(StringUtils.ACCEPT_ENCODING, StringUtils.GZIP_DEFLATE_SDCH)
-						.header(StringUtils.ACCEPT, StringUtils.ACCEPT_VALUE)
-						.maxBodySize(ClaseUtils.ZERO_INT)
-						.timeout(ClaseUtils.TIME_OUT);
-				response = connection.execute();
-		}
-		
-		/**
-		 * Si el booleano de scraping dinamico no está activo y
-		 * el mapa con las cookie para el login no es nulo, se
-		 * añaden las cookies a la conexión.
-		 */
-		if(!bDynScrap && !ClaseUtils.isNullObject(mapLoginPageCookies)) {
-			connection.cookies(mapLoginPageCookies);
-		}
-		
-		if(bDynScrap) {
-			return document;
-		} else if(isMercadona) {
-       		return scrapingMercadona.getDocument(strUrl, response.body());
-       	} else {
-			return response.parse();
-		}
-	}
-
 	/**
 	 * Este método extrae la informacíon a partir
 	 * de un selector. Devuelve un conjunto de 
@@ -331,7 +295,7 @@ public abstract class Scraping {
 
 		Elements entradas;
 
-        if(StringUtils.validateNull(strScrapNotPattern)) {
+        if(Objects.isNull(strScrapNotPattern)) {
         	entradas = document.select(strScrapPattern);
         } else {
         	entradas = document.select(strScrapPattern).not(strScrapNotPattern);
@@ -339,22 +303,6 @@ public abstract class Scraping {
 
         return entradas;
 	}
-
-	/**
-	 * Método que valida una URL.
-	 * 
-	 * @param baseUri
-	 * @param url
-	 * @return boolean
-	 */
-	protected boolean validaURL(final String baseUri,final String url) {
-		return url.equalsIgnoreCase(baseUri);
-	}
-	
-	protected boolean validaSelector(Element elem) {
-		return !ClaseUtils.isNullObject(elem.selectFirst(getSelectorPaginaSiguienteCarrefour())) ||
-		!ClaseUtils.isNullObject(elem.selectFirst(getAccesoPopupPeso()));
-	}	
 
 	/**
 	 * Método que valida el resultado obtenido. 
@@ -365,41 +313,21 @@ public abstract class Scraping {
 	 * @param pattern
 	 * @return boolean
 	 */
-	protected boolean validateContent(final String[] arProducto, 
-			final String nomProducto, final int iIdEmpresa, final Pattern pattern) {
-
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+	protected String eliminarTildes(final String cadena) {
 		
-		/**
-		 * Se comprueba que el nombre del producto no sea nulo.
-		 */
-		if(ClaseUtils.isNullObject(nomProducto) ||
-				iIdEmpresa == ClaseUtils.ZERO_INT) {
-			return Boolean.FALSE;
-		} 
-		
-		/**
-		 * Se elimina la marca de la descripción del producto
-		 */
-		String strProducto = filtroMarca(iIdEmpresa, nomProducto);
-		
-		if(ClaseUtils.isNullObject(strProducto)) {
-			return Boolean.FALSE;
+		if(Objects.isNull(cadena)) {
+			return null;
 		}
 		
-		if(arProducto.length == ClaseUtils.ONE_INT &&
-				StringUtils.eliminarTildes(strProducto)
-				.toLowerCase().startsWith(StringUtils
-						.eliminarTildes(arProducto[0].trim())
-				.toLowerCase().concat(StringUtils.SPACE_STRING))) {
-			return Boolean.TRUE;			
-		} else if(arProducto.length > ClaseUtils.ONE_INT) {			
-			
-			return pattern.matcher(StringUtils
-					.eliminarTildes(strProducto).toUpperCase()).find();
-		} else {
-			return Boolean.FALSE;
+		if(cadena.indexOf(CHAR_ENIE_COD) != -1) {
+			return cadena;
 		}
+		String resultado = cadena.replace(STRING_ENIE_MAY, UNICODE_ENIE);
+		resultado = Normalizer.normalize(resultado.toLowerCase(), Normalizer.Form.NFD);
+		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, StringUtils.EMPTY);
+		resultado = resultado.replace(UNICODE_ENIE, STRING_ENIE_MIN);
+		return Normalizer.normalize(resultado, Normalizer.Form.NFC);
+		
 	}
 	
 	/**
@@ -412,8 +340,8 @@ public abstract class Scraping {
 	 */
 	protected Pattern createPatternProduct(final String[] arProducto) {
 
-		List<String> tokens = StringUtils.getNewListString();
-		StringBuilder pattSb = StringUtils.getNewStringBuilder();
+		List<String> tokens = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		StringBuilder pattSb = new StringBuilder(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se añaden todas las palabras que componen 
@@ -468,17 +396,17 @@ public abstract class Scraping {
 		 * Se comprueba que los parametros de entrada no sean nulos.
 		 * Si nulos retorna nulo.
 		 */
-		if(StringUtils.isEmpty(cssSelector)) {
-			return StringUtils.NULL_STRING;
+		if(Objects.isNull(cssSelector) || StringUtils.EMPTY.equals(cssSelector)) {
+			return "null";
 		}
 		
-		List<String> lista = StringUtils.getNewListString();
+		List<String> lista = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		String strResult;
 		
 		/**
 		 * Se extraen los selectores de la variable.
 		 */
-		StringTokenizer st = new StringTokenizer(cssSelector,StringUtils.PIPE);  
+		StringTokenizer st = new StringTokenizer(cssSelector,PIPE_STRING);  
 		
 		/**
 		 * Se añaden los tokens a una lista.
@@ -495,17 +423,17 @@ public abstract class Scraping {
 		/**
 		 * El método de extracción de datos es diferente en cada empresa.
 		 */
-		if(getMapEmpresas().get(StringUtils.MERCADONA) == urlDto.getTbSiaEmpresa().getDid()) {
+		if(getMapEmpresas().get(MERCADONA) == urlDto.getDidEmpresa()) {
 			
 			strResult = scrapingMercadona.getResult(elem, cssSelector);
 			
-		} else if(getMapEmpresas().get(StringUtils.CONDIS) == urlDto.getTbSiaEmpresa().getDid() &&
+		} else if(getMapEmpresas().get(CONDIS) == urlDto.getDidEmpresa() &&
 				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
 			
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
 			
-		} else if(getMapEmpresas().get(StringUtils.ELCORTEINGLES) == urlDto.getTbSiaEmpresa().getDid() &&
-				elem.select(getSelectorPrecioECIOffer()).size() > ClaseUtils.ZERO_INT) {
+		} else if(getMapEmpresas().get(ELCORTEINGLES) == urlDto.getDidEmpresa() &&
+				elem.select(getSelectorPrecioECIOffer()).size() > 0) {
 			
 			strResult = elem.selectFirst(getSelectorPrecioECIOffer()).text();
 			
@@ -535,9 +463,9 @@ public abstract class Scraping {
 		 * Se comprueba de que marca es el producto, dependiendo
 		 * de la misma, se ejecutará un proceso u otro.
 		 */
-		if(iIdEmpresa == getMapEmpresas().get(StringUtils.HIPERCOR) ||
-				iIdEmpresa == getMapEmpresas().get(StringUtils.DIA) ||
-				iIdEmpresa == getMapEmpresas().get(StringUtils.ELCORTEINGLES)) {
+		if(iIdEmpresa == getMapEmpresas().get(HIPERCOR) ||
+				iIdEmpresa == getMapEmpresas().get(DIA) ||
+				iIdEmpresa == getMapEmpresas().get(ELCORTEINGLES)) {
 			strProducto = eliminarMarcaPrincipio(nomProducto);
 		} else {
 			strProducto = nomProducto;
@@ -555,9 +483,7 @@ public abstract class Scraping {
 				
 				strProducto = strProducto.toLowerCase()
 						.replaceAll(marcaDto.getNomMarca()
-							.toLowerCase(), 
-							StringUtils.EMPTY_STRING)
-							.trim();
+							.toLowerCase(), "").trim();
 				
 				break;
 			}
@@ -566,42 +492,6 @@ public abstract class Scraping {
 		return strProducto;
 	}
 	
-	/**
-	 * Extrae la marca del principio de los resultado para
-	 * no distorsionar el resultado.
-	 * 
-	 * @param nomProducto
-	 * @return
-	 */
-	private String eliminarMarcaPrincipio(final String nomProducto) {
-
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-		
-		StringBuilder resultado = StringUtils.getNewStringBuilder();
-		
-		/**
-		 * Se corta el nombre del producto y se añade e un array.
-		 */
-		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE_STRING);
-		
-		
-		/**
-		 * Se valida el array. En caso de que sea nulo
-		 * termina el proceso.
-		 */
-		if(ClaseUtils.isNullObject(nomProdSeparado)) {
-			return StringUtils.NULL_STRING;
-		}
-		
-		for (int i = 0; i < nomProdSeparado.length; i++) {
-			if(!nomProdSeparado[i].equals(StringUtils.pasarAmayusculas(nomProdSeparado[i]))) {
-				resultado.append(nomProdSeparado[i]).append(StringUtils.SPACE_STRING);
-			}
-		}
-		
-		return resultado.toString();
-	}	
-		
 	/**
 	 * Método que carga los datos estáticos usados en el proceso
 	 * de las peticiones. Este método solo se ejecuta una vez,
@@ -616,7 +506,7 @@ public abstract class Scraping {
 			 * de empresas está vacío. Eso solo pasará una vez
 			 * ya que se trata de una variable estática.
 			 */
-			if(mapEmpresas.size() == ClaseUtils.ZERO_INT) {
+			if(mapEmpresas.size() == 0) {
 				
 				/**
 				 * Se establece la lista de empresas en la 
@@ -646,13 +536,15 @@ public abstract class Scraping {
 				setAccesoPopupPeso(CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso"));
 			}
 		}catch(IOException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 	}
 	
 	/**
 	 * Este método se encarga de extraer cada uno de los datos 
-	 * necesarios par componer un objeto de tipo resultado.
+	 * del producto para componer un objeto de tipo ResultadoDTO.
 	 * 
 	 * @param elem
 	 * @param selectoresCssDto
@@ -661,15 +553,14 @@ public abstract class Scraping {
 	 * @return ResultadoDTO
 	 * @throws IOException
 	 */
-	protected ResultadoDTO fillDataResultadoDTO(final Element elem, 
-			final SelectoresCssDTO selectoresCssDto, 
+	protected ResultadoDTO fillDataResultadoDTO(final Element elem,
 			final UrlDTO urlDto, 
 			final String ordenacion) throws IOException {
 		
 		/**
 		 * Variables utilizadas en el proceso.
 		 */
-		int idEmpresaActual = urlDto.getTbSiaEmpresa().getDid();
+		int idEmpresaActual = urlDto.getDidEmpresa();
 		ResultadoDTO resDto = new ResultadoDTO();
 		
 		/**
@@ -677,35 +568,24 @@ public abstract class Scraping {
 		 * en la variable resultado. Los valores son todos los
 		 * que devolverá el servicio.
 		 */
-		resDto.setImagen(elementoPorCssSelector(elem, selectoresCssDto.getSelImage(), urlDto));
-		resDto.setNomProducto(elementoPorCssSelector(elem, selectoresCssDto.getSelProducto(), urlDto));
-		resDto.setDesProducto(elementoPorCssSelector(elem, selectoresCssDto.getSelProducto(), urlDto));
-		resDto.setPrecio(elementoPorCssSelector(elem, selectoresCssDto.getSelPrecio(), urlDto));
-		resDto.setPrecioKilo(elementoPorCssSelector(elem, selectoresCssDto.getSelPreKilo(), urlDto));
-		resDto.setNomUrl(elementoPorCssSelector(elem, selectoresCssDto.getSelLinkProd(), urlDto));
-		resDto.setDidEmpresa(urlDto.getTbSiaEmpresa().getDid());
-		resDto.getTbSiaEmpresa().setDid(urlDto.getTbSiaEmpresa().getDid());
-		resDto.getTbSiaEmpresa().setNomEmpresa(urlDto.getTbSiaEmpresa().getNomEmpresa());
+		resDto.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_IMAGE"), urlDto));
+		resDto.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
+		resDto.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
+		resDto.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO"), urlDto));
+		resDto.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO_KILO"), urlDto));
+		resDto.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_LINK_PROD"), urlDto));
+		resDto.setDidEmpresa(urlDto.getDidEmpresa());
+		resDto.setNomEmpresa(urlDto.getNomEmpresa());
 		
 		/**
 		 * Dependiendo de la empresa, el tratamiento de las URLs 
 		 * extraidas del elemento se realiza de diferente forma.
 		 */
-		if(idEmpresaActual == getMapEmpresas().get(StringUtils.MERCADONA)) {
+		if(idEmpresaActual == getMapEmpresas().get(MERCADONA)) {
 			resDto.setNomUrlAllProducts(scrapingMercadona.getUrlAll(resDto));
-			resDto.setImagen(resDto.getImagen().replace(StringUtils.COMMA_STRING, StringUtils.DOT_STRING));
+			resDto.setImagen(resDto.getImagen().replace(COMMA_STRING, DOT_STRING));
 		}else {
 			resDto.setNomUrlAllProducts(urlDto.getNomUrl());
-		}
-		
-		/**
-		 * En este punto, el valor de la variable Precio/Kilo
-		 * se trata para eliminar el caracter PIPE |.
-		 */
-		if(!StringUtils.isEmpty(resDto.getPrecioKilo()) &&
-				resDto.getPrecioKilo().contains(StringUtils.PIPE)) {
-			resDto.setPrecioKilo(resDto.getPrecioKilo().substring(resDto.getPrecioKilo()
-					.indexOf(StringUtils.PIPE)+1,resDto.getPrecioKilo().length()).trim());
 		}
 		
 		/**
@@ -719,60 +599,6 @@ public abstract class Scraping {
 	}
 	
 	/**
-	 * Valida los datos extraidos de los elementos.
-	 * 
-	 * @param strResult
-	 * @param strUrl
-	 * @return String
-	 * @throws MalformedURLException
-	 */
-	private String validaResultadoElementValue(String strResult, 
-			final String strUrl) throws MalformedURLException {
-		
-		int iend = ClaseUtils.ONE_NEGATIVE_INT;
-		String caracteres;
-		
-		/**
-		 * Se valida el párametro de entrada.
-		 */
-		if(StringUtils.validateNull(strResult)){
-			return strResult;
-		} else {
-			iend = strResult.indexOf(StringUtils.LEFT_PARENTHESIS_0);
-		}
-		
-		/**
-		 * Se crea un objeto URL a partir del párametro.
-		 * Con los metodos del objeto url se compone la
-		 * estructura de la URL de la empresa.
-		 */		
-		URL url = new URL(strUrl);
-		String strUrlEmpresa = url.getProtocol().concat(StringUtils.PROTOCOL_ACCESSOR).concat(url.getHost());
-		
-		/**
-		 * Si el valor contiene un paraentesis, se
-		 * extrae el texto hasta dicho parentesis.
-		 */
-		if(iend != ClaseUtils.ONE_NEGATIVE_INT) {
-			strResult = strResult.substring(ClaseUtils.ZERO_INT, 
-					strResult.indexOf(StringUtils.LEFT_PARENTHESIS_0)-1);
-		}
-		
-		/**
-		 * En este punto se compone la URL de la imagen del producto.
-		 */
-		if(!StringUtils.validateNull(strResult) && strResult.trim().startsWith(StringUtils.DOBLE_BARRA)) {
-			caracteres = StringUtils.HTTPS.concat(strResult);
-		} else if(!StringUtils.validateNull(strResult) && strResult.trim().startsWith(StringUtils.BARRA)) {
-			caracteres = strUrlEmpresa.concat(strResult); 
-		} else {
-			caracteres = strResult;
-		}
-		
-		return StringUtils.formatoCaracteres(caracteres);
-	}	
-	
-	/**
 	 * Funcionalidad que se encaga de corregir el nombre del producto
 	 * en el caso de contenga espacios en blanco, caracteres especiales
 	 * o palabras reservadas no permitidas.
@@ -781,15 +607,17 @@ public abstract class Scraping {
 	 * @return String
 	 * @throws IOException
 	 */
-	protected static String tratarProducto(final String producto) throws IOException {
+	protected String tratarProducto(final String producto) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),Scraping.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		String productoTratado = StringUtils.sanitizeValue(producto);
-		productoTratado=StringUtils.ajustarDerecha(productoTratado, ClaseUtils.ZERO_INT, Character.MIN_VALUE);
-		productoTratado=StringUtils.ajustarIzquierda(productoTratado, ClaseUtils.ZERO_INT, Character.MIN_VALUE);
+		String productoTratado = sanitizeValue(producto);
+		productoTratado=ajustarDerecha(productoTratado, 0, Character.MIN_VALUE);
+		productoTratado=ajustarIzquierda(productoTratado, 0, Character.MIN_VALUE);
 		
-		Matcher matcher = StringUtils.matcher(StringUtils.REGEX_PERCENT_DOLAR, productoTratado);
+		Matcher matcher = Pattern.compile(REGEX_PERCENT_DOLAR).matcher(productoTratado);
 		
 		if(matcher.find()) {
 			return productoTratado;
@@ -797,7 +625,7 @@ public abstract class Scraping {
 			return URLEncoder.encode(productoTratado, StandardCharsets.UTF_8.toString());
 		}
 	}
-
+	
 	/**
 	 * Este metodo carga todas las marcas de 
 	 * productos desde la base de datos. Se
@@ -806,51 +634,24 @@ public abstract class Scraping {
 	 */
 	protected void cargarTodasLasMarcas() {
 		try {
-			if(ClaseUtils.isNullObject(listTodasMarcas)) {
+			if(Objects.isNull(listTodasMarcas)) {
 				setListTodasMarcas(iFMarcasImp.findAll());
 			}
 		}catch(IOException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
-		}
-	}
-	
-	/**
-	 * Establece el valor del selector en la variable de tipo UrlDTO.
-	 * 
-	 * @param urlDto
-	 */
-	protected void setTbSiaSelectoresCss(UrlDTO urlDto) {
-		if(!ClaseUtils.isNullObject(urlDto) &&
-				!ClaseUtils.isNullObject(urlDto.getTbSiaEmpresa())) {
-			urlDto.setTbSiaSelectoresCsses(
-					urlDto.getTbSiaEmpresa().getTbSiaSelectoresCsses());
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 	}
 	
 	protected boolean isNullProducto(final String[] arProducto) {
-		return ClaseUtils.isNullObject(arProducto) || 
-				arProducto.length == ClaseUtils.ZERO_INT;
+		return Objects.isNull(arProducto) || 
+				arProducto.length == 0;
 	}	
 	
 	protected static void setListTodasMarcas(List<MarcasDTO> listTodasMarcas) {
 		Scraping.listTodasMarcas = listTodasMarcas;
 	}	
-	
-	private String extraerValorDelElemento(int l, Element elem, List<String> lista, String cssSelector) {
-		
-		switch (l) {
-		case 1:
-			return elem.select(lista.get(0)).text();
-		case 2:
-			return elem.select(lista.get(0)).attr(lista.get(1));
-		default:
-			return elem.select(cssSelector).text();
-		}
-	}
-	
-	protected static String getSelectorPrecioECIOffer() {
-		return selectorPrecioECIOffer;
-	}
 
 	protected static void setSelectorPrecioECIOffer(String selectorPrecioECIOffer) {
 		Scraping.selectorPrecioECIOffer = selectorPrecioECIOffer;
@@ -899,12 +700,12 @@ public abstract class Scraping {
 		return listEmpresaDto;
 	}
 
-	private static void setListEmpresaDto(List<EmpresaDTO> listEmpresaDto) {
-		Scraping.listEmpresaDto = listEmpresaDto;
-	}
-	
 	protected static Map<Integer, Boolean> getMapDynScraping() {
 		return mapDynScraping;
+	}
+
+	protected static String getSelectorPrecioECIOffer() {
+		return selectorPrecioECIOffer;
 	}
 	
 	protected String reeplazarTildesCondis(final String producto) {
@@ -923,8 +724,328 @@ public abstract class Scraping {
 		return scrapingSimply.reemplazarCaracteres(producto);
 	}
 	
-	protected String getHtmlContextConsum(final WebDriver webDriver, 
-						final String strUrl) throws InterruptedException {
-		return scrapingConsum.getHtmlContent(webDriver, strUrl);
+	/*
+	 * Métodos privados
+	 */
+	
+	/**
+	 * Este método devuelve un objeto de la clase Document con el contenido del
+	 * HTML de la web.
+	 * 
+	 * @param strUrl
+	 * @param didEmpresa
+	 * @param producto
+	 * @param mapLoginPageCookies
+	 * @return Document
+	 * @throws InterruptedException
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	private Document getDocument(final String strUrl, 
+			final int didEmpresa, final String producto,
+			final Map<String, String> mapLoginPageCookies) 
+					throws InterruptedException, URISyntaxException, IOException {
+	
+		Document document = null;
+		Connection connection  = null;
+		Response response = null;
+		
+		/**
+		 * Variables con los valores necesarios para el proceso.
+		 */
+		boolean isMercadona = didEmpresa == getMapEmpresas().get(MERCADONA);	
+		boolean bDynScrap = mapDynScraping.get(didEmpresa);
+		URL url = new URL(strUrl);
+		 
+		/**
+		  * Si está activo el indicador de scraping dinámico asociado a la empresa
+		  * la llamada a las webs se realizará mediante web driver. Si no, se usará
+		  * la librería JSOUP.
+		  */
+		if(bDynScrap) {			
+			document = Jsoup.parse(dynScrapingUnit.getDynHtmlContent(strUrl, didEmpresa), 
+					new URL(strUrl).toURI().toString());
+		} else if(isMercadona) {			
+			connection = scrapingMercadona.getConnection(strUrl, producto);	
+			response = connection.execute();
+		} else {			
+			connection = Jsoup.connect(strUrl)
+					.userAgent(AGENT_ALL)
+					.method(Connection.Method.GET)
+					.referrer(url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost().concat("/")))
+					.ignoreContentType(Boolean.TRUE)
+					.validateTLSCertificates(Boolean.FALSE)
+					.header(ACCEPT_LANGUAGE, ES_ES)
+					.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
+					.header(ACCEPT, ACCEPT_VALUE)
+					.maxBodySize(0)
+					.timeout(100000);
+			response = connection.execute();
+		}
+		
+		/**
+		 * Si el booleano de scraping dinamico no está activo y
+		 * el mapa con las cookie para el login no es nulo, se
+		 * añaden las cookies a la conexión.
+		 */
+		if(!bDynScrap && Objects.nonNull(mapLoginPageCookies)) {
+			connection.cookies(mapLoginPageCookies);
+		}
+		
+		if(bDynScrap) {
+			return document;
+		} else if(isMercadona) {
+       		return scrapingMercadona.getDocument(strUrl, response.body());
+       	} else {
+			return response.parse();
+		}
+	}
+	
+	/**
+	 * Extrae la marca del principio de los resultado para
+	 * no distorsionar el resultado.
+	 * 
+	 * @param nomProducto
+	 * @return
+	 */
+	private String eliminarMarcaPrincipio(final String nomProducto) {
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		StringBuilder resultado = new StringBuilder(NumberUtils.INTEGER_ONE);
+		
+		/**
+		 * Se corta el nombre del producto y se añade e un array.
+		 */
+		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE);
+		
+		
+		/**
+		 * Se valida el array. En caso de que sea nulo
+		 * termina el proceso.
+		 */
+		if(Objects.isNull(nomProdSeparado)) {
+			return "null";
+		}
+		
+		for (int i = 0; i < nomProdSeparado.length; i++) {
+			if(!nomProdSeparado[i].equals(nomProdSeparado[i].toUpperCase())) {
+				resultado.append(nomProdSeparado[i]).append(StringUtils.SPACE);
+			}
+		}
+		
+		return resultado.toString();
+	}	
+	
+	/**
+	 * Valida los datos extraidos de los elementos.
+	 * 
+	 * @param strResult
+	 * @param strUrl
+	 * @return String
+	 * @throws MalformedURLException
+	 */
+	private String validaResultadoElementValue(String strResult, 
+			final String strUrl) throws MalformedURLException {
+		
+		int iend = -1;
+		String caracteres;
+		
+		/**
+		 * Se valida el párametro de entrada.
+		 */
+		if(Objects.isNull(strResult)){
+			return strResult;
+		} else {
+			iend = strResult.indexOf(LEFT_PARENTHESIS_0);
+		}
+		
+		/**
+		 * Se crea un objeto URL a partir del párametro.
+		 * Con los metodos del objeto url se compone la
+		 * estructura de la URL de la empresa.
+		 */		
+		URL url = new URL(strUrl);
+		String strUrlEmpresa = url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost());
+		
+		/**
+		 * Si el valor contiene un paraentesis, se
+		 * extrae el texto hasta dicho parentesis.
+		 */
+		if(iend != -1) {
+			strResult = strResult.substring(0, 
+					strResult.indexOf(LEFT_PARENTHESIS_0)-1);
+		}
+		
+		/**
+		 * En este punto se compone la URL de la imagen del producto.
+		 */
+		if(Objects.nonNull(strResult) && strResult.trim().startsWith(DOBLE_BARRA)) {
+			caracteres = HTTPS.concat(strResult);
+		} else if(Objects.nonNull(strResult) && strResult.trim().startsWith(BARRA)) {
+			caracteres = strUrlEmpresa.concat(strResult); 
+		} else {
+			caracteres = strResult;
+		}
+		
+		return formatoCaracteres(caracteres);
+	}	
+	
+	/**
+	 * Realiza el ajuste de una cadena por la derecha, para proporcionarle una
+	 * longitud determinada mediante la adicion de un tipo de caracter dado
+	 *
+	 * @param pstrCadena   cadena
+	 * @param piLongitud   Longitud de la cadena
+	 * @param pchrCaracter caracter
+	 * @return cadena ajustada
+	 * @modelguid {96426349-1D0C-49A4-AB02-A1AFC0B874CD}
+	 */
+	private String ajustarDerecha(String strCadena, int iLongitud, char chrCaracter) {
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		return anadirCaracteres(strCadena, chrCaracter, iLongitud, 0);
+	}
+	
+	private String ajustarIzquierda(String strCadena, int iLongitud, char chrCaracter) {
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		return anadirCaracteres(strCadena, chrCaracter, iLongitud, 1);
+	}
+	
+	/**
+	 * Realiza la adicion de caracteres a una cadena para proporcionarle una
+	 * longitud determinada
+	 *
+	 * @param pstrCadena   cadena
+	 * @param piLongitud   Longitud de la cadena
+	 * @param pchrCaracter caracter
+	 * @param piTipo       Tipo de adicion (Izquierda o Derecha)
+	 * @return cadena ajustada
+	 * @modelguid {360E79DB-48FE-4795-9E71-37FCA8F0B22D}
+	 */
+	private String anadirCaracteres(String strCadena, char chrCaracter, int iLongitud, int iTipo) {
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		final StringBuilder sbResultado = new StringBuilder(NumberUtils.INTEGER_ONE);
+		if (iTipo == 0) {
+			sbResultado.append(strCadena);
+		}
+		final int dif = iLongitud - strCadena.length();
+		for (int i = 0; i < dif; i++) {
+			sbResultado.append(chrCaracter);
+		}
+
+		if (iTipo == 1) {
+			sbResultado.append(strCadena);
+		}
+
+		return sbResultado.toString();
+	}
+	
+	private String extraerValorDelElemento(int l, Element elem, List<String> lista, String cssSelector) {
+		
+		switch (l) {
+		case 1:
+			return elem.select(lista.get(0)).text();
+		case 2:
+			return elem.select(lista.get(0)).attr(lista.get(1));
+		default:
+			return elem.select(cssSelector).text();
+		}
+	}
+	
+	private static void setListEmpresaDto(List<EmpresaDTO> listEmpresaDto) {
+		Scraping.listEmpresaDto = listEmpresaDto;
+	}
+	
+	private String formatoCaracteres(final String cadena) {
+		
+		if(Objects.isNull(cadena)) {
+			return null;
+		}
+		
+		String resultado = replaceParenthesis(cadena);
+		
+		if(Objects.isNull(resultado)) {
+			return null;
+		}
+		
+		resultado = formatSybol(resultado);
+		
+		return resultado;
+	}
+	
+	private static String replaceParenthesis(String cadena) {
+
+		if(Objects.isNull(cadena)) {
+			return null;
+		}
+		
+		String resultado;
+		
+		resultado = cadena.replaceAll(LEFT_PARENTHESIS, StringUtils.EMPTY);
+		resultado = resultado.replaceAll(RIGTH_PARENTHESIS, StringUtils.EMPTY);
+		
+		return resultado;
+	}
+	
+	/**
+     * Metodo que contene combinaciones de palabras 
+     * no permitidas. Las palabras no permitidas se
+     * reemplazan por espacios en blanco.
+     * 
+     * @param value
+     * @return String
+     */
+	private String sanitizeValue(String value) {
+		
+		if(Objects.isNull(value)) {
+			return null;
+		}
+		
+		value = value.replaceAll("\\*", StringUtils.EMPTY);
+		value = value.replaceAll("/", StringUtils.EMPTY);
+		value = value.replaceAll("//", StringUtils.EMPTY);
+		value = value.replaceAll("<", StringUtils.EMPTY).replaceAll(">", StringUtils.EMPTY);
+		value = value.replaceAll("\\{", StringUtils.EMPTY).replaceAll("\\}", StringUtils.EMPTY);
+		value = value.replaceAll("\\[", StringUtils.EMPTY).replaceAll("\\]", StringUtils.EMPTY);
+		value = value.replaceAll("\\(", StringUtils.EMPTY).replaceAll("\\)", StringUtils.EMPTY);
+		value = value.replaceAll("'", StringUtils.EMPTY);
+		value = value.replaceAll("eval\\((.*)\\)", StringUtils.EMPTY);
+		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", StringUtils.EMPTY);
+		value = value.replaceAll("script", StringUtils.EMPTY);
+		value = value.replaceAll("select", StringUtils.EMPTY).replaceAll("SELECT", StringUtils.EMPTY);
+		value = value.replaceAll("insert", StringUtils.EMPTY).replaceAll("INSERT", StringUtils.EMPTY);
+		value = value.replaceAll("delete", StringUtils.EMPTY).replaceAll("DELETE", StringUtils.EMPTY);
+		value = value.replaceAll("alter", StringUtils.EMPTY).replaceAll("ALTER", StringUtils.EMPTY);
+		value = value.replaceAll("drop", StringUtils.EMPTY).replaceAll("DROP", StringUtils.EMPTY);
+
+		return value;
+	}
+	
+	private String formatSybol(String cadena) {
+		
+		String resultado = StringUtils.EMPTY;
+		
+		if(Objects.isNull(cadena)) {
+			return resultado;
+		}
+		resultado = cadena.replaceAll("€", " eur");
+		resultado = resultado.replaceAll("Kilo", "kg");
+		resultado = resultado.replaceAll(" / ", "/");
+		resultado = resultado.replaceAll(" \"", "\"");
+		return resultado;
 	}
 }

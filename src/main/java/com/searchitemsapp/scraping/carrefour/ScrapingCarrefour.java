@@ -2,20 +2,21 @@ package com.searchitemsapp.scraping.carrefour;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -24,8 +25,15 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingCarrefour implements IFScrapingEmpresas {
+public class ScrapingCarrefour extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingCarrefour.class);   
 
+	/*
+	 * Constantes Glogables
+	 */
+	private static final String PROTOCOL_ACCESSOR ="://";
+	
 	/*
 	 * Constructor
 	 */
@@ -46,9 +54,11 @@ public class ScrapingCarrefour implements IFScrapingEmpresas {
 	 */
 	@Override
 	public List<String> getListaUrls(final Document document, 
-			final UrlDTO urlDto, final SelectoresCssDTO selectorCssDto) throws MalformedURLException {
+			final UrlDTO urlDto) throws MalformedURLException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
@@ -61,19 +71,19 @@ public class ScrapingCarrefour implements IFScrapingEmpresas {
 		/**
 		 * Se obbtiene del documento el número de resultados. 
 		 */
-		String selectorPaginacion = selectorCssDto.getSelPaginacion();	
+		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");	
 		
 		/**
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.carrefour"));
+		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.carrefour"));
 		
 		/**
 		 * Se divide el selector de paginación.
 		 */
-		StringTokenizer st = new StringTokenizer(selectorPaginacion,StringUtils.PIPE);  
-		List<String> liSelectorAtr = StringUtils.getNewListString();
+		StringTokenizer st = new StringTokenizer(selectorPaginacion,"|");  
+		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
@@ -85,12 +95,12 @@ public class ScrapingCarrefour implements IFScrapingEmpresas {
 		/**
 		 * Se crea una lista de Strings.
 		 */		
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Se divide el selector de paginación.
 		 */
-		Elements elements = document.select(liSelectorAtr.get(ClaseUtils.ZERO_INT));
+		Elements elements = document.select(liSelectorAtr.get(0));
 		
 		/**
 		 * Se asigna la url base a la lista.
@@ -105,10 +115,10 @@ public class ScrapingCarrefour implements IFScrapingEmpresas {
 		 */
 		URL url = new URL(urlBase);
 		String strUrlEmpresa = url.getProtocol()
-				.concat(StringUtils.PROTOCOL_ACCESSOR).concat(url.getHost());
+				.concat(PROTOCOL_ACCESSOR).concat(url.getHost());
 		
 		for (Element element : elements) {
-			listaUrls.add(strUrlEmpresa.concat(element.attr(liSelectorAtr.get(ClaseUtils.ONE_INT))));
+			listaUrls.add(strUrlEmpresa.concat(element.attr(liSelectorAtr.get(1))));
 		}
 		
 		/**
@@ -117,8 +127,8 @@ public class ScrapingCarrefour implements IFScrapingEmpresas {
 		 * Este parámetro sed configura en el fichero de
 		 * properties.
 		 */
-		if(numresultados > ClaseUtils.ZERO_INT && numresultados <= listaUrls.size()) {
-			listaUrls = listaUrls.subList(ClaseUtils.ZERO_INT, numresultados);
+		if(numresultados > 0 && numresultados <= listaUrls.size()) {
+			listaUrls = listaUrls.subList(0, numresultados);
 		}
 		
 		return listaUrls;

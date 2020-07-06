@@ -1,15 +1,17 @@
 package com.searchitemsapp.scraping.lidl;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -18,8 +20,10 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingLidl implements IFScrapingEmpresas {
+public class ScrapingLidl extends AbsScrapingEmpresas implements IFScrapingEmpresas {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingLidl.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -40,18 +44,19 @@ public class ScrapingLidl implements IFScrapingEmpresas {
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto, 
-			final SelectoresCssDTO selectorCssDto)
-			throws MalformedURLException {
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto)
+				throws MalformedURLException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL y se añade en una lista que
 		 * será retornada.
 		 */
 		String urlBase = urlDto.getNomUrl();		
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;

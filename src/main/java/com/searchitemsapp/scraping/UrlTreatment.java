@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.diccionario.FillSelectores;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.UrlImpl;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+import com.searchitemsapp.fillselectores.FillSelectores;
+import com.searchitemsapp.impl.IFUrlImpl;
 
 /**
  * En esta clase se configuran las URLs de los
@@ -26,11 +27,21 @@ import com.searchitemsapp.util.StringUtils;
  */
 public class UrlTreatment extends Scraping {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UrlTreatment.class);   
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String EROSKI = "EROSKI";
+	private static final String SIMPLY = "SIMPLY";
+	private static final String CONDIS = "CONDIS";
+	private static final String WILDCARD = "{1}";
+	
 	/*
 	 * Variables Globales
 	 */
 	@Autowired
-	private UrlImpl urlImpl;
+	private IFUrlImpl urlImpl;
 	
 	@Autowired
 	private CategoriaDTO categoriaDto;
@@ -68,21 +79,15 @@ public class UrlTreatment extends Scraping {
 			final List<SelectoresCssDTO> listTodosSelectoresCss) 
 			throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-		
-		/**
-		 * Variable locales.
-		 */
-		List<UrlDTO> listUrlDto;
-		String productoTratado;	
-		String productoTratadoAux;
-		String urlAux;
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se establece el identificador de pais y de categoria.
 		 */
-		paisDto.setDid(StringUtils.desformatearEntero(didPais));		
-		categoriaDto.setDid(StringUtils.desformatearEntero(didCategoria));
+		paisDto.setDid(desformatearEntero(didPais));		
+		categoriaDto.setDid(desformatearEntero(didCategoria));
 		
 		/**
 		 * De la base de datos se obtienen las URLs asociadas a la empresa. 
@@ -92,12 +97,12 @@ public class UrlTreatment extends Scraping {
 		/**
 		 * Se comprueba que el nombre del producto sea una palabra válida.
 		 */
-		productoTratadoAux= tratarProducto(producto);
+		String productoTratadoAux = tratarProducto(producto);
 		
 		/**
 		 * Se crea la variable que almacenará el listado de URLs.
 		 */
-		listUrlDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<UrlDTO> listUrlDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * Bucle que reemplaza el comodín '{1}' por el nombre del
@@ -120,14 +125,15 @@ public class UrlTreatment extends Scraping {
 			 * 
 			 * El resto de supermercados tienen todos el mismo tratamiento.
 			 */
+			String productoTratado;	
 			if(urlDto.getBolActivo()) {
-				if(getMapEmpresas().get(StringUtils.EROSKI) == urlDto.getTbSiaEmpresa().getDid()) {
+				if(getMapEmpresas().get(EROSKI) == urlDto.getDidEmpresa()) {
 					productoTratado = reemplazarCaracteresEroski(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(StringUtils.SIMPLY) == urlDto.getTbSiaEmpresa().getDid()) {
+				} else if(getMapEmpresas().get(SIMPLY) == urlDto.getDidEmpresa()) {
 					productoTratado = reeplazarCaracteresSimply(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(StringUtils.CONDIS) == urlDto.getTbSiaEmpresa().getDid()) {
+				} else if(getMapEmpresas().get(CONDIS) == urlDto.getDidEmpresa()) {
 					productoTratado = reeplazarTildesCondis(producto);
 					productoTratado = reeplazarCaracteresCondis(productoTratado);
 					productoTratado = tratarProducto(productoTratado);
@@ -138,15 +144,16 @@ public class UrlTreatment extends Scraping {
 				/**
 				 * Se reemplaza el 'wild card' por el nombre del producto.
 				 */
-				urlAux = urlDto.getNomUrl();
-				urlAux = urlAux.replace(StringUtils.WILDCARD, productoTratado);
+				String urlAux = urlDto.getNomUrl();
+				urlAux = urlAux.replace(WILDCARD, productoTratado);
 				urlDto.setNomUrl(urlAux);
 				listUrlDto.add(urlDto);
 			} else {
-				LogsUtils.escribeLogDebug("La URL: "
-							.concat(urlDto.getDid().toString())
-							.concat(" esta deshabilitada.")
-							,this.getClass());
+				if(LOGGER.isInfoEnabled()) {
+					LOGGER.info("La URL: ".
+							concat(urlDto.getDid().toString()).
+							concat(" esta deshabilitada."));
+				}
 			}
 		}
 		return listUrlDto;
@@ -163,10 +170,40 @@ public class UrlTreatment extends Scraping {
 	public String replaceWildcardCharacterDiccionario(final String url, 
 			final String producto) throws IOException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
-
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
 		String productoTratado= tratarProducto(producto);
 		String urlAux = url;
-		return urlAux.replace(StringUtils.WILDCARD, productoTratado);
+		return urlAux.replace(WILDCARD, productoTratado);
+	}
+	
+	/*
+	 * Metodos privados
+	 */
+	/**
+	 * Convierte una cadena a tipo int
+	 *
+	 * @param pStrCadena
+	 * @return
+	 */
+	private int desformatearEntero(String pStrCadena) {
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+
+		int iResultado = 0;
+		if (!StringUtils.EMPTY.contentEquals(pStrCadena)) {
+			try {
+				iResultado = Integer.parseInt(pStrCadena);
+			} catch (NumberFormatException nfe) {
+				if(LOGGER.isWarnEnabled()) {
+					LOGGER.warn(Thread.currentThread().getStackTrace()[1].toString(), nfe);
+				}
+			}
+		}
+		return iResultado;
 	}
 }

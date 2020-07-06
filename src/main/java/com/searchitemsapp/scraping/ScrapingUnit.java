@@ -6,23 +6,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.ResultadoDTO;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.factory.ParserFactory;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
 /**
  * Esta clase es la encargada de inicializar todo el proceso
@@ -36,15 +34,21 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("unchecked")
 public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDTO>> {
 	
-	private static Map<Integer, Map<String, String>> mapaCookies = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
-	private static final String SELECTORES_PARSER = "SELECTORES_PARSER";
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingUnit.class);  
+	
+	/*
+	 * Constantes Globales
+	 */	
+	
+	private static final String SEPARADOR_URL = "%20";
+	
 	
 	/* 
 	 * Variables Globales
 	 */
+	private static Map<Integer, Map<String, String>> mapaCookies = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private UrlDTO urlDto; 
 	private String producto;
 	private String didPais; 
@@ -53,9 +57,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	
 	@Autowired
 	private ScrapingLoginUnit scrapingLoginUnit;
-	
-	@Autowired
-	private ParserFactory parserFactory;	
 	
 	/*
 	 * Constructor
@@ -68,7 +69,6 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		this.didPais = didPais;
 		this.didCategoria = didCategoria;
 		this.ordenacion = ordenacion;
-		setTbSiaSelectoresCss(this.urlDto);
 	}
 	
 	/**
@@ -85,7 +85,9 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	 */
 	public  List<ResultadoDTO> checkHtmlDocument() throws IOException, URISyntaxException, InterruptedException {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se validan los valores de entrada. Si
@@ -93,7 +95,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 * devolviendo nulo.
 		 */
 		if(validaUrlDto()) {
-			return (List<ResultadoDTO>) ClaseUtils.NULL_OBJECT;
+			return null;
 		}
 		
 		/*
@@ -108,8 +110,8 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 * y procesar según proceda.
 		 */
 		boolean bStatus = urlDto.getBolStatus();
-		String[] arProducto = producto.split(StringUtils.SPACE_STRING);
-		int iIdEmpresa = urlDto.getTbSiaEmpresa().getDid();
+		String[] arProducto = producto.split(StringUtils.SPACE);
+		int iIdEmpresa = urlDto.getDidEmpresa();
 		Pattern pattern = createPatternProduct(arProducto);
 		
 		/**
@@ -118,7 +120,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 * ejecucion.
 		 */
 		if(isNullProducto(arProducto)) {
-			return (List<ResultadoDTO>) ClaseUtils.NULL_OBJECT;
+			return null;
 		}
 		
 		/**
@@ -127,23 +129,20 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		 * caso la ejecución termina con nulo por
 		 * respuesta.
 		 */			
-        if (getStatus(bStatus) == ClaseUtils.STATUS_OK) {
+        if (getStatus(bStatus) == 200) {
         	
         	/**
         	 * Se obtienen los selectores que se usarán para
         	 * estraer la información de la página web.
         	 */
-        	SelectoresCssDTO selectorCssDto = getParserS().toDTO(urlDto
-        			.getTbSiaSelectoresCsses()
-        			.get(ClaseUtils.ZERO_INT));
-        	
+        	        	
         	/**
         	 * Se obtiene el listado de documentos de los que se
         	 * van a extraer los datos.
         	 */
-        	List<Document> listDocuments = getHtmlDocument(urlDto, getCookies(iIdEmpresa), producto, selectorCssDto);
+        	List<Document> listDocuments = getHtmlDocument(urlDto, getCookies(iIdEmpresa), producto);
         	
-        	lResultadoDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+        	lResultadoDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
         	
         	/**
         	 * Se itera sobre cada uno de los documentos
@@ -156,20 +155,20 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
         		 * Si el objeto es nulo se continua 
         		 * con la siguente iteración.
         		 */
-	        	if(ClaseUtils.isNullObject(document)) {
+	        	if(Objects.isNull(document)) {
 	            	continue;
 	            }
-	            
+
 	        	/**
 	        	 * Se comprueba que la lista no esté vacía y que
 	        	 * la URL sea válida. En el caso de que no se 
 	        	 * cumpla la condición, termina el proceso y 
 	        	 * returna nulo.
 	        	 */
-	            if(listDocuments.size() == ClaseUtils.ONE_INT && 
+	            if(listDocuments.size() == 1 && 
 	            		!validaURL(document.baseUri(),urlDto.getNomUrl()
-	            				.replace(StringUtils.SPACE_STRING, StringUtils.SEPARADOR_URL))) {
-	            	return (List<ResultadoDTO>) ClaseUtils.NULL_OBJECT;
+	            				.replace(StringUtils.SPACE, SEPARADOR_URL))) {
+	            	return null;
 	            }
 	            
 	            /**
@@ -177,8 +176,8 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	             * que contiene los datos.
 	             */
 	            entradas = selectScrapPattern(document,
-	            		selectorCssDto.getScrapPattern(), 
-	            		selectorCssDto.getScrapNoPattern());
+	            		urlDto.getSelectores().get("SCRAP_PATTERN"), 
+	            		urlDto.getSelectores().get("SCRAP_NO_PATTERN"));
 
 	            /**
 	             * De cada elemento se extrae la
@@ -201,7 +200,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	    			 * En este punto se extraen los datos del objeto
 	    			 * element y se añaden en un objeto DTO.
 	    			 */
-	    			resDto = fillDataResultadoDTO(elem, selectorCssDto, urlDto, ordenacion);
+	    			resDto = fillDataResultadoDTO(elem, urlDto, ordenacion);
 	    			
 	    			/**
 	    			 * Se realiza la última comprovación y 
@@ -214,7 +213,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		        }
         	}	
         } else {
-        	return (List<ResultadoDTO>) ClaseUtils.NULL_OBJECT;
+        	return null;
         }   
         
         return lResultadoDto;
@@ -240,9 +239,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	 * @return int
 	 */
 	private int getStatus(final boolean bStatus) {
-		return bStatus?
-				getStatusConnectionCode(urlDto.getNomUrl()):
-					ClaseUtils.STATUS_OK;
+		return bStatus?getStatusConnectionCode(urlDto.getNomUrl()):200;
 	}
 	
 	/**
@@ -257,7 +254,7 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 		
 		Map<String, String> mapLoginPageCookies = mapaCookies.get(iIdEmpresa);
     	
-    	if(ClaseUtils.isNullObject(mapLoginPageCookies)) {
+    	if(Objects.isNull(mapLoginPageCookies)) {
 			mapLoginPageCookies = scrapingLoginUnit
 					.checkingHtmlLoginDocument(didPais, didCategoria, iIdEmpresa, mapaCookies);
     	}
@@ -271,9 +268,9 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 	 * @return boolean
 	 */
 	private boolean validaUrlDto() {
-		return ClaseUtils.isNullObject(urlDto) ||
-				ClaseUtils.isNullObject(urlDto.getTbSiaEmpresa()) ||
-				urlDto.getTbSiaEmpresa().getTbSiaSelectoresCsses().isEmpty();
+		return Objects.isNull(urlDto) ||
+				Objects.isNull(urlDto.getDidEmpresa()) ||
+				urlDto.getSelectores().isEmpty();
 	}
 		
 	/**
@@ -291,23 +288,60 @@ public class ScrapingUnit extends Scraping  implements Callable<List<ResultadoDT
 			final ResultadoDTO resDto, 
 			final Pattern pattern) {
 		
-		if(validateContent(arProducto, resDto.getNomProducto(),iIdEmpresa, pattern) && 
-				!ClaseUtils.isNullObject(resDto.getPrecio())) {
-			return Boolean.TRUE;
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
+		
+		/**
+		 * Se comprueba que los principales valores
+		 *  del producto no sean nulos.
+		 */
+		if(Objects.isNull(resDto.getNomProducto()) || iIdEmpresa == 0) {
+			return Boolean.FALSE;
+		} else if(StringUtils.EMPTY.contentEquals(resDto.getPrecio()) ||
+				Objects.isNull(resDto.getPrecio()))  {
+			return Boolean.FALSE; 
+		} else if(Objects.isNull(resDto.getPrecioKilo()) || 
+				StringUtils.EMPTY.contentEquals(resDto.getPrecioKilo())) {
+			return Boolean.FALSE;
+		}
+		
+		/**
+		 * Se elimina la marca de la descripción del producto
+		 */
+		String strProducto = filtroMarca(iIdEmpresa, resDto.getNomProducto());
+		
+		if(Objects.isNull(strProducto)) {
+			return Boolean.FALSE;
+		}
+		
+		if(arProducto.length == 1 &&
+				eliminarTildes(strProducto)
+				.toLowerCase().startsWith(
+						eliminarTildes(arProducto[0].trim())
+				.toLowerCase().concat(StringUtils.SPACE))) {
+			return Boolean.TRUE;			
+		} else if(arProducto.length > 1) {			
+			
+			return pattern.matcher(eliminarTildes(strProducto).toUpperCase()).find();
 		} else {
-			LogsUtils.escribeLogDebug("WARNING: ".concat(resDto.toString()),this.getClass());
 			return Boolean.FALSE;
 		}
 	}
 
 	/**
-	 * Método que retorna los selectores con los 
-	 * que se accederá a las posiciones del html
-	 * de las que se extraerán los datos.
+	 * Método que valida una URL.
 	 * 
-	 * @return IFParser<SelectoresCssDTO, TbSiaSelectoresCss> 
+	 * @param baseUri
+	 * @param url
+	 * @return boolean
 	 */
-	private IFParser<SelectoresCssDTO, TbSiaSelectoresCss> getParserS() {
-		return ((IFParser<SelectoresCssDTO, TbSiaSelectoresCss>) parserFactory.getParser(SELECTORES_PARSER));
+	private boolean validaURL(final String baseUri,final String url) {
+		return url.equalsIgnoreCase(baseUri);
+	}
+	
+	private boolean validaSelector(Element elem) {
+		return Objects.nonNull(elem.selectFirst(getSelectorPaginaSiguienteCarrefour())) ||
+		Objects.nonNull(elem.selectFirst(getAccesoPopupPeso()));
 	}	
 }

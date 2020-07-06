@@ -1,20 +1,24 @@
 package com.searchitemsapp.dao;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaSelectoresCss;
 import com.searchitemsapp.repository.IFSelectoresCssRepository;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
+
+
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -27,6 +31,8 @@ import com.searchitemsapp.util.StringUtils;
 @SuppressWarnings("unchecked")
 @Repository
 public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelectoresCss> implements IFSelectoresCssRepository {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssDao.class);  
 	
 	/*
 	 * Constantes Globales
@@ -48,14 +54,17 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 	 */
 	@Override
 	public List<SelectoresCssDTO> findAll() throws IOException {
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<SelectoresCssDTO> resultado = (List<SelectoresCssDTO>) ClaseUtils.NULL_OBJECT;
+		List<SelectoresCssDTO> resultado = null;
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.all"));
 		
 		/**
@@ -74,7 +83,9 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		try {
 			resultado = getParser(SELECTORES_PARSER).toListDTO(((List<TbSiaSelectoresCss>) q.getResultList()));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;
@@ -91,27 +102,32 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 	@Override
 	public SelectoresCssDTO findByDid(Integer did) throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(did)) {
-			return (SelectoresCssDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(did)) {
+			return null;
 		}
 		
-		SelectoresCssDTO resultado = (SelectoresCssDTO) ClaseUtils.NULL_OBJECT;
+		SelectoresCssDTO resultado = null;
 		
 		/**
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.selectorescss.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(did);
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 			
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
@@ -120,7 +136,9 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		try {
 			resultado = getParser(SELECTORES_PARSER).toDTO(getEntityManager().find(TbSiaSelectoresCss.class, did));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;
@@ -134,28 +152,30 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 	 * @exception IOException
 	 */
 	@Override
-	public List<SelectoresCssDTO> findByTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) throws IOException {
+	public List<SelectoresCssDTO> findByTbSiaEmpresa(Integer didEmpresa) throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if (ClaseUtils.isNullObject(tbSiaEmpresa)) {
-			return (List<SelectoresCssDTO>) ClaseUtils.NULL_OBJECT;
+		if (Objects.isNull(didEmpresa)) {
+			return null;
 		}
 		
-		List<TbSiaSelectoresCss> selectoresCssList = (List<TbSiaSelectoresCss>) ClaseUtils.NULL_OBJECT;
+		List<TbSiaSelectoresCss> selectoresCssList = null;
 
 		/**
 		 * Se obtiene la query del fichero de propiedades y se
 		 * le añade el parametro al objeto query.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaSelectoresCss.class);
-		query.setParameter("didEmpresa", tbSiaEmpresa.getDid());
+		query.setParameter("didEmpresa", didEmpresa);
 
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
@@ -164,7 +184,9 @@ public class SelectoresCssDao extends AbstractDao<SelectoresCssDTO, TbSiaSelecto
 		try {
 			selectoresCssList = query.getResultList();
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		/**

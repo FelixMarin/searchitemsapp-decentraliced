@@ -2,19 +2,22 @@ package com.searchitemsapp.dao;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.model.TbSiaMarcas;
 import com.searchitemsapp.repository.IFMarcasRepository;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -27,6 +30,8 @@ import com.searchitemsapp.util.StringUtils;
 @SuppressWarnings("unchecked")
 @Repository
 public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IFMarcasRepository {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MarcasDao.class);     
 	
 	/*
 	 * Constantes Globales
@@ -45,14 +50,16 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 	@Override
 	public List<MarcasDTO> findAll() throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<MarcasDTO> resultado = (List<MarcasDTO>) ClaseUtils.NULL_OBJECT;	
+		List<MarcasDTO> resultado = null;	
 		
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
+		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.marcas.select.all"));
 		
 		/**
@@ -70,8 +77,10 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 			 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 			 */
 			resultado = getParser(MARCAS_PARSER).toListDTO(((List<TbSiaMarcas>) q.getResultList()));
-		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+		}catch(NoResultException e) {			
+			if(LOGGER.isInfoEnabled()) {
+				LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+			}
 		}		
 		
 		return resultado;
@@ -85,27 +94,32 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 	@Override
 	public MarcasDTO findByDid(Integer did) throws IOException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(ClaseUtils.isNullObject(did)) {
-			return (MarcasDTO) ClaseUtils.NULL_OBJECT;
+		if(Objects.isNull(did)) {
+			return null;
 		}		
 		
-		MarcasDTO resultado = (MarcasDTO) ClaseUtils.NULL_OBJECT;
+		MarcasDTO resultado = null;
 		
 		/**
 		 * Se compone el mensaje que se mostrará como unta traza
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
-		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
+		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
 		debugMessage.append(CommonsPorperties.getValue("flow.value.marcas.did.txt"));
-		debugMessage.append(StringUtils.SPACE_STRING);
+		debugMessage.append(StringUtils.SPACE);
 		debugMessage.append(did);	
-		LogsUtils.escribeLogDebug(debugMessage.toString(),this.getClass());
+		
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(debugMessage.toString(),this.getClass());
+		}
 		
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
@@ -114,7 +128,9 @@ public class MarcasDao extends AbstractDao<MarcasDTO, TbSiaMarcas> implements IF
 		try {
 			resultado = getParser(MARCAS_PARSER).toDTO(getEntityManager().find(TbSiaMarcas.class, did));
 		}catch(NoResultException e) {
-			LogsUtils.escribeLogError(Thread.currentThread().getStackTrace()[1].toString(),this.getClass(),e);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 		
 		return resultado;

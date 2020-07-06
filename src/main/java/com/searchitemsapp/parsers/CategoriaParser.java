@@ -1,12 +1,19 @@
 package com.searchitemsapp.parsers;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.model.TbSiaEmpresa;
+import com.searchitemsapp.model.TbSiaMarcas;
+import com.searchitemsapp.model.TbSiaNomProducto;
 
 /**
  * Es un componente analizador de software que 
@@ -17,6 +24,8 @@ import com.searchitemsapp.util.LogsUtils;
  *
  */
 public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEmpresa>  {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaParser.class);  
 	
 	/*
 	 *  Constructor
@@ -34,7 +43,9 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	@Override
 	public CategoriaDTO toDTO(TbSiaCategoriasEmpresa tbSiaPCategorias) {	
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),CategoriaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		CategoriaDTO categoriaPDto = new CategoriaDTO();
 		
@@ -42,9 +53,22 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 		categoriaPDto.setDesCatEmpresa(tbSiaPCategorias.getDesCatEmpresa());
 		categoriaPDto.setDid(tbSiaPCategorias.getDid());
 		categoriaPDto.setNomCatEmpresa(tbSiaPCategorias.getNomCatEmpresa());
-		categoriaPDto.setTbSiaEmpresas(tbSiaPCategorias.getTbSiaEmpresas());
-		categoriaPDto.setTbSiaMarcas(tbSiaPCategorias.getTbSiaMarcas());
-		categoriaPDto.setTbSiaNomProductos(tbSiaPCategorias.getTbSiaNomProductos());
+		
+		TbSiaEmpresa tbSiaEmpresa = tbSiaPCategorias.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
+		LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+		mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
+		categoriaPDto.setEmpresas(mapEmpresa);
+		
+		TbSiaMarcas tbSiaMarcas = tbSiaPCategorias.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
+		LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+		mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
+		categoriaPDto.setMarcas(mapMarcas);
+		
+		
+		TbSiaNomProducto tbSiaNomProductos = tbSiaPCategorias.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
+		LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+		mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
+		categoriaPDto.setProductos(mapProductos);
 		
 		return categoriaPDto;
 	}
@@ -58,7 +82,9 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	@Override
 	public TbSiaCategoriasEmpresa toTbSia(CategoriaDTO categoriaPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),CategoriaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaCategoriasEmpresa tbSiaPCategorias = new TbSiaCategoriasEmpresa();
 		
@@ -66,9 +92,30 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 		tbSiaPCategorias.setDesCatEmpresa(categoriaPDto.getDesCatEmpresa());
 		tbSiaPCategorias.setDid(categoriaPDto.getDid());
 		tbSiaPCategorias.setNomCatEmpresa(categoriaPDto.getNomCatEmpresa());
-		tbSiaPCategorias.setTbSiaEmpresas(categoriaPDto.getTbSiaEmpresas());
-		tbSiaPCategorias.setTbSiaMarcas(categoriaPDto.getTbSiaMarcas());
-		tbSiaPCategorias.setTbSiaNomProductos(categoriaPDto.getTbSiaNomProductos());
+		tbSiaPCategorias.setTbSiaEmpresas(new ArrayList<TbSiaEmpresa>());
+		tbSiaPCategorias.setTbSiaMarcas(new ArrayList<TbSiaMarcas>());
+		tbSiaPCategorias.setTbSiaNomProductos(new ArrayList<TbSiaNomProducto>());
+		
+		for (Map.Entry<Integer,String> e  : categoriaPDto.getEmpresas().entrySet()) {
+			TbSiaEmpresa tbempresa = new TbSiaEmpresa();
+			tbempresa.setDid((int) e.getKey());
+			tbempresa.setNomEmpresa((String) e.getValue());
+			tbSiaPCategorias.getTbSiaEmpresas().add(tbempresa);
+		}
+		
+		for (Map.Entry<Integer,String> e  : categoriaPDto.getMarcas().entrySet()) {
+			TbSiaMarcas tbmarcas = new TbSiaMarcas();
+			tbmarcas.setDid((int) e.getKey());
+			tbmarcas.setNomMarca((String) e.getValue());
+			tbSiaPCategorias.getTbSiaMarcas().add(tbmarcas);
+		}
+		
+		for (Map.Entry<Integer,String> e  : categoriaPDto.getProductos().entrySet()) {
+			TbSiaNomProducto tbproductos = new TbSiaNomProducto();
+			tbproductos.setDid((int) e.getKey());
+			tbproductos.setNomProducto((String) e.getValue());
+			tbSiaPCategorias.getTbSiaNomProductos().add(tbproductos);
+		}
 		
 		return tbSiaPCategorias;
 	}
@@ -82,9 +129,11 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	@Override
 	public List<CategoriaDTO> toListDTO(List<TbSiaCategoriasEmpresa> lsCategorias) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),CategoriaParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<CategoriaDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<CategoriaDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		CategoriaDTO categoriaPDto;
 		
 		for (TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa : lsCategorias) {
@@ -93,9 +142,22 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 			categoriaPDto.setDesCatEmpresa(tbSiaCategoriasEmpresa.getDesCatEmpresa());
 			categoriaPDto.setDid(tbSiaCategoriasEmpresa.getDid());
 			categoriaPDto.setNomCatEmpresa(tbSiaCategoriasEmpresa.getNomCatEmpresa());
-			categoriaPDto.setTbSiaEmpresas(tbSiaCategoriasEmpresa.getTbSiaEmpresas());
-			categoriaPDto.setTbSiaMarcas(tbSiaCategoriasEmpresa.getTbSiaMarcas());
-			categoriaPDto.setTbSiaNomProductos(tbSiaCategoriasEmpresa.getTbSiaNomProductos());			
+			
+			TbSiaEmpresa tbSiaEmpresa = tbSiaCategoriasEmpresa.getTbSiaEmpresas().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapEmpresa = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+			mapEmpresa.put(tbSiaEmpresa.getDid(), tbSiaEmpresa.getNomEmpresa());
+			categoriaPDto.setEmpresas(mapEmpresa);
+			
+			TbSiaMarcas tbSiaMarcas = tbSiaCategoriasEmpresa.getTbSiaMarcas().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapMarcas = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+			mapMarcas.put(tbSiaMarcas.getDid(), tbSiaMarcas.getNomMarca());
+			categoriaPDto.setMarcas(mapMarcas);
+			
+			TbSiaNomProducto tbSiaNomProductos = tbSiaCategoriasEmpresa.getTbSiaNomProductos().get(NumberUtils.INTEGER_ZERO);
+			LinkedHashMap<Integer, String> mapProductos = new LinkedHashMap<Integer, String>(NumberUtils.INTEGER_ONE);
+			mapProductos.put(tbSiaNomProductos.getDid(), tbSiaNomProductos.getNomProducto());
+			categoriaPDto.setProductos(mapProductos);
+			
 			listDto.add(categoriaPDto);
 		}
 		
@@ -107,6 +169,6 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	 */
 	@Override
 	public List<CategoriaDTO> toListODTO(List<Object[]> objeto) {
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

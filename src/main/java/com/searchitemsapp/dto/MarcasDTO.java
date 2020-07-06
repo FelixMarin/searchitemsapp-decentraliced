@@ -1,8 +1,6 @@
 package com.searchitemsapp.dto;
 
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaPais;
-import com.searchitemsapp.util.ClaseUtils;
+import java.util.Objects;
 
 /**
  * Objeto de Transferencia de Datos (DTO) 
@@ -20,8 +18,10 @@ public class MarcasDTO implements IFdto {
 	 */
 	private Integer did;
 	private String nomMarca;
-	private TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa;
-	private TbSiaPais tbSiaPais;
+	private int didCatEmpresas;
+	private String nomCatEmpresas;	
+	private int didPais;
+	private String nomPais;
 	
 	/*
 	 * Constructor
@@ -49,20 +49,36 @@ public class MarcasDTO implements IFdto {
 		this.nomMarca = nomMarca;
 	}
 	
-	public TbSiaCategoriasEmpresa getTbSiaCategoriasEmpresa() {
-		return tbSiaCategoriasEmpresa;
+	public int getDidCatEmpresas() {
+		return didCatEmpresas;
 	}
 
-	public void setTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) {
-		this.tbSiaCategoriasEmpresa = tbSiaCategoriasEmpresa;
+	public void setDidCatEmpresas(int didCatEmpresas) {
+		this.didCatEmpresas = didCatEmpresas;
 	}
 
-	public TbSiaPais getTbSiaPais() {
-		return tbSiaPais;
+	public String getNomCatEmpresas() {
+		return nomCatEmpresas;
 	}
 
-	public void setTbSiaPais(TbSiaPais tbSiaPais) {
-		this.tbSiaPais = tbSiaPais;
+	public void setNomCatEmpresas(String nomCatEmpresas) {
+		this.nomCatEmpresas = nomCatEmpresas;
+	}
+
+	public int getDidPais() {
+		return didPais;
+	}
+
+	public void setDidPais(int didPais) {
+		this.didPais = didPais;
+	}
+
+	public String getNomPais() {
+		return nomPais;
+	}
+
+	public void setNomPais(String nomPais) {
+		this.nomPais = nomPais;
 	}
 
 	/*
@@ -72,10 +88,8 @@ public class MarcasDTO implements IFdto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((did == null) ? 0 : did.hashCode());
-		result = prime * result + ((nomMarca == null) ? 0 : nomMarca.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaCategoriasEmpresa)) ? 0 : tbSiaCategoriasEmpresa.hashCode());
-		result = prime * result + ((ClaseUtils.isNullObject(tbSiaPais)) ? 0 : tbSiaPais.hashCode());
+		result = prime * result + ((Objects.isNull(did)) ? 0 : did.hashCode());
+		result = prime * result + ((Objects.isNull(nomMarca)) ? 0 : nomMarca.hashCode());
 		return result;
 	}
 
@@ -83,19 +97,19 @@ public class MarcasDTO implements IFdto {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (Objects.isNull(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		MarcasDTO other = (MarcasDTO) obj;
-		if (did == ClaseUtils.NULL_OBJECT) {
-			if (other.did != null)
+		if (Objects.isNull(did)) {
+			if (Objects.nonNull(other.did))
 				return false;
 		} else if (!did.equals(other.did)) {
 			return false;
 		}
-		if (nomMarca == null) {
-			if (other.nomMarca != null)
+		if (Objects.isNull(nomMarca)) {
+			if (Objects.nonNull(other.nomMarca))
 				return false;
 		} else if (!nomMarca.equals(other.nomMarca)) {
 			return false;
@@ -105,7 +119,7 @@ public class MarcasDTO implements IFdto {
 
 	@Override
 	public String toString() {
-		return "MarcasDTO [did=" + did + ", nomMarca=" + nomMarca + ", tbSiaCategoriasEmpresa=" + tbSiaCategoriasEmpresa
-				+ ", tbSiaPais=" + tbSiaPais + "]";
+		return "MarcasDTO [did=" + did + ", nomMarca=" + nomMarca + ", tbSiaCategoriasEmpresa="
+				 + "]";
 	}
 }

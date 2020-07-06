@@ -3,10 +3,15 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.model.TbSiaUrl;
+
+
 
 /**
  * Es un componente analizador de software que 
@@ -18,6 +23,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaParamsHeadersLogin> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsHeadersLoginParser.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -33,14 +40,17 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 	 */
 	public ParamsLoginDTO toDTO(TbSiaParamsHeadersLogin tbSiaParamsFormLogin) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ParamsHeadersLoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		ParamsLoginDTO paramsLoginDto = new ParamsLoginDTO();
 		
 		paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 		paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 		paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-		paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());
+		paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+		paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());
 		paramsLoginDto.setBolActivo(tbSiaParamsFormLogin.getBolActivo());
 		
 		return paramsLoginDto;
@@ -55,14 +65,18 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 	@Override
 	public TbSiaParamsHeadersLogin toTbSia(ParamsLoginDTO paramsLoginDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ParamsHeadersLoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaParamsHeadersLogin tbSiaParamsFormLogin = new TbSiaParamsHeadersLogin();
 		
 		tbSiaParamsFormLogin.setDid(paramsLoginDto.getDid());
 		tbSiaParamsFormLogin.setParamClave(paramsLoginDto.getParamClave());
 		tbSiaParamsFormLogin.setParamValor(paramsLoginDto.getParamValor());
-		tbSiaParamsFormLogin.setTbSiaUrl(paramsLoginDto.getTbSiaUrl());
+		tbSiaParamsFormLogin.setTbSiaUrl(new TbSiaUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setDid(paramsLoginDto.getDidUrl());
+		tbSiaParamsFormLogin.getTbSiaUrl().setNomUrl(paramsLoginDto.getNomUrl());
 		tbSiaParamsFormLogin.setBolActivo(paramsLoginDto.getBolActivo());
 		
 		return tbSiaParamsFormLogin;
@@ -77,9 +91,11 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 	@Override
 	public List<ParamsLoginDTO> toListDTO(List<TbSiaParamsHeadersLogin> listTbSiaParamsFormLogin) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ParamsHeadersLoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		ParamsLoginDTO paramsLoginDto;
 		
 		for (TbSiaParamsHeadersLogin tbSiaParamsFormLogin : listTbSiaParamsFormLogin) {
@@ -87,7 +103,8 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 			paramsLoginDto.setDid(tbSiaParamsFormLogin.getDid());
 			paramsLoginDto.setParamClave(tbSiaParamsFormLogin.getParamClave());
 			paramsLoginDto.setParamValor(tbSiaParamsFormLogin.getParamValor());
-			paramsLoginDto.setTbSiaUrl(tbSiaParamsFormLogin.getTbSiaUrl());	
+			paramsLoginDto.setDidUrl(tbSiaParamsFormLogin.getTbSiaUrl().getDid());
+			paramsLoginDto.setNomUrl(tbSiaParamsFormLogin.getTbSiaUrl().getNomUrl());	
 			paramsLoginDto.setBolActivo(tbSiaParamsFormLogin.getBolActivo());
 			listParamsLoginDto.add(paramsLoginDto);
 		}
@@ -101,8 +118,10 @@ public class ParamsHeadersLoginParser implements IFParser<ParamsLoginDTO, TbSiaP
 	@Override
 	public List<ParamsLoginDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ParamsHeadersLoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

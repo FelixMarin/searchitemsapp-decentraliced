@@ -1,8 +1,11 @@
 package com.searchitemsapp.scraping.consum;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
@@ -13,13 +16,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -28,7 +30,9 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingConsum implements IFScrapingEmpresas {
+public class ScrapingConsum extends AbsScrapingEmpresas implements IFScrapingConsum {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingConsum.class);   
 
 	/* XPATH_EXPRESSION : /html/body/div[1]/div/div[1]/div/div[2]/div/div/div/div/div/mod-client-catalog/div/mod-catalog/div/lib-grid/div/div/div[2]/div[2]/div[3]/div[2]/button */
 	private static final String SCROLL_INTO_VIEW = "arguments[0].scrollIntoView(true)";
@@ -49,18 +53,19 @@ public class ScrapingConsum implements IFScrapingEmpresas {
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(Document document, UrlDTO urlDto, 
-			SelectoresCssDTO selectorCssDto)
+	public List<String> getListaUrls(Document document, UrlDTO urlDto)
 			throws MalformedURLException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),this.getClass());
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Se obtiene la URL y se añade en una lista que
 		 * será retornada.
 		 */
 		String urlBase = urlDto.getNomUrl();
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		return listaUrls;
@@ -78,7 +83,9 @@ public class ScrapingConsum implements IFScrapingEmpresas {
 	 */
 	public String getHtmlContent(final WebDriver webDriver, final String strUrl) throws InterruptedException {
 
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(), ScrapingConsum.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/**
 		 * Variables
@@ -105,7 +112,7 @@ public class ScrapingConsum implements IFScrapingEmpresas {
 			do {				
 				Thread.sleep(2000);
 				wButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("grid__footer-viewMore")));
-				if (ClaseUtils.isNullObject(wButton)) {
+				if (Objects.isNull(wButton)) {
 					isButton = Boolean.FALSE;
 				} else {
 					js.executeScript(SCROLL_INTO_VIEW, wButton);
@@ -113,8 +120,9 @@ public class ScrapingConsum implements IFScrapingEmpresas {
 				}
 			} while (isButton);
 		} catch (ElementNotVisibleException | TimeoutException | ElementClickInterceptedException e) {
-			LogsUtils.escribeLogWarn(Thread.currentThread().getStackTrace()[ClaseUtils.ONE_INT].toString(),
-					this.getClass(), e);
+			if(LOGGER.isWarnEnabled()) {
+				LOGGER.warn(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
 		}
 
 		/**

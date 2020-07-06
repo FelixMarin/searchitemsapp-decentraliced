@@ -3,10 +3,14 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.SelectoresCssDTO;
+import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.model.TbSiaUrl;
 
 /**
  * Es un componente analizador de software que 
@@ -18,6 +22,8 @@ import com.searchitemsapp.util.LogsUtils;
  */
 public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSelectoresCss> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssParser.class);  
+	
 	/*
 	 * Constructor
 	 */
@@ -34,7 +40,9 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	@Override
 	public SelectoresCssDTO toDTO(TbSiaSelectoresCss tbSiaSelectoresCss) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		SelectoresCssDTO selectoresCssDTO = new SelectoresCssDTO();
 		
@@ -48,8 +56,10 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 		selectoresCssDTO.setSelPrecio(tbSiaSelectoresCss.getSelPrecio());
 		selectoresCssDTO.setSelPreKilo(tbSiaSelectoresCss.getSelPreKilo());
 		selectoresCssDTO.setSelProducto(tbSiaSelectoresCss.getSelProducto());
-		selectoresCssDTO.setTbSiaEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa());
-		selectoresCssDTO.setTbSiaUrl(tbSiaSelectoresCss.getTbSiaUrl());
+		selectoresCssDTO.setDidEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getDid());
+		selectoresCssDTO.setNomEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getNomEmpresa());		
+		selectoresCssDTO.setDidUrl(tbSiaSelectoresCss.getTbSiaUrl().getDid());
+		selectoresCssDTO.setNomUrl(tbSiaSelectoresCss.getTbSiaUrl().getNomUrl());
 		selectoresCssDTO.setSelPaginacion(tbSiaSelectoresCss.getSelPaginacion());
 		
 		return selectoresCssDTO;
@@ -64,7 +74,9 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	@Override
 	public TbSiaSelectoresCss toTbSia(SelectoresCssDTO selectoresCssDTO) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaSelectoresCss tbSiaSelectoresCss = new TbSiaSelectoresCss();
 
@@ -78,9 +90,13 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 		tbSiaSelectoresCss.setSelPrecio(selectoresCssDTO.getSelPrecio());
 		tbSiaSelectoresCss.setSelPreKilo(selectoresCssDTO.getSelPreKilo());
 		tbSiaSelectoresCss.setSelProducto(selectoresCssDTO.getSelProducto());
-		tbSiaSelectoresCss.setTbSiaEmpresa(selectoresCssDTO.getTbSiaEmpresa());
-		tbSiaSelectoresCss.setTbSiaUrl(selectoresCssDTO.getTbSiaUrl());
-		tbSiaSelectoresCss.setSelPaginacion(selectoresCssDTO.getSelPaginacion());
+		tbSiaSelectoresCss.setSelPaginacion(selectoresCssDTO.getSelPaginacion());	
+		tbSiaSelectoresCss.setTbSiaEmpresa(new TbSiaEmpresa());
+		tbSiaSelectoresCss.getTbSiaEmpresa().setDid(selectoresCssDTO.getDidEmpresa());
+		tbSiaSelectoresCss.getTbSiaEmpresa().setNomEmpresa(selectoresCssDTO.getNomEmpresa());
+		tbSiaSelectoresCss.setTbSiaUrl(new TbSiaUrl());
+		tbSiaSelectoresCss.getTbSiaUrl().setDid(selectoresCssDTO.getDidUrl());
+		tbSiaSelectoresCss.getTbSiaUrl().setNomUrl(selectoresCssDTO.getNomUrl());
 		
 		return tbSiaSelectoresCss;
 	}
@@ -93,9 +109,11 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	 */
 	public List<SelectoresCssDTO> toListDTO(List<TbSiaSelectoresCss> lsTbSiaSelectoresCss) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<SelectoresCssDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<SelectoresCssDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		SelectoresCssDTO selectoresCssDTO;
 		
 		for (TbSiaSelectoresCss tbSiaSelectoresCss : lsTbSiaSelectoresCss) {
@@ -110,9 +128,11 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 			selectoresCssDTO.setSelPrecio(tbSiaSelectoresCss.getSelPrecio());
 			selectoresCssDTO.setSelPreKilo(tbSiaSelectoresCss.getSelPreKilo());
 			selectoresCssDTO.setSelProducto(tbSiaSelectoresCss.getSelProducto());
-			selectoresCssDTO.setTbSiaEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa());
-			selectoresCssDTO.setTbSiaUrl(tbSiaSelectoresCss.getTbSiaUrl());	
 			selectoresCssDTO.setSelPaginacion(tbSiaSelectoresCss.getSelPaginacion());
+			selectoresCssDTO.setDidEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getDid());
+			selectoresCssDTO.setNomEmpresa(tbSiaSelectoresCss.getTbSiaEmpresa().getNomEmpresa());		
+			selectoresCssDTO.setDidUrl(tbSiaSelectoresCss.getTbSiaUrl().getDid());
+			selectoresCssDTO.setNomUrl(tbSiaSelectoresCss.getTbSiaUrl().getNomUrl());
 			listDto.add(selectoresCssDTO);
 		}
 		return listDto;
@@ -124,8 +144,10 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	@Override
 	public List<SelectoresCssDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),SelectoresCssParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

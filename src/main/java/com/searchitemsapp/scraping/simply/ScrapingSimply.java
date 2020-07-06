@@ -1,17 +1,17 @@
 package com.searchitemsapp.scraping.simply;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.IFScrapingEmpresas;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
+import com.searchitemsapp.scraping.AbsScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -20,7 +20,15 @@ import com.searchitemsapp.util.StringUtils;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingSimply implements IFScrapingEmpresas {
+public class ScrapingSimply extends AbsScrapingEmpresas implements IFScrapingSimply {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingSimply.class);  
+	
+	/*
+	 * Constantes Globales
+	 */
+	private static final String STRING_ENIE_MIN = "ñ";
+	private static final String ENIE_URL = "%F1";
 	
 	/*
 	 * Constructor
@@ -41,11 +49,12 @@ public class ScrapingSimply implements IFScrapingEmpresas {
 	 * @exception MalformedURLException
 	 */
 	@Override
-	public List<String> getListaUrls(final Document document, final UrlDTO urlDto, 
-			final SelectoresCssDTO selectorCssDto)
+	public List<String> getListaUrls(final Document document, final UrlDTO urlDto)
 			throws MalformedURLException {
   
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ScrapingSimply.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		/*
 		 * Variable locales
@@ -53,7 +62,7 @@ public class ScrapingSimply implements IFScrapingEmpresas {
 		String urlAux;
 		int fin = 30;
 		int max = 10;
-		int incremento = ClaseUtils.TWO_INT;
+		int incremento = 2;
 		
 		/**
 		 * Se obtiene la URL base. Esta es la URL principal 
@@ -67,12 +76,12 @@ public class ScrapingSimply implements IFScrapingEmpresas {
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = StringUtils.desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.simply"));
+		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.simply"));
 		
 		/**
 		 * Se asigna la url base a la lista.
 		 */
-		List<String> listaUrls = StringUtils.getNewListString();
+		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		listaUrls.add(urlBase);
 		
 		/**
@@ -97,8 +106,8 @@ public class ScrapingSimply implements IFScrapingEmpresas {
 		 * Este parámetro sed configura en el fichero de
 		 * properties.
 		 */
-		if(numresultados > ClaseUtils.ZERO_INT && numresultados <= listaUrls.size()) {
-			listaUrls = listaUrls.subList(ClaseUtils.ZERO_INT, numresultados);
+		if(numresultados > 0 && numresultados <= listaUrls.size()) {
+			listaUrls = listaUrls.subList(0, numresultados);
 		}
 		
 		return listaUrls;
@@ -114,9 +123,10 @@ public class ScrapingSimply implements IFScrapingEmpresas {
 	 */
 	public String reemplazarCaracteres(final String producto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),ScrapingSimply.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return producto.replace(StringUtils.STRING_ENIE_MIN, StringUtils.ENIE_URL);
-		
+		return producto.replace(STRING_ENIE_MIN, ENIE_URL);
 	}
 }

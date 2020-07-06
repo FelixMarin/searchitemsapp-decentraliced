@@ -17,9 +17,10 @@ import com.searchitemsapp.model.TbSiaUrl;
  *
  */
 public interface  IFUrlRepository  extends Repository<TbSiaUrl, Long>{
+	
+	List<UrlDTO> findAll() throws IOException;
 	UrlDTO findByDid(Integer did)  throws IOException;
 	List<UrlDTO> findByTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa)  throws IOException;
-	List<UrlDTO> obtenerUrls(Integer didPais, Integer didCategoria) throws IOException;
-	List<UrlDTO> obtenerUrlsLogin(Integer didPais, Integer didCategoria) throws IOException;
-	List<UrlDTO>  obtenerUrlsEmpresa(Integer didPais, Integer didCategoria, List<Integer> listDidEmpresas) throws IOException;
+	List<UrlDTO> findByDidAndDesUrl(Integer didPais, String didCategoria) throws IOException;
+	List<UrlDTO> findByDidAndNomUrl(Integer didPais, String didCategoria) throws IOException;
 }

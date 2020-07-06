@@ -3,10 +3,15 @@ package com.searchitemsapp.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.searchitemsapp.dto.LoginDTO;
+import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaLogin;
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
+
+
 
 /**
  * Es un componente analizador de software que 
@@ -17,6 +22,8 @@ import com.searchitemsapp.util.LogsUtils;
  *
  */
 public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginParser.class);  
 	
 	/*
 	 * Constructor
@@ -34,7 +41,9 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	@Override
 	public LoginDTO toDTO(TbSiaLogin tbSiaLogin) {	
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),LoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		LoginDTO loginPDto = new LoginDTO();
 		
@@ -44,7 +53,8 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		loginPDto.setDesEmail(tbSiaLogin.getDesEmail());
 		loginPDto.setNomUsuario(tbSiaLogin.getNomUsuario());
 		loginPDto.setNumTelefono(tbSiaLogin.getNumTelefono());
-		loginPDto.setTbSiaEmpresa(tbSiaLogin.getTbSiaEmpresa());
+		loginPDto.setDidEmpresa(tbSiaLogin.getTbSiaEmpresa().getDid());
+		loginPDto.setNomEmpresa(tbSiaLogin.getTbSiaEmpresa().getNomEmpresa());
 		
 		return loginPDto;
 	}
@@ -58,7 +68,9 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	@Override
 	public TbSiaLogin toTbSia(LoginDTO loginPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),LoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
 		TbSiaLogin tbSiaLogin = new TbSiaLogin();
 		
@@ -66,9 +78,11 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		tbSiaLogin.setCodPassword(loginPDto.getCodPassword());
 		tbSiaLogin.setCodPostal(loginPDto.getCodPostal());		
 		tbSiaLogin.setDesEmail(loginPDto.getDesEmail());
-		tbSiaLogin.setNomUsuario(tbSiaLogin.getNomUsuario());
-		tbSiaLogin.setNumTelefono(tbSiaLogin.getNumTelefono());
-		tbSiaLogin.setTbSiaEmpresa(loginPDto.getTbSiaEmpresa());
+		tbSiaLogin.setNomUsuario(loginPDto.getNomUsuario());
+		tbSiaLogin.setNumTelefono(loginPDto.getNumTelefono());
+		tbSiaLogin.setTbSiaEmpresa(new TbSiaEmpresa());
+		tbSiaLogin.getTbSiaEmpresa().setDid(loginPDto.getDid());
+		tbSiaLogin.getTbSiaEmpresa().setNomEmpresa(loginPDto.getNomEmpresa());
 		
 		return tbSiaLogin;
 	}
@@ -82,9 +96,11 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	@Override
 	public List<LoginDTO> toListDTO(List<TbSiaLogin> lsLoginPDto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),LoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		List<LoginDTO> listDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE); 
+		List<LoginDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
 		LoginDTO loginPDto;
 		
 		for (TbSiaLogin tbSiaLogin : lsLoginPDto) {
@@ -95,7 +111,8 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 			loginPDto.setDesEmail(tbSiaLogin.getDesEmail());
 			loginPDto.setNomUsuario(tbSiaLogin.getNomUsuario());
 			loginPDto.setNumTelefono(tbSiaLogin.getNumTelefono());
-			loginPDto.setTbSiaEmpresa(tbSiaLogin.getTbSiaEmpresa());
+			loginPDto.setDidEmpresa(tbSiaLogin.getTbSiaEmpresa().getDid());
+			loginPDto.setNomEmpresa(tbSiaLogin.getTbSiaEmpresa().getNomEmpresa());
 			listDto.add(loginPDto);
 		}
 		
@@ -108,8 +125,10 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	@Override
 	public List<LoginDTO> toListODTO(List<Object[]> objeto) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),LoginParser.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 		
-		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 }

@@ -3,15 +3,15 @@ package com.searchitemsapp.commons;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.StandardEnvironment;
-
-import com.searchitemsapp.util.ClaseUtils;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  * Esta clase carga los ficheros de propiedades 
@@ -22,6 +22,8 @@ import com.searchitemsapp.util.LogsUtils;
  * 
  */
 public class CommonsPorperties {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommonsPorperties.class);     
 	
 	/**
 	 * Variables
@@ -55,14 +57,14 @@ public class CommonsPorperties {
         	/**
         	 * Se valida el objeto properties.
         	 */
-        	if(ClaseUtils.isNullObject(properties)) {
+        	if(Objects.isNull(properties)) {
         		properties = new Properties();
         	}
         	
         	/**
         	 * Se valida el objeto environment
         	 */
-        	if(ClaseUtils.isNullObject(environment)) {
+        	if(Objects.isNull(environment)) {
         		environment = new StandardEnvironment();
         	}
         	
@@ -95,7 +97,9 @@ public class CommonsPorperties {
 	 */
 	public static String getValue(String value) {
 		
-		LogsUtils.escribeLogDebug("Valor: ".concat(value),CommonsPorperties.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info("Valor: ".concat(value));
+		}
 		
 		return properties.getProperty(value);
 	}

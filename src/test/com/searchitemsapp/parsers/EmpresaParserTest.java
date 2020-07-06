@@ -55,22 +55,22 @@ public class EmpresaParserTest {
 		
 		//- Equals -//
 		assertEquals("getTbSiaCategoriasEmpresa", 
-				tbSiaEmpresa.getTbSiaCategoriasEmpresa(), 
-				empresaDto.getTbSiaCategoriasEmpresa());		
+				tbSiaEmpresa.getDid(), 
+				empresaDto.getDid());		
 		assertEquals("getTbSiaPais", 
-				tbSiaEmpresa.getTbSiaPais(), 
-				empresaDto.getTbSiaPais());		
+				tbSiaEmpresa.getDid(), 
+				empresaDto.getDid());		
 		assertEquals("getTbSiaSelectoresCsses", 
-				tbSiaEmpresa.getTbSiaSelectoresCsses(), 
-				empresaDto.getTbSiaSelectoresCsses());
+				tbSiaEmpresa.getDid(), 
+				empresaDto.getDid());
 		
 		//- Same -//
-		assertSame(tbSiaEmpresa.getTbSiaSelectoresCsses(), 
-				empresaDto.getTbSiaSelectoresCsses());
-		assertSame(tbSiaEmpresa.getTbSiaPais(), 
-				empresaDto.getTbSiaPais());
-		assertSame(tbSiaEmpresa.getTbSiaCategoriasEmpresa(), 
-				empresaDto.getTbSiaCategoriasEmpresa());
+		assertSame(tbSiaEmpresa.getDid(), 
+				empresaDto.getDid());
+		assertSame(tbSiaEmpresa.getDid(), 
+				empresaDto.getDid());
+		assertSame(tbSiaEmpresa.getDid(), 
+				empresaDto.getDid());
 		
 	}
 	
@@ -78,32 +78,28 @@ public class EmpresaParserTest {
 	public void toTbSia() {
 		
 		EmpresaDTO empresaDto = new EmpresaDTO();
-		
-		empresaDto.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
-		empresaDto.setTbSiaPais(new TbSiaPais());
-		empresaDto.setTbSiaSelectoresCsses(new ArrayList<TbSiaSelectoresCss>());
-		
+				
 		EmpresaParser parser = new EmpresaParser();
 		TbSiaEmpresa tbSiaEmpresa = parser.toTbSia(empresaDto);
 		
 		//- Equals -//
 		assertEquals("getTbSiaCategoriasEmpresa", 
-			empresaDto.getTbSiaCategoriasEmpresa(), 
-				tbSiaEmpresa.getTbSiaCategoriasEmpresa());
+			empresaDto.getDid(), 
+				tbSiaEmpresa.getDid());
 		assertEquals("getTbSiaPais", 
-				empresaDto.getTbSiaPais(), 
-				tbSiaEmpresa.getTbSiaPais());		
+				empresaDto.getDid(), 
+				tbSiaEmpresa.getDid());		
 		assertEquals("getTbSiaSelectoresCsses", 
-				empresaDto.getTbSiaSelectoresCsses(), 
-				tbSiaEmpresa.getTbSiaSelectoresCsses());
+				empresaDto.getDid(), 
+				tbSiaEmpresa.getDid());
 		
 		//- Same -//
-		assertSame(empresaDto.getTbSiaSelectoresCsses(), 
-				tbSiaEmpresa.getTbSiaSelectoresCsses());
-		assertSame(empresaDto.getTbSiaPais(), 
-				tbSiaEmpresa.getTbSiaPais());
-		assertSame(empresaDto.getTbSiaCategoriasEmpresa(), 
-				tbSiaEmpresa.getTbSiaCategoriasEmpresa());
+		assertSame(empresaDto.getDid(), 
+				tbSiaEmpresa.getDid());
+		assertSame(empresaDto.getDid(), 
+				tbSiaEmpresa.getDid());
+		assertSame(empresaDto.getDid(), 
+				tbSiaEmpresa.getDid());
 		
 	}
 	
@@ -121,8 +117,8 @@ public class EmpresaParserTest {
 		assertEquals("size", 
 				lsEmpresas.size(), listEmpresaDTO.size());
 		
-		assertSame(lsEmpresas.get(0).getTbSiaCategoriasEmpresa(), 
-				listEmpresaDTO.get(0).getTbSiaCategoriasEmpresa());		
+		assertSame(lsEmpresas.get(0).getDid(), 
+				listEmpresaDTO.get(0).getDid());		
 	}
 
 	@Test

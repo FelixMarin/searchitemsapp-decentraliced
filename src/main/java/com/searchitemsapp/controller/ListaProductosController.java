@@ -1,5 +1,7 @@
 package com.searchitemsapp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.searchitemsapp.factory.ServiceFactory;
 import com.searchitemsapp.services.ListadoProductosService;
-import com.searchitemsapp.util.LogsUtils;
 
 /**
  *  Controlador principal de la aplicación. Contiene
@@ -25,11 +26,16 @@ import com.searchitemsapp.util.LogsUtils;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RestController
 public class ListaProductosController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ListaProductosController.class);     
 
 	private static final String LISTA_PRODUCTOS = "LISTA_PRODUCTOS";
 	
 	@Autowired
 	private ServiceFactory serviceFactory;
+	
+	//@Autowired
+	//private ProxyConnection proxyConnection;
 	
 	/**
 	 * @GetMapping para asignar solicitudes HTTP GET a métodos de 
@@ -50,8 +56,9 @@ public class ListaProductosController {
 	String didCategoria,@PathVariable("ordenacion") String ordenacion, 
 	@PathVariable("producto") String producto, @PathVariable("empresas") String empresas) {
 		
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),
-				ListaProductosController.class);
+		if(LOGGER.isInfoEnabled()) {
+			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
+		}
 
 		/**
 		 * En este punto se establece la dirección del proxy
@@ -60,7 +67,7 @@ public class ListaProductosController {
 		 * se solicita una nueva IP de proxy a una API REST
 		 * externa.
 		 */
-		 //ProxyConnection.establecerProxy();
+		 //proxyConnection.establecerProxy();
 		
 		 /**
 		  * Llamada al servicio a través del service factory.

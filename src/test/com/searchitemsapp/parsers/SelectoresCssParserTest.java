@@ -53,17 +53,17 @@ public class SelectoresCssParserTest {
 		
 		//- Equals -//
 		assertEquals("getTbSiaEmpresa", 
-				tbSiaSelectoresCssParser.getTbSiaEmpresa(), 
-				selectoresCssDto.getTbSiaEmpresa());		
+				tbSiaSelectoresCssParser.getDid(), 
+				selectoresCssDto.getDid());		
 		assertEquals("getTbSiaUrl", 
-				tbSiaSelectoresCssParser.getTbSiaUrl(), 
-				selectoresCssDto.getTbSiaUrl());
+				tbSiaSelectoresCssParser.getDid(), 
+				selectoresCssDto.getDid());
 		
 		//- Same -//
 		assertSame(tbSiaSelectoresCssParser.getTbSiaUrl(), 
-				selectoresCssDto.getTbSiaUrl());
+				selectoresCssDto.getDid());
 		assertSame(tbSiaSelectoresCssParser.getTbSiaEmpresa(), 
-				selectoresCssDto.getTbSiaEmpresa());
+				selectoresCssDto.getDid());
 		
 	}
 	
@@ -72,24 +72,21 @@ public class SelectoresCssParserTest {
 		
 		SelectoresCssDTO selectoresCssDto = new SelectoresCssDTO();
 		
-		selectoresCssDto.setTbSiaEmpresa(new TbSiaEmpresa());
-		selectoresCssDto.setTbSiaUrl(new TbSiaUrl());
-		
 		SelectoresCssParser parser = new SelectoresCssParser();
 		TbSiaSelectoresCss tbSiaSelectoresCssParser = parser.toTbSia(selectoresCssDto);
 		
 		//- Equals -//
 		assertEquals("getTbSiaEmpresa", 
-			selectoresCssDto.getTbSiaEmpresa(), 
+			selectoresCssDto.getDid(), 
 				tbSiaSelectoresCssParser.getTbSiaEmpresa());	
 		assertEquals("getTbSiaUrl", 
-				selectoresCssDto.getTbSiaUrl(), 
+				selectoresCssDto.getDid(), 
 				tbSiaSelectoresCssParser.getTbSiaUrl());
 		
 		//- Same -//
-		assertSame(selectoresCssDto.getTbSiaUrl(), 
+		assertSame(selectoresCssDto.getDid(), 
 				tbSiaSelectoresCssParser.getTbSiaUrl());
-		assertSame(selectoresCssDto.getTbSiaEmpresa(), 
+		assertSame(selectoresCssDto.getDid(), 
 				tbSiaSelectoresCssParser.getTbSiaEmpresa());
 		
 	}
@@ -109,7 +106,7 @@ public class SelectoresCssParserTest {
 				lsSelectoresCssParser.size(), listSelectoresCssParserDTO.size());
 		
 		assertSame(lsSelectoresCssParser.get(0).getTbSiaEmpresa(), 
-				listSelectoresCssParserDTO.get(0).getTbSiaEmpresa());		
+				listSelectoresCssParserDTO.get(0).getDid());		
 	}
 
 	@Test
