@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.NomProductoDTO;
-import com.searchitemsapp.model.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaNomProducto;
 
 /**
  * Interfaz que se encarga de gestionar todas las 

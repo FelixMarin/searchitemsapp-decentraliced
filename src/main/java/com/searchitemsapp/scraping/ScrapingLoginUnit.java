@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
@@ -101,11 +102,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 	public Map<String, String> checkingHtmlLoginDocument(
 			String didPais, String didCategoria, int iIdEmpresa,  
 			Map<Integer,Map<String,String>> mapaCookies) throws IOException {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
+			
 		ResultadoDTO auxResDto = null;
 		
 		/**
@@ -120,7 +117,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		 * termina el proceso y retorna nulo.
 		 */
 		if(!isLoginActivo) {
-			return null; 
+			return new HashMap<>(); 
 		}
 		
 		/**
@@ -158,7 +155,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		 * se descarta el resto.
 		 */
 		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
-			if(resUrlLogin.getDidEmpresa()  == empresaDTO.getDid() &&
+			if(resUrlLogin.getDidEmpresa().equals(empresaDTO.getDid()) &&
 					ACTION_LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
 				auxResDto = resUrlLogin;
 			}
@@ -169,7 +166,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		 * en la lista. De otro modo, termina el proceso.
 		 */
 		if(Objects.isNull(auxResDto)) {
-			return null;
+			return new HashMap<>();
 		}
 		
 		/**
@@ -177,7 +174,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		 * se descarta el resto.
 		 */
 		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
-			if(resUrlLogin.getDidEmpresa()  == empresaDTO.getDid() &&
+			if(resUrlLogin.getDidEmpresa().equals(empresaDTO.getDid()) &&
 					LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
 				auxResDto.setLoginUrl(resUrlLogin.getNomUrl());
 			}
@@ -203,7 +200,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		 * se termina el proceso retornando nulo.
 		 */
 		if(Objects.isNull(listParamLoginForm)) {
-			return null;
+			return new HashMap<>();
 		}
         
 		/**
@@ -227,7 +224,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		Map<String, String> mapParamsFormLogin = new HashMap<>(NumberUtils.INTEGER_ONE);
         
         for (ParamsLoginDTO paramsLoginDTO : listParamLoginForm) {
-        	if(auxResDto.getDidUrl() == paramsLoginDTO.getDidUrl()) {
+        	if(auxResDto.getDidUrl().equals(paramsLoginDTO.getDidUrl())) {
         		mapParamsFormLogin.put(paramsLoginDTO.getParamClave(), paramsLoginDTO.getParamValor());
         	}
 		}
@@ -264,7 +261,7 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 		 * con el que se va a logear la aplicaión al sitio web.
 		 */
 		List<LoginDTO> listloginDto = loginImpl.findByTbSia(loginDTO, empresaDTO);
-		String b64login = "null";
+		String b64login = StringUtils.EMPTY;
         
 		/**
 		 * Se concatenan tanto el usuario como la contraseña 
@@ -294,7 +291,6 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 	 * @param idUrl
 	 * @return Map<String, String>
 	 */
-	@SuppressWarnings("deprecation")
 	private Map<String, String> obtenerCookiesMethodGet(final String url, 
 			final List<ParamsLoginDTO> listParamLoginHeaders, 
 			final int idUrl) {
@@ -318,12 +314,11 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 					.method(Connection.Method.GET)
 					.referrer(REFFERER_GOOGLE)
 					.ignoreContentType(Boolean.TRUE)
-					.validateTLSCertificates(Boolean.FALSE)
 					.ignoreHttpErrors(Boolean.TRUE)
 					.timeout(100000);
 			
 			for (ParamsLoginDTO paramsLoginDTO : listParamLoginHeaders) {
-				if(idUrl == paramsLoginDTO.getDidUrl()) {
+				if(paramsLoginDTO.getDidUrl().equals(idUrl)) {
 					connection.header(paramsLoginDTO.getParamClave(), paramsLoginDTO.getParamValor());
 				}
 			}
@@ -337,6 +332,10 @@ public abstract class ScrapingLoginUnit extends AbstractScraping {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 			}
+		}
+		
+		if(response == null) {
+			return new HashMap<>();
 		}
 		
 		return response.cookies();

@@ -46,7 +46,8 @@ public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object
 
 	@Override
 	public List<NomProductoDTO> findByTbSia(NomProductoDTO r, Object t) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 
 }

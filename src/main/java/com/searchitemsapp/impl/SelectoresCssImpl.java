@@ -1,6 +1,7 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,19 +85,19 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(selectorCssDto)) {
-			return null;
+			return new SelectoresCssDTO();
 		}
 		
 		/**
 		 * Traza de log que escribe todos los valores del objeto selector css.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.valor.dto"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(selectorCssDto.toString());
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.valor.dto"))
+		.append(StringUtils.SPACE)
+		.append(selectorCssDto.toString());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -125,19 +126,19 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(empresaDto)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.activo"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(empresaDto.getDid());
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.activo"))
+		.append(StringUtils.SPACE)
+		.append(empresaDto.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**

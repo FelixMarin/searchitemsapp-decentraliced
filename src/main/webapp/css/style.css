@@ -120,7 +120,6 @@
 .standar-button {
     background-color: #4B9DEA;
     color: #FFF;
-    box-shadow: 0 0 10px rgba(102, 179, 251, 0.5);
     border-color: #4B9DEA;
     z-index: 1;
     border-radius: 6px 6px 6px 6px;
@@ -138,14 +137,12 @@
     box-shadow: 0 0 0 rgba(255, 255, 255, 0);
     -webkit-transition: border-color .15s ease-out, color .25s ease-out, background-color .15s ease-out, box-shadow .15s ease-out;
     transition: border-color .15s ease-out, color .25s ease-out, background-color .15s ease-out, box-shadow .15s ease-out;
-    display: inline-block;
     margin-bottom: .5rem;
 }
 
 .standar-button:hover {
     background-color: #FFF;
     color: #4B9DEA;
-    box-shadow: 0 0 10px rgba(102, 179, 251, 0.5);
     border-color: #4B9DEA;
     z-index: 1;
     border-radius: 6px 6px 6px 6px;
@@ -163,7 +160,6 @@
     box-shadow: 0 0 0 rgba(255, 255, 255, 0);
     -webkit-transition: border-color .15s ease-out, color .25s ease-out, background-color .15s ease-out, box-shadow .15s ease-out;
     transition: border-color .15s ease-out, color .25s ease-out, background-color .15s ease-out, box-shadow .15s ease-out;
-    display: inline-block;
     margin-bottom: .5rem;
 }
 

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,6 @@ import com.searchitemsapp.repository.IFEmpresaRepository;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
 @Aspect
 public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	
@@ -39,7 +37,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	@Autowired
 	private IFEmpresaRepository empresaDao;
 	
-	/*o
+	/*
 	 * Constructor
 	 */
 	public EmpresaImpl() {
@@ -85,19 +83,18 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		if(Objects.isNull(empresaDto) ||
 				Objects.isNull(empresaDto.getDid())) {
 			
-			return null;
+			return new EmpresaDTO();
 		}
 		
 		/**
 		 * Mensaje que se pintará en las trazas de log.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(empresaDto.getDid());
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		.append(StringUtils.SPACE).append(empresaDto.getDid());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -126,7 +123,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(empresaDto) || Objects.isNull(categoriaDto)) {
-			return new ArrayList();
+			return new ArrayList<>();
 		}
 		
 		/**

@@ -6,11 +6,12 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.NomProductoDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.model.TbSiaPais;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaPais;
 
 /**
  * Es un componente analizador de software que 
@@ -23,6 +24,12 @@ import com.searchitemsapp.model.TbSiaPais;
 public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProducto> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NomProductoParser.class);  
+	
+	@Autowired
+	NomProductoDTO nomProductoDTO;
+	
+	@Autowired
+	TbSiaNomProducto tbSiaNomProducto;
 	
 	/*
 	 * Constructor
@@ -43,13 +50,13 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		NomProductoDTO nomProductoDTO = new NomProductoDTO();
-		
 		nomProductoDTO.setDid(tbSiaNomProducto.getDid());
-		nomProductoDTO.setNomProducto(tbSiaNomProducto.getNomProducto());		
-		nomProductoDTO.setDidCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getDid());
+		nomProductoDTO.setNomProducto(tbSiaNomProducto.getNomProducto());	
+		boolean isNull = null == tbSiaNomProducto.getTbSiaCategoriasEmpresa().getDid();
+		nomProductoDTO.setDidCatEmpresas(isNull?101:tbSiaNomProducto.getTbSiaCategoriasEmpresa().getDid());
 		nomProductoDTO.setNomCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
-		nomProductoDTO.setDidPais(tbSiaNomProducto.getTbSiaPais().getDid());
+		isNull = null == tbSiaNomProducto.getTbSiaCategoriasEmpresa().getDid();
+		nomProductoDTO.setDidPais(isNull?101:tbSiaNomProducto.getTbSiaPais().getDid());
 		nomProductoDTO.setNomPais(tbSiaNomProducto.getTbSiaPais().getNomPais());
 		
 		return nomProductoDTO;
@@ -66,8 +73,6 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		
-		TbSiaNomProducto tbSiaNomProducto = new TbSiaNomProducto();
 		
 		tbSiaNomProducto.setDid(nomProductoDTO.getDid());
 		tbSiaNomProducto.setNomProducto(nomProductoDTO.getNomProducto());
@@ -94,16 +99,17 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 		}
 		
 		List<NomProductoDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
-		NomProductoDTO nomProductoDTO;		
 		
-		for (TbSiaNomProducto tbSiaNomProducto : lsTbSiaNomProducto) {
+		for (TbSiaNomProducto tbSiaNomProdu : lsTbSiaNomProducto) {
 			nomProductoDTO = new NomProductoDTO();
-			nomProductoDTO.setDid(tbSiaNomProducto.getDid());
-			nomProductoDTO.setNomProducto(tbSiaNomProducto.getNomProducto());
-			nomProductoDTO.setDidCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getDid());
-			nomProductoDTO.setNomCatEmpresas(tbSiaNomProducto.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
-			nomProductoDTO.setDidPais(tbSiaNomProducto.getTbSiaPais().getDid());
-			nomProductoDTO.setNomPais(tbSiaNomProducto.getTbSiaPais().getNomPais());
+			nomProductoDTO.setDid(tbSiaNomProdu.getDid());
+			nomProductoDTO.setNomProducto(tbSiaNomProdu.getNomProducto());
+			boolean isNull = null == tbSiaNomProdu.getTbSiaCategoriasEmpresa().getDid();
+			nomProductoDTO.setDidCatEmpresas(isNull?101:tbSiaNomProdu.getTbSiaCategoriasEmpresa().getDid());
+			nomProductoDTO.setNomCatEmpresas(tbSiaNomProdu.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			isNull = null == tbSiaNomProdu.getTbSiaCategoriasEmpresa().getDid();
+			nomProductoDTO.setDidPais(isNull?101:tbSiaNomProdu.getTbSiaPais().getDid());
+			nomProductoDTO.setNomPais(tbSiaNomProdu.getTbSiaPais().getNomPais());
 			listDto.add(nomProductoDTO);
 		}
 		

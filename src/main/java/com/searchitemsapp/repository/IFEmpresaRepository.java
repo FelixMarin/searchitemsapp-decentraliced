@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaEmpresa;
 
 /**
  * Interfaz que se encarga de gestionar todas las 

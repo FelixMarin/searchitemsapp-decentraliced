@@ -1,6 +1,7 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,19 +85,19 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(paramsLoginDTO) || Objects.isNull(categoriaDTO)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/**
 		 * Traza de log que escribe identificador de la URL.
 		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.url.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(paramsLoginDTO.getDidUrl());
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.did.txt"))
+		.append(StringUtils.SPACE)
+		.append(paramsLoginDTO.getDidUrl());
 		
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
+			LOGGER.info(stringBuilder.toString(),this.getClass());
 		}
 		
 		/**
@@ -112,6 +113,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	 */
 	@Override
 	public ParamsLoginDTO findByDid(ParamsLoginDTO paramsLoginDTO) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 }

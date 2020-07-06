@@ -3,16 +3,16 @@
 	<persistence-unit name="searchitemsapp" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/SIAUnitDatasource</jta-data-source>
-		<class>com.searchitemsapp.model.TbSiaCategoriasEmpresa</class>
-		<class>com.searchitemsapp.model.TbSiaEmpresa</class>
-		<class>com.searchitemsapp.model.TbSiaPais</class>
-		<class>com.searchitemsapp.model.TbSiaUrl</class> 
-		<class>com.searchitemsapp.model.TbSiaLogin</class>
-		<class>com.searchitemsapp.model.TbSiaParamsFormLogin</class>
-		<class>com.searchitemsapp.model.TbSiaParamsHeadersLogin</class>
-		<class>com.searchitemsapp.model.TbSiaMarcas</class>
-		<class>com.searchitemsapp.model.TbSiaNomProducto</class>
-		<class>com.searchitemsapp.model.TbSiaSelectoresCss</class>
+		<class>com.searchitemsapp.entities.TbSiaCategoriasEmpresa</class>
+		<class>com.searchitemsapp.entities.TbSiaEmpresa</class>
+		<class>com.searchitemsapp.entities.TbSiaPais</class>
+		<class>com.searchitemsapp.entities.TbSiaUrl</class> 
+		<class>com.searchitemsapp.entities.TbSiaLogin</class>
+		<class>com.searchitemsapp.entities.TbSiaParamsFormLogin</class>
+		<class>com.searchitemsapp.entities.TbSiaParamsHeadersLogin</class>
+		<class>com.searchitemsapp.entities.TbSiaMarcas</class>
+		<class>com.searchitemsapp.entities.TbSiaNomProducto</class>
+		<class>com.searchitemsapp.entities.TbSiaSelectoresCss</class>
         <properties>
             <property name="hibernate.dialect" value="${hibernate.dialect}"/>
             <property name="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>

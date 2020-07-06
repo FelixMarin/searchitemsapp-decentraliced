@@ -8,26 +8,36 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.SelectoresCssDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
-import com.searchitemsapp.model.TbSiaUrl;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaSelectoresCss;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class SelectoresCssParserTest {
 	
 	 private static Logger LOGGER = null;
+	 
+	 @Autowired
+	 TbSiaSelectoresCss tbSiaSelectoresCssParser;
+	 
+	 @Autowired
+	 SelectoresCssParser parser;
+	 
+	 @Autowired
+	 SelectoresCssDTO selectoresCssDto;
 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -35,7 +45,7 @@ public class SelectoresCssParserTest {
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LogManager.getRootLogger();
+        LOGGER = LoggerFactory.getLogger(SelectoresCssParserTest.class);
     }
 
 	@Test
@@ -43,12 +53,9 @@ public class SelectoresCssParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaSelectoresCss tbSiaSelectoresCssParser = new TbSiaSelectoresCss();
-		
 		tbSiaSelectoresCssParser.setTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaSelectoresCssParser.setTbSiaUrl(new TbSiaUrl());
 		
-		SelectoresCssParser parser = new SelectoresCssParser();
 		SelectoresCssDTO selectoresCssDto = parser.toDTO(tbSiaSelectoresCssParser);
 		
 		//- Equals -//
@@ -60,64 +67,63 @@ public class SelectoresCssParserTest {
 				selectoresCssDto.getDid());
 		
 		//- Same -//
-		assertSame(tbSiaSelectoresCssParser.getTbSiaUrl(), 
-				selectoresCssDto.getDid());
-		assertSame(tbSiaSelectoresCssParser.getTbSiaEmpresa(), 
-				selectoresCssDto.getDid());
+		assertSame(tbSiaSelectoresCssParser.getTbSiaUrl().getDid(), 
+				selectoresCssDto.getDidUrl());
+		assertSame(tbSiaSelectoresCssParser.getTbSiaEmpresa().getDid(), 
+				selectoresCssDto.getDidEmpresa());
 		
 	}
 	
 	@Test
 	public void toTbSia() {
 		
-		SelectoresCssDTO selectoresCssDto = new SelectoresCssDTO();
-		
-		SelectoresCssParser parser = new SelectoresCssParser();
+		selectoresCssDto.setDid(101);
+		selectoresCssDto.setDidUrl(101);
+		selectoresCssDto.setDidEmpresa(101);
 		TbSiaSelectoresCss tbSiaSelectoresCssParser = parser.toTbSia(selectoresCssDto);
 		
 		//- Equals -//
 		assertEquals("getTbSiaEmpresa", 
-			selectoresCssDto.getDid(), 
-				tbSiaSelectoresCssParser.getTbSiaEmpresa());	
+			selectoresCssDto.getDid().byteValue(), 
+				tbSiaSelectoresCssParser.getDid().byteValue());	
 		assertEquals("getTbSiaUrl", 
-				selectoresCssDto.getDid(), 
-				tbSiaSelectoresCssParser.getTbSiaUrl());
+				selectoresCssDto.getDidUrl().byteValue(), 
+				tbSiaSelectoresCssParser.getTbSiaUrl().getDid().byteValue());
 		
 		//- Same -//
-		assertSame(selectoresCssDto.getDid(), 
-				tbSiaSelectoresCssParser.getTbSiaUrl());
-		assertSame(selectoresCssDto.getDid(), 
-				tbSiaSelectoresCssParser.getTbSiaEmpresa());
+		assertSame(selectoresCssDto.getDidUrl().byteValue(), 
+				tbSiaSelectoresCssParser.getTbSiaUrl().getDid().byteValue());
+		assertSame(selectoresCssDto.getDidEmpresa().byteValue(), 
+				tbSiaSelectoresCssParser.getTbSiaEmpresa().getDid().byteValue());
 		
 	}
 	
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaSelectoresCss> lsSelectoresCssParser = new ArrayList<TbSiaSelectoresCss>();
-		lsSelectoresCssParser.add(new TbSiaSelectoresCss());
-		lsSelectoresCssParser.add(new TbSiaSelectoresCss());
+		List<TbSiaSelectoresCss> lsSelectoresCssParser = new ArrayList<>();
+		tbSiaSelectoresCssParser.setTbSiaEmpresa(new TbSiaEmpresa());
+		tbSiaSelectoresCssParser.getTbSiaEmpresa().setDid(101);
+		tbSiaSelectoresCssParser.setTbSiaUrl(new TbSiaUrl());
+		lsSelectoresCssParser.add(tbSiaSelectoresCssParser);
 		
-		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<SelectoresCssDTO>();
-		SelectoresCssParser parser = new SelectoresCssParser();
+		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<>();
 		listSelectoresCssParserDTO = parser.toListDTO(lsSelectoresCssParser);
 		
 		assertEquals("size", 
 				lsSelectoresCssParser.size(), listSelectoresCssParserDTO.size());
 		
-		assertSame(lsSelectoresCssParser.get(0).getTbSiaEmpresa(), 
-				listSelectoresCssParserDTO.get(0).getDid());		
+		assertSame(lsSelectoresCssParser.get(0).getTbSiaEmpresa().getDid().byteValue(), 
+				listSelectoresCssParserDTO.get(0).getDidEmpresa().byteValue());		
 	}
 
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsSelectoresCssParser = new ArrayList<Object[]>();
+		List<Object[]> lsSelectoresCssParser = new ArrayList<>();
 		lsSelectoresCssParser.add(new Object[5]);
-		lsSelectoresCssParser.add(new Object[4]);
 		
-		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<SelectoresCssDTO>();
-		SelectoresCssParser parser = new SelectoresCssParser();
+		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<>();
 		listSelectoresCssParserDTO = parser.toListODTO(lsSelectoresCssParser);
 			
 		assertNotEquals(lsSelectoresCssParser, listSelectoresCssParserDTO);

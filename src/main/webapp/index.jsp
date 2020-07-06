@@ -32,7 +32,7 @@
                     <input id="inputtext" type="text" class="form-control searchbar" placeholder="Buscar producto...">
                     <div class="input-group-append">
                         <button id="botonBarra" class="btn btn-secondary pl-5 pr-5" type="button">
-                        <i class="fa fa-search"></i>
+                        <em class="fa fa-search"></em>
                     </button>
                     </div>                    
                 </div>
@@ -52,6 +52,11 @@
         <div id="rowempresas" class="row ml-2">
             <div class="col-sm-12 col-lg-9 offset-lg-1 mt-5">
                 <table class="table-bordered w-100 hidden" id="tablalogos">
+                	<caption><!-- vacio --></caption>
+                	<thead><!-- vacio --></thead>
+                	<tr>
+                		<th scope="row"><!-- vacio --></th>
+                	</tr>
                     <tr>
                         <td class="w-25 p-3">
                             <img src="./img/eroski.svg" class="imglogo w-100" alt="107" />
@@ -106,9 +111,9 @@
             <div id="radiogroup" class="col-sm-6 col-md-4 col-lg-4 offset-1 hidden">
                 <div class="toggle">
                     <input type="radio" name="sizeBy" value="1" id="precio" checked="checked" />
-                    <label for="precio">Precio</label>
+                    <label for="precio">PVP</label>
                     <input type="radio" name="sizeBy" value="2" id="volumen" />
-                    <label for="volumen">Volumen</label>
+                    <label for="volumen">PVP/KILO</label>
                 </div>
             </div>            
             <div id="button-aceptar" class="col-sm-6 col-md-6 col-lg-5 text-right hidden">

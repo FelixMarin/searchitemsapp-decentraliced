@@ -18,11 +18,12 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
 
 /**
- * Esta clase es la encargada de inicializar todo el proceso
+ * Esta clase es la encargada de inicializar el proceso
  * de chequeo de los datos extraidos de las páginas web 
  * rastreadas. El proceso de consulta, extracción y 
  * refinamiento de datos se realiza en tiempo real, lo que
@@ -40,6 +41,8 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	 * Constantes Globales
 	 */		
 	private static final String SEPARADOR_URL = "%20";
+	private static final String SCRAP_NO_PATTERN = "SCRAP_NO_PATTERN";
+	private static final String SCRAP_PATTERN = "SCRAP_PATTERN";
 	
 	/* 
 	 * Variables Globales
@@ -65,7 +68,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	}
 	
 	/**
-	 * Método que realiza todo el proceso de web scraping.
+	 * Método que realiza el proceso de web scraping.
 	 * Primero obtiene los html de los sitios web, después
 	 * Estrae la información relevante y la inserta en una 
 	 * lista de objetos. Finalmente se devuelve una lista
@@ -78,17 +81,13 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	 */
 	public  List<ResultadoDTO> checkHtmlDocument() throws IOException, URISyntaxException, InterruptedException {
 		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
 		/**
 		 * Se validan los valores de entrada. Si
 		 * el resultado false, la ejecucion termina
 		 * devolviendo nulo.
 		 */
 		if(validaUrlDto()) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
 		/*
@@ -108,18 +107,8 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		Pattern pattern = createPatternProduct(arProducto);
 		
 		/**
-		 * Si el arreglo que corresponde al nombre del
-		 * producto solicitado es nulo, termina la 
-		 * ejecucion.
-		 */
-		if(Objects.isNull(arProducto) || 
-				arProducto.length == 0) {
-			return null;
-		}
-		
-		/**
 		 * Si la página solicitada está disponible,
-		 * se desencadenará todo el proceso, en otro
+		 * se desencadenará el proceso, en otro
 		 * caso la ejecución termina con nulo por
 		 * respuesta.
 		 */			
@@ -167,7 +156,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	            if(listDocuments.size() == 1 && 
 	            		!validaURL(document.baseUri(),urlDto.getNomUrl()
 	            				.replace(StringUtils.SPACE, SEPARADOR_URL))) {
-	            	return null;
+	            	return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	            }
 	            
 	            /**
@@ -175,8 +164,8 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	             * que contiene los datos.
 	             */
 	            entradas = selectScrapPattern(document,
-	            		urlDto.getSelectores().get("SCRAP_PATTERN"), 
-	            		urlDto.getSelectores().get("SCRAP_NO_PATTERN"));
+	            		urlDto.getSelectores().get(SCRAP_PATTERN), 
+	            		urlDto.getSelectores().get(SCRAP_NO_PATTERN));
 
 	            /**
 	             * De cada elemento se extrae la
@@ -212,7 +201,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		        }
         	}	
         } else {
-        	return null;
+        	return new ArrayList<>(NumberUtils.INTEGER_ONE);
         }   
         
         return lResultadoDto;
@@ -275,22 +264,19 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 		 * Se comprueba que los principales valores
 		 *  del producto no sean nulos.
 		 */
-		if(Objects.isNull(resDto.getNomProducto()) || iIdEmpresa == 0) {
-			return Boolean.FALSE;
-		} else if(StringUtils.EMPTY.contentEquals(resDto.getPrecio()) ||
-				Objects.isNull(resDto.getPrecio()))  {
-			return Boolean.FALSE; 
-		} else if(Objects.isNull(resDto.getPrecioKilo()) || 
+		if(Objects.isNull(resDto.getNomProducto()) || iIdEmpresa == 0 ||
+				StringUtils.EMPTY.contentEquals(resDto.getPrecio()) ||
+				Objects.isNull(resDto.getPrecioKilo()) || 
 				StringUtils.EMPTY.contentEquals(resDto.getPrecioKilo())) {
 			return Boolean.FALSE;
-		}
+		} 
 		
 		/**
 		 * Se elimina la marca de la descripción del producto
 		 */
 		String strProducto = filtroMarca(iIdEmpresa, resDto.getNomProducto());
 		
-		if(Objects.isNull(strProducto)) {
+		if(StringUtils.isAllBlank(strProducto)) {
 			return Boolean.FALSE;
 		}
 		
@@ -320,7 +306,7 @@ public class ScrapingUnit extends ScrapingLoginUnit  implements Callable<List<Re
 	}
 	
 	private boolean validaSelector(Element elem) {
-		return Objects.nonNull(elem.selectFirst(getSelectorPaginaSiguienteCarrefour())) ||
-		Objects.nonNull(elem.selectFirst(getAccesoPopupPeso()));
+		return Objects.nonNull(elem.selectFirst(CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour"))) ||
+		Objects.nonNull(elem.selectFirst(CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso")));
 	}	
 }

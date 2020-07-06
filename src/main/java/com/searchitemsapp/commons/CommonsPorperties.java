@@ -90,7 +90,7 @@ public class CommonsPorperties {
 	
 	/**
 	 * A través de este método se obtienen los literales
-	 * de los ficheros properties usados en todo el sistema.
+	 * de los ficheros properties usados over el sistema.
 	 * 
 	 * @param String
 	 * @return String

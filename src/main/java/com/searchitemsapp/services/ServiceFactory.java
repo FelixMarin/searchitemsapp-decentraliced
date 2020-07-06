@@ -47,12 +47,14 @@ public class ServiceFactory {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
+		
+		IFService<String,String> ifs = null;
 
 		if(nomService.equals(LISTA_PRODUCTOS)) {
-			return listadoProductosService;
+			ifs = listadoProductosService;
 		}
 		
-		return null;
+		return ifs;
 	}
 
 }

@@ -34,7 +34,6 @@ public class ProcessPrice {
 	private static final String BARRA_KILO_GRAM = "/kg";
 	private static final double DEFAULT_PRICE = 1000.00;
 	
-	private static final String NULL_STRING = "null";
 	private static final String PIPE_STRING = "|";
 	private static final String COMMA_STRING = ",";
 	private static final String DOT_STRING = ".";
@@ -105,7 +104,7 @@ public class ProcessPrice {
 				
 				/**
 				 * Se formatea el precio. Se quita la información
-				 * no relevante y se deja estandarizado para todos
+				 * no relevante y se deja estandarizado for all
 				 * los productos en el mismo formato.
 				 */
 				estilizarPrecios(a,b);
@@ -141,7 +140,7 @@ public class ProcessPrice {
 				
 				/**
 				 * Se formatea el precio. Se quita la información
-				 * no relevante y se deja estandarizado para todos
+				 * no relevante y se deja estandarizado for all
 				 * los productos en el mismo formato.
 				 */
 				estilizarPrecios(a,b);
@@ -209,12 +208,12 @@ public class ProcessPrice {
 		 * coma se retorna nulo.
 		 */
 		if(StringUtils.EMPTY.contentEquals(cadena)) {
-			return NULL_STRING;
+			return StringUtils.EMPTY;
 		}else if(COMMA_STRING.equals(cadena)) {
 			return DEFAULT_STR_PRICE;
 		}
 	     
-	  String resultado = NULL_STRING;
+	  String resultado = StringUtils.EMPTY;
 	  
 	  /**
 	   * Se reemplazan los puntos por espacios vacíos.
@@ -279,10 +278,10 @@ public class ProcessPrice {
 		 * 
 		 */
 		if(StringUtils.EMPTY.contentEquals(cadena)) {
-			return NULL_STRING;
+			return StringUtils.EMPTY;
 		}	
 		
-		String resultado = NULL_STRING;
+		String resultado = StringUtils.EMPTY;
 		
 		  /**
 		   * Se comprueba si el valor extraido de la cadena es válido

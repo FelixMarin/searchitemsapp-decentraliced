@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.SelectoresCssDTO;
-import com.searchitemsapp.model.TbSiaSelectoresCss;
+import com.searchitemsapp.entities.TbSiaSelectoresCss;
 
 /**
  * Interfaz que se encarga de gestionar todas las 

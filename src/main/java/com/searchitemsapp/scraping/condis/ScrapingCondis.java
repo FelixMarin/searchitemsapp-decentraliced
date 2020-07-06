@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -24,7 +23,7 @@ import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingCondis extends AbstractScrapingEmpresas implements IFScracpingCondis {
+public class ScrapingCondis implements IFScracpingCondis {
 
 	private static final String DOBLE_CERO_STRING = "00";
 
@@ -99,7 +98,7 @@ public class ScrapingCondis extends AbstractScrapingEmpresas implements IFScracp
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		String resultado = "null";
+		String resultado = StringUtils.EMPTY;
 		Matcher matcher;
 		
 		if(Objects.isNull(elem) || StringUtils.EMPTY.contentEquals(cssSelector)) {
@@ -125,7 +124,7 @@ public class ScrapingCondis extends AbstractScrapingEmpresas implements IFScracp
 							resultado.length()).length()  == 2) {
 				resultado += ZERO_STRING;
 			}else {
-				resultado.concat(DECIMALES_STRING);
+				resultado = resultado.concat(DECIMALES_STRING);
 			}
 		}
 		

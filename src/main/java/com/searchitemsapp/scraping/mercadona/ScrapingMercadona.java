@@ -16,10 +16,8 @@ import org.jsoup.parser.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -28,8 +26,7 @@ import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-@SuppressWarnings("deprecation")
-public class ScrapingMercadona extends AbstractScrapingEmpresas implements IFScrapingMercadona {
+public class ScrapingMercadona implements IFScrapingMercadona {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingMercadona.class);  
 
@@ -52,10 +49,8 @@ public class ScrapingMercadona extends AbstractScrapingEmpresas implements IFScr
 	private static final String ACCEPT_ENCODING = "Accept-Encoding";
 	private static final String ACCEPT = "Accept";
 	private static final String ACEPT_VALUE_JSON = "application/json";
-	private static final String GZIP_DEFLATE_SDCH = "gzip, deflate, sdch";
-	
-	private static final String URL_ALL_PRODUCTS = CommonsPorperties
-			.getValue("flow.value.url.mercadona.all.products");
+	private static final String GZIP_DEFLATE_SDCH = "gzip, deflate, sdch";	
+	private static final String URL_ALL_PRODUCTS = "https://lolamarket.com/tienda/mercadona/buscar/";
 
 	/*
 	 * Constructor
@@ -136,7 +131,7 @@ public class ScrapingMercadona extends AbstractScrapingEmpresas implements IFScr
 		 * de caracteres especiales.
 		 */
 		if(StringUtils.EMPTY.contentEquals(xml)) {
-			return null;
+			return new Document(StringUtils.EMPTY);
 		} else {
 			xml = CABECERA_XML.concat(TAG_INI_ROOT).concat(xml).concat(TAG_FIN_ROOT);
 			xml = xml.replace(LT_EM_GT, StringUtils.EMPTY);
@@ -184,7 +179,6 @@ public class ScrapingMercadona extends AbstractScrapingEmpresas implements IFScr
 				.method(Connection.Method.POST)
 				.referrer(REFERRER_MERCADONA)
 				.ignoreContentType(Boolean.TRUE)
-				.validateTLSCertificates(Boolean.FALSE)
 				.header(ACCEPT_LANGUAGE, ES_ES)
 				.header(ACCEPT_ENCODING, GZIP_DEFLATE_SDCH)
 				.header(ACCEPT, ACEPT_VALUE_JSON)

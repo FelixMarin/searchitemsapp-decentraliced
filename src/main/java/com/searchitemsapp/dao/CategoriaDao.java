@@ -7,17 +7,17 @@ import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.CategoriaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFCategoriaRepository;
-
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -29,14 +29,15 @@ import com.searchitemsapp.repository.IFCategoriaRepository;
  */
 @SuppressWarnings({"unchecked"})
 @Repository
-public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpresa> implements IFCategoriaRepository {
+public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaDao.class);   
 	
 	/*
-	 * Constantes Globales
+	 * Variables Globales
 	 */
-	private static final String CATEGORIA_PARSER = "CATEGORIA_PARSER";
+	@Autowired
+	private IFParser<CategoriaDTO, TbSiaCategoriasEmpresa> parser;
 	
 	/*
 	 * Constructor 
@@ -63,29 +64,27 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.all"));		
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.all"));		
 
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaEmpresa.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaEmpresa.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			resultado = getParser(CATEGORIA_PARSER).toListDTO(((List<TbSiaCategoriasEmpresa>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaCategoriasEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}
@@ -108,7 +107,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(did)) {
-			return null;
+			return new CategoriaDTO();
 		}
 		
 		/**
@@ -125,7 +124,7 @@ public class CategoriaDao extends AbstractDao<CategoriaDTO, TbSiaCategoriasEmpre
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			categoriaDTO = getParser(CATEGORIA_PARSER).toDTO(getEntityManager().find(TbSiaCategoriasEmpresa.class, did));
+			categoriaDTO = parser.toDTO(entityManager.find(TbSiaCategoriasEmpresa.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);

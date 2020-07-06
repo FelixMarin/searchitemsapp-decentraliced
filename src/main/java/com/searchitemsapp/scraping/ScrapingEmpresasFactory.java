@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.dao.PaisDao;
 import com.searchitemsapp.scraping.alcampo.ScrapingAlcampo;
 import com.searchitemsapp.scraping.caprabo.ScrapingCaprabo;
 import com.searchitemsapp.scraping.carrefour.ScrapingCarrefour;
@@ -32,7 +31,7 @@ import com.searchitemsapp.scraping.ulabox.ScrapingUlabox;
  */
 public class ScrapingEmpresasFactory {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(PaisDao.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingEmpresasFactory.class);  
 	
 	/*
 	 * Constantes Globales
@@ -113,38 +112,40 @@ public class ScrapingEmpresasFactory {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
+		IFScrapingEmpresas ifs = null;
+		
 		/**
 		 * Dependiendo del valor de entrada devolverá uno u otro objeto.
 		 * Nulo si el parámetro de entrada no coincide con lo esperado.
 		 */
 		if(NumberUtils.toInt(ID_ALCAMPO) == idEmpresa) {
-			return scrapingAlcapo;
+			ifs = scrapingAlcapo;
 		} else if(NumberUtils.toInt(ID_CAPRABO) == idEmpresa) {
-			return scrapingCaprabo;
+			ifs = scrapingCaprabo;
 		} else if(NumberUtils.toInt(ID_CARREFOUR) == idEmpresa) {
-			return scrapingCarrefour;
+			ifs = scrapingCarrefour;
 		} else if(NumberUtils.toInt(ID_CONDIS) == idEmpresa) {
-			return scrapingCondis;
+			ifs = scrapingCondis;
 		} else if(NumberUtils.toInt(ID_CONSUM) == idEmpresa) {
-			return scrapingConsum;
+			ifs = scrapingConsum;
 		} else if(NumberUtils.toInt(ID_DIA) == idEmpresa) {
-			return scrapingDia;
+			ifs = scrapingDia;
 		} else if(NumberUtils.toInt(ID_ELCORTEINGLES) == idEmpresa) {
-			return scrapingECI;
+			ifs = scrapingECI;
 		} else if(NumberUtils.toInt(ID_EROSKI) == idEmpresa) {
-			return scrapingEroski;
+			ifs = scrapingEroski;
 		} else if(NumberUtils.toInt(ID_HIPERCOR) == idEmpresa) {
-			return scrapingHipercor;
+			ifs = scrapingHipercor;
 		} else if(NumberUtils.toInt(ID_MERCADONA) == idEmpresa) {
-			return scrapingMercadona;
+			ifs = scrapingMercadona;
 		} else if(NumberUtils.toInt(ID_SIMPLY) == idEmpresa) {
-			return scrapingSimply;
+			ifs = scrapingSimply;
 		} else if(NumberUtils.toInt(ID_ULABOX) == idEmpresa) {
-			return scrapingUlabox;
+			ifs = scrapingUlabox;
 		} else if(NumberUtils.toInt(ID_LIDL) == idEmpresa) {
-			return scrapingLidl;
+			ifs = scrapingLidl;
 		}
 		
-		return null;
+		return ifs;
 	}
 }

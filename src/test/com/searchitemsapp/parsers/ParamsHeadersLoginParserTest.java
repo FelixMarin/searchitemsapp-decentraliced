@@ -8,24 +8,35 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class ParamsHeadersLoginParserTest {
 	
 	 private static Logger LOGGER = null;
+	 
+	 @Autowired
+	 TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin;
+	 
+	 @Autowired
+	 ParamsHeadersLoginParser parser;
+	 
+	 @Autowired
+	 ParamsLoginDTO nomProductoDto;
 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -33,7 +44,7 @@ public class ParamsHeadersLoginParserTest {
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LogManager.getRootLogger();
+        LOGGER = LoggerFactory.getLogger(ParamsHeadersLoginParserTest.class);   
     }
 
 	@Test
@@ -41,12 +52,9 @@ public class ParamsHeadersLoginParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin = new TbSiaParamsHeadersLogin();
-		
 		tbSiaParamsHeadersLogin.setParamClave("clave-test");
 		tbSiaParamsHeadersLogin.setParamValor("valor-test");
 		
-		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		ParamsLoginDTO nomProductoDto = parser.toDTO(tbSiaParamsHeadersLogin);
 		
 		//- Equals -//
@@ -63,12 +71,9 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toTbSia() {
 		
-		ParamsLoginDTO nomProductoDto = new ParamsLoginDTO();
-		
 		nomProductoDto.setParamClave("clave-test");
 		nomProductoDto.setParamValor("valor-test");
 		
-		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
@@ -85,12 +90,11 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaParamsHeadersLogin> lsParamsHeadersLogin = new ArrayList<TbSiaParamsHeadersLogin>();
-		lsParamsHeadersLogin.add(new TbSiaParamsHeadersLogin());
-		lsParamsHeadersLogin.add(new TbSiaParamsHeadersLogin());
+		List<TbSiaParamsHeadersLogin> lsParamsHeadersLogin = new ArrayList<>();
+		tbSiaParamsHeadersLogin.setTbSiaUrl(new TbSiaUrl());
+		lsParamsHeadersLogin.add(tbSiaParamsHeadersLogin);
 		
-		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<ParamsLoginDTO>();
-		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
+		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<>();
 		listParamsHeadersLoginDTO = parser.toListDTO(lsParamsHeadersLogin);
 		
 		assertEquals("size", 
@@ -105,11 +109,11 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsParamsHeadersLogin = new ArrayList<Object[]>();
+		List<Object[]> lsParamsHeadersLogin = new ArrayList<>();
 		lsParamsHeadersLogin.add(new Object[5]);
 		lsParamsHeadersLogin.add(new Object[4]);
 		
-		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<ParamsLoginDTO>();
+		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<>();
 		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		listParamsHeadersLoginDTO = parser.toListODTO(lsParamsHeadersLogin);
 			

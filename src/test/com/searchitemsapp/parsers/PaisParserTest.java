@@ -7,37 +7,48 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.PaisDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaMarcas;
-import com.searchitemsapp.model.TbSiaNomProducto;
-import com.searchitemsapp.model.TbSiaPais;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaPais;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class PaisParserTest {
 	
 	 private static Logger LOGGER = null;
-
+	 
+	 @Autowired
+	 TbSiaPais tbSiaPais;
+	 
+	 @Autowired
+	 PaisDTO nomProductoDto;
+	 
+	 @Autowired
+	 PaisParser parser;
+	 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
     	org.apache.log4j.BasicConfigurator.configure();
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LogManager.getRootLogger();
+        LOGGER = LoggerFactory.getLogger(PaisParserTest.class);  
     }
 
 	@Test
@@ -45,17 +56,14 @@ public class PaisParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaPais tbSiaPais = new TbSiaPais();
-		
-		tbSiaPais.setTbSiaEmpresas(new ArrayList<TbSiaEmpresa>());
-		tbSiaPais.setTbSiaMarcas(new ArrayList<TbSiaMarcas>());
-		tbSiaPais.setTbSiaNomProductos(new ArrayList<TbSiaNomProducto>());
+		tbSiaPais.setTbSiaEmpresas(new ArrayList<>());
+		tbSiaPais.setTbSiaMarcas(new ArrayList<>());
+		tbSiaPais.setTbSiaNomProductos(new ArrayList<>());
 		
 		tbSiaPais.addTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaPais.addTbSiaMarca(new TbSiaMarcas());
 		tbSiaPais.addTbSiaNomProducto(new TbSiaNomProducto());
 		
-		PaisParser parser = new PaisParser();
 		PaisDTO nomProductoDto = parser.toDTO(tbSiaPais);
 		
 		//- Equals -//
@@ -82,9 +90,10 @@ public class PaisParserTest {
 	@Test
 	public void toTbSia() {
 		
-		PaisDTO nomProductoDto = new PaisDTO();
-						
-		PaisParser parser = new PaisParser();
+		nomProductoDto.setDid(101);
+		nomProductoDto.setEmpresas(new LinkedHashMap<>());
+		nomProductoDto.setMarcas(new LinkedHashMap<>());
+		nomProductoDto.setProductos(new LinkedHashMap<>());
 		TbSiaPais tbSiaPais = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
@@ -111,12 +120,12 @@ public class PaisParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaPais> lsPais = new ArrayList<TbSiaPais>();
-		lsPais.add(new TbSiaPais());
-		lsPais.add(new TbSiaPais());
+		List<TbSiaPais> lsPais = new ArrayList<>();
+		tbSiaPais.setTbSiaEmpresas(new ArrayList<>());
+		tbSiaPais.addTbSiaEmpresa(new TbSiaEmpresa());
+		lsPais.add(tbSiaPais);
 		
-		List<PaisDTO> listPaisDTO = new ArrayList<PaisDTO>();
-		PaisParser parser = new PaisParser();
+		List<PaisDTO> listPaisDTO = new ArrayList<>();
 		listPaisDTO = parser.toListDTO(lsPais);
 		
 		assertTrue(listPaisDTO.isEmpty());	
@@ -130,12 +139,10 @@ public class PaisParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsPais = new ArrayList<Object[]>();
+		List<Object[]> lsPais = new ArrayList<>();
 		lsPais.add(new Object[5]);
-		lsPais.add(new Object[4]);
 		
-		List<PaisDTO> listPaisDTO = new ArrayList<PaisDTO>();
-		PaisParser parser = new PaisParser();
+		List<PaisDTO> listPaisDTO = new ArrayList<>();
 		listPaisDTO = parser.toListODTO(lsPais);
 			
 		assertNotEquals(lsPais, listPaisDTO);

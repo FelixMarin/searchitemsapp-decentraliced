@@ -8,32 +8,43 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.model.TbSiaParamsFormLogin;
+import com.searchitemsapp.entities.TbSiaParamsFormLogin;
+import com.searchitemsapp.entities.TbSiaUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class ParamsFormLoginParserTest {
 	
 	 private static Logger LOGGER = null;
-
+	 
+	 @Autowired
+	 TbSiaParamsFormLogin tbSiaParamsFormLogin;
+	 
+	 @Autowired
+	 ParamsFormLoginParser parser;
+	 
+	 @Autowired
+	 ParamsLoginDTO nomProductoDto;
+	 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
     	org.apache.log4j.BasicConfigurator.configure();
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LogManager.getRootLogger();
+        LOGGER = LoggerFactory.getLogger(ParamsFormLoginParserTest.class);  
     }
 
 	@Test
@@ -41,12 +52,9 @@ public class ParamsFormLoginParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaParamsFormLogin tbSiaParamsFormLogin = new TbSiaParamsFormLogin();
-		
 		tbSiaParamsFormLogin.setParamClave("clave-test");
 		tbSiaParamsFormLogin.setParamValor("valor-test");
 		
-		ParamsFormLoginParser parser = new ParamsFormLoginParser();
 		ParamsLoginDTO nomProductoDto = parser.toDTO(tbSiaParamsFormLogin);
 		
 		//- Equals -//
@@ -63,12 +71,9 @@ public class ParamsFormLoginParserTest {
 	@Test
 	public void toTbSia() {
 		
-		ParamsLoginDTO nomProductoDto = new ParamsLoginDTO();
-		
 		nomProductoDto.setParamClave("clave-test");
 		nomProductoDto.setParamValor("valor-test");
 		
-		ParamsFormLoginParser parser = new ParamsFormLoginParser();
 		TbSiaParamsFormLogin tbSiaParamsFormLogin = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
@@ -85,13 +90,11 @@ public class ParamsFormLoginParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaParamsFormLogin> lsParamsFormLogin = new ArrayList<TbSiaParamsFormLogin>();
-		lsParamsFormLogin.add(new TbSiaParamsFormLogin());
-		lsParamsFormLogin.add(new TbSiaParamsFormLogin());
+		List<TbSiaParamsFormLogin> lsParamsFormLogin = new ArrayList<>();
+		tbSiaParamsFormLogin.setTbSiaUrl(new TbSiaUrl());
+		lsParamsFormLogin.add(tbSiaParamsFormLogin);
 		
-		List<ParamsLoginDTO> listParamsFormLoginDTO = new ArrayList<ParamsLoginDTO>();
-		ParamsFormLoginParser parser = new ParamsFormLoginParser();
-		listParamsFormLoginDTO = parser.toListDTO(lsParamsFormLogin);
+		List<ParamsLoginDTO> listParamsFormLoginDTO = parser.toListDTO(lsParamsFormLogin);
 		
 		assertEquals("size", 
 				lsParamsFormLogin.size(), listParamsFormLoginDTO.size());
@@ -105,12 +108,10 @@ public class ParamsFormLoginParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsParamsFormLogin = new ArrayList<Object[]>();
+		List<Object[]> lsParamsFormLogin = new ArrayList<>();
 		lsParamsFormLogin.add(new Object[5]);
-		lsParamsFormLogin.add(new Object[4]);
 		
-		List<ParamsLoginDTO> listParamsFormLoginDTO = new ArrayList<ParamsLoginDTO>();
-		ParamsFormLoginParser parser = new ParamsFormLoginParser();
+		List<ParamsLoginDTO> listParamsFormLoginDTO = new ArrayList<>();
 		listParamsFormLoginDTO = parser.toListODTO(lsParamsFormLogin);
 			
 		assertNotEquals(lsParamsFormLogin, listParamsFormLoginDTO);

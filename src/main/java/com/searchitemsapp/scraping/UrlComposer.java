@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -25,7 +26,7 @@ import com.searchitemsapp.impl.IFUrlImpl;
  * @author Felix Marin Ramirez
  *
  */
-public class UrlComposer extends AbstractScraping {
+public class UrlComposer extends ScrapingLoginUnit {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlComposer.class);   
 	
@@ -123,14 +124,14 @@ public class UrlComposer extends AbstractScraping {
 			 * El resto de supermercados tienen todos el mismo tratamiento.
 			 */
 			String productoTratado;	
-			if(urlDto.getBolActivo()) {
-				if(getMapEmpresas().get(EROSKI).getDid() == urlDto.getDidEmpresa()) {
+			if(urlDto.getBolActivo().booleanValue()) {
+				if(mapEmpresas.get(EROSKI).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reemplazarCaracteresEroski(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(SIMPLY).getDid() == urlDto.getDidEmpresa()) {
+				} else if(mapEmpresas.get(SIMPLY).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reeplazarCaracteresSimply(producto);
 					productoTratado = tratarProducto(productoTratado);
-				} else if(getMapEmpresas().get(CONDIS).getDid() == urlDto.getDidEmpresa()) {
+				} else if(mapEmpresas.get(CONDIS).getDid().equals(urlDto.getDidEmpresa())) {
 					productoTratado = reeplazarTildesCondis(producto);
 					productoTratado = reeplazarCaracteresCondis(productoTratado);
 					productoTratado = tratarProducto(productoTratado);
@@ -198,13 +199,13 @@ public class UrlComposer extends AbstractScraping {
 			SelectoresCssDTO selectoresCssDTO = null;
 			
 			for (SelectoresCssDTO elementNodesDTO : listTodosElementNodes) {
-				if (empDidEnUlrs == elementNodesDTO.getDidEmpresa()) {
+				if (elementNodesDTO.getDidEmpresa().equals(empDidEnUlrs)) {
 					selectoresCssDTO = elementNodesDTO;
 				}
 			}
 			
 			if(Objects.nonNull(selectoresCssDTO)) {	
-				LinkedHashMap<String, String> mapSelectores  = new LinkedHashMap<String, String>();
+				Map<String, String> mapSelectores  = new LinkedHashMap<>();
 				mapSelectores.put("SCRAP_PATTERN", selectoresCssDTO.getScrapPattern());
 				mapSelectores.put("SCRAP_NO_PATTERN", selectoresCssDTO.getScrapNoPattern());
 				mapSelectores.put("SEL_IMAGE", selectoresCssDTO.getSelImage());

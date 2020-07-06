@@ -97,8 +97,9 @@
 
 		/* *** STYLESHEET STUFF *** */
 		// shove in the custom check mark
-		if (options.checkMarkImage !== false)
-		$.extend(true, $finalStyles, { "span.imgCheckbox::before": { "background-image": "url('" + options.checkMarkImage + "')" }});
+		if (options.checkMarkImage !== false) {
+			$.extend(true, $finalStyles, { "span.imgCheckbox::before": { "background-image": "url('" + options.checkMarkImage + "')" }});
+		}
 		// give the checkmark dimensions
 		var chkDimensions = options.checkMarkSize.split(" ");
 		$.extend(true, $finalStyles, { "span.imgCheckbox::before": {
@@ -167,8 +168,9 @@
 		if (options.preselect === true || options.preselect.length > 0)
 		{
 			$wrapperElement.each(function(index) {
-				if (options.preselect === true || options.preselect.indexOf(index) >= 0)
-				$(this).addClass("imgChked");
+				if (options.preselect === true || options.preselect.indexOf(index) >= 0) {
+					$(this).addClass("imgChked");
+				}
 			});
 		}
 
@@ -189,8 +191,9 @@
 			}
 			if (options.addToForm.length === 0)
 			{
-				if (options.debugMessages)
-				console.log("imgCheckbox: no form found (looks for form by default)");
+				if (options.debugMessages) {
+					console.log("imgCheckbox: no form found (looks for form by default)");
+				}
 				options.addToForm = false;
 			}
 		}

@@ -6,10 +6,11 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.searchitemsapp.dto.LoginDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaLogin;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaLogin;
 
 
 
@@ -24,6 +25,12 @@ import com.searchitemsapp.model.TbSiaLogin;
 public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginParser.class);  
+	
+	@Autowired
+	LoginDTO loginPDto;
+	
+	@Autowired
+	TbSiaLogin tbSiaLogin;
 	
 	/*
 	 * Constructor
@@ -44,8 +51,6 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		
-		LoginDTO loginPDto = new LoginDTO();
 		
 		loginPDto.setDid(tbSiaLogin.getDid());
 		loginPDto.setCodPassword(tbSiaLogin.getCodPassword());
@@ -71,8 +76,6 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		
-		TbSiaLogin tbSiaLogin = new TbSiaLogin();
 		
 		tbSiaLogin.setDid(loginPDto.getDid());
 		tbSiaLogin.setCodPassword(loginPDto.getCodPassword());
@@ -101,18 +104,17 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		}
 		
 		List<LoginDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
-		LoginDTO loginPDto;
 		
-		for (TbSiaLogin tbSiaLogin : lsLoginPDto) {
+		for (TbSiaLogin tbSiaLog : lsLoginPDto) {
 			loginPDto = new LoginDTO();
-			loginPDto.setDid(tbSiaLogin.getDid());
-			loginPDto.setCodPassword(tbSiaLogin.getCodPassword());
-			loginPDto.setCodPostal(tbSiaLogin.getCodPostal());		
-			loginPDto.setDesEmail(tbSiaLogin.getDesEmail());
-			loginPDto.setNomUsuario(tbSiaLogin.getNomUsuario());
-			loginPDto.setNumTelefono(tbSiaLogin.getNumTelefono());
-			loginPDto.setDidEmpresa(tbSiaLogin.getTbSiaEmpresa().getDid());
-			loginPDto.setNomEmpresa(tbSiaLogin.getTbSiaEmpresa().getNomEmpresa());
+			loginPDto.setDid(tbSiaLog.getDid());
+			loginPDto.setCodPassword(tbSiaLog.getCodPassword());
+			loginPDto.setCodPostal(tbSiaLog.getCodPostal());		
+			loginPDto.setDesEmail(tbSiaLog.getDesEmail());
+			loginPDto.setNomUsuario(tbSiaLog.getNomUsuario());
+			loginPDto.setNumTelefono(tbSiaLog.getNumTelefono());
+			loginPDto.setDidEmpresa(tbSiaLog.getTbSiaEmpresa().getDid());
+			loginPDto.setNomEmpresa(tbSiaLog.getTbSiaEmpresa().getNomEmpresa());
 			listDto.add(loginPDto);
 		}
 		

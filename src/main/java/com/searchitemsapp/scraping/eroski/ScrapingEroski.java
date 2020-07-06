@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 /**
  * Módulo de scraping especifico diseñado para la 
  * extracción de datos del sitio web de Eroski.
@@ -19,7 +18,7 @@ import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingEroski extends AbstractScrapingEmpresas implements IFScrapingEroski {
+public class ScrapingEroski implements IFScrapingEroski {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingEroski.class);  
 	

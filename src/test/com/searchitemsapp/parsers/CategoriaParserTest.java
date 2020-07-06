@@ -8,27 +8,37 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.dto.CategoriaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaEmpresa;
-import com.searchitemsapp.model.TbSiaMarcas;
-import com.searchitemsapp.model.TbSiaNomProducto;
+import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
+import com.searchitemsapp.entities.TbSiaEmpresa;
+import com.searchitemsapp.entities.TbSiaMarcas;
+import com.searchitemsapp.entities.TbSiaNomProducto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring-context.xml")
+@ContextConfiguration("file:src/main/resources/context-parser-test.xml")
 @WebAppConfiguration
 public class CategoriaParserTest {
 	
 	 private static Logger LOGGER = null;
+		
+		@Autowired
+		CategoriaParser parser;
+		
+		@Autowired
+		TbSiaCategoriasEmpresa tbSiaPCategorias;
+		
+		@Autowired
+		TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa;
 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {
@@ -36,7 +46,7 @@ public class CategoriaParserTest {
         System.setProperty("log4j.properties","log4j.properties");
         System.setProperty("db.properties","db.properties");
         System.setProperty("flow.properties","flow.properties");
-        LOGGER = LogManager.getRootLogger();
+        LOGGER = LoggerFactory.getLogger(CategoriaParserTest.class);  
     }
 
 	@Test
@@ -44,38 +54,17 @@ public class CategoriaParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		TbSiaCategoriasEmpresa tbSiaPCategorias = new TbSiaCategoriasEmpresa();
-		//- Se crean las lista-//
-		tbSiaPCategorias.setTbSiaEmpresas(new ArrayList<TbSiaEmpresa>());
-		tbSiaPCategorias.setTbSiaMarcas(new ArrayList<TbSiaMarcas>());
-		tbSiaPCategorias.setTbSiaNomProductos(new ArrayList<TbSiaNomProducto>());
-		//- se añaden nuevos objetos-//
-		tbSiaPCategorias.addTbSiaEmpresa(new TbSiaEmpresa());
-		tbSiaPCategorias.addTbSiaMarca(new TbSiaMarcas());
-		tbSiaPCategorias.addTbSiaNomProducto(new TbSiaNomProducto());
-		//- se crea el parser y se prueba-//
-		CategoriaParser parser = new CategoriaParser();
+		tbSiaPCategorias.setDid(101);
 		CategoriaDTO categoriaPDto = parser.toDTO(tbSiaPCategorias);
 		
 		//- Equals -//
-		assertEquals("getTbSiaEmpresas", 
-				tbSiaPCategorias.getDid(), 
-				categoriaPDto.getDid());		
-		assertEquals("getTbSiaMarcas", 
-				tbSiaPCategorias.getDid(), 
-				categoriaPDto.getDid());		
-		assertEquals("getTbSiaNomProductos", 
+		assertEquals("tbSiaPCategorias", 
 				tbSiaPCategorias.getDid(), 
 				categoriaPDto.getDid());
 		
 		//- Same -//
 		assertSame(tbSiaPCategorias.getDid(), 
 				categoriaPDto.getDid());
-		assertSame(tbSiaPCategorias.getDid(), 
-				categoriaPDto.getDid());
-		assertSame(tbSiaPCategorias.getDid(), 
-				categoriaPDto.getDid());
-		
 	}
 	
 	@Test
@@ -88,32 +77,33 @@ public class CategoriaParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaCategoriasEmpresa> lsCategorias = new ArrayList<TbSiaCategoriasEmpresa>();
-		lsCategorias.add(new TbSiaCategoriasEmpresa());
-		lsCategorias.add(new TbSiaCategoriasEmpresa());
+		List<TbSiaCategoriasEmpresa> lsCategorias = new ArrayList<>();
+		tbSiaCategoriasEmpresa.setTbSiaEmpresas(new ArrayList<>());
+		tbSiaCategoriasEmpresa.getTbSiaEmpresas().add(new TbSiaEmpresa());
+		tbSiaCategoriasEmpresa.setTbSiaMarcas(new ArrayList<>());
+		tbSiaCategoriasEmpresa.getTbSiaMarcas().add(new TbSiaMarcas());
+		tbSiaCategoriasEmpresa.setTbSiaNomProductos(new ArrayList<>());
+		tbSiaCategoriasEmpresa.getTbSiaNomProductos().add(new TbSiaNomProducto());
+		lsCategorias.add(tbSiaCategoriasEmpresa);
 		
-		List<CategoriaDTO> listCategoriaDTO = new ArrayList<CategoriaDTO>();
-		CategoriaParser parser = new CategoriaParser();
-		listCategoriaDTO = parser.toListDTO(lsCategorias);
+		List<CategoriaDTO> listCategoriaDTO = parser.toListDTO(lsCategorias);
 		
 		assertEquals("size", 
 				lsCategorias.size(), listCategoriaDTO.size());
 		
-		assertSame(lsCategorias.get(0).getDid(), 
-				listCategoriaDTO.get(0).getDid());		
+		assertSame(lsCategorias.size(), 
+				listCategoriaDTO.size());		
 	}
 
 	@Test
 	public void toListODTO() {
 		
 		List<Object[]> lsCategorias = new ArrayList<Object[]>();
-		lsCategorias.add(new Object[5]);
-		lsCategorias.add(new Object[4]);
+		lsCategorias.add(new Object[0]);
 		
-		List<CategoriaDTO> listCategoriaDTO = new ArrayList<CategoriaDTO>();
-		CategoriaParser parser = new CategoriaParser();
+		List<CategoriaDTO> listCategoriaDTO = new ArrayList<>();
 		listCategoriaDTO = parser.toListODTO(lsCategorias);
 			
-		assertNotEquals(lsCategorias, listCategoriaDTO);
+		assertNotEquals(lsCategorias.size(), listCategoriaDTO.size());
 	}
 }

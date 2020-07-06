@@ -7,16 +7,16 @@ import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.LoginDTO;
-import com.searchitemsapp.model.TbSiaLogin;
+import com.searchitemsapp.entities.TbSiaLogin;
+import com.searchitemsapp.parsers.IFParser;
 import com.searchitemsapp.repository.IFLoginRepository;
-
 
 /**
  * Método que DAO proporcionará los métodos necesarios para 
@@ -28,15 +28,16 @@ import com.searchitemsapp.repository.IFLoginRepository;
  */
 @SuppressWarnings({"unchecked"})
 @Repository
-public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLoginRepository {
+public class LoginDao extends AbstractDao implements IFLoginRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginDao.class);     
 	
 	/*
 	 * Variables Globales
 	 */
-	private static final String LOGIN_PARSER = "LOGIN_PARSER";
-	
+	@Autowired
+	private IFParser<LoginDTO, TbSiaLogin> parser;
+
 	/*
 	 * Constructor
 	 */
@@ -62,29 +63,26 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		/**
 		 * Se obtiene la query del fichero de propiedades.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.all"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
-		
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.select.all"));
+				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaLogin.class);
+		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaLogin.class);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			resultado = getParser(LOGIN_PARSER).toListDTO(((List<TbSiaLogin>) q.getResultList()));
+			resultado = parser.toListDTO(((List<TbSiaLogin>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}	
@@ -107,7 +105,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(did)) {
-			return null;
+			return new LoginDTO();
 		}
 		
 		LoginDTO loginDto = null;
@@ -121,7 +119,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			loginDto = getParser(LOGIN_PARSER).toDTO(getEntityManager().find(TbSiaLogin.class, did));
+			loginDto = parser.toDTO(entityManager.find(TbSiaLogin.class, did));
 		}catch(NoResultException e) {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
@@ -150,7 +148,7 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(didEmpresa)) {
-			return null;
+			return new LoginDTO();
 		}
 
 		if(LOGGER.isInfoEnabled()) {
@@ -162,14 +160,14 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.select.by.did.categoria"));
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.select.by.did.categoria"));
 		
 		/**
 		 * Se crea el objeto query y se le 
 		 * añade el parametro al objeto query.
 		 */
-		Query query = getEntityManager().createQuery(queryBuilder.toString());
+		Query query = entityManager.createQuery(stringBuilder.toString());
 		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);
 		
 		/**
@@ -177,12 +175,14 @@ public class LoginDao extends AbstractDao<LoginDTO, TbSiaLogin> implements IFLog
 		 * Si no hay resultado la excepcion se traza en los logs.
 		 */
 		try {
-			resultado = getParser(LOGIN_PARSER).toDTO((TbSiaLogin) query.getSingleResult());
+			resultado = parser.toDTO((TbSiaLogin) query.getSingleResult());
 		} catch(NoResultException e) {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
+		
+		stringBuilder.setLength(0);
 		
 		return resultado;
 	}

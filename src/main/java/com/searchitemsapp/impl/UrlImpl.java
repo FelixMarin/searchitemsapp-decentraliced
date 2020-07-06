@@ -34,9 +34,15 @@ import com.searchitemsapp.repository.IFUrlRepository;
 public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlImpl.class);  
+	
+	/*
+	 * Constante Globales
+	 */
+	private static final String COMA = ",";
+	private static final String ALL = "ALL";
 
 	/*
-	 * VAriables Globales
+	 * Variables Globales
 	 */
 	@Autowired
 	private IFUrlRepository urlDao;
@@ -63,16 +69,16 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		}
 		
 		if(Objects.isNull(urlDTO)) {
-			return null;
+			return new UrlDTO();
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(urlDTO.getDid());
+		StringBuilder stringBuilder = new StringBuilder(1);
+		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		.append(StringUtils.SPACE)
+		.append(urlDTO.getDid());
 		
 			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(debugMessage.toString(),this.getClass());
+				LOGGER.info(stringBuilder.toString(),this.getClass());
 			}
 			
 		return urlDao.findByDid(urlDTO.getDid());
@@ -108,14 +114,14 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		if(Objects.isNull(paisDto) ||
 				Objects.isNull(categoriaDto) ||
 				StringUtils.EMPTY.contentEquals(strIdsEmpresas)) {
-			return null;
+			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
-		if("ALL".equalsIgnoreCase(strIdsEmpresas)) {
+		if(ALL.equalsIgnoreCase(strIdsEmpresas)) {
 			strIdsEmpresas = CommonsPorperties.getValue("flow.value.all.id.empresa");
 		}
 		
-		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, ",");
+		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, COMA);
 		List<UrlDTO> lsIdsEmpresas = new ArrayList<>(NumberUtils.INTEGER_ONE);
 				
 		List<UrlDTO> listUrlDTO = urlDao.findByDidAndDesUrl(paisDto.getDid(), String.valueOf(categoriaDto.getDid()));
@@ -137,12 +143,14 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 
 	@Override
 	public List<UrlDTO> findAll() throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 
 	@Override
 	public List<UrlDTO> findByTbSia(UrlDTO r, CategoriaDTO t) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		throw new UnsupportedOperationException(Thread
+				.currentThread().getStackTrace()[1].toString());
 	}
 	
 	/*
@@ -151,12 +159,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	
 	private String[] tokenizeString(final String cadena, final String token) {
 		
-		StringTokenizer st = new StringTokenizer(cadena, token); 
-		
-		if(Objects.isNull(st)) {
-			return null;
-		}
-		
+		StringTokenizer st = new StringTokenizer(cadena, token); 		
 		List<String> listaAux = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		while (st.hasMoreElements()) {

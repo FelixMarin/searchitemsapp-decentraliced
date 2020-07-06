@@ -9,18 +9,18 @@ import java.net.MalformedURLException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/context-servicefactory-test.xml")
+@ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
 @WebAppConfiguration
 public class CommonsPorpertiesTest {
 	
@@ -35,7 +35,7 @@ public class CommonsPorpertiesTest {
 	        System.setProperty("log4j.properties","log4j.properties");
 	        System.setProperty("db.properties","db.properties");
 	        System.setProperty("flow.properties","flow.properties");
-	        LOGGER = LogManager.getRootLogger();
+	        LOGGER = LoggerFactory.getLogger(CommonsPorpertiesTest.class);
 	    }
 
 	@Test

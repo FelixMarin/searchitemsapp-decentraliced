@@ -24,11 +24,9 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.scraping.ScrapingUnit;
 import com.searchitemsapp.scraping.UrlComposer;
 
@@ -45,20 +43,21 @@ public class ListadoProductosService implements IFService<String,String> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListadoProductosService.class);  
 	
 	/*
+	 * Constantes Globales
+	 */
+	private static final String ERROR_RESULT = "[{\"request\": \"Error\", " 
+			+ "\"id\" : \"-1\", "
+			+ "\"description\": \"No hay resultados\"}]";
+	
+	/*
 	 * Variables Globales
 	 */
-	private List<SelectoresCssDTO> listTodosSelectoresCss;
-	private static boolean isCached;
-	
-	@Autowired
-	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
-	
 	@Autowired
 	private UrlComposer urlComposer;
 	
 	@Autowired
 	private ApplicationContext applicationContext;
-
+	
 	/*
 	 * Constructor
 	 */
@@ -86,11 +85,8 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * Se cargan en cache los parametros usados por 
 		 * la aplicación. solo se ejecuta una vez.
 		 */
-		if(!isCached) {
-			urlComposer.staticData();
-			urlComposer.cargarTodasLasMarcas();
-			isCached=true;
-		}
+		  urlComposer.applicationData();
+		  urlComposer.cargarTodasLasMarcas();
 		
 		/**
 		 * En este punto se recogen los parametros de entrada
@@ -123,43 +119,22 @@ public class ListadoProductosService implements IFService<String,String> {
 			/**
 			 * Se traza el log con el identificador de la categoría.
 			 */
-			StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-			debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"));
-			debugMessage.append(didCategoria);
+			 StringBuilder stringBuilder = new StringBuilder(1);
+			stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.did.txt"))
+			.append(didCategoria);
 
 			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(debugMessage.toString(), this.getClass());
+				LOGGER.info(stringBuilder.toString(), this.getClass());
 			}
-			
-			/**
-			 * El listado de selectores se rellena la primera vez que
-			 * se ejecuta la aplicación. Si es nulo se relealiza una
-			 * consulta a bbdd para traer los selectores css que se
-			 * utilizarán para extraer la información de la páginas
-			 * web revisadas. 
-			 */
-			if(Objects.isNull(listTodosSelectoresCss)) {
-				listTodosSelectoresCss = selectoresCssImpl.findAll();
-			}
-			
-			/**
-			 * Si en este punto el listado de selectores es nulo, 
-			 * significa ha habido un problema en la conexión a
-			 * bbdd. Si eso sucede se devuelve un error.
-			 */
-			if(Objects.isNull(listTodosSelectoresCss)) {
-		 			return "[{\"request\": \"Error\", "
-						+ "\"id\" : \"-1\", "
-						+ "\"description\": \"" + Thread.currentThread().getStackTrace().toString() + "\"}]";
-			}	
 			
 			/**
 			 * En este punto, la aplicación compone las URLs de los supermercados
 			 * indicados en la request. Se reemplaza el patron '{1}' por el nombre 
 			 * del producto a buscar.
 			 */
+			List<SelectoresCssDTO> lselectores = urlComposer.listSelectoresCssPorEmpresa(empresas);
 			Collection<UrlDTO> lResultDtoUrlsTratado = urlComposer.replaceWildcardCharacter(didPais, 
-					didCategoria, producto, empresas, listTodosSelectoresCss);
+					didCategoria, producto, empresas, lselectores);
 
 			/**
 			 * ArrayList que contiene un objeto encargado de scrapear el producto
@@ -185,7 +160,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			
 			/**
 			 * Ejecuta las tareas dadas, devolviendo una lista de Futuros con su 
-			 * estado y resultados cuando todo esté completo. Future.isDone() es 
+			 * estado y resultados cuando esté completo. Future.isDone() es 
 			 * verdadero para cada elemento de la lista devuelta.
 			 */
 			List<Future<List<ResultadoDTO>>> listFutureListResDto = executorService.invokeAll(callablesScrapingUnit);
@@ -196,9 +171,7 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * la aplicación devolverá un mensaje notificando el suceso.
 			 */
             if(listResultDtoFinal.isEmpty()) {
-    			return "[{\"request\": \"Error\", "
-						+ "\"id\" : \"-1\", "
-						+ "\"description\": \"No hay resultados\"}]";
+    			return ERROR_RESULT;
             }
 
             /**
@@ -239,9 +212,7 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * indicando el suceso.
 		 */
 		if(listResultDtoFinal.isEmpty()) {			
-			return  "[{\"request\": \"Error\", "
-					+ "\"id\" : \"-1\", "
-					+ "\"description\": \"No hay resultados\"}]";
+			return  ERROR_RESULT;
 		}
 		
 		/**

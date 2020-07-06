@@ -140,7 +140,7 @@ http://[url]:[port]/searchitemsapp/search?pais=[id_país]&categoria=[id_categor�
 | --- | --- |
 | __país__ | 101 (España). |
 | __categoría__ | 101 (Supermercados) |
-| __ordenar__ | precio: 1 / volumen: 2 |
+| __ordenar__ | PVP: 1 / PVP/KILO: 2 |
 | __producto__ | (Arroz, Aceite, sal, ...) |
 | __super__ | [101] , [101,103,104] , [ALL] |
  
