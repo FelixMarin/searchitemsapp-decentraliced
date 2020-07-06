@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-# searchitemsapp
-Aplicación que compara precios de supermercados online utilizando la tecnica del web scraping.
-
-Demo
-https://www.dropbox.com/s/chyjhw6rz7wogmd/sia.gif?dl=0
-=======
 
 # Web service para obtener una lista de productos del mimo tipo, ordenada por precio y que son vendidos en supermercados online.
 
@@ -208,4 +201,3 @@ http://[url]:[port]/searchitemsapp/search?pais=101&categoria=101&ordenacion=2&pr
 ```
 
 #### Ejemplo en [vídeo](https://youtu.be/K_4Wp0Poh2Q)
->>>>>>> v0.7.0
