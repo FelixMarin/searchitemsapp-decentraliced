@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # searchitemsapp
 Aplicación que compara precios de supermercados online utilizando la tecnica del web scraping.
 
@@ -208,4 +207,3 @@ http://[url]:[port]/searchitemsapp/search?pais=101&categoria=101&ordenacion=2&pr
 ```
 
 #### Ejemplo en [vídeo](https://youtu.be/K_4Wp0Poh2Q)
->>>>>>> v0.7.0
