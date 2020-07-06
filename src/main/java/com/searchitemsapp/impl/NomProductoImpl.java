@@ -3,11 +3,24 @@ package com.searchitemsapp.impl;
 import java.io.IOException;
 import java.util.List;
 
+import com.searchitemsapp.dao.NomProductoDao;
 import com.searchitemsapp.dto.NomProductoDTO;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Implementación del dao {@link NomProductoDao}.
+ * 
+ * Esta clase ofrece los métodos que permiten interactuar con
+ * la capa de persistencia. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object> {
 	
+	/*
+	 * Constructor
+	 */
 	public NomProductoImpl() {
 		super();
 	}

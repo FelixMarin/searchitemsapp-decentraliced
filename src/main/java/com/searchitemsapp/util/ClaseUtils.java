@@ -14,12 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @version 1.0.0
- * @author Architect: Getronics
- * @author <br>
- *         Designer: Getronics
- * @author <br>
- *         Developer: Getronics
+ * @author Felix Marin Ramirez
  *
  *         Clase que proporciona funciones de utilidad sobre operaciones sobre
  *         objetos
@@ -179,6 +174,13 @@ public final class ClaseUtils implements IFUtils {
 		}
 	}
 
+	/**
+	 * Comprueba si un objeto es nulo.
+	 * True si es nulo, false si no lo es.
+	 * 
+	 * @param object
+	 * @return boolean
+	 */
 	public static boolean isNullObject(Object object) {
 		return Objects.isNull(object);
 	}

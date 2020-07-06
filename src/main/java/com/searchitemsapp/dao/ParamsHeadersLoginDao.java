@@ -16,17 +16,37 @@ import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.repository.IFParamsHeadersLogin;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
+import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
+ * de lógica de negocio necesite interactuar con la base de datos, va 
+ * a hacerlo a través de la API que le ofrece el DAO.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 @Repository
 public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaParamsHeadersLogin> implements IFParamsHeadersLogin {
 	
+	/*
+	 * Constantes Globales
+	 */
 	private static final String PARAMS_HEADERS_PARSER = "PARAMS_HEADERS_PARSER";
 
+	/*
+	 * Constructor
+	 */
 	public ParamsHeadersLoginDao() {
 		super();
 	}
 		
+	/**
+	 * Método que devuelve todos los elementos de una tabla.
+	 * 
+	 * @return List<LoginDTO>
+	 */
 	@Override
 	public List<ParamsLoginDTO> findAll() throws IOException {
 
@@ -34,7 +54,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		
 		List<ParamsLoginDTO> resultado = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
 		
 		isEntityManagerOpen(this.getClass());
@@ -61,7 +81,7 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		
 		List<ParamsLoginDTO> listParamsLoginDto = (List<ParamsLoginDTO>) ClaseUtils.NULL_OBJECT;
 		
-		StringBuilder queryBuilder = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		StringBuilder queryBuilder = StringUtils.getNewStringBuilder();
 		queryBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
 		Query query = getEntityManager().createQuery(queryBuilder.toString(), TbSiaParamsHeadersLogin.class);
 		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), tbSiaUrl.getDid());
@@ -76,6 +96,12 @@ public class ParamsHeadersLoginDao extends AbstractDao<ParamsLoginDTO, TbSiaPara
 		return listParamsLoginDto;
 	}
 	
+	/**
+	 * A partir de un indentifcador se obtiene un elemento
+	 * de la tabla.
+	 * 
+	 * @return ParamsLoginDTO
+	 */
 	@Override
 	public ParamsLoginDTO findByDid(Integer did) throws IOException {
 		return getParser(PARAMS_HEADERS_PARSER).toDTO(getEntityManager().find(TbSiaParamsHeadersLogin.class, did));

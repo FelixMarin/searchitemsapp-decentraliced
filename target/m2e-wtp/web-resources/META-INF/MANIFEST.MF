@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Built-By: daw
-Build-Jdk: 14-ea
-Created-By: Maven Integration for Eclipse
-

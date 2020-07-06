@@ -4,15 +4,33 @@ import java.util.Objects;
 
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Objeto de Transferencia de Datos (DTO) 
+ * es un objeto que transporta datos entre procesos.
+ * No tiene más comportamiento que almacenar y entregar 
+ * sus propios datos.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class PedidoDTO implements IFdto {
 	
+	/*
+	 * Variables Globales
+	 */
 	private String categoria;
 	private String producto;
 
+	/*
+	 * Constructor
+	 */
 	public PedidoDTO() {
 		super();
 	}
 
+	/*
+	 * Métodos Getters y Setters
+	 */
 	public String getCategoria() {
 		return categoria;
 	}
@@ -29,6 +47,9 @@ public class PedidoDTO implements IFdto {
 		this.producto = producto;
 	}
 
+	/*
+	 * Métodos sobre-escitos
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;

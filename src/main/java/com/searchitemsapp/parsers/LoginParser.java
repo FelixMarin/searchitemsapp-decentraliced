@@ -8,12 +8,30 @@ import com.searchitemsapp.model.TbSiaLogin;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * Es un componente analizador de software que 
+ * toma datos de entrada y construye una 
+ * estructura de datos. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	
-	private LoginParser() {
+	/*
+	 * Constructor
+	 */
+	public LoginParser() {
 		super();
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo Entity a un objeto de tipo DTO.
+	 * 
+	 * @param TbSiaLogin
+	 * @return LoginDTO
+	 */
+	@Override
 	public LoginDTO toDTO(TbSiaLogin tbSiaLogin) {	
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),LoginParser.class);
@@ -31,6 +49,13 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		return loginPDto;
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo DTO a un objeto de tipo Entity.
+	 * 
+	 * @param LoginDTO
+	 * @return TbSiaLogin
+	 */
+	@Override
 	public TbSiaLogin toTbSia(LoginDTO loginPDto) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),LoginParser.class);
@@ -48,6 +73,13 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		return tbSiaLogin;
 	}
 	
+	/**
+	 * Mapea una lista de de Entities a una lista de DTOs.
+	 * 
+	 * @param List<TbSiaLogin>
+	 * @return List<LoginDTO>
+	 */
+	@Override
 	public List<LoginDTO> toListDTO(List<TbSiaLogin> lsLoginPDto) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),LoginParser.class);
@@ -70,6 +102,9 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 		return listDto;
 	}
 	
+	/**
+	 * Método no implementado.
+	 */
 	@Override
 	public List<LoginDTO> toListODTO(List<Object[]> objeto) {
 		

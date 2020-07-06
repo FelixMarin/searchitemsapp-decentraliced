@@ -7,15 +7,31 @@ import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.model.TbSiaUrl;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
-import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Es un componente analizador de software que 
+ * toma datos de entrada y construye una 
+ * estructura de datos. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	
-	private UrlParser() {
+	/*
+	 * Constructor
+	 */
+	public UrlParser() {
 		super();
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo Entity a un objeto de tipo DTO.
+	 * 
+	 * @param TbSiaUrl
+	 * @return UrlDTO
+	 */
 	public UrlDTO toDTO(TbSiaUrl tbSiaPUrl) {	
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
@@ -33,6 +49,12 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		return urlPDto;
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo DTO a un objeto de tipo Entity.
+	 * 
+	 * @param UrlDTO
+	 * @return TbSiaUrl
+	 */
 	public TbSiaUrl toTbSia(UrlDTO urlPDto) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
@@ -51,6 +73,12 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		return tbSiaPUrl;
 	}
 	
+	/**
+	 * Mapea una lista de de Entities a una lista de DTOs.
+	 * 
+	 * @param List<TbSiaUrl>
+	 * @return List<UrlDTO>
+	 */
 	public List<UrlDTO> toListDTO(List<TbSiaUrl> lsUrls) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
@@ -74,24 +102,31 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		return listDto;
 	}
 	
+	/**
+	 * Convierte una lista de arrays de objetos a una lista de URLs.
+	 * 
+	 * @param List<Object[]>
+	 * @return List<UrlDTO>
+	 */
 	public List<UrlDTO> toListODTO(List<Object[]> urlList) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),UrlParser.class);
+		
+		UrlDTO urlDto;
 		
 		if(ClaseUtils.isNullObject(urlList)) {
 			return (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
 		}
 		
 		List<UrlDTO> listUrlDto = (List<UrlDTO>) ClaseUtils.NULL_OBJECT;
-		UrlDTO urlDto;
 		
 		if (!urlList.isEmpty()){ 
 			listUrlDto = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
 			for (Object[] objects : urlList) {
 				urlDto = new UrlDTO();
 				urlDto.setNomUrl(String.valueOf(objects[0]));
-				urlDto.getTbSiaEmpresa().setDid(StringUtils.desformatearEntero(String.valueOf(objects[1])));
-				urlDto.setDid(StringUtils.desformatearEntero(String.valueOf(objects[2])));
+				urlDto.getTbSiaEmpresa().setDid(Integer.parseInt(String.valueOf(objects[1])));
+				urlDto.setDid(Integer.parseInt(String.valueOf(objects[2])));
 				urlDto.setBolActivo(Boolean.parseBoolean(null!=objects[3]?String.valueOf(objects[3]):null));
 				urlDto.getTbSiaEmpresa().setNomEmpresa(String.valueOf(objects[4]));
 				urlDto.setBolStatus(Boolean.parseBoolean(null!=objects[5]?String.valueOf(objects[5]):null));
@@ -100,7 +135,6 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 				listUrlDto.add(urlDto);
 			}
 		}
-		
 		return listUrlDto;
 	}
 }

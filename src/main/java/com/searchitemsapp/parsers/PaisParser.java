@@ -8,12 +8,29 @@ import com.searchitemsapp.model.TbSiaPais;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * Es un componente analizador de software que 
+ * toma datos de entrada y construye una 
+ * estructura de datos. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	
-	private PaisParser() {
+	/*
+	 * Constructor
+	 */
+	public PaisParser() {
 		super();
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo Entity a un objeto de tipo DTO.
+	 * 
+	 * @param TbSiaPais
+	 * @return PaisDTO
+	 */
 	public PaisDTO toDTO(TbSiaPais tbSiaPPais) {	
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
@@ -31,6 +48,12 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 		return paisPDto;
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo DTO a un objeto de tipo Entity.
+	 * 
+	 * @param PaisDTO
+	 * @return TbSiaPais
+	 */
 	public TbSiaPais toTbSia(PaisDTO paisPDto) {
 		
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),PaisParser.class);
@@ -48,6 +71,9 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 		return tbSiaPPais;
 	}
 
+	/**
+	 * Método no implementado.
+	 */
 	@Override
 	public List<PaisDTO> toListDTO(List<TbSiaPais> objeto) {
 		
@@ -56,6 +82,9 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
 	}
 	
+	/**
+	 * Método no implementado.
+	 */
 	@Override
 	public List<PaisDTO> toListODTO(List<Object[]> objeto) {
 		

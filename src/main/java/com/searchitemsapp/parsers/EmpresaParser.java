@@ -8,12 +8,29 @@ import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * Es un componente analizador de software que 
+ * toma datos de entrada y construye una 
+ * estructura de datos. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	
-	private EmpresaParser() {
+	/*
+	 * Constructor
+	 */
+	public EmpresaParser() {
 		super();
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo Entity a un objeto de tipo DTO.
+	 * 
+	 * @param TbSiaEmpresa
+	 * @return EmpresaDTO
+	 */
 	@Override
 	public EmpresaDTO toDTO(TbSiaEmpresa tbSiaPEmpresas) {	
 		
@@ -34,6 +51,12 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		return empresaPDto;
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo DTO a un objeto de tipo Entity.
+	 * 
+	 * @param EmpresaDTO
+	 * @return TbSiaEmpresa
+	 */
 	@Override
 	public TbSiaEmpresa toTbSia(EmpresaDTO empresaPDto) {
 		
@@ -53,6 +76,12 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		return tbSiaPEmpresas;
 	}
 	
+	/**
+	 * Mapea una lista de de Entities a una lista de DTOs.
+	 * 
+	 * @param List<TbSiaEmpresa>
+	 * @return List<EmpresaDTO>
+	 */
 	@Override
 	public List<EmpresaDTO> toListDTO(List<TbSiaEmpresa> lsEmpresas) {
 		
@@ -78,6 +107,9 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		return listDto;
 	}
 	
+	/**
+	 * Método no implementado.
+	 */
 	@Override
 	public List<EmpresaDTO> toListODTO(List<Object[]> objeto) {
 		

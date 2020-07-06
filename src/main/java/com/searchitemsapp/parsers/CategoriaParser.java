@@ -8,12 +8,29 @@ import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 
+/**
+ * Es un componente analizador de software que 
+ * toma datos de entrada y construye una 
+ * estructura de datos. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEmpresa>  {
 	
-	private CategoriaParser() {
+	/*
+	 *  Constructor
+	 */
+	public CategoriaParser() {
 		super();
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo Entity a un objeto de tipo DTO.
+	 * 
+	 * @param TbSiaCategoriasEmpresa
+	 * @return CategoriaDTO
+	 */
 	@Override
 	public CategoriaDTO toDTO(TbSiaCategoriasEmpresa tbSiaPCategorias) {	
 		
@@ -32,6 +49,12 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 		return categoriaPDto;
 	}
 	
+	/**
+	 * Mapea los datos de un objeto de tipo DTO a un objeto de tipo Entity.
+	 * 
+	 * @param CategoriaDTO
+	 * @return TbSiaCategoriasEmpresa
+	 */
 	@Override
 	public TbSiaCategoriasEmpresa toTbSia(CategoriaDTO categoriaPDto) {
 		
@@ -50,6 +73,12 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 		return tbSiaPCategorias;
 	}
 	
+	/**
+	 * Mapea una lista de de Entities a una lista de DTOs.
+	 * 
+	 * @param List<TbSiaCategoriasEmpresa>
+	 * @return List<CategoriaDTO>
+	 */
 	@Override
 	public List<CategoriaDTO> toListDTO(List<TbSiaCategoriasEmpresa> lsCategorias) {
 		
@@ -73,6 +102,9 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 		return listDto;
 	}
 
+	/**
+	 * Método no implementado.
+	 */
 	@Override
 	public List<CategoriaDTO> toListODTO(List<Object[]> objeto) {
 		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);

@@ -31,7 +31,7 @@ public class ParserXmlJaxb extends DefaultHandler  implements IFUtils {
     /** tag actual del parseador */
     private String  tag = null; 
 
-	
+	// Constructor
 	public ParserXmlJaxb() throws SAXException {  
 		xr = XMLReaderFactory.createXMLReader();  
 		xr.setContentHandler(this);  
@@ -56,7 +56,9 @@ public class ParserXmlJaxb extends DefaultHandler  implements IFUtils {
 		return value;
 	}
 
-	//Contenido de un nodo divido.
+	/**
+	 * Contenido de un nodo divido.
+	 */
 	@Override
 	public void characters(char[] buf, int offset, int len)
     throws SAXException
@@ -72,7 +74,9 @@ public class ParserXmlJaxb extends DefaultHandler  implements IFUtils {
 
     }
 	
-	//Parseo de elementos nodo a nodo.
+	/**
+	 * Parseo de elementos nodo a nodo.
+	 */
 	@Override
 	public void endElement(String uri, String localName, String qName) {
 		
@@ -86,7 +90,10 @@ public class ParserXmlJaxb extends DefaultHandler  implements IFUtils {
 	}
 	
 	
-	//Parseo de elementos nodo a nodo. Attributes contiene los atributos asociados a ese nodo.
+	/**
+	 * Parseo de elementos nodo a nodo. Attributes 
+	 * contiene los atributos asociados a ese nodo.
+	 */
 	@Override
 	public void startElement(String uri, String localName, String name,
 			Attributes attributes) throws SAXException {

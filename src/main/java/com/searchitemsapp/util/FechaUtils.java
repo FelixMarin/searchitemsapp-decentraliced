@@ -1,7 +1,5 @@
 package com.searchitemsapp.util;
 
-//PMD.jllgalvez
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,11 +9,7 @@ import java.util.Date;
 
 /**
  * @version 1.0.0
- * @author Architect: Getronics
- * @author <br>
- *         Designer: Getronics
- * @author <br>
- *         Developer: Getronics
+ * @author Felix Marin Ramirez
  *
  * Clase que proporciona funciones de utilidad sobre objetos de tipo Date
  * @modelguid {A7D8D125-64CA-40EF-86B0-D6D223E1C324}
@@ -124,14 +118,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	public static String horaCorta(){
 		return new SimpleDateFormat("HH:mm").format(new Date());
 	}
-
-
-
-
-
-
-
-
+	
 	/**
 	 *  Metodo que devuelve la diferencia en dias que existe entre dos fechas dadas.
 	 *
@@ -141,7 +128,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la diferencia existente entre las dos fechas expresado en dias.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int diferenciaDias(Date pdtFechaInicial, Date pdtFechaFinal) {
@@ -167,7 +154,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la fecha resultante.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static Date anadirDias(Date pdtFecha, int piNumDias) {
@@ -192,7 +179,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la fecha resultante.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static Date anadirMeses(Date pdtFecha, int piNumMeses) {
@@ -217,7 +204,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la fecha resultante.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static Date anadirAnos(Date pdtFecha, int piNumAnos) {
@@ -240,7 +227,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la diferencia existente entre las dos fechas expresado en meses.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int diferenciaMeses(Date pdtFechaInicial, Date pdtFechaFinal) {
@@ -264,7 +251,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la diferencia existente entre las dos fechas expresado en anios.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int diferenciaAnos(Date pdtFechaInicial, Date pdtFechaFinal) {
@@ -287,7 +274,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return el anio de esa fecha.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getAno(Date pdtFecha) {
@@ -307,7 +294,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return el mes de esa fecha.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getMes(Date pdtFecha) {
@@ -328,7 +315,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return el dia del mes de esa fecha.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getDia(Date pdtFecha) {
@@ -349,7 +336,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return el dia de la semana de esa fecha.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getDiaSemana(Date pdtFecha) {
@@ -374,7 +361,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la fecha resultante.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static Date anadir(Date pdtFecha, int iCampo, int iNumUnidades) {
@@ -396,7 +383,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la hora de esa fecha.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getHora(Date pdtFecha) {
@@ -416,7 +403,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return los minutos de esa fecha.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getMinutos(Date pdtFecha) {
@@ -436,7 +423,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return los segundos de esa fecha.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getSegundos(Date pdtFecha) {
@@ -454,7 +441,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return la hora actual del sistema.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getHora(){
@@ -469,7 +456,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return los minutos de la hora actual del sistema.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getMinutos() {
@@ -484,7 +471,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	 *
      *  @return los segundos de la hora actual del sistema.
      *
-     * 	@author maruizi
+     * 	@author Felix Marin Ramirez
 	 *
 	 */
 	public static int getSegundos() {
@@ -564,7 +551,7 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 		final int seg = fecha.get(java.util.Calendar.SECOND);
 		
 		
-		final StringBuilder sbFecha = new StringBuilder(10);
+		final StringBuilder sbFecha = StringUtils.getNewStringBuilder();
 		
 				if (dia<10) {
 					sbFecha.append("0");
@@ -659,9 +646,10 @@ public final class FechaUtils extends AbstractFechas implements IFUtils {
 	
 	/**
 	 * Valida si un String tiene formato de fecha.
+	 * 
 	 * @param sFecha
 	 * @param sFormato
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean validaFormatoFecha(String sFecha, String sFormato) {
 		boolean valido = false;

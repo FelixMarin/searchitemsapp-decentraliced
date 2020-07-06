@@ -18,18 +18,16 @@ import com.searchitemsapp.commons.CommonsPorperties;
 
 /**
  * @version 1.0.0
- * @author Architect: Getronics
- * @author <br>
- *         Designer: Getronics
- * @author <br>
- *         Developer: Getronics
+ * @author Felix Marin Ramirez
  *
- *         Clase que proporciona funciones de utilidad sobre elementos de tipo
- *         String
+ * Clase que proporciona funciones de utilidad sobre elementos de tipo String.
  * @modelguid {2969363B-099C-43ED-BFF2-C955BBB3B4D3}
  */
 public class StringUtils  implements IFUtils {
-
+	
+	/*
+	 * Constantes Globales
+	 */
 	public static final String OPERACION_NO_SOPORTADA = "Operación no soportada";
 	public static final String GET = "GET";
 	public static final String POST = "POST";
@@ -164,13 +162,19 @@ public class StringUtils  implements IFUtils {
 	public static final String LT = "&lt;";
 	public static final String ACUTE = "\\&quot;";	
 	
+	private static final String[] ARRAY_TILDES_EROSKI = {"$00e1","$00e9","$00ed","$00f3","$00fa"};
+	private static final String[] LATIN_UNICODE_MIN = {"u00e1","u00e9","u00ed","u00f3","u00fa"};
+	private static final String[] LATIN_UNICODE_MAY = {"u00c1","u00c9","u00cd","u00d3","u00da"};
+	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
+	private static final String[] ARRAY_VOCALES_MIN = {"a","e","i","o","u"};
+	private static final int AJUSTE_IZQUIERDA = 1;
 	private static final String[][] SANITIZE_STRING = { { "&", "y" }, { "<", StringUtils.SPACE_STRING },
 			{ ">", StringUtils.SPACE_STRING }, { "\"", StringUtils.SPACE_STRING }, { "'", StringUtils.SPACE_STRING },
 			{ ALMOADILLA, StringUtils.SPACE_STRING }, { "%", StringUtils.SPACE_STRING }, { ";", StringUtils.SPACE_STRING },
 			{ "\\+", StringUtils.SPACE_STRING }, { GUION, StringUtils.SPACE_STRING } };
 	
 	private static final Pattern[] patterns;
-	
+		
 	static {
 		final int length = SANITIZE_STRING.length;
 		patterns = new Pattern[length];
@@ -178,21 +182,9 @@ public class StringUtils  implements IFUtils {
 			patterns[c] = Pattern.compile(SANITIZE_STRING[c][0]);
 		}
 	}
-	
-	private static final int AJUSTE_IZQUIERDA = 1;
-	
-	private static final String[] ARRAY_TILDES_EROSKI = {"$00e1","$00e9","$00ed","$00f3","$00fa"};
-	private static final String[] LATIN_UNICODE_MIN = {"u00e1","u00e9","u00ed","u00f3","u00fa"};
-	private static final String[] LATIN_UNICODE_MAY = {"u00c1","u00c9","u00cd","u00d3","u00da"};
-	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
-	private static final String[] ARRAY_VOCALES_MIN = {"a","e","i","o","u"};
-	
-	/**
-	 * Logger de la aplicacion
-	 *
-	 * @modelguid {3A3993BA-7938-485F-9955-A160F81781D4}
+	/*
+	 * Constructor
 	 */
-
 	private StringUtils() {
 		super();
 	}
@@ -242,7 +234,7 @@ public class StringUtils  implements IFUtils {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
 
 		Matcher matcher = matcher(PATRON_FECHA_MAESTRO, fuente);
-		StringBuilder fechaConvertida = new StringBuilder(10);
+		StringBuilder fechaConvertida = StringUtils.getNewStringBuilder();
 		if (matcher.find()) {
 			String fecha = matcher.group();
 			String[] fechaConvertida1 = fecha.split(GUION);
@@ -269,37 +261,6 @@ public class StringUtils  implements IFUtils {
 		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
 
 		return anadirCaracteres(strCadena, chrCaracter, iLongitud, AJUSTE_IZQUIERDA);
-	}
-
-	/**
-	 * Realiza la adicion de caracteres a una cadena para proporcionarle una
-	 * longitud determinada
-	 *
-	 * @param pstrCadena   cadena
-	 * @param piLongitud   Longitud de la cadena
-	 * @param pchrCaracter caracter
-	 * @param piTipo       Tipo de adicion (Izquierda o Derecha)
-	 * @return cadena ajustada
-	 * @modelguid {360E79DB-48FE-4795-9E71-37FCA8F0B22D}
-	 */
-	private static String anadirCaracteres(String strCadena, char chrCaracter, int iLongitud, int iTipo) {
-
-		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
-
-		final StringBuilder sbResultado = new StringBuilder(iLongitud);
-		if (iTipo == AJUSTE_DERECHA) {
-			sbResultado.append(strCadena);
-		}
-		final int dif = iLongitud - strCadena.length();
-		for (int i = 0; i < dif; i++) {
-			sbResultado.append(chrCaracter);
-		}
-
-		if (iTipo == AJUSTE_IZQUIERDA) {
-			sbResultado.append(strCadena);
-		}
-
-		return sbResultado.toString();
 	}
 
 	/**
@@ -373,7 +334,7 @@ public class StringUtils  implements IFUtils {
 	 *
 	 * @return la cadena con el valor del importe.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static String formatearMoneda(double pdCadena) {
@@ -393,7 +354,7 @@ public class StringUtils  implements IFUtils {
 	 * @return el valor del importe al transformar la cadena. Devuelve 0 si la
 	 *         cadena es incorrecta.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static double desformatearMoneda(String cadena) {
@@ -421,7 +382,7 @@ public class StringUtils  implements IFUtils {
 	 *
 	 * @return la cadena con el valor del importe.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static String formatearMonedaImp(double pDCadena) {
@@ -441,7 +402,7 @@ public class StringUtils  implements IFUtils {
 	 * @return el valor del importe al transformar la cadena. Devuelve 0 si la
 	 *         cadena es incorrecta.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static double desformatearMonedaImp(String cadena) {
@@ -469,7 +430,7 @@ public class StringUtils  implements IFUtils {
 	 *
 	 * @return la cadena con el valor del importe.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static String formatearMoneda(float pfCadena) {
@@ -489,7 +450,7 @@ public class StringUtils  implements IFUtils {
 	 * @return el valor del importe al transformar la cadena. Devuelve 0 si la
 	 *         cadena es incorrecta.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static float desformatearMonedaFloat(String cadena) {
@@ -514,7 +475,7 @@ public class StringUtils  implements IFUtils {
 	 *
 	 * @return la cadena con el valor del importe.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static String formatearMonedaImp(float pfCadena) {
@@ -531,7 +492,7 @@ public class StringUtils  implements IFUtils {
 	 * @return el valor del importe al transformar la cadena. Devuelve 0 si la
 	 *         cadena es incorrecta.
 	 *
-	 * @author maruizi
+	 * @author Felix Marin Ramirez
 	 *
 	 */
 	public static float desformatearMonedaFloatImp(String cadena) {
@@ -552,7 +513,7 @@ public class StringUtils  implements IFUtils {
 	 * Crea un float a partir de una cadena que tambien en float
 	 * 
 	 * @param pfCadena
-	 * @return
+	 * @return String
 	 */
 	public static String formatearFloat(float pfCadena) {
 		return Float.toString(pfCadena);
@@ -562,7 +523,7 @@ public class StringUtils  implements IFUtils {
 	 * Crea un float a partir de una cadena
 	 * 
 	 * @param pstrCadena
-	 * @return
+	 * @return float
 	 */
 	public static float desformatearFloat(String pstrCadena) {
 		float iResultado = 0;
@@ -580,7 +541,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte un entero en una cadena
 	 *
 	 * @param piEntero Entero
-	 * @return
+	 * @return String
 	 */
 	public static String formatearEntero(int piEntero) {
 		return Integer.toString(piEntero);
@@ -590,7 +551,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a Date un integer yyyyMMdd
 	 * 
 	 * @param piFechaEntero
-	 * @return
+	 * @return Date
 	 */
 	public static Date desformatearFecha(int piFechaEntero) {
 		final SimpleDateFormat sdfFormato = getSdfYMD();
@@ -608,7 +569,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a date una cadena dd/MM/yyyy
 	 * 
 	 * @param pstrFecha
-	 * @return
+	 * @return Date
 	 */
 	public static Date desformatearFecha(String pstrFecha) {
 		final SimpleDateFormat sdfFormato = getSdfNormal();
@@ -626,7 +587,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a date una cadena dd/MM/yyyy HH:mm:ss
 	 * 
 	 * @param pstrFecha
-	 * @return
+	 * @return Date
 	 */
 	public static Date desformatearFechaDMAHMS(String pstrFecha) {
 		String pstrFechaAux = pstrFecha;
@@ -651,7 +612,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte un tipo CadenaFecha en tipo entero de fecha
 	 *
 	 * @param pstrFecha
-	 * @return
+	 * @return int
 	 */
 	public static int convertirFechaEntero(final String pstrFecha) {
 		int iFecha = 0;
@@ -673,7 +634,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte un tipo CadenaFecha en tipo entero de fecha
 	 *
 	 * @param pstrFecha
-	 * @return
+	 * @return int
 	 */
 	public static int convertirFechaEnteroDMA(final String pstrFecha) {
 		int iFecha = 0;
@@ -696,7 +657,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a string un date
 	 * 
 	 * @param pdtFecha
-	 * @return
+	 * @return String
 	 */
 	public static String desformatearFecha(Date pdtFecha) {
 		final String cadena;
@@ -716,7 +677,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a string un date con formato YYYYMMDD
 	 * 
 	 * @param pdtFecha
-	 * @return
+	 * @return String
 	 */
 	public static String desformatearFechaYYYYMMDD(Date pdtFecha) {
 		final String cadena;
@@ -735,7 +696,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a Date un long yyyyMMddHHmm
 	 * 
 	 * @param piTimestampEntero
-	 * @return
+	 * @return Date
 	 */
 	public static Date desformatearTimestamp(long piTimestampEntero) {
 		final SimpleDateFormat sdfFormato = getSdfYMDHM();
@@ -755,7 +716,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a date un entero
 	 * 
 	 * @param piHoraEntero
-	 * @return
+	 * @return Date
 	 */
 	public static Date desformatearHora(int piHoraEntero) {
 		final SimpleDateFormat sdfFormato = getSdfHM();
@@ -775,7 +736,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a String YYYYMMDD un date
 	 * 
 	 * @param pdtFecha
-	 * @return
+	 * @return String
 	 */
 	public static String formatearFecha(Date pdtFecha) {
 		final String salida;
@@ -799,12 +760,12 @@ public class StringUtils  implements IFUtils {
 		return salida;
 	}
 
-	// CR-3561 Incidencia 92 sggarcia 21/04/2010
+	// CR-3561 Incidencia 92 sggarcia 21/04/2020
 	/**
 	 * Convierte a String yyyy-MM-dd'T'HH:mm:ss un date
 	 * 
 	 * @param pdtFecha
-	 * @return
+	 * @return String
 	 */
 	public static String formatearFechaAMDTHMS(Date pdtFecha) {
 		final String salida;
@@ -822,7 +783,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a String con formato "ddMMyyyy" un date
 	 * 
 	 * @param pdtFecha
-	 * @return
+	 * @return String
 	 */
 	public static String formatearFechaDMA(Date pdtFecha) {
 		final String salida;
@@ -839,7 +800,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a String con formato DD/MM/YYYY otro string de entrada YYYYMMDD
 	 * 
 	 * @param pstrFecha
-	 * @return
+	 * @return String
 	 */
 	public static String formatearFecha(String pstrFecha) {
 		final String salida;
@@ -859,7 +820,7 @@ public class StringUtils  implements IFUtils {
 	 * eficiente que formatearFecha(String)
 	 * 
 	 * @param fecha
-	 * @return
+	 * @return String
 	 */
 	public static String formatearFecha(int fecha) {
 		final String fechaCaducFormat;
@@ -882,7 +843,7 @@ public class StringUtils  implements IFUtils {
 	/**
 	 * Devuelve la fecha actual en formato "dd/MM/yyyy"
 	 * 
-	 * @return
+	 * @return String
 	 */
 	public static String darFechaActual() {
 		final String salida;
@@ -896,7 +857,7 @@ public class StringUtils  implements IFUtils {
 	 * Convierte a String un Date con formato "yyyyMMddHHmm"
 	 * 
 	 * @param pdtTimestamp
-	 * @return
+	 * @return String
 	 */
 	public static String formatearTimestamp(Date pdtTimestamp) {
 		final String salida;
@@ -914,7 +875,7 @@ public class StringUtils  implements IFUtils {
 	 * pasada
 	 * 
 	 * @param pdtHora
-	 * @return
+	 * @return String
 	 */
 	public static String formatearHora(Date pdtHora) {
 		final String salida;
@@ -932,7 +893,7 @@ public class StringUtils  implements IFUtils {
 	 * date pasada
 	 * 
 	 * @param pdtHora
-	 * @return
+	 * @return String
 	 */
 	public static String formatearHoraInforme(Date pdtHora) {
 		final String salida;
@@ -949,7 +910,7 @@ public class StringUtils  implements IFUtils {
 	 * Formatea un mensaje a partir de una cadena pasada
 	 * 
 	 * @param cadena
-	 * @return
+	 * @return String
 	 */
 	public static String formatCadenaMensaje(String cadena) {
 
@@ -960,7 +921,7 @@ public class StringUtils  implements IFUtils {
 		String ret;
 
 		if (longitudCadena > 80) {
-			final StringBuilder cadenaFinal = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+			final StringBuilder cadenaFinal = StringUtils.getNewStringBuilder();
 			int longitudLinea = 70;
 			int numeroFilas = 0;
 			int mod;
@@ -981,40 +942,6 @@ public class StringUtils  implements IFUtils {
 		}
 
 		return ret;
-	}
-	
-	private static int formatCadenaMensajeAux(StringBuilder cadenaFinal,
-			String cadenaAuxiliar, int longitudLinea, int i, int numeroFilas) {
-		
-		String cadenaAux;
-		int ultimoEspacio;
-		int longitudAuxiliar = cadenaAuxiliar.length();
-		
-		if (longitudAuxiliar <= longitudLinea) {
-			longitudLinea = longitudAuxiliar;
-		}
-		cadenaAux = cadenaAuxiliar.substring(0, longitudLinea);
-		if (longitudAuxiliar <= longitudLinea) {
-			ultimoEspacio = longitudAuxiliar;
-		} else {
-			final String siguienteCaracter = cadenaAuxiliar.substring(longitudLinea, longitudLinea + 1);
-			if (StringUtils.SPACE_STRING.equals(siguienteCaracter) || DOT_STRING.equals(siguienteCaracter)
-					|| COMMA_STRING.equals(siguienteCaracter)) {
-				ultimoEspacio = longitudLinea + ClaseUtils.ONE_INT;
-			} else {
-				ultimoEspacio = cadenaAux.lastIndexOf(StringUtils.SPACE_STRING);
-			}
-		}
-		cadenaAux = cadenaAuxiliar.substring(0, ultimoEspacio);
-		cadenaAuxiliar = cadenaAuxiliar.substring(ultimoEspacio);
-		if (cadenaAux.indexOf(StringUtils.SPACE_STRING) == ClaseUtils.ZERO_INT) {
-			cadenaAux = cadenaAux.substring(1);
-		}
-		cadenaFinal.append(cadenaAux).append(BR_TAG_STRING);
-		if (i == numeroFilas - ClaseUtils.ONE_INT && cadenaAuxiliar.length() > ClaseUtils.ZERO_INT) { // NOPMD
-			numeroFilas++;
-		}
-		return numeroFilas;
 	}
 
 	/**
@@ -1090,7 +1017,7 @@ public class StringUtils  implements IFUtils {
 		final int valorEnt = desformatearEntero(string);
 
 		if (valorEnt != ClaseUtils.ZERO_INT) {
-			final StringBuilder salida = new StringBuilder(string.length());
+			final StringBuilder salida = StringUtils.getNewStringBuilder();
 			final int miLong = string.length();
 
 			for (int i = ClaseUtils.ZERO_INT; i < miLong; i++) {
@@ -1119,7 +1046,7 @@ public class StringUtils  implements IFUtils {
 
 			LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
 
-		final StringBuilder sb = new StringBuilder(cadenaXML);
+		final StringBuilder sb = StringUtils.getNewStringBuilder();
 		final String[] aCaracteres = new String[] { "\"", "'", "\\" };
 		final int miNumCaracteres = aCaracteres.length;
 		int miIndice;
@@ -1168,25 +1095,6 @@ public class StringUtils  implements IFUtils {
 	 */
 	public static boolean isEmpty(String str) {
 		return  StringUtils.validateNull(str) || str.length() <= ClaseUtils.ZERO_INT;
-	}
-	
-    private static boolean isEmpty(final CharSequence cs) {
-        return cs == NULL_STRING || cs.length() == ClaseUtils.ZERO_INT;
-}	
-
-	private static NumberFormat getNumberFormatMoneda() {
-		NumberFormat numberFormatMoneda = NumberFormat.getInstance();
-		numberFormatMoneda.setMinimumFractionDigits(ClaseUtils.TWO_INT);
-		numberFormatMoneda.setMaximumFractionDigits(ClaseUtils.TWO_INT);
-		return numberFormatMoneda;
-	}
-
-	private static NumberFormat getNumberFormatMonedaImp() {
-		NumberFormat numberFormatMonedaImp = NumberFormat.getInstance(Locale.ENGLISH);
-		numberFormatMonedaImp.setGroupingUsed(Boolean.FALSE);
-		numberFormatMonedaImp.setMinimumFractionDigits(ClaseUtils.TWO_INT);
-		numberFormatMonedaImp.setMaximumFractionDigits(ClaseUtils.TWO_INT);
-		return numberFormatMonedaImp;
 	}
 
 	/**
@@ -1242,38 +1150,6 @@ public class StringUtils  implements IFUtils {
 		}
 
 		return cadenaResultado;
-	}
-
-	private static SimpleDateFormat getSdfNormal() {
-		return new SimpleDateFormat("dd/MM/yyyy");
-	}
-
-	private static SimpleDateFormat getSdfDMAHMS() {
-		return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	}
-
-	private static SimpleDateFormat getSdfYMD() {
-		return new SimpleDateFormat("yyyyMMdd");
-	}
-
-	private static SimpleDateFormat getSdfDMY() {
-		return new SimpleDateFormat("ddMMyyyy");
-	}
-
-	private static SimpleDateFormat getSdfYMDHM() {
-		return new SimpleDateFormat("yyyyMMddHHmm");
-	}
-
-	private static SimpleDateFormat getSdfHM() {
-		return new SimpleDateFormat("HHmm");
-	}
-
-	private static SimpleDateFormat getSdfHMS() {
-		return new SimpleDateFormat("HH:mm:ss");
-	}
-
-	private static SimpleDateFormat getSdfYMDTHMS() {
-		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	}
 
 	// Problemas con & en base de datos
@@ -1389,7 +1265,7 @@ public class StringUtils  implements IFUtils {
         }
 
         // two or more elements
-        final StringBuilder buf = new StringBuilder(256); // Java default is 16, probably too small
+        final StringBuilder buf = StringUtils.getNewStringBuilder();
         if (first != null) {
             buf.append(first);
         }
@@ -1419,6 +1295,14 @@ public class StringUtils  implements IFUtils {
         return true;
 }    
 	
+    /**
+     * Metodo que contene combinaciones de palabras 
+     * no permitidas. Las palabras no permitidas se
+     * reemplazan por espacios en blanco.
+     * 
+     * @param value
+     * @return String
+     */
 	public static String sanitizeValue(String value) {
 		
 		if(validateNull(value)) {
@@ -1445,10 +1329,8 @@ public class StringUtils  implements IFUtils {
 		return value;
 	}
 
-	public static String getErrorJsonResponse(String error) {
-		return "{\"id\":\"-1\", \"marca\": \"\", \"imagen\": \"\", "
-				+ "\"descripcion\": ".concat(error)
-				+ "\"Error\",\"precio\": \"\"}";
+	public static String getErrorJsonResponse(String error, long id) {
+		return "{\"id\":\"" + id +"\",\"descripcion\":\"" + error + "\"}";
 	}
 	
 	public static String eliminarTildes(final String cadena) {
@@ -1479,14 +1361,13 @@ public class StringUtils  implements IFUtils {
 	
 	public static String[] tokenizeString(final String cadena, final String token) {
 		
-		List<String> listaAux;
 		StringTokenizer st = new StringTokenizer(cadena, token); 
 		
 		if(ClaseUtils.isNullObject(st)) {
 			return NULL_STRING_ARRAY;
 		}
 		
-		listaAux = StringUtils.getNewListString();
+		List<String> listaAux = getNewListString();
 		
 		while (st.hasMoreElements()) {
 			listaAux.add((String) st.nextElement());
@@ -1544,6 +1425,128 @@ public class StringUtils  implements IFUtils {
 	
 	public static List<String> getNewListString() {
 		return new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+	}	
+	
+	public static StringBuilder getNewStringBuilder() {
+		return new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
 	}
+	
+	/*
+	 * Métodos privados
+	 */
+	/**
+	 * Realiza la adicion de caracteres a una cadena para proporcionarle una
+	 * longitud determinada
+	 *
+	 * @param pstrCadena   cadena
+	 * @param piLongitud   Longitud de la cadena
+	 * @param pchrCaracter caracter
+	 * @param piTipo       Tipo de adicion (Izquierda o Derecha)
+	 * @return cadena ajustada
+	 * @modelguid {360E79DB-48FE-4795-9E71-37FCA8F0B22D}
+	 */
+	private static String anadirCaracteres(String strCadena, char chrCaracter, int iLongitud, int iTipo) {
+
+		LogsUtils.escribeLogDebug(Thread.currentThread().getStackTrace()[1].toString(),StringUtils.class);
+
+		final StringBuilder sbResultado = StringUtils.getNewStringBuilder();
+		if (iTipo == AJUSTE_DERECHA) {
+			sbResultado.append(strCadena);
+		}
+		final int dif = iLongitud - strCadena.length();
+		for (int i = 0; i < dif; i++) {
+			sbResultado.append(chrCaracter);
+		}
+
+		if (iTipo == AJUSTE_IZQUIERDA) {
+			sbResultado.append(strCadena);
+		}
+
+		return sbResultado.toString();
+	}
+	
+	private static int formatCadenaMensajeAux(StringBuilder cadenaFinal,
+			String cadenaAuxiliar, int longitudLinea, int i, int numeroFilas) {
 		
+		String cadenaAux;
+		int ultimoEspacio;
+		int longitudAuxiliar = cadenaAuxiliar.length();
+		
+		if (longitudAuxiliar <= longitudLinea) {
+			longitudLinea = longitudAuxiliar;
+		}
+		cadenaAux = cadenaAuxiliar.substring(0, longitudLinea);
+		if (longitudAuxiliar <= longitudLinea) {
+			ultimoEspacio = longitudAuxiliar;
+		} else {
+			final String siguienteCaracter = cadenaAuxiliar.substring(longitudLinea, longitudLinea + 1);
+			if (StringUtils.SPACE_STRING.equals(siguienteCaracter) || DOT_STRING.equals(siguienteCaracter)
+					|| COMMA_STRING.equals(siguienteCaracter)) {
+				ultimoEspacio = longitudLinea + ClaseUtils.ONE_INT;
+			} else {
+				ultimoEspacio = cadenaAux.lastIndexOf(StringUtils.SPACE_STRING);
+			}
+		}
+		cadenaAux = cadenaAuxiliar.substring(0, ultimoEspacio);
+		cadenaAuxiliar = cadenaAuxiliar.substring(ultimoEspacio);
+		if (cadenaAux.indexOf(StringUtils.SPACE_STRING) == ClaseUtils.ZERO_INT) {
+			cadenaAux = cadenaAux.substring(1);
+		}
+		cadenaFinal.append(cadenaAux).append(BR_TAG_STRING);
+		if (i == numeroFilas - ClaseUtils.ONE_INT && cadenaAuxiliar.length() > ClaseUtils.ZERO_INT) { // NOPMD
+			numeroFilas++;
+		}
+		return numeroFilas;
+	}
+	
+	private static SimpleDateFormat getSdfNormal() {
+		return new SimpleDateFormat("dd/MM/yyyy");
+	}
+
+	private static SimpleDateFormat getSdfDMAHMS() {
+		return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	}
+
+	private static SimpleDateFormat getSdfYMD() {
+		return new SimpleDateFormat("yyyyMMdd");
+	}
+
+	private static SimpleDateFormat getSdfDMY() {
+		return new SimpleDateFormat("ddMMyyyy");
+	}
+
+	private static SimpleDateFormat getSdfYMDHM() {
+		return new SimpleDateFormat("yyyyMMddHHmm");
+	}
+
+	private static SimpleDateFormat getSdfHM() {
+		return new SimpleDateFormat("HHmm");
+	}
+
+	private static SimpleDateFormat getSdfHMS() {
+		return new SimpleDateFormat("HH:mm:ss");
+	}
+
+	private static SimpleDateFormat getSdfYMDTHMS() {
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	}
+	
+    private static boolean isEmpty(final CharSequence cs) {
+        return cs == NULL_STRING || cs.length() == ClaseUtils.ZERO_INT;
+    }	
+
+	private static NumberFormat getNumberFormatMoneda() {
+		NumberFormat numberFormatMoneda = NumberFormat.getInstance();
+		numberFormatMoneda.setMinimumFractionDigits(ClaseUtils.TWO_INT);
+		numberFormatMoneda.setMaximumFractionDigits(ClaseUtils.TWO_INT);
+		return numberFormatMoneda;
+	}
+
+	private static NumberFormat getNumberFormatMonedaImp() {
+		NumberFormat numberFormatMonedaImp = NumberFormat.getInstance(Locale.ENGLISH);
+		numberFormatMonedaImp.setGroupingUsed(Boolean.FALSE);
+		numberFormatMonedaImp.setMinimumFractionDigits(ClaseUtils.TWO_INT);
+		numberFormatMonedaImp.setMaximumFractionDigits(ClaseUtils.TWO_INT);
+		return numberFormatMonedaImp;
+	}
 }

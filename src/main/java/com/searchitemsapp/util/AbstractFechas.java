@@ -1,21 +1,29 @@
 package com.searchitemsapp.util;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * @author Felix Marin Ramirez
+ *
+ *         Clase que proporciona funciones de utilidad sobre operaciones sobre
+ *         Fechas
+ * @modelguid {80259D62-9858-4D0F-B35B-4F7196DDA69B}
+ */
 public abstract class AbstractFechas  implements IFUtils {
-
-	public AbstractFechas()	{
-		super();
-	}
-
+	
+	/*
+	 * Enumerados Globales
+	 */
 	public enum MesAnio {
 		ENERO, FEBRERO, MARZO, ABRIL, MAYO, JUNIO, JULIO, AGOSTO, SEPTIEMBRE, OCTUBRE, NOVIEMBRE, DICIEMBRE;
 	}
 	
+	/*
+	 * Constantes Globales
+	 */
 	private static final int[] DATE_CONF = {
 			ClaseUtils.ONE_NEGATIVE_INT, 
 			ClaseUtils.ONE_NEGATIVE_INT, 
@@ -25,6 +33,13 @@ public abstract class AbstractFechas  implements IFUtils {
 			ClaseUtils.ZERO_INT, 
 			ClaseUtils.ZERO_INT };
 
+	/*
+	 * Controlador
+	 */
+	public AbstractFechas()	{
+		super();
+	}
+	
 	/**
 	 * Calendar cal = Calendar.getInstance(); Integer iMes =
 	 * cal.get(Calendar.MONTH); Integer iAnio = cal.get(Calendar.YEAR);
@@ -44,12 +59,20 @@ public abstract class AbstractFechas  implements IFUtils {
 		}
 		return sMes;
 	}
-
+    
+	/**
+	 * Lista en formato cadena con los nombres de los meses. 
+	 * 
+	 * @return List<String>
+	 */
 	public static List<String> getMeses() {
-		List<String> meses = new ArrayList<>(ClaseUtils.DEFAULT_INT_VALUE);
+		
+		List<String> meses = StringUtils.getNewListString();
+		
 		for (MesAnio aux : MesAnio.values()) {
 			meses.add(aux.toString());
 		}
+		
 		return meses;
 	}
 
@@ -63,7 +86,7 @@ public abstract class AbstractFechas  implements IFUtils {
 	 * Funcion que comprueba si una fecha esta dentro de un rango de 12 meses sin
 	 * contar el mes actual.
 	 * 
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean compruebaRango(Date fComprobar, Integer opcion) {
 		boolean bValida = true;
@@ -103,7 +126,7 @@ public abstract class AbstractFechas  implements IFUtils {
 	 * @param iMinuto
 	 * @param iSegundos
 	 * @param iMilisec
-	 * @return
+	 * @return GregorianCalendar
 	 */
 	public static GregorianCalendar recorTaFecha(GregorianCalendar gEntrada, int[] dateConf) {
 

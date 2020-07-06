@@ -16,19 +16,44 @@ import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.LogsUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Implementación del dao {@link UrlDao}.
+ * 
+ * Esta clase ofrece los métodos que permiten interactuar con
+ * la capa de persistencia. 
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings("unchecked")
 @Aspect
 public class UrlImpl implements IFImplementacion<UrlDTO, CategoriaDTO> {
 	
+	/*
+	 * Constantes Globales 
+	 */
 	private static final String ALL = "ALL";
 
+	/*
+	 * VAriables Globales
+	 */
+	@Autowired
+	private UrlDao urlDao;
+	
+	/*
+	 * Constructor
+	 */
 	public UrlImpl() {
 		super();
 	}
-	
-	@Autowired
-	private UrlDao urlDao;
 
+	/**
+	 * Recupera un elemento de la tabla a partir de su identificador.
+	 * 
+	 * @param UrlDTO
+	 * @return UrlDTO
+	 * @exception IOException
+	 */
 	@Override
 	public UrlDTO findByDid(UrlDTO urlDTO) throws IOException {
 		
@@ -38,7 +63,7 @@ public class UrlImpl implements IFImplementacion<UrlDTO, CategoriaDTO> {
 			return (UrlDTO) ClaseUtils.NULL_OBJECT;
 		}
 		
-		final StringBuilder debugMessage = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
+		final StringBuilder debugMessage = StringUtils.getNewStringBuilder();
 		debugMessage.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"));
 		debugMessage.append(StringUtils.SPACE_STRING);
 		debugMessage.append(urlDTO.getDid());

@@ -9,8 +9,20 @@ import com.searchitemsapp.model.TbSiaNomProducto;
 import com.searchitemsapp.util.ClaseUtils;
 import com.searchitemsapp.util.StringUtils;
 
+/**
+ * Objeto de Transferencia de Datos (DTO) 
+ * es un objeto que transporta datos entre procesos.
+ * No tiene más comportamiento que almacenar y entregar 
+ * sus propios datos.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class PaisDTO implements IFdto {
 	
+	/*
+	 * Variables Globales
+	 */
 	private Integer did;
 	private Boolean bolActivo;
 	private String desPais;
@@ -19,10 +31,16 @@ public class PaisDTO implements IFdto {
 	private List<TbSiaMarcas> tbSiaMarcas;
 	private List<TbSiaNomProducto> tbSiaNomProductos;
 	
+	/*
+	 * Constructor
+	 */
 	public PaisDTO() {	
 		super();
 	}
 
+	/*
+	 * Métodos Getters y Setters
+	 */
 	public Integer getDid() {
 		return did;
 	}
@@ -79,6 +97,9 @@ public class PaisDTO implements IFdto {
 		this.tbSiaNomProductos = tbSiaNomProductos;
 	}
 
+	/*
+	 * Métodos sobre-escritos
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;

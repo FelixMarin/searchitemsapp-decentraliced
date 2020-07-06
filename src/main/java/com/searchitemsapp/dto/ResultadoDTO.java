@@ -5,8 +5,20 @@ import java.util.Comparator;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.processprice.ProcessPrice;
 
+/**
+ * Objeto de Transferencia de Datos (DTO) 
+ * es un objeto que transporta datos entre procesos.
+ * No tiene más comportamiento que almacenar y entregar 
+ * sus propios datos.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	
+	/*
+	 * Variables Globales
+	 */
 	private int identificador;
 	private String nomProducto;
 	private String desProducto;
@@ -25,11 +37,17 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 	private String nomUrlAllProducts;
 	private int ordenacion;
 	
+	/*
+	 * Constructor
+	 */
 	public ResultadoDTO() {
 		super();
 		tbSiaEmpresa = new TbSiaEmpresa();
 	}
 	
+	/*
+	 * Métodos Getters y Setters
+	 */
 	public int getIdentificador() {
 		return identificador;
 	}
@@ -133,6 +151,9 @@ public class ResultadoDTO implements IFdto, Comparator<ResultadoDTO> {
 		this.ordenacion = ordenacion;
 	}
 
+	/*
+	 * Métodos sobre-escritos
+	 */
 	@Override
 	public int compare(ResultadoDTO a, ResultadoDTO b) {
 		return ProcessPrice.processPrice(a, b);

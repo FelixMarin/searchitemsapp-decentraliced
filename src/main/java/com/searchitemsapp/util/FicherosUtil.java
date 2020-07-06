@@ -7,10 +7,19 @@ import java.io.InputStreamReader;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-
+/**
+ * @version 1.0.0
+ * @author Felix Marin Ramirez
+ *
+ * Clase que proporciona funciones de utilidad sobre objetos de tipo File
+ * @modelguid {A7D8D125-64CA-40EF-86B0-D6D223E1C324}
+ */
 public class FicherosUtil  implements IFUtils {
 	
 	
+	/*
+	 * Constructor
+	 */
 	private FicherosUtil() {
 		super();
 	}

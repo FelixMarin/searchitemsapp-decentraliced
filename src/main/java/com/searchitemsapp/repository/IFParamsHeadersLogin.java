@@ -9,6 +9,14 @@ import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.model.TbSiaParamsHeadersLogin;
 import com.searchitemsapp.model.TbSiaUrl;
 
+/**
+ * Interfaz que se encarga de gestionar todas las 
+ * operaciones de persistencia contra la tabla 
+ * 'TbSiaParamsHeadersLogin' de la base de datos.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 public interface IFParamsHeadersLogin extends Repository<TbSiaParamsHeadersLogin, Long>{
 	List<ParamsLoginDTO> findAll() throws IOException;
 	List<ParamsLoginDTO> findByTbSiaUrl(TbSiaUrl tbSiaUrl) throws IOException;

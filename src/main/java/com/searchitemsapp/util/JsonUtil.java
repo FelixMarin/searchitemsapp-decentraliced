@@ -1,13 +1,8 @@
 package com.searchitemsapp.util;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,43 +10,97 @@ import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-
+/**
+ * Clase con métodos de utilidad para
+ * manipular objetos de tipo JSON.
+ * 
+ * @author Felix Marin Ramirez
+ *
+ */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class JsonUtil implements IFUtils {
 
+	/**
+	 * Constructor
+	 */
 	private JsonUtil() {
 		super();
 	}
 
+	/**
+	 * Transforma un objeto con estructura
+	 * JSON a otro objeto de tipo Map.
+	 *  
+	 * @param Object (Map || String)
+	 * @return String 
+	 */
 	public static String toJson(Object obj) {
+		
+		/**
+		 * Este mapeador (o enlazador de datos o códec) 
+		 * proporciona funcionalidad para la conversión 
+		 * entre objetos Java (las instancias de JDK 
+		 * proporcionan clases centrales, beans) y 
+		 * construcciones JSON coincidentes.
+		 */
 		ObjectMapper mapper = new ObjectMapper();
+		boolean change = false;
+		
 		try {
+			
+			/**
+			 * 'writeValueAsString' se utiliza para serializar 
+			 * cualquier valor de Java como String.
+			 */
 			String json = mapper.writeValueAsString(obj);
 
-			// si detecta una propiedad que es un string json lo combierte a map
+			/**
+			 * Si detecta una propiedad que es un String 
+			 * con estructura JSON, lo combierte a otro 
+			 * objeto de tipo Map.
+			 */
 			Map objMap = mapper.readValue(json, Map.class);
-
-			boolean change = false;
+			
+			/**
+			 * Construccion del mapa a partir de String.
+			 */
 			for (Object objProperty : objMap.keySet()) {
 				String property = (String) objProperty;
 				change = toJsonAux(property, objMap, mapper);
 			}
+			
+			/**
+			 * Si true, convierte un mapa en un String
+			 * con formato JSON.
+			 */
 			if (change) {
 				json = mapper.writeValueAsString(objMap);
 			}
+			
 			return json;
+			
 		} catch (IOException e) {
 			LogsUtils.escribeLogError("Mensaje: ".concat(e.getMessage()), JsonUtil.class, e);
 		}
 		return StringUtils.NULL_STRING;
 	}
 
+	/**
+	 * Método de validación. Convierte un String 
+	 * con formato JSON en un ojeto de tipo Map.
+	 * 
+	 * @param property
+	 * @param objMap
+	 * @param mapper
+	 * @return boolean
+	 * @throws IOException
+	 */
 	private static boolean toJsonAux(String property, Map objMap, ObjectMapper mapper) throws IOException {
 		boolean change = Boolean.FALSE;
 		if (property.toLowerCase().contains("json")) {
 			Object objValue = objMap.get(property);
-			if (objValue instanceof String && !ClaseUtils.isNullObject(objValue)) {
+			if (!ClaseUtils.isNullObject(objValue) &&
+					objValue instanceof String) {
 				String value = (String) objValue;
 				if (!value.isEmpty() && value.startsWith("{")) {
 					Map mapDetected = mapper.readValue(value, Map.class);
@@ -63,16 +112,46 @@ public class JsonUtil implements IFUtils {
 		return change;
 	}
 
+	/**
+	 * Convierte un String con formato JSON
+	 * a un objeto bean previamente definido.
+	 * 
+	 * @param <T>
+	 * @param json
+	 * @param clazz
+	 * @return <T>
+	 */
 	public static <T> T toBean(String json, Class<T> clazz) {
 
-		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object[]> implementationClassMap = new HashMap<>(ClaseUtils.DEFAULT_INT_VALUE);
 		String property;
-
-		// si detecta una propiedad que es un json como map lo combierte a string
+		
+		/**
+		 * Este mapeador (o enlazador de datos o códec) 
+		 * proporciona funcionalidad para la conversión 
+		 * entre objetos Java (las instancias de JDK 
+		 * proporcionan clases centrales, beans) y 
+		 * construcciones JSON coincidentes.
+		 */
+		ObjectMapper mapper = new ObjectMapper();
+		
+		/**
+		 * Si detecta una propiedad que es un 
+		 * String JSON la mapea a objeto Map.
+		 */
 		try {
+			
+			/**
+			 * Si detecta una propiedad que es un String 
+			 * con estructura JSON, lo combierte a otro 
+			 * objeto de tipo Map.
+			 */
 			Map objMap = mapper.readValue(json, Map.class);
 
+			/**
+			 * Se crea una nueva instancia de la clase
+			 * pasada como parámetro
+			 */
 			Object instance = clazz.newInstance();
 
 			Set<Object> propertykeys = new HashSet<>(objMap.keySet());
@@ -169,6 +248,12 @@ public class JsonUtil implements IFUtils {
 		return implementationClass;
 	}
 
+	/**
+	 * Crea un arrego JSON en una variable de tipo String.
+	 * 
+	 * @param String
+	 * @return String
+	 */
 	public static String toArrayJson(String jsonSinTratar) {
 
 		if (StringUtils.validateNull(jsonSinTratar)) {
@@ -178,54 +263,5 @@ public class JsonUtil implements IFUtils {
 		String resultado = jsonSinTratar.replaceAll("\\}\\{", "\\},\\{");
 		resultado = "{[".concat(resultado).concat("]}");
 		return resultado.replace("{[", "{\"resultado\":[");
-	}
-	
-	public static void establecerProxy() {
-		
-		StringBuilder sbResultado = new StringBuilder(ClaseUtils.DEFAULT_INT_VALUE);
-		HttpURLConnection conn = (HttpURLConnection) ClaseUtils.NULL_OBJECT;
-		String[] arStrIpPort = (String[]) ClaseUtils.NULL_OBJECT;
-		String output;
-				
-		try {
-			URL url = new URL(CommonsPorperties.getValue("flow.value.url.ws.proxy"));
-			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod(StringUtils.GET);
-			conn.setRequestProperty(StringUtils.ACCEPT, StringUtils.ACCEPT_VALUE);
-
-			if (conn.getResponseCode() != ClaseUtils.STATUS_OK) {
-				throw new ConnectException("HTTP error code : " + conn.getResponseCode());
-			}
-			
-			try (BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())))) {
-				
-				while ((output = br.readLine()) != null) {
-					sbResultado.append(output);
-				}
-			}
-			
-			if(sbResultado.length() > 0) {
-				arStrIpPort = sbResultado.toString().split(":");
-			}
-		} catch (IOException e) {
-			LogsUtils.escribeLogError("Error en JsonUtil.getProxyIPfromWebService()", JsonUtil.class, e);
-		} finally  {
-			if(!ClaseUtils.isNullObject(conn)) {
-				conn.disconnect();
-			}
-		}
-		
-		if(ClaseUtils.isNullObject(arStrIpPort)) {
-			arStrIpPort = new String[2];
-			arStrIpPort[0] = CommonsPorperties.getValue("flow.value.valor.ip"); 
-			arStrIpPort[1] = CommonsPorperties.getValue("flow.value.valor.port");
-		} 
-
-		System.setProperty("https.proxyHost",arStrIpPort[0]);
-		System.setProperty("https.proxyPort",arStrIpPort[1]);
-		
-		LogsUtils.escribeLogDebug("Proxy IP:" + arStrIpPort[0] + ":" + arStrIpPort[1], JsonUtil.class);
-		
-		System.setProperty("java.net.useSystemProxies", "true");
 	}
 }
