@@ -16,7 +16,6 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.LoginDao;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.LoginDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
 
 /**
  * Implementación del dao {@link LoginDao}.
@@ -37,10 +36,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	 */
 	@Autowired
 	private LoginDao loginDao;
-	
-	@Autowired
-	private TbSiaEmpresa tbSiaEmpresa;
-	
+		
 	/*
 	 * Constructor
 	 */
@@ -144,16 +140,11 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		}
 		
 		/**
-		 * Se establce el id en el objeto.
-		 */
-		tbSiaEmpresa.setDid(empresaDTO.getDid());
-		
-		/**
 		 * Se ejecuta la consulta y el resultado 
 		 * se asigna a la lista que será retornada.
 		 */
 		List<LoginDTO> listLoginDTO = new ArrayList<>(NumberUtils.INTEGER_ONE);
-		listLoginDTO.add(loginDao.findByTbSiaEmpresa(tbSiaEmpresa));
+		listLoginDTO.add(loginDao.findByTbSiaEmpresa(empresaDTO.getDid()));
 		
 		return listLoginDTO;
 	}

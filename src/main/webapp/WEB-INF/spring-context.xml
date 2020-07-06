@@ -142,8 +142,7 @@
       <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.model.TbSiaCategoriasEmpresa"></bean>
       <bean id="tbSiaEmpresa" class="com.searchitemsapp.model.TbSiaEmpresa"></bean>
       
-      <bean id="urlTreatment" class="com.searchitemsapp.scraping.UrlTreatment"></bean> 
-      <bean id="scrapingLoginUnit" class="com.searchitemsapp.scraping.ScrapingLoginUnit"></bean>
+      <bean id="urlComposer" class="com.searchitemsapp.scraping.UrlComposer"></bean> 
       <bean id="scrapingUnit" class="com.searchitemsapp.scraping.ScrapingUnit" scope="prototype">
       		<constructor-arg index="0" ref="urlDTO" />
       		<constructor-arg index="1" type="java.lang.String" value="" />
@@ -151,12 +150,7 @@
       		<constructor-arg index="3" type="java.lang.String" value="" />
       		<constructor-arg index="4" type="java.lang.String" value="" />
       </bean>
-      <bean id="scrapingDiccionario" class="com.searchitemsapp.scraping.ScrapingDiccionario" scope="prototype">
-      		<constructor-arg index="0" ref="urlDTO" />
-      		<constructor-arg index="1" type="java.lang.String" value="" />
-      </bean>
       
-      <bean id="dynScrapingUnit" class="com.searchitemsapp.scraping.DynScrapingUnit"></bean>
       <bean id="scrapingConsum" class="com.searchitemsapp.scraping.consum.ScrapingConsum"></bean>
       <bean id="scrapingEroski" class="com.searchitemsapp.scraping.eroski.ScrapingEroski"></bean>
       <bean id="scrapingSimply" class="com.searchitemsapp.scraping.simply.ScrapingSimply"></bean>
@@ -171,13 +165,10 @@
       <bean id="scrapingCaprabo" class="com.searchitemsapp.scraping.caprabo.ScrapingCaprabo"></bean>
       <bean id="scrapingLidl" class="com.searchitemsapp.scraping.lidl.ScrapingLidl"></bean>
       
-      <bean id="diccionario" class="com.searchitemsapp.diccionario.Diccionario"></bean>
-      <bean id="fillSelectores" class="com.searchitemsapp.fillselectores.FillSelectores"></bean>     
-      
-      <bean id="parserFactory" class="com.searchitemsapp.factory.ParserFactory"></bean>
-      <bean id="serviceFactory" class="com.searchitemsapp.factory.ServiceFactory"></bean>
-       <bean id="scrapingEmpFactory" class="com.searchitemsapp.factory.ScrapingEmpFactory"></bean>
+      <bean id="parserFactory" class="com.searchitemsapp.parsers.ParserFactory"></bean>
+      <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>
+      <bean id="scrapingEmpFactory" class="com.searchitemsapp.scraping.ScrapingEmpresasFactory"></bean>
        
-       <bean id="processPrice" class="com.searchitemsapp.processprice.ProcessPrice"></bean>
-       <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>
+      <bean id="processPrice" class="com.searchitemsapp.processprice.ProcessPrice"></bean>
+      <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>
 </beans>

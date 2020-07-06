@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 /**
@@ -24,7 +24,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingUlabox extends AbstractScrapingEmpresas implements IFScrapingEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingUlabox.class);  
 	
@@ -84,7 +84,7 @@ public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmp
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = desformatearEntero(CommonsPorperties.getValue("flow.value.paginacion.url.ulabox"));
+		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.ulabox"));
 		
 		/**
 		 * Si la variable de paginación no está
@@ -114,7 +114,7 @@ public class ScrapingUlabox extends AbsScrapingEmpresas implements IFScrapingEmp
 			 * el sitio web. Se formatea a numérico y se asigna a 
 			 * una variable.
 			 */
-			int intPaginacion = desformatearEntero(strPaginacion.trim());
+			int intPaginacion = NumberUtils.toInt(strPaginacion.trim());
 
 			/**
 			 * Se crean tantas URLs como indique el número de paginación.

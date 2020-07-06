@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaEmpresa;
 
 /**
@@ -19,6 +18,5 @@ import com.searchitemsapp.model.TbSiaEmpresa;
 public interface IFEmpresaRepository extends Repository<TbSiaEmpresa, Long>{
 	List<EmpresaDTO> findAll() throws IOException;
 	EmpresaDTO findByDid(Integer did) throws IOException;
-	List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException;
-	List<EmpresaDTO> findByTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException;
+	List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, Integer didCatEmpresa) throws IOException;
 }

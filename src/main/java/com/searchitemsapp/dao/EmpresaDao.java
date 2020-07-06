@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.repository.IFEmpresaRepository;
 
@@ -136,75 +135,6 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	}
 	
 	/**
-	 * Devuelve una lista de empresas que pertenecen a una categoria.
-	 * 
-	 * @param TbSiaCategoriasEmpresa
-	 * @return List<EmpresaDTO>
-	 * @exception IOException
-	 */
-	@Override
-	public List<EmpresaDTO> findByTbSiaCategoriasEmpresa(TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		List<EmpresaDTO> resultado = null;
-		
-		/**
-		 * Si el parametro de entrada es nulo, el proceso
-		 * termina y retorna nulo.
-		 */
-		if(Objects.isNull(tbSiaCategoriasEmpresa)) {
-			return resultado;
-		}
-		
-		/**
-		 * Se compone el mensaje que se mostrará como unta traza
-		 * en el fichero de logs. Pinta el identificador de la marca.
-		 */
-		final StringBuilder debugMessage = new StringBuilder(NumberUtils.INTEGER_ONE);
-		debugMessage.append(CommonsPorperties.getValue("flow.value.categoria.categoria.txt"));
-		debugMessage.append(StringUtils.SPACE);
-		debugMessage.append(tbSiaCategoriasEmpresa.getDid());	
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(debugMessage.toString(),this.getClass());
-		}
-		
-		/**
-		 * Se obtiene la query del fichero de propiedades.
-		 */
-		StringBuilder queryBuilder = new StringBuilder(NumberUtils.INTEGER_ONE);
-		queryBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.categoria"));
-		
-		/**
-		 * Se comprueba que el entity manager esté activado.
-		 */
-		isEntityManagerOpen(this.getClass());
-		
-		/**
-		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
-		 */
-		Query q = getEntityManager().createQuery(queryBuilder.toString(), TbSiaEmpresa.class);	
-		q.setParameter(CommonsPorperties.getValue("flow.value.empresa.didCategoria.key"), tbSiaCategoriasEmpresa.getDid());	
-		
-		/**
-		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
-		 */
-		try {
-			resultado = getParser(EMPRESA_PARSER).toListDTO(((List<TbSiaEmpresa>) q.getResultList()));
-		}catch(NoResultException e) {
-
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-		
-		return resultado;
-	}
-	
-	/**
 	 * Devuelve una lista de empresas que pertenecen 
 	 * a una categoria y tienen un código de empresa.
 	 * 
@@ -214,7 +144,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 	 * @exception IOException
 	 */
 	@Override
-	public List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, TbSiaCategoriasEmpresa tbSiaCategoriasEmpresa) throws IOException {
+	public List<EmpresaDTO> findByDidAndTbSiaCategoriasEmpresa(Integer didEmpresa, Integer didCatEmpresa) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -224,7 +154,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 * Si el parametro de entrada es nulo, el proceso
 		 * termina y retorna nulo.
 		 */
-		if(Objects.isNull(didEmpresa) || Objects.isNull(tbSiaCategoriasEmpresa)) {
+		if(Objects.isNull(didEmpresa) || Objects.isNull(didCatEmpresa)) {
 			return null;
 		}
 		
@@ -242,7 +172,7 @@ public class EmpresaDao extends AbstractDao<EmpresaDTO, TbSiaEmpresa> implements
 		 */
 		Query q = getEntityManager().createQuery(queryBuilder.toString());		
 		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);	
-		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), tbSiaCategoriasEmpresa.getDid());	
+		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), didCatEmpresa);	
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.

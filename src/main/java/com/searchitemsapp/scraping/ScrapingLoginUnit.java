@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
@@ -36,7 +35,7 @@ import com.searchitemsapp.impl.IFUrlImpl;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingLoginUnit extends Scraping {
+public abstract class ScrapingLoginUnit extends AbstractScraping {
 		
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingLoginUnit.class);  
 	
@@ -130,8 +129,8 @@ public class ScrapingLoginUnit extends Scraping {
 		 * parametros del metodo que llama a bbdd y que obtiene
 		 * una lista de urls. 
 		 */
-		paisDto.setDid(desformatearEntero(didPais));
-		categoriaDto.setDid(desformatearEntero(didCategoria));
+		paisDto.setDid(NumberUtils.toInt(didPais));
+		categoriaDto.setDid(NumberUtils.toInt(didCategoria));
 		List<UrlDTO> listUrlDto = urlImpl.obtenerUrlsLogin(paisDto, categoriaDto);
 		empresaDTO.setDid(iIdEmpresa);
 		
@@ -400,29 +399,4 @@ public class ScrapingLoginUnit extends Scraping {
 			}
 		}
 	}	
-	
-	/**
-	 * Convierte una cadena a tipo int
-	 *
-	 * @param pStrCadena
-	 * @return
-	 */
-	private int desformatearEntero(String pStrCadena) {
-
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		int iResultado = 0;
-		if (!StringUtils.EMPTY.contentEquals(pStrCadena)) {
-			try {
-				iResultado = Integer.parseInt(pStrCadena);
-			} catch (NumberFormatException nfe) {
-				if(LOGGER.isErrorEnabled()) {
-					LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),nfe);
-				}
-			}
-		}
-		return iResultado;
-	}
 }

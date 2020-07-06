@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.scraping.AbsScrapingEmpresas;
+import com.searchitemsapp.scraping.AbstractScrapingEmpresas;
 import com.searchitemsapp.scraping.IFScrapingEmpresas;
 
 /**
@@ -20,7 +20,7 @@ import com.searchitemsapp.scraping.IFScrapingEmpresas;
  * @author Felix Marin Ramirez
  *
  */
-public class ScrapingLidl extends AbsScrapingEmpresas implements IFScrapingEmpresas {
+public class ScrapingLidl extends AbstractScrapingEmpresas implements IFScrapingEmpresas {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingLidl.class);  
 	

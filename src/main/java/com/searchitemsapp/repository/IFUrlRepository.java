@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.model.TbSiaEmpresa;
 import com.searchitemsapp.model.TbSiaUrl;
 
 /**
@@ -20,7 +19,6 @@ public interface  IFUrlRepository  extends Repository<TbSiaUrl, Long>{
 	
 	List<UrlDTO> findAll() throws IOException;
 	UrlDTO findByDid(Integer did)  throws IOException;
-	List<UrlDTO> findByTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa)  throws IOException;
 	List<UrlDTO> findByDidAndDesUrl(Integer didPais, String didCategoria) throws IOException;
 	List<UrlDTO> findByDidAndNomUrl(Integer didPais, String didCategoria) throws IOException;
 }

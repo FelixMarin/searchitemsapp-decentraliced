@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.searchitemsapp.factory.ServiceFactory;
 import com.searchitemsapp.services.ListadoProductosService;
+import com.searchitemsapp.services.ServiceFactory;
 
 /**
  *  Controlador principal de la aplicación. Contiene

@@ -17,8 +17,6 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.EmpresaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.model.TbSiaCategoriasEmpresa;
-import com.searchitemsapp.model.TbSiaEmpresa;
 
 /**
  * Implementación del dao {@link EmpresaDao}.
@@ -48,7 +46,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	}
 	
 	/**
-	 * Recupera todos los datos de tabla {@link TbSiaEmpresa}.
+	 * Recupera todos los datos de tabla {@link EmpresaDao}.
 	 * 
 	 * @return List<EmpresaDTO>
 	 * @exception  IOException
@@ -130,12 +128,9 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 			return new ArrayList();
 		}
 		
-		TbSiaCategoriasEmpresa ce = new TbSiaCategoriasEmpresa();
-		ce.setDid(categoriaDto.getDid());
-		
 		/**
 		 * Ejecuta la llamada al dao y devuelve el resultado.
 		 */
-		return empresaDao.findByDidAndTbSiaCategoriasEmpresa(empresaDto.getDid(), ce);
+		return empresaDao.findByDidAndTbSiaCategoriasEmpresa(empresaDto.getDid(), categoriaDto.getDid());
 	}	
 }
