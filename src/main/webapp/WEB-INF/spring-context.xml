@@ -31,7 +31,10 @@
  	<mvc:annotation-driven /> 	
  	<context:annotation-config /> 	
  
-	<context:component-scan base-package="com.searchitemsapp" />
+	<context:component-scan base-package="com.searchitemsapp">
+        <context:include-filter type="regex" expression=".*Stub.*Repository"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+     </context:component-scan>
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
           <property name="prefix" value="/" />
@@ -117,7 +120,7 @@
       <bean id="paramsHeadersParser" class="com.searchitemsapp.parsers.ParamsHeadersLoginParser"></bean>
       <bean id="selectoresCssParser" class="com.searchitemsapp.parsers.SelectoresCssParser"></bean>
       <bean id="urlParser" class="com.searchitemsapp.parsers.UrlParser"></bean>
-      
+     
       <bean id="categoriaDao" class="com.searchitemsapp.dao.CategoriaDao"></bean>
       <bean id="empresaDao" class="com.searchitemsapp.dao.EmpresaDao"></bean>
       <bean id="loginDao" class="com.searchitemsapp.dao.LoginDao"></bean>
@@ -128,7 +131,7 @@
       <bean id="paramsHeadersLoginDao" class="com.searchitemsapp.dao.ParamsHeadersLoginDao"></bean>
       <bean id="selectoresCssDao" class="com.searchitemsapp.dao.SelectoresCssDao"></bean>
       <bean id="urlDao" class="com.searchitemsapp.dao.UrlDao"></bean>
-      
+     
       <bean id="loginImpl" class="com.searchitemsapp.impl.LoginImpl"></bean>
       <bean id="categoriaImpl" class="com.searchitemsapp.impl.CategoriaImpl"></bean> 
       <bean id="empresaImpl" class="com.searchitemsapp.impl.EmpresaImpl"></bean>
@@ -168,6 +171,8 @@
       <bean id="parserFactory" class="com.searchitemsapp.parsers.ParserFactory"></bean>
       <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>
       <bean id="scrapingEmpFactory" class="com.searchitemsapp.scraping.ScrapingEmpresasFactory"></bean>
+       
+       <bean id="listaProductosValidator" class=" com.searchitemsapp.validator.ListaProductosValidator"></bean>
        
       <bean id="processPrice" class="com.searchitemsapp.processprice.ProcessPrice"></bean>
       <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>

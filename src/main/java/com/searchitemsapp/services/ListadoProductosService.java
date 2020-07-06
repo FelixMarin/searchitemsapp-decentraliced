@@ -15,7 +15,6 @@ import java.util.concurrent.TimeoutException;
 
 import javax.persistence.NoResultException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +48,7 @@ public class ListadoProductosService implements IFService<String,String> {
 	 * Variables Globales
 	 */
 	private List<SelectoresCssDTO> listTodosSelectoresCss;
+	private static boolean isCached;
 	
 	@Autowired
 	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
@@ -83,6 +83,16 @@ public class ListadoProductosService implements IFService<String,String> {
 		}
 		
 		/**
+		 * Se cargan en cache los parametros usados por 
+		 * la aplicación. solo se ejecuta una vez.
+		 */
+		if(!isCached) {
+			urlComposer.staticData();
+			urlComposer.cargarTodasLasMarcas();
+			isCached=true;
+		}
+		
+		/**
 		 * En este punto se recogen los parametros de entrada
 		 * en variables para manejarlos mejor.
 		 */
@@ -99,18 +109,6 @@ public class ListadoProductosService implements IFService<String,String> {
 		List<ResultadoDTO> listResultDtoFinal;
 		ScrapingUnit scrapingUnit;
 		int contador = 0;
-
-		/**
-		 * Validación de las variables de entrada.
-		 */
-		if (Objects.isNull(didCategoria) || 
-				Objects.isNull(producto) ||
-				Objects.isNull(ordenacion) ||
-				Objects.isNull(didPais) ||
-				StringUtils.EMPTY.contentEquals(empresas))  {	
-			
-			return new Gson().toJson(Thread.currentThread().getStackTrace().toString());
-		}
 		
 		/**
 		 * Crea un grupo de subprocesos que crea nuevos subprocesos según 
@@ -150,7 +148,9 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * bbdd. Si eso sucede se devuelve un error.
 			 */
 			if(Objects.isNull(listTodosSelectoresCss)) {
-				return new Gson().toJson(Thread.currentThread().getStackTrace().toString());
+		 			return "[{\"request\": \"Error\", "
+						+ "\"id\" : \"-1\", "
+						+ "\"description\": \"" + Thread.currentThread().getStackTrace().toString() + "\"}]";
 			}	
 			
 			/**
@@ -196,8 +196,9 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * la aplicación devolverá un mensaje notificando el suceso.
 			 */
             if(listResultDtoFinal.isEmpty()) {
-    			return new Gson().toJson(Thread.currentThread().getStackTrace().toString()
-    					.concat(new NoResultException(NO_HAY_RESULTADOS).toString()));
+    			return "[{\"request\": \"Error\", "
+						+ "\"id\" : \"-1\", "
+						+ "\"description\": \"No hay resultados\"}]";
             }
 
             /**
@@ -220,7 +221,10 @@ public class ListadoProductosService implements IFService<String,String> {
 			
 			Thread.currentThread().interrupt();		
 			
-			return new Gson().toJson(e.toString());
+			return "[{\"request\": \"Error\", "
+			+ "\"id\" : \"-1\", "
+			+ "\"description\": \"" + e.toString() + "\"}]";
+			
 		} finally {
 			
 			/**
@@ -235,8 +239,9 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * indicando el suceso.
 		 */
 		if(listResultDtoFinal.isEmpty()) {			
-			return  new Gson().toJson(Thread.currentThread().getStackTrace().toString()
-					.concat(new NoResultException(NO_HAY_RESULTADOS).getStackTrace().toString()));
+			return  "[{\"request\": \"Error\", "
+					+ "\"id\" : \"-1\", "
+					+ "\"description\": \"No hay resultados\"}]";
 		}
 		
 		/**

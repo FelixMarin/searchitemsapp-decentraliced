@@ -15,6 +15,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.ParamsFormLoginDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.ParamsLoginDTO;
+import com.searchitemsapp.repository.IFParamsFormLogin;
 
 
 /**
@@ -35,7 +36,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	 * Variable Globales
 	 */
 	@Autowired
-	private ParamsFormLoginDao paramsFormLoginDao;
+	private IFParamsFormLogin paramsFormLoginDao;
 	
 	/*
 	 * Constructor

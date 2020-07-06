@@ -16,6 +16,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.LoginDao;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.LoginDTO;
+import com.searchitemsapp.repository.IFLoginRepository;
 
 /**
  * Implementación del dao {@link LoginDao}.
@@ -35,7 +36,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 	 * Variables Globales
 	 */
 	@Autowired
-	private LoginDao loginDao;
+	private IFLoginRepository loginDao;
 		
 	/*
 	 * Constructor

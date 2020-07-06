@@ -3,6 +3,7 @@ package com.searchitemsapp.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.searchitemsapp.services.ListadoProductosService;
 import com.searchitemsapp.services.ServiceFactory;
+import com.searchitemsapp.validator.ListaProductosValidator;
+
 
 /**
  *  Controlador principal de la aplicación. Contiene
@@ -33,6 +36,10 @@ public class ListaProductosController {
 	
 	@Autowired
 	private ServiceFactory serviceFactory;
+	
+	@Autowired
+	@Qualifier("listaProductosValidator")
+	private ListaProductosValidator validator;
 	
 	//@Autowired
 	//private ProxyConnection proxyConnection;
@@ -59,22 +66,49 @@ public class ListaProductosController {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-
-		/**
-		 * En este punto se establece la dirección del proxy
-		 * que utiliza la apicación para realizar el ratreo
-		 * de páginas web. En cada petición de servicio 
-		 * se solicita una nueva IP de proxy a una API REST
-		 * externa.
-		 */
-		 //proxyConnection.establecerProxy();
 		
-		 /**
-		  * Llamada al servicio a través del service factory.
-		  * 
-		  */
-		return serviceFactory
-				.getService(LISTA_PRODUCTOS)
-				.service(didPais, didCategoria, ordenacion, producto, empresas);
+		/**
+		 * Validación de los parametros de entrada.
+		 */
+		boolean isParams = validator.isEmpresa(empresas) &&	
+		validator.isOrdenacion(ordenacion) &&	
+		validator.isNumeric(didPais, didCategoria) &&
+		validator.isParams(didPais, didCategoria, ordenacion, producto, empresas);
+		
+		/**
+		 * Si los parámetros de entrada no superan la validación 
+		 * termina el proceso y devuelve um mensaje descriptivo
+		 * en formato JSON.
+		 */
+		if(isParams) {
+			
+			/**
+			 * En este punto se establece la dirección del proxy
+			 * que utiliza la apicación para realizar el ratreo
+			 * de páginas web. En cada petición de servicio 
+			 * se solicita una nueva IP de proxy a una API REST
+			 * externa.
+			 */
+			 //proxyConnection.establecerProxy();
+			
+			 /**
+			  * Llamada al servicio a través del service factory.
+			  * 
+			  */
+			return serviceFactory
+					.getService(LISTA_PRODUCTOS)
+					.service(didPais, didCategoria, 
+							ordenacion, producto, empresas);
+		} else {
+			
+			/**
+			 * En el caso de no superar las validaciones, 
+			 * la apliación retornará un mensaje indicando
+			 * el motivo.
+			 */
+			return "[{\"request\": \"Error\", "
+					+ "\"id\" : \"-1\", "
+					+ "\"description\": \"Invalid Input Data\"}]";
+		}
 	}
 }

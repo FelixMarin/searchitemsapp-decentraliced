@@ -18,6 +18,7 @@ import com.searchitemsapp.dao.UrlDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.searchitemsapp.repository.IFUrlRepository;
 
 
 /**
@@ -33,17 +34,12 @@ import com.searchitemsapp.dto.UrlDTO;
 public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlImpl.class);  
-	
-	/*
-	 * Constantes Globales 
-	 */
-	private static final String ALL = "ALL";
 
 	/*
 	 * VAriables Globales
 	 */
 	@Autowired
-	private UrlDao urlDao;
+	private IFUrlRepository urlDao;
 	
 	/*
 	 * Constructor
@@ -115,14 +111,18 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 			return null;
 		}
 		
-		if(ALL.equalsIgnoreCase(strIdsEmpresas)) {
+		if("ALL".equalsIgnoreCase(strIdsEmpresas)) {
 			strIdsEmpresas = CommonsPorperties.getValue("flow.value.all.id.empresa");
 		}
 		
 		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, ",");
 		List<UrlDTO> lsIdsEmpresas = new ArrayList<>(NumberUtils.INTEGER_ONE);
 				
-		List<UrlDTO> listUrlDTO = urlDao.findAll();
+		List<UrlDTO> listUrlDTO = urlDao.findByDidAndDesUrl(paisDto.getDid(), String.valueOf(categoriaDto.getDid()));
+		
+		if(Objects.isNull(listUrlDTO)) {
+			return lsIdsEmpresas;
+		}
 		
 		for (String id : arIdsEpresas) {
 			for (UrlDTO urlDTO : listUrlDTO) {

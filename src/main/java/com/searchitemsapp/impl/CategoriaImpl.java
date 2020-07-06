@@ -15,6 +15,7 @@ import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.repository.IFCategoriaRepository;
 
 /**
  * Implementación del dao {@link CategoriaDao}.
@@ -34,7 +35,7 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	 * Variables Globales. 
 	 */
 	@Autowired
-	private CategoriaDao categoriaDao;
+	private IFCategoriaRepository categoriaDao;
 	
 	/*
 	 * Constructor

@@ -3,8 +3,11 @@ package com.searchitemsapp.impl;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.searchitemsapp.dao.NomProductoDao;
 import com.searchitemsapp.dto.NomProductoDTO;
+import com.searchitemsapp.repository.IFNomProductoRepository;
 
 
 /**
@@ -19,6 +22,12 @@ import com.searchitemsapp.dto.NomProductoDTO;
 public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object> {
 	
 	/*
+	 * Variables Globales
+	 */
+	@Autowired
+	private IFNomProductoRepository nomProductoDao;
+	
+	/*
 	 * Constructor
 	 */
 	public NomProductoImpl() {
@@ -27,12 +36,12 @@ public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object
 
 	@Override
 	public NomProductoDTO findByDid(NomProductoDTO objeto) throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		return nomProductoDao.findByDid(objeto.getDid());
 	}
 
 	@Override
 	public List<NomProductoDTO> findAll() throws IOException {
-		throw new UnsupportedOperationException(OPERACION_NO_SOPORTADA);
+		return nomProductoDao.findAll();
 	}
 
 	@Override

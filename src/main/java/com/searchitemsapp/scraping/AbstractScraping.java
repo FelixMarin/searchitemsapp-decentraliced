@@ -94,7 +94,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	 * Variables Globales
 	 */
 	private static final String SCRIPT = "script";
-	private static Map<String,Integer> mapEmpresas = new HashMap<>(NumberUtils.INTEGER_ONE);
+	private static Map<String,EmpresaDTO> mapEmpresas = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private static Map<Integer,Boolean> mapDynScraping = new HashMap<>(NumberUtils.INTEGER_ONE);
 	private static List<MarcasDTO> listTodasMarcas;
 	private static List<EmpresaDTO> listEmpresaDto;
@@ -407,16 +407,16 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		/**
 		 * El método de extracción de datos es diferente en cada empresa.
 		 */
-		if(getMapEmpresas().get(MERCADONA) == urlDto.getDidEmpresa()) {
+		if(getMapEmpresas().get(MERCADONA).getDid() == urlDto.getDidEmpresa()) {
 			
 			strResult = scrapingMercadona.getResult(elem, cssSelector);
 			
-		} else if(getMapEmpresas().get(CONDIS) == urlDto.getDidEmpresa() &&
+		} else if(getMapEmpresas().get(CONDIS).getDid() == urlDto.getDidEmpresa() &&
 				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
 			
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
 			
-		} else if(getMapEmpresas().get(ELCORTEINGLES) == urlDto.getDidEmpresa() &&
+		} else if(getMapEmpresas().get(ELCORTEINGLES).getDid() == urlDto.getDidEmpresa() &&
 				elem.select(getSelectorPrecioECIOffer()).size() > 0) {
 			
 			strResult = elem.selectFirst(getSelectorPrecioECIOffer()).text();
@@ -447,9 +447,9 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		 * Se comprueba de que marca es el producto, dependiendo
 		 * de la misma, se ejecutará un proceso u otro.
 		 */
-		if(iIdEmpresa == getMapEmpresas().get(HIPERCOR) ||
-				iIdEmpresa == getMapEmpresas().get(DIA) ||
-				iIdEmpresa == getMapEmpresas().get(ELCORTEINGLES)) {
+		if(iIdEmpresa == getMapEmpresas().get(HIPERCOR).getDid() ||
+				iIdEmpresa == getMapEmpresas().get(DIA).getDid() ||
+				iIdEmpresa == getMapEmpresas().get(ELCORTEINGLES).getDid()) {
 			strProducto = eliminarMarcaPrincipio(nomProducto);
 		} else {
 			strProducto = nomProducto;
@@ -481,7 +481,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	 * de las peticiones. Este método solo se ejecuta una vez,
 	 * los datos se cachean mientras esté la aplicación activa.
 	 */
-	protected void staticData() {
+	public void staticData() {
 		
 		try {
 			
@@ -505,7 +505,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 				 * proceso. 
 				 */
 				for (EmpresaDTO empresaDTO : listEmpresaDto) {
-					mapEmpresas.put(empresaDTO.getNomEmpresa(),empresaDTO.getDid());
+					mapEmpresas.put(empresaDTO.getNomEmpresa(),empresaDTO);
 					mapDynScraping.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
 				}
 				
@@ -565,7 +565,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		 * Dependiendo de la empresa, el tratamiento de las URLs 
 		 * extraidas del elemento se realiza de diferente forma.
 		 */
-		if(idEmpresaActual == getMapEmpresas().get(MERCADONA)) {
+		if(idEmpresaActual == getMapEmpresas().get(MERCADONA).getDid()) {
 			resDto.setNomUrlAllProducts(scrapingMercadona.getUrlAll(resDto));
 			resDto.setImagen(resDto.getImagen().replace(COMMA_STRING, DOT_STRING));
 		}else {
@@ -597,8 +597,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		String productoTratado = sanitizeValue(producto);
-		productoTratado=anadirCaracteres(productoTratado, Character.MIN_VALUE, 0, 0);
+		String productoTratado=anadirCaracteres(producto, Character.MIN_VALUE, 0, 0);
 		productoTratado=anadirCaracteres(productoTratado, Character.MIN_VALUE, 0, 1);
 		
 		Matcher matcher = Pattern.compile(REGEX_PERCENT_DOLAR).matcher(productoTratado);
@@ -616,10 +615,10 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 	 * cachea al principio y dura durante toda
 	 * la ejecución del programa,
 	 */
-	protected void cargarTodasLasMarcas() {
+	public void cargarTodasLasMarcas() {
 		try {
 			if(Objects.isNull(listTodasMarcas)) {
-				AbstractScraping.listTodasMarcas = iFMarcasImp.findAll();
+				listTodasMarcas = iFMarcasImp.findAll();
 			}
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
@@ -636,7 +635,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		return accesoPopupPeso;
 	}
 	
-	protected static Map<String, Integer> getMapEmpresas() {
+	protected static Map<String, EmpresaDTO> getMapEmpresas() {
 		return mapEmpresas;
 	}
 
@@ -689,7 +688,7 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		/**
 		 * Variables con los valores necesarios para el proceso.
 		 */
-		boolean isMercadona = didEmpresa == getMapEmpresas().get(MERCADONA);	
+		boolean isMercadona = didEmpresa == getMapEmpresas().get(MERCADONA).getDid();	
 		boolean bDynScrap = mapDynScraping.get(didEmpresa);
 		URL url = new URL(strUrl);
 		 
@@ -880,39 +879,5 @@ public abstract class AbstractScraping extends AbstractScrapingDyn {
 		default:
 			return elem.select(cssSelector).text();
 		}
-	}
-	
-	/**
-     * Metodo que contene combinaciones de palabras 
-     * no permitidas. Las palabras no permitidas se
-     * reemplazan por espacios en blanco.
-     * 
-     * @param value
-     * @return String
-     */
-	private String sanitizeValue(String value) {
-		
-		if(Objects.isNull(value)) {
-			return null;
-		}
-		
-		value = value.replaceAll("\\*", StringUtils.EMPTY);
-		value = value.replaceAll("/", StringUtils.EMPTY);
-		value = value.replaceAll("//", StringUtils.EMPTY);
-		value = value.replaceAll("<", StringUtils.EMPTY).replaceAll(">", StringUtils.EMPTY);
-		value = value.replaceAll("\\{", StringUtils.EMPTY).replaceAll("\\}", StringUtils.EMPTY);
-		value = value.replaceAll("\\[", StringUtils.EMPTY).replaceAll("\\]", StringUtils.EMPTY);
-		value = value.replaceAll("\\(", StringUtils.EMPTY).replaceAll("\\)", StringUtils.EMPTY);
-		value = value.replaceAll("'", StringUtils.EMPTY);
-		value = value.replaceAll("eval\\((.*)\\)", StringUtils.EMPTY);
-		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", StringUtils.EMPTY);
-		value = value.replaceAll("script", StringUtils.EMPTY);
-		value = value.replaceAll("select", StringUtils.EMPTY).replaceAll("SELECT", StringUtils.EMPTY);
-		value = value.replaceAll("insert", StringUtils.EMPTY).replaceAll("INSERT", StringUtils.EMPTY);
-		value = value.replaceAll("delete", StringUtils.EMPTY).replaceAll("DELETE", StringUtils.EMPTY);
-		value = value.replaceAll("alter", StringUtils.EMPTY).replaceAll("ALTER", StringUtils.EMPTY);
-		value = value.replaceAll("drop", StringUtils.EMPTY).replaceAll("DROP", StringUtils.EMPTY);
-
-		return value;
 	}
 }
