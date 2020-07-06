@@ -24,19 +24,19 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class CommonsPorpertiesTest {
 	
-    @Autowired
-    ServletContext context;
+	private static Logger LOGGER = null;
+    
+	@Autowired
+    private ServletContext context;
 
-	 private static Logger LOGGER = null;
-
-	    @BeforeClass
-	    public static void setLogger() throws MalformedURLException {
+	@BeforeClass
+	public static void setLogger() throws MalformedURLException {
 	    	org.apache.log4j.BasicConfigurator.configure();
 	        System.setProperty("log4j.properties","log4j.properties");
 	        System.setProperty("db.properties","db.properties");
 	        System.setProperty("flow.properties","flow.properties");
 	        LOGGER = LoggerFactory.getLogger(CommonsPorpertiesTest.class);
-	    }
+	}
 
 	@Test
 	public void testLoadPropertiesFile() throws IOException {

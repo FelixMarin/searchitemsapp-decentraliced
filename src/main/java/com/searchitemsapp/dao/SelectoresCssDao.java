@@ -84,7 +84,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}
@@ -138,7 +138,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}
@@ -188,7 +188,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		/**
 		 * Se parsea el objeto obtenido a formato DTO y se retorna.

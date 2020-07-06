@@ -113,7 +113,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		
 		if(Objects.isNull(paisDto) ||
 				Objects.isNull(categoriaDto) ||
-				StringUtils.EMPTY.contentEquals(strIdsEmpresas)) {
+				StringUtils.isAllEmpty(strIdsEmpresas)) {
 			return new ArrayList<>(NumberUtils.INTEGER_ONE);
 		}
 		
@@ -143,14 +143,12 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 
 	@Override
 	public List<UrlDTO> findAll() throws IOException {
-		throw new UnsupportedOperationException(Thread
-				.currentThread().getStackTrace()[1].toString());
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 
 	@Override
 	public List<UrlDTO> findByTbSia(UrlDTO r, CategoriaDTO t) throws IOException {
-		throw new UnsupportedOperationException(Thread
-				.currentThread().getStackTrace()[1].toString());
+		return new ArrayList<>(NumberUtils.INTEGER_ONE);
 	}
 	
 	/*

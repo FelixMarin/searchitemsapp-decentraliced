@@ -3,6 +3,7 @@ package com.searchitemsapp.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,6 +11,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.TypeDef;
 
 /**
@@ -63,15 +66,18 @@ public class TbSiaCategoriasEmpresa implements Serializable {
 	private String nomCatEmpresa;
 
 	//bi-directional many-to-one association to TbSiaEmpresa
-	@OneToMany(mappedBy="tbSiaCategoriasEmpresa")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="tbSiaCategoriasEmpresa")
 	private List<TbSiaEmpresa> tbSiaEmpresas;
 
 	//bi-directional many-to-one association to TbSiaMarca
-	@OneToMany(mappedBy="tbSiaCategoriasEmpresa")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="tbSiaCategoriasEmpresa")
 	private List<TbSiaMarcas> tbSiaMarcas;
 
 	//bi-directional many-to-one association to TbSiaNomProducto
-	@OneToMany(mappedBy="tbSiaCategoriasEmpresa")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="tbSiaCategoriasEmpresa")
 	private List<TbSiaNomProducto> tbSiaNomProductos;
 
 	public TbSiaCategoriasEmpresa() {
@@ -119,14 +125,14 @@ public class TbSiaCategoriasEmpresa implements Serializable {
 	}
 
 	public TbSiaEmpresa addTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		getTbSiaEmpresas().add(tbSiaEmpresa);
+		this.tbSiaEmpresas.add(tbSiaEmpresa);
 		tbSiaEmpresa.setTbSiaCategoriasEmpresa(this);
 
 		return tbSiaEmpresa;
 	}
 
 	public TbSiaEmpresa removeTbSiaEmpresa(TbSiaEmpresa tbSiaEmpresa) {
-		getTbSiaEmpresas().remove(tbSiaEmpresa);
+		this.tbSiaEmpresas.remove(tbSiaEmpresa);
 		tbSiaEmpresa.setTbSiaCategoriasEmpresa(null);
 
 		return tbSiaEmpresa;

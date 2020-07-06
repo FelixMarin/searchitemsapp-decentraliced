@@ -88,7 +88,7 @@ public class ProcessPrice {
 				 * por defecto hará que el producto se vaya al final 
 				 * de los resultados.
 				 */
-				if(StringUtils.EMPTY.contentEquals(a.getPrecio())) {
+				if(StringUtils.isAllEmpty(a.getPrecio())) {
 					a.setPrecio(String.valueOf(DEFAULT_PRICE));
 				}
 				
@@ -118,7 +118,7 @@ public class ProcessPrice {
 				 * de los resultados.
 				 */
 				if(Objects.isNull(a.getPrecioKilo()) || 
-						StringUtils.EMPTY.contentEquals(a.getPrecioKilo())) {
+						StringUtils.isAllEmpty(a.getPrecioKilo())) {
 					a.setPrecioKilo(String.valueOf(DEFAULT_PRICE));
 				}
 				
@@ -165,13 +165,6 @@ public class ProcessPrice {
 	private static Double convertirDouble(final String strPrecioKilo) {
 		
 		/**
-		 * Comprueba que el parametro de entrada sea valido.
-		 */
-		if(StringUtils.EMPTY.contentEquals(strPrecioKilo)) {
-			return Double.parseDouble(DECIMALES);
-		}
-		
-		/**
 		 * Extrae el valor numérico de la cadena de caracteres.
 		 */
 		String strPrecioKiloRes = extraerDecimal(strPrecioKilo);
@@ -180,7 +173,7 @@ public class ProcessPrice {
 		 * Si extraer decimal no ha resultado, 
 		 * se saca el valor numérico entero.
 		 */
-		if(StringUtils.EMPTY.contentEquals(strPrecioKiloRes)) {
+		if(StringUtils.isAllEmpty(strPrecioKiloRes)) {
 			strPrecioKiloRes = extraerEntero(strPrecioKilo);
 		}
  
@@ -207,7 +200,7 @@ public class ProcessPrice {
 		 * Si la cadena de entrada está vacía o contiene una
 		 * coma se retorna nulo.
 		 */
-		if(StringUtils.EMPTY.contentEquals(cadena)) {
+		if(StringUtils.isAllEmpty(cadena)) {
 			return StringUtils.EMPTY;
 		}else if(COMMA_STRING.equals(cadena)) {
 			return DEFAULT_STR_PRICE;
@@ -254,7 +247,7 @@ public class ProcessPrice {
 	   * comas por puntos. En otro caso, la cadena auxiliar se 
 	   * procesará como número entero.
 	   */
-	  if(!StringUtils.EMPTY.contentEquals(resultado)) {	  
+	  if(!StringUtils.isAllEmpty(resultado)) {	  
 		  resultado = resultado.replace(COMMA_STRING, DOT_STRING);
 	  } else {
 		  return extraerEntero(cadenaAux);
@@ -277,7 +270,7 @@ public class ProcessPrice {
 		 * Se comprueba que el parámetro de entrada no sea nulo.
 		 * 
 		 */
-		if(StringUtils.EMPTY.contentEquals(cadena)) {
+		if(StringUtils.isAllEmpty(cadena)) {
 			return StringUtils.EMPTY;
 		}	
 		
@@ -326,7 +319,7 @@ public class ProcessPrice {
 		 * se le vuelve a aplicar un patrón regex pero esta vez
 		 * para un numero entero.
 		 */
-		if(StringUtils.EMPTY.contentEquals(resultado)) {
+		if(StringUtils.isAllEmpty(resultado)) {
 			  mEntero = Pattern.compile(REGEX_INTEGER, Pattern.MULTILINE).matcher(cadenaAux);
 				/**
 				 * En el caso de que haya habido match, se extrae
@@ -351,14 +344,14 @@ public class ProcessPrice {
 	 */
 	private static void mismoPrecioYPrecioKilo(ResultadoDTO a, ResultadoDTO b) {
 		
-		if(StringUtils.EMPTY.contentEquals(a.getPrecioKilo()) &&
-				!StringUtils.EMPTY.contentEquals(a.getPrecio())) {
+		if(StringUtils.isAllEmpty(a.getPrecioKilo()) &&
+				!StringUtils.isAllEmpty(a.getPrecio())) {
 			a.setPrecioKilo(extraerDecimal(a.getPrecio())
 					.concat(BARRA_KILO_GRAM));
 		}
 		
-		if(StringUtils.EMPTY.contentEquals(b.getPrecioKilo()) &&
-				!StringUtils.EMPTY.contentEquals(b.getPrecio())) {
+		if(StringUtils.isAllEmpty(b.getPrecioKilo()) &&
+				!StringUtils.isAllEmpty(b.getPrecio())) {
 			b.setPrecioKilo(extraerDecimal(b.getPrecio())
 					.concat(BARRA_KILO_GRAM));
 		}
@@ -370,6 +363,8 @@ public class ProcessPrice {
 		 * Se formatea el precio. Se quita la información
 		 * no relevante.
 		 */
+		if(!StringUtils.isAllEmpty(a.getPrecio()) &&
+				!StringUtils.isAllEmpty(a.getPrecio())) {
 		a.setPrecio(extraerDecimal(a.getPrecio())
 				.concat(EURO_SYMBOL)
 				.replace(DOT_STRING,COMMA_STRING));	
@@ -377,14 +372,19 @@ public class ProcessPrice {
 		b.setPrecio(extraerDecimal(b.getPrecio())
 				.concat(EURO_SYMBOL)
 				.replace(DOT_STRING,COMMA_STRING));
+		}
 		
 		//precio Kilo
-		a.setPrecioKilo(extraerDecimal(a.getPrecioKilo())
+		if(!StringUtils.isAllEmpty(a.getPrecioKilo()) &&
+				!StringUtils.isAllEmpty(a.getPrecioKilo())) {
+				a.setPrecioKilo(extraerDecimal(a.getPrecioKilo())
 				.concat(BARRA_KILO_GRAM)
 				.replace(DOT_STRING,COMMA_STRING));	
 		
-		b.setPrecioKilo(extraerDecimal(b.getPrecioKilo())
+				b.setPrecioKilo(extraerDecimal(b.getPrecioKilo())
 				.concat(BARRA_KILO_GRAM)
-				.replace(DOT_STRING,COMMA_STRING));
+				.replace(DOT_STRING,COMMA_STRING));	
+		}
+
 	}
 }

@@ -13,6 +13,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.TypeDef;
 
 /**
@@ -78,6 +80,7 @@ public class TbSiaUrl implements Serializable {
 	private TbSiaEmpresa tbSiaEmpresa;
 
 	//bi-directional many-to-one association to TbSiaSelectoresCss
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="tbSiaUrl")
 	private List<TbSiaSelectoresCss> tbSiaSelectoresCsses;	
 	

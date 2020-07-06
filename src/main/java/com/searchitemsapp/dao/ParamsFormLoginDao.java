@@ -85,7 +85,7 @@ public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;		
 	}
@@ -136,7 +136,7 @@ public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return listParamsLoginDto;
 	}

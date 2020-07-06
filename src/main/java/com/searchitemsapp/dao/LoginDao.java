@@ -82,7 +82,7 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}	
@@ -182,7 +182,7 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}

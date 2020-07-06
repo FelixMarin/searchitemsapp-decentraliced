@@ -25,7 +25,7 @@
     <div id="input-container" class="container containerCL">
         <div class="row">
             <div id="logo" class="col-sm-12 col-lg-6 offset-lg-3">
-                <img src="./img/1j+ojl1FOMkX9WypfBe43D6kifaIrxJLmxbIwXs1M3EMoAJtlSgqgPRq8vg___.png" alt="">
+                <img class="mb-2 w-50" src="./img/logo/pricerank4.png" alt="PRICE RANK">
             </div>
             <div id="colinput" class="colinp col-sm-12 col-lg-6 offset-lg-3">  
                 <div class="input-group">
@@ -52,11 +52,6 @@
         <div id="rowempresas" class="row ml-2">
             <div class="col-sm-12 col-lg-9 offset-lg-1 mt-5">
                 <table class="table-bordered w-100 hidden" id="tablalogos">
-                	<caption><!-- vacio --></caption>
-                	<thead><!-- vacio --></thead>
-                	<tr>
-                		<th scope="row"><!-- vacio --></th>
-                	</tr>
                     <tr>
                         <td class="w-25 p-3">
                             <img src="./img/eroski.svg" class="imglogo w-100" alt="107" />

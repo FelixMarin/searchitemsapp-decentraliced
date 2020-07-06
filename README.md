@@ -6,12 +6,11 @@ Demo
 https://www.dropbox.com/s/chyjhw6rz7wogmd/sia.gif?dl=0
 =======
 
-# Comparador de precios de supermercados online
+# Web service para obtener una lista de productos del mimo tipo, ordenada por precio y que son vendidos en supermercados online.
 
-Una aplicación web desarrollada en java, Spring Framework e Hibernate. Consiste en un comparador de precios de supermercados online. Partiendo de los siguientes parámetros de entrada, la aplicación devolverá una estructura en formato json con una lista ordenada de productos de alimentación. La característica principal de la aplicación es la extracción de datos usando la técnica del web scraping.
-La aplicación es una API REST, lo que significa que para obtener la informcación habrá que solicitarla mediante una URL.
+Una aplicación web desarrollada en java EE, Spring Framework e Hibernate. El servicio web recibe una solicitud y la aplicación devolverá una estructura en formato JSON con una lista ordenada por precio con productos vendidos en supermercados online. La característica principal del servicio es la utilizaciión de internet como fuente de datos, dichos datos son obtenidos en tiempo real, lo que permite tener siempre la información atualizada. El servicio es una API RESTFul, con lo que para obtener la informcación habrá que solicitarla mediante una petición sobre el protocolo HTTP.
 
-# Herramientas
+## Herramientas
 
 - [Ubuntu Server 18.04](https://ubuntu.com/download/server)
 - [Eclipse IDE for J2EE](https://www.eclipse.org/ide/)
@@ -21,6 +20,27 @@ La aplicación es una API REST, lo que significa que para obtener la informcaci�
 - [Apache Tomcat 9](http://tomcat.apache.org/)
 - [SmartBear SoapUI](https://www.soapui.org/)
 - [Oracle VirtualBox](https://www.virtualbox.org/)
+
+## Lenguajes
+
+- JAVA – J2EE
+- HTML
+- CSS
+- JAVASCRIPT
+- SQL
+
+## Arquitectura
+
+- RestFul
+
+## Frameworks
+
+- Spring web MVC, DATA
+- Hibernate
+
+## Técnica de extracción de datos
+
+- [Web Scraping](https://es.wikipedia.org/wiki/Web_scraping)
 
 # Preparación del Entorno
 

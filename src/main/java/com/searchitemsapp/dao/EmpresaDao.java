@@ -84,7 +84,7 @@ public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return resultado;
 	}
@@ -136,7 +136,7 @@ public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return empresaDto;
 	}
@@ -185,14 +185,14 @@ public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
 		 */
 		try {
-			listEmpresaDto = parser.toListDTO(((List<TbSiaEmpresa>) q.getSingleResult()));
+			listEmpresaDto = parser.toListDTO(((List<TbSiaEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 		
-		stringBuilder.setLength(0);
+		
 		
 		return listEmpresaDto;
 	}

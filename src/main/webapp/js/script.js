@@ -181,6 +181,11 @@ function traerProductos(producto, ordenar, strEmpresas) {
 }
 
 function liveSearch(keyword) {
+	
+	if(keyword === '' || keyword === undefined) {
+		return '';
+	}
+	
     $.ajax({
         type: "GET",
         url: "http://192.168.0.106:3000/keywords/" + keyword,
@@ -229,20 +234,20 @@ function focoSerchBar(param) {
 function componerCartas(data) {
     let estructuraHTML = '';
     let contador = 0;
+    
+    if(data.includes("Error")) { 
+        document.getElementById("cajamensajes").classList.remove("hidden"); 
+        document.getElementById("cajamensajes").style.display = "block";
+        return;
+    } else { 
+    	document.getElementById("cajamensajes").style.display = "none"; 
+    }
 
     try {
         let datosJSON = jQuery.parseJSON(data);
         let contenedor = document.getElementById('productos');
         let row;
-
-        if(datosJSON.descripcion !== undefined) { 
-            document.getElementById("cajamensajes").classList.remove("hidden"); 
-            document.getElementById("cajamensajes").style.display = "block";
-            return;
-        } else { 
-            document.getElementById("cajamensajes").style.display = "none";            
-        }
-
+        
         datosJSON.forEach(element => {           
 
             if(contador === 0) {
