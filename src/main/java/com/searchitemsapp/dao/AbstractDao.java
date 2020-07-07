@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * @param <R>
  * @param <T>
  */
-public abstract class AbstractDao implements IFDao {
+public abstract class AbstractDao{
 	
 	/*
 	 * Variables Globales
