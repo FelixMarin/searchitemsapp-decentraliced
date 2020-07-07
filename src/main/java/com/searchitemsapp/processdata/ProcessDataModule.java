@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.searchitemsapp.commons.CommonsPorperties;
 import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.sun.istack.NotNull;
 
 /**
  * Esta clase es la encargada de inicializar el proceso
@@ -57,8 +58,9 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	/*
 	 * Constructor
 	 */
-	public ProcessDataModule(UrlDTO urlDto, String producto, 
-			String didPais, String didCategoria, String ordenacion) {
+	public ProcessDataModule(@NotNull UrlDTO urlDto, @NotNull String producto, 
+			@NotNull String didPais, @NotNull String didCategoria, 
+			@NotNull String ordenacion) {
 		super();
 		this.urlDto = urlDto;
 		this.producto = producto;
@@ -80,16 +82,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	 * @throws InterruptedException
 	 */
 	public  List<ResultadoDTO> checkHtmlDocument() throws IOException, URISyntaxException, InterruptedException {
-		
-		/**
-		 * Se validan los valores de entrada. Si
-		 * el resultado false, la ejecucion termina
-		 * devolviendo nulo.
-		 */
-		if(validaUrlDto()) {
-			return new ArrayList<>(NumberUtils.INTEGER_ONE);
-		}
-		
+			
 		/*
 		 * Variables
 		 */
@@ -229,17 +222,6 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	private int getStatus(final boolean bStatus) {
 		return bStatus?getStatusConnectionCode(urlDto.getNomUrl()):200;
 	}
-	
-	/**
-	 * Valida el parámetro de entrada de tipo UrlDTO.
-	 * 
-	 * @return boolean
-	 */
-	private boolean validaUrlDto() {
-		return Objects.isNull(urlDto) ||
-				Objects.isNull(urlDto.getDidEmpresa()) ||
-				urlDto.getSelectores().isEmpty();
-	}
 		
 	/**
 	 * Método que realiza validaciones de los valores
@@ -251,10 +233,10 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	 * @param pattern
 	 * @return boolean
 	 */
-	private boolean validaYCargaResultado(final int iIdEmpresa, 
-			final String[] arProducto, 
-			final ResultadoDTO resDto, 
-			final Pattern pattern) {
+	private boolean validaYCargaResultado(@NotNull final int iIdEmpresa, 
+			@NotNull final String[] arProducto, 
+			@NotNull final ResultadoDTO resDto, 
+			@NotNull final Pattern pattern) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
