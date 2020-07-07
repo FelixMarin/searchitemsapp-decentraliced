@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import com.sun.istack.NotNull;
+
 /**
  * 
  * @author Felix Marin Ramirez
@@ -48,7 +50,7 @@ public class ListaProductosValidator {
 	private static final String REGEX_ORDENACION = "(\\b(1)|(2)\\b)";
 	private static final String REGEX_ALL = "(\\b(\\w*ALL\\w*)\\b)";
 	
-	public boolean isParams(final String... input) {
+	public boolean isParams(@NotNull final String... input) {
 		
 		if(Objects.isNull(input) || input.length != 5) {
 			return Boolean.FALSE;
@@ -72,7 +74,7 @@ public class ListaProductosValidator {
 		return Boolean.TRUE;
 	}
 	
-	public boolean isNumeric(final String... input) {
+	public boolean isNumeric(@NotNull final String... input) {
 		
 		for (String value : input) {
 			if(!NumberUtils.isDigits(value) ||
@@ -84,7 +86,7 @@ public class ListaProductosValidator {
 		return Boolean.TRUE;
 	}
 	
-	public boolean isOrdenacion(String ordenacion) {
+	public boolean isOrdenacion(@NotNull String ordenacion) {
 		return NumberUtils.isDigits(ordenacion) &&
 				Pattern.compile(REGEX_ORDENACION).matcher(ordenacion).find();
 	}

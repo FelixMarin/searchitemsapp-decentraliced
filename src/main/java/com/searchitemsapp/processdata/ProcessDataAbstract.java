@@ -42,6 +42,7 @@ import com.searchitemsapp.processdata.interfaces.IFProcessDataCondis;
 import com.searchitemsapp.processdata.interfaces.IFProcessDataEroski;
 import com.searchitemsapp.processdata.interfaces.IFProcessDataMercadona;
 import com.searchitemsapp.processdata.interfaces.IFProcessDataSimply;
+import com.sun.istack.NotNull;
 
 
 /**
@@ -165,10 +166,11 @@ public abstract class ProcessDataAbstract {
 			 * mapa el tipo de raspado que se va a utilizar en el
 			 * proceso. 
 			 */
-			for (EmpresaDTO empresaDTO : listEmpresaDto) {
+			listEmpresaDto.stream().forEach(empresaDTO -> {
 				mapEmpresas.put(empresaDTO.getNomEmpresa(), empresaDTO);
 				mapDynEmpresas.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
-			}		
+			});
+			
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
@@ -287,9 +289,9 @@ public abstract class ProcessDataAbstract {
 	 * @throws URISyntaxException 
 	 * @throws InterruptedException 
 	 */
-	protected List<Document> getHtmlDocument(final UrlDTO urlDto, 
+	protected List<Document> getHtmlDocument(@NotNull final UrlDTO urlDto, 
 			final Map<String, String> mapLoginPageCookies,
-			final String producto) 
+			@NotNull final String producto) 
 					throws IOException, URISyntaxException, InterruptedException {
 
 		if(LOGGER.isInfoEnabled()) {
@@ -320,7 +322,7 @@ public abstract class ProcessDataAbstract {
     	/**
     	 * Se obtienen los documets de la llamadas a las
     	 * URLs, se añaden a una lista y se retorna.
-    	 */
+    	 */  			
    		if(!liUrlsPorEmpresaPaginacion.isEmpty()) {
 	   		for (String url : liUrlsPorEmpresaPaginacion) {
 	   			listDocuments.add(getDocument(url, idEmpresa, 
@@ -375,7 +377,7 @@ public abstract class ProcessDataAbstract {
 	 * @param strScrapNotPattern
 	 * @return Elements
 	 */
-	protected Elements selectScrapPattern(final Document document,
+	protected Elements selectScrapPattern(@NotNull final Document document,
 			final String strScrapPattern, final String strScrapNotPattern) {
 
 		Elements entradas;
@@ -407,6 +409,7 @@ public abstract class ProcessDataAbstract {
 		if(cadena.indexOf(CHAR_ENIE_COD) != -1) {
 			return cadena;
 		}
+		
 		String resultado = cadena.replace(STRING_ENIE_MAY, UNICODE_ENIE);
 		resultado = Normalizer.normalize(resultado.toLowerCase(), Normalizer.Form.NFD);
 		resultado = resultado.replaceAll(REEMPLAZABLE_TILDES, StringUtils.EMPTY);
@@ -423,7 +426,7 @@ public abstract class ProcessDataAbstract {
 	 * @param arProducto
 	 * @return Pattern
 	 */
-	protected Pattern createPatternProduct(final String[] arProducto) {
+	protected Pattern createPatternProduct(@NotNull final String[] arProducto) {
 
 		List<String> tokens = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
@@ -473,15 +476,15 @@ public abstract class ProcessDataAbstract {
 	 * @return String
 	 * @throws MalformedURLException
 	 */
-	protected String elementoPorCssSelector(final Element elem, 
-			final String cssSelector,
-			final UrlDTO urlDto) throws MalformedURLException {
+	protected String elementoPorCssSelector(@NotNull final Element elem, 
+			@NotNull final String cssSelector,
+			@NotNull final UrlDTO urlDto) throws MalformedURLException {
 		
 		/**
 		 * Se comprueba que los parametros de entrada no sean nulos.
 		 * Si nulos retorna nulo.
 		 */
-		if(Objects.isNull(cssSelector) || StringUtils.EMPTY.equals(cssSelector)) {
+		if(StringUtils.EMPTY.equals(cssSelector)) {
 			return StringUtils.EMPTY;
 		}
 		
@@ -537,7 +540,7 @@ public abstract class ProcessDataAbstract {
 	 * @param nomProducto
 	 * @return String
 	 */
-	protected String filtroMarca(final int iIdEmpresa, final String nomProducto) {
+	protected String filtroMarca(final int iIdEmpresa, @NotNull final String nomProducto) {
 		
 		String strProducto;
 		
@@ -565,7 +568,7 @@ public abstract class ProcessDataAbstract {
 				
 				strProducto = strProducto.toLowerCase()
 						.replaceAll(marcaDto.getNomMarca()
-							.toLowerCase(), "").trim();
+							.toLowerCase(), StringUtils.EMPTY).trim();
 				
 				break;
 			}
@@ -587,9 +590,9 @@ public abstract class ProcessDataAbstract {
 	 * @return ResultadoDTO
 	 * @throws IOException
 	 */
-	protected ResultadoDTO fillDataResultadoDTO(final Element elem,
-			final UrlDTO urlDto, 
-			final String ordenacion) throws IOException {
+	protected ResultadoDTO fillDataResultadoDTO(@NotNull final Element elem,
+			@NotNull final UrlDTO urlDto, 
+			@NotNull final String ordenacion) throws IOException {
 		
 		/**
 		 * Variables utilizadas en el proceso.
@@ -641,7 +644,7 @@ public abstract class ProcessDataAbstract {
 	 * @return String
 	 * @throws IOException
 	 */
-	protected String tratarProducto(final String producto) throws IOException {
+	protected String tratarProducto(@NotNull final String producto) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -659,19 +662,19 @@ public abstract class ProcessDataAbstract {
 		}
 	}
 	
-	protected String reeplazarTildesCondis(final String producto) {
+	protected String reeplazarTildesCondis(@NotNull final String producto) {
 		return scrapingCondis.eliminarTildesProducto(producto);
 	}
 	
-	protected String reeplazarCaracteresCondis(final String producto) {
+	protected String reeplazarCaracteresCondis(@NotNull final String producto) {
 		return scrapingCondis.reemplazarCaracteres(producto);
 	}
 	
-	protected String reemplazarCaracteresEroski(final String producto) {
+	protected String reemplazarCaracteresEroski(@NotNull final String producto) {
 		return scrapingEroski.reemplazarCaracteres(producto);
 	}
 	
-	protected String reeplazarCaracteresSimply(final String producto) {
+	protected String reeplazarCaracteresSimply(@NotNull final String producto) {
 		return scrapingSimply.reemplazarCaracteres(producto);
 	}
 	
@@ -692,7 +695,7 @@ public abstract class ProcessDataAbstract {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	private Document getDocument(final String strUrl, 
+	private Document getDocument(@NotNull final String strUrl, 
 			final int didEmpresa, final String producto,
 			final Map<String, String> mapLoginPageCookies) 
 					throws InterruptedException, URISyntaxException, IOException {
@@ -758,7 +761,7 @@ public abstract class ProcessDataAbstract {
 	 * @param nomProducto
 	 * @return
 	 */
-	private String eliminarMarcaPrincipio(final String nomProducto) {
+	private String eliminarMarcaPrincipio(@NotNull final String nomProducto) {
 
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -768,15 +771,7 @@ public abstract class ProcessDataAbstract {
 		 * Se corta el nombre del producto y se añade e un array.
 		 */
 		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE);
-		
-		/**
-		 * Se valida el array. En caso de que sea nulo
-		 * termina el proceso.
-		 */
-		if(Objects.isNull(nomProdSeparado)) {
-			return StringUtils.EMPTY;
-		}
-		
+				
 		StringBuilder stringBuilder = new StringBuilder(1);
 		for (int i = 0; i < nomProdSeparado.length; i++) {
 			
@@ -891,7 +886,8 @@ public abstract class ProcessDataAbstract {
 		return stringBuilder.toString();
 	}
 	
-	private String extraerValorDelElemento(int l, Element elem, List<String> lista, String cssSelector) {
+	private String extraerValorDelElemento(@NotNull int l,@NotNull Element elem,
+			@NotNull List<String> lista,@NotNull String cssSelector) {
 		
 		switch (l) {
 		case 1:

@@ -108,7 +108,6 @@ public class ListadoProductosService implements IFService<String,String> {
 		 * proceso de ejecución del programa.
 		 */
 		List<ResultadoDTO> listResultDtoFinal = new ArrayList<>();
-		ProcessDataModule processDataModule;
 		int contador = 0;
 		
 		/**
@@ -153,15 +152,14 @@ public class ListadoProductosService implements IFService<String,String> {
 			 * En cada iteración se crea una instancia de la calse ScrapingUnit,
 			 * a la que se le pasarán los parametros de la request. Cada objeto
 			 * de tipo ScrapingUnit se añadirá a la lista.
-			 */
-			for (UrlDTO urlDto : lResultDtoUrlsTratado) {
-				
-				processDataModule = applicationContext
-						.getBean(ProcessDataModule.class, urlDto, producto, 
+			 */			
+			lResultDtoUrlsTratado.forEach(elem -> {
+				ProcessDataModule processDataModule = applicationContext
+						.getBean(ProcessDataModule.class, elem, producto, 
 								didPais, didCategoria, ordenacion);
 	
 				colPDMcallables.add(processDataModule);	
-			}
+			});
 			
 			/**
 			 * Ejecuta las tareas dadas, devolviendo una lista de Futuros con su 
