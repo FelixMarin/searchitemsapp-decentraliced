@@ -10,10 +10,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -30,6 +30,9 @@ public class ProcessDataECI implements IFProcessDataEmpresas {
 	 * Constasntes Globales
 	 */
 	private static final String PATTERN = ".*de ([0-9]+)";
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	/*
 	 * Constructor
@@ -78,7 +81,7 @@ public class ProcessDataECI implements IFProcessDataEmpresas {
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.eci"));
+		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.eci"));
 		
 		/**
 		 * Si el elemento de paginación coincide con el patrón es

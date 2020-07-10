@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFPaisRepository;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.entities.TbSiaPais;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFPaisRepository;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -35,6 +35,9 @@ public class PaisDao extends AbstractDao implements IFPaisRepository {
 	 */
 	@Autowired
 	private IFParser<PaisDTO, TbSiaPais> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	/*
 	 * Constructor 
@@ -71,7 +74,7 @@ public class PaisDao extends AbstractDao implements IFPaisRepository {
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE).append(did);	
 		
 		if(LOGGER.isInfoEnabled()) {

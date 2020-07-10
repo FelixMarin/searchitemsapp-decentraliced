@@ -32,7 +32,7 @@ public class CategoriaParserTest {
 	 private static Logger LOGGER = null;
 		
 		@Autowired
-		CategoriaParser parser;
+		IFParser<CategoriaDTO, TbSiaCategoriasEmpresa> parser;
 		
 		@Autowired
 		TbSiaCategoriasEmpresa tbSiaPCategorias;

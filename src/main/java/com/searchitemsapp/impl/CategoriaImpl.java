@@ -12,14 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dao.CategoriaDao;
+import com.searchitemsapp.dao.repository.IFCategoriaRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.searchitemsapp.repository.IFCategoriaRepository;
 
 /**
- * Implementación del dao {@link CategoriaDao}.
+ * Implementación del dao.
  * 
  * Esta clase ofrece los métodos que permiten interactuar con
  * la capa de persistencia. 
@@ -37,6 +37,9 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	 */
 	@Autowired
 	private IFCategoriaRepository categoriaDao;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -87,7 +90,7 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 		 * Mensaje que se pintará en las trazas de log.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.dto.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.categoria.dto.txt"))
 		.append(StringUtils.SPACE).append(categoriaDto.toString());
 		
 		if(LOGGER.isInfoEnabled()) {

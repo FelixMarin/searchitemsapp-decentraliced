@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFUrlRepository;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaUrl;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFUrlRepository;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -40,6 +40,9 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 	 */
 	@Autowired
 	private IFParser<UrlDTO, TbSiaUrl> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	/*
 	 * Constructor
@@ -66,7 +69,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.all"));		
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.url.select.all"));		
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en objeto de tipo query
@@ -117,7 +120,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE).append(did);
 
 		if(LOGGER.isInfoEnabled()) {
@@ -170,15 +173,15 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.pais.categoria"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.url.select.url.by.pais.categoria"));
 				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 * Se le asignan los parámetros de entrada.
 		 */
 		Query query = entityManager.createNativeQuery(stringBuilder.toString());
-		query.setParameter(CommonsPorperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
-		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didPais.key"), didPais);
+		query.setParameter(iFCommonsProperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
+		query.setParameter(iFCommonsProperties.getValue("flow.value.categoria.didPais.key"), didPais);
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
@@ -232,14 +235,14 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.select.url.by.bollogin"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.url.select.url.by.bollogin"));
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
 		Query query = entityManager.createNativeQuery(stringBuilder.toString());
-		query.setParameter(CommonsPorperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
-		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didPais.key"), didPais);
+		query.setParameter(iFCommonsProperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
+		query.setParameter(iFCommonsProperties.getValue("flow.value.categoria.didPais.key"), didPais);
 
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.

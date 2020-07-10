@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataConsum;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.processdata.empresas.IFProcessDataConsum;
 
 /**
  * Módulo de web para el procesamiento de datos dinámico. 
@@ -42,6 +42,9 @@ public class ProcessDataDynamic {
 	 */	
 	@Autowired
 	private IFProcessDataConsum processdataConsum;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -67,14 +70,14 @@ public class ProcessDataDynamic {
 		}
 		
 		String resultado;	
-		int didConsum = Integer.parseInt(CommonsPorperties.getValue("flow.value.did.empresa.consum"));
+		int didConsum = Integer.parseInt(iFCommonsProperties.getValue("flow.value.did.empresa.consum"));
 		
 		
 		/**
 		 * Se añade el driver a las propiedades globales del sistema.
 		 */
 		System.getProperties().setProperty(initDriver(0), 
-				CommonsPorperties.getValue("flow.value.firefox.driver.path"));
+				iFCommonsProperties.getValue("flow.value.firefox.driver.path"));
 		
 		/**
 		 * Se inicilaiza y configura el driver.
@@ -131,7 +134,7 @@ public class ProcessDataDynamic {
 			options.addArguments("--disable-dev-shm-usage");
 			DesiredCapabilities dc = DesiredCapabilities.chrome();
 			ChromeDriverService chromeService = new ChromeDriverService.Builder()
-					.usingDriverExecutable(new File(CommonsPorperties.getValue("flow.value.firefox.driver.path")))
+					.usingDriverExecutable(new File(iFCommonsProperties.getValue("flow.value.firefox.driver.path")))
                     .usingAnyFreePort()
                     .build();
 			dc.setCapability(ChromeOptions.CAPABILITY, options);
@@ -154,7 +157,7 @@ public class ProcessDataDynamic {
 	private WebDriver setupWebDriverFirefox() {
 		
 			FirefoxOptions options = new FirefoxOptions();
-			options.setBinary(CommonsPorperties.getValue("folw.value.firefox.ejecutable.path"));
+			options.setBinary(iFCommonsProperties.getValue("folw.value.firefox.ejecutable.path"));
 			options.addArguments("-headless");
 			DesiredCapabilities dc = DesiredCapabilities.firefox();
 			dc.setCapability("moz:firefoxOptions", options);
@@ -198,10 +201,9 @@ public class ProcessDataDynamic {
 	 */
 	private String initDriver(final int selector) {
 		if(selector == 1) {
-			return CommonsPorperties.getValue("flow.value.chrome.driver");
+			return iFCommonsProperties.getValue("flow.value.chrome.driver");
 		} else {
-			return CommonsPorperties.getValue("flow.value.firefox.driver");
+			return iFCommonsProperties.getValue("flow.value.firefox.driver");
 		}
 	}
 }
-

@@ -30,18 +30,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
-import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.IFImplementacion;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataCondis;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataEroski;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataMercadona;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataSimply;
+import com.searchitemsapp.processdata.empresas.IFProcessDataCondis;
+import com.searchitemsapp.processdata.empresas.IFProcessDataEmpresasFactory;
+import com.searchitemsapp.processdata.empresas.IFProcessDataEroski;
+import com.searchitemsapp.processdata.empresas.IFProcessDataMercadona;
+import com.searchitemsapp.processdata.empresas.IFProcessDataSimply;
+import com.searchitemsapp.processdata.empresas.ProcessDataEmpresasFactory;
 import com.sun.istack.NotNull;
 
 
@@ -109,6 +110,9 @@ public abstract class ProcessDataAbstract {
 	private ProcessDataDynamic procesDataDynamic;
 	
 	@Autowired
+	private IFProcessDataEmpresasFactory processDataEmpresasFactory;
+	
+	@Autowired
 	private IFImplementacion<SelectoresCssDTO, EmpresaDTO> selectoresCssImpl;
 
 	@Autowired
@@ -128,9 +132,9 @@ public abstract class ProcessDataAbstract {
 	
 	@Autowired
 	private IFProcessDataSimply scrapingSimply;
-		
+	
 	@Autowired
-	private ProcessDataEmpresasFactory processDataEmpresasFactory;
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -201,7 +205,7 @@ public abstract class ProcessDataAbstract {
 		String emp;
 		
 		if("ALL".equalsIgnoreCase(didEmpresas)) {
-			emp = CommonsPorperties.getValue("flow.value.all.id.empresa");
+			emp = iFCommonsProperties.getValue("flow.value.all.id.empresa");
 		} else {
 			emp = didEmpresas;
 		}
@@ -521,7 +525,7 @@ public abstract class ProcessDataAbstract {
 			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
 			
 		} else if(mapEmpresas.get(ELCORTEINGLES).getDid().equals(urlDto.getDidEmpresa())) {
-			strResult = elem.selectFirst(CommonsPorperties.getValue("flow.value.pagina.precio.eci.offer")).text();
+			strResult = elem.selectFirst(iFCommonsProperties.getValue("flow.value.pagina.precio.eci.offer")).text();
 		} else {
 			strResult = extraerValorDelElemento(listaSize, elem, lista, cssSelector);
 		}
@@ -581,48 +585,48 @@ public abstract class ProcessDataAbstract {
 	
 	/**
 	 * Este método se encarga de extraer cada uno de los datos 
-	 * del producto para componer un objeto de tipo ResultadoDTO.
+	 * del producto para componer un objeto de tipo IFProcessPrice.
 	 * 
 	 * @param elem
 	 * @param selectoresCssDto
 	 * @param urlDto
 	 * @param ordenacion
-	 * @return ResultadoDTO
+	 * @return IFProcessPrice
 	 * @throws IOException
 	 */
-	protected ResultadoDTO fillDataResultadoDTO(@NotNull final Element elem,
+	protected IFProcessPrice fillProcessPrice(@NotNull final Element elem,
 			@NotNull final UrlDTO urlDto, 
-			@NotNull final String ordenacion) throws IOException {
+			@NotNull final String ordenacion, 
+			IFProcessPrice ifProcessPrice) throws IOException {
 		
 		/**
 		 * Variables utilizadas en el proceso.
 		 */
 		int idEmpresaActual = urlDto.getDidEmpresa();
-		ResultadoDTO resDto = new ResultadoDTO();
 		
 		/**
 		 * Se setean los valores recuperados de los elementos
 		 * en la variable resultado. Los valores son todos los
 		 * que devolverá el servicio.
 		 */
-		resDto.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_IMAGE"), urlDto));
-		resDto.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
-		resDto.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
-		resDto.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO"), urlDto));
-		resDto.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO_KILO"), urlDto));
-		resDto.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_LINK_PROD"), urlDto));
-		resDto.setDidEmpresa(urlDto.getDidEmpresa());
-		resDto.setNomEmpresa(urlDto.getNomEmpresa());
+		ifProcessPrice.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_IMAGE"), urlDto));
+		ifProcessPrice.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
+		ifProcessPrice.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
+		ifProcessPrice.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO"), urlDto));
+		ifProcessPrice.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRECIO_KILO"), urlDto));
+		ifProcessPrice.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_LINK_PROD"), urlDto));
+		ifProcessPrice.setDidEmpresa(urlDto.getDidEmpresa());
+		ifProcessPrice.setNomEmpresa(urlDto.getNomEmpresa());
 		
 		/**
 		 * Dependiendo de la empresa, el tratamiento de las URLs 
 		 * extraidas del elemento se realiza de diferente forma.
 		 */
 		if(idEmpresaActual == mapEmpresas.get(MERCADONA).getDid()) {
-			resDto.setNomUrlAllProducts(scrapingMercadona.getUrlAll(resDto));
-			resDto.setImagen(resDto.getImagen().replace(COMMA_STRING, DOT_STRING));
+			ifProcessPrice.setNomUrlAllProducts(scrapingMercadona.getUrlAll(ifProcessPrice));
+			ifProcessPrice.setImagen(ifProcessPrice.getImagen().replace(COMMA_STRING, DOT_STRING));
 		}else {
-			resDto.setNomUrlAllProducts(urlDto.getNomUrl());
+			ifProcessPrice.setNomUrlAllProducts(urlDto.getNomUrl());
 		}
 		
 		/**
@@ -630,9 +634,9 @@ public abstract class ProcessDataAbstract {
 		 * La oredenacion puede ser por por precio o por
 		 * precio/kilo.
 		 */
-		resDto.setOrdenacion(Integer.parseInt(ordenacion));		
+		ifProcessPrice.setOrdenacion(Integer.parseInt(ordenacion));		
 		
-		return resDto;
+		return ifProcessPrice;
 	}
 	
 	/**

@@ -10,8 +10,10 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 
  /**
   * Esta clase establece el proxy, a través del cual,
@@ -21,7 +23,8 @@ import com.searchitemsapp.commons.CommonsPorperties;
   * @author Felix Marin Ramirez
   *
   */
-public class ProxyConnection {
+@Component
+public class ProxyConnection implements IFProxyConnection {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProxyConnection.class); 
 	
@@ -31,6 +34,9 @@ public class ProxyConnection {
 	private static final String GET = "GET";
 	private static final String ACCEPT = "Accept";
 	private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -51,7 +57,7 @@ public class ProxyConnection {
 		String output;
 		
 		try {
-			URL url = new URL(CommonsPorperties.getValue("flow.value.url.ws.proxy"));
+			URL url = new URL(iFCommonsProperties.getValue("flow.value.url.ws.proxy"));
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod(GET);
 			conn.setRequestProperty(ACCEPT, ACCEPT_VALUE);
@@ -83,8 +89,8 @@ public class ProxyConnection {
 		
 		if(Objects.isNull(arStrIpPort)) {
 			arStrIpPort = new String[2];
-			arStrIpPort[0] = CommonsPorperties.getValue("flow.value.valor.ip"); 
-			arStrIpPort[1] = CommonsPorperties.getValue("flow.value.valor.port");
+			arStrIpPort[0] = iFCommonsProperties.getValue("flow.value.valor.ip"); 
+			arStrIpPort[1] = iFCommonsProperties.getValue("flow.value.valor.port");
 		} 
 
 		System.setProperty("https.proxyHost",arStrIpPort[0]);

@@ -33,7 +33,7 @@ public class EmpresaParserTest {
 	 private static Logger LOGGER = null;
 	 
 	 @Autowired
-	 EmpresaParser parser;
+	 IFParser<EmpresaDTO, TbSiaEmpresa> parser;
 
 	 @Autowired
 	 TbSiaEmpresa tbSiaEmpresa;

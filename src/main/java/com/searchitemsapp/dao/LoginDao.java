@@ -12,11 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFLoginRepository;
 import com.searchitemsapp.dto.LoginDTO;
 import com.searchitemsapp.entities.TbSiaLogin;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFLoginRepository;
 
 /**
  * Método que DAO proporcionará los métodos necesarios para 
@@ -37,6 +37,9 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 	 */
 	@Autowired
 	private IFParser<LoginDTO, TbSiaLogin> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	/*
 	 * Constructor
@@ -64,7 +67,7 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.select.all"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.login.select.all"));
 				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
@@ -161,14 +164,14 @@ public class LoginDao extends AbstractDao implements IFLoginRepository {
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.select.by.did.categoria"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.login.select.by.did.categoria"));
 		
 		/**
 		 * Se crea el objeto query y se le 
 		 * añade el parametro al objeto query.
 		 */
 		Query query = entityManager.createQuery(stringBuilder.toString());
-		query.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);
+		query.setParameter(iFCommonsProperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);
 		
 		/**
 		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.

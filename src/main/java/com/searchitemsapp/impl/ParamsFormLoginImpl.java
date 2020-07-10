@@ -12,15 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dao.ParamsFormLoginDao;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFParamsFormLogin;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.repository.IFParamsFormLogin;
 
 
 /**
- * Implementación del dao {@link ParamsFormLoginDao}.
+ * Implementación del dao.
  * 
  * Esta clase ofrece los métodos que permiten interactuar con
  * la capa de persistencia. 
@@ -39,6 +38,9 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 	@Autowired
 	private IFParamsFormLogin paramsFormLoginDao;
 	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
+
 	/*
 	 * Constructor
 	 */
@@ -92,7 +94,7 @@ public class ParamsFormLoginImpl implements IFImplementacion<ParamsLoginDTO, Cat
 		 * Traza de log que escribe identificador de la URL.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.url.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(paramsLoginDTO.getDidUrl());
 		

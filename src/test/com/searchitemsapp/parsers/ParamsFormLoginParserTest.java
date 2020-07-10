@@ -33,7 +33,7 @@ public class ParamsFormLoginParserTest {
 	 TbSiaParamsFormLogin tbSiaParamsFormLogin;
 	 
 	 @Autowired
-	 ParamsFormLoginParser parser;
+	 IFParser<ParamsLoginDTO, TbSiaParamsFormLogin> parser;
 	 
 	 @Autowired
 	 ParamsLoginDTO nomProductoDto;

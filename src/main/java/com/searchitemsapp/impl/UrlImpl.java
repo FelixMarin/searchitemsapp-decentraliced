@@ -13,16 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dao.UrlDao;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFUrlRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.repository.IFUrlRepository;
 
 
 /**
- * Implementación del dao {@link UrlDao}.
+ * Implementación del dao.
  * 
  * Esta clase ofrece los métodos que permiten interactuar con
  * la capa de persistencia. 
@@ -46,6 +45,9 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	 */
 	@Autowired
 	private IFUrlRepository urlDao;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -73,7 +75,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		}
 		
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(urlDTO.getDid());
 		
@@ -118,7 +120,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		}
 		
 		if(ALL.equalsIgnoreCase(strIdsEmpresas)) {
-			strIdsEmpresas = CommonsPorperties.getValue("flow.value.all.id.empresa");
+			strIdsEmpresas = iFCommonsProperties.getValue("flow.value.all.id.empresa");
 		}
 		
 		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, COMA);

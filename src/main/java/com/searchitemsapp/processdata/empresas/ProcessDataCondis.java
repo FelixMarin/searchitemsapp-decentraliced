@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataCondis;
 
 /**
  * Módulo de scraping especifico diseñado para la 

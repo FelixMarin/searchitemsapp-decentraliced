@@ -26,7 +26,7 @@ import com.searchitemsapp.impl.IFUrlImpl;
  * @author Felix Marin Ramirez
  *
  */
-public class UrlComposer extends ProcessDataLogin {
+public class UrlComposer extends ProcessDataLogin implements IFUrlComposer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlComposer.class);   
 	

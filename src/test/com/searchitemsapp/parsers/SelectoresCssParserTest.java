@@ -34,7 +34,7 @@ public class SelectoresCssParserTest {
 	 TbSiaSelectoresCss tbSiaSelectoresCssParser;
 	 
 	 @Autowired
-	 SelectoresCssParser parser;
+	 IFParser<SelectoresCssDTO, TbSiaSelectoresCss> parser;
 	 
 	 @Autowired
 	 SelectoresCssDTO selectoresCssDto;

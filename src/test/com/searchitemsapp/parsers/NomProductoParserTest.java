@@ -34,7 +34,7 @@ public class NomProductoParserTest {
 	 TbSiaNomProducto tbSiaNomProducto;
 	 
 	 @Autowired
-	 NomProductoParser parser;
+	 IFParser<NomProductoDTO, TbSiaNomProducto> parser;
 	 
 	 @Autowired
 	 NomProductoDTO nomProductoDto;

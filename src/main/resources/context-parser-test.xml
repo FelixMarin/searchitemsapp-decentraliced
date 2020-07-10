@@ -32,7 +32,7 @@
       <bean id="empresaDTO" class="com.searchitemsapp.dto.EmpresaDTO"></bean> 
       <bean id="paisDTO" class="com.searchitemsapp.dto.PaisDTO"></bean>
       <bean id="pedidoDTO" class="com.searchitemsapp.dto.PedidoDTO"></bean> 
-      <bean id="resultadoDTO" class="com.searchitemsapp.dto.ResultadoDTO"></bean> 
+      <bean id="processPriceBean" class="com.searchitemsapp.processprice.ProcessPriceBean"></bean>
       <bean id="urlDTO" class="com.searchitemsapp.dto.UrlDTO"></bean> 
       <bean id="loginDTO" class="com.searchitemsapp.dto.LoginDTO"></bean>
       <bean id="paramsLoginDTO" class="com.searchitemsapp.dto.ParamsLoginDTO"></bean>

@@ -16,9 +16,8 @@ import org.jsoup.parser.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataMercadona;
+import com.searchitemsapp.processdata.IFProcessPrice;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -197,7 +196,7 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 	 * @param resDto
 	 * @return  String
 	 */
-	public String getUrlAll(final ResultadoDTO resDto) {
+	public String getUrlAll(final IFProcessPrice resDto) {
 		
 		String productoAux = StringUtils.EMPTY;
 				

@@ -12,14 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dao.ParamsHeadersLoginDao;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFParamsHeadersLogin;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.repository.IFParamsHeadersLogin;
 
 /**
- * Implementación del dao {@link ParamsHeadersLoginDao}.
+ * Implementación del dao.
  * 
  * Esta clase ofrece los métodos que permiten interactuar con
  * la capa de persistencia. 
@@ -37,6 +36,9 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 	 */
 	@Autowired
 	private IFParamsHeadersLogin paramsHeadersLoginDao;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -90,7 +92,7 @@ public class ParamsHeadersLoginImpl implements IFImplementacion<ParamsLoginDTO, 
 		 * Traza de log que escribe identificador de la URL.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.url.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.url.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(paramsLoginDTO.getDidUrl());
 		

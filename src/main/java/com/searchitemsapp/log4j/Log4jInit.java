@@ -12,8 +12,6 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.initcache.InitCache;
-
 /**
  * Clase encargada de configurar el módulo de trazas de log.
  * Este módulo se inicializa al arrancar el programa.
@@ -83,7 +81,7 @@ public class Log4jInit extends HttpServlet {
 			PropertyConfigurator.configure(props);
 		} catch (IOException e) {
 			if(LOGGER.isInfoEnabled()) {
-				LOGGER.error(filePath,InitCache.class,e);
+				LOGGER.error(filePath,Log4jInit.class,e);
 			}
 		}
 	}

@@ -28,6 +28,9 @@ public class CommonsPorpertiesTest {
     
 	@Autowired
     private ServletContext context;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	@BeforeClass
 	public static void setLogger() throws MalformedURLException {
@@ -58,7 +61,7 @@ public class CommonsPorpertiesTest {
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
 		testLoadPropertiesFile();
-		String test = CommonsPorperties.getValue("flow.value.activo");
+		String test = iFCommonsProperties.getValue("flow.value.activo");
 		String salida = "activo";
 
 		assertEquals(test, salida);

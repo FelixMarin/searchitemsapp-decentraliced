@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFNomProductoRepository;
 import com.searchitemsapp.dto.NomProductoDTO;
 import com.searchitemsapp.entities.TbSiaNomProducto;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFNomProductoRepository;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -36,6 +36,9 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 	 */
 	@Autowired
 	private IFParser<NomProductoDTO, TbSiaNomProducto> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 		
 	/*
 	 * Constructor
@@ -63,7 +66,7 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.nomproducto.select.all"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.nomproducto.select.all"));
 				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
