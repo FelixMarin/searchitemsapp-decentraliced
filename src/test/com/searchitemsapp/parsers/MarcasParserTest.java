@@ -34,7 +34,7 @@ public class MarcasParserTest {
 	 TbSiaMarcas tbSiaMarcas;
 	 
 	 @Autowired
-	 MarcasParser parser;
+	 IFParser<MarcasDTO, TbSiaMarcas> parser;
 	 
 	 @Autowired
 	 MarcasDTO marcasDto;

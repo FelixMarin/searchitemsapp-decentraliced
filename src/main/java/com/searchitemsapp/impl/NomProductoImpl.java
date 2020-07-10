@@ -7,13 +7,12 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.dao.NomProductoDao;
+import com.searchitemsapp.dao.repository.IFNomProductoRepository;
 import com.searchitemsapp.dto.NomProductoDTO;
-import com.searchitemsapp.repository.IFNomProductoRepository;
 
 
 /**
- * Implementación del dao {@link NomProductoDao}.
+ * Implementación del dao.
  * 
  * Esta clase ofrece los métodos que permiten interactuar con
  * la capa de persistencia. 

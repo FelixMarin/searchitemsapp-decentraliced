@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFMarcasRepository;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.entities.TbSiaMarcas;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFMarcasRepository;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -38,6 +38,9 @@ public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 	 */
 	@Autowired
 	private IFParser<MarcasDTO, TbSiaMarcas> parser;	
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	public MarcasDao() {
 		super();
@@ -61,7 +64,7 @@ public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.select.all"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.marcas.select.all"));
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
@@ -111,7 +114,7 @@ public class MarcasDao extends AbstractDao implements IFMarcasRepository {
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.marcas.did.txt"))
 		.append(StringUtils.SPACE).append(did);	
 		
 		if(LOGGER.isInfoEnabled()) {

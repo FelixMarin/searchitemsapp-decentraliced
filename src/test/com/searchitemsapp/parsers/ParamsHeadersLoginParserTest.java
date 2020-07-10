@@ -33,7 +33,7 @@ public class ParamsHeadersLoginParserTest {
 	 TbSiaParamsHeadersLogin tbSiaParamsHeadersLogin;
 	 
 	 @Autowired
-	 ParamsHeadersLoginParser parser;
+	 IFParser<ParamsLoginDTO, TbSiaParamsHeadersLogin> parser;
 	 
 	 @Autowired
 	 ParamsLoginDTO nomProductoDto;

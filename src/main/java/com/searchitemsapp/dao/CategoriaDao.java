@@ -12,11 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFCategoriaRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFCategoriaRepository;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -37,6 +37,9 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 	 */
 	@Autowired
 	private IFParser<CategoriaDTO, TbSiaCategoriasEmpresa> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor 
@@ -64,7 +67,7 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.categoria.select.all"));		
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.categoria.select.all"));		
 
 		
 		/**

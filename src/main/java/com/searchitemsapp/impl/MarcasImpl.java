@@ -12,15 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dao.MarcasDao;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFMarcasRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
-import com.searchitemsapp.repository.IFMarcasRepository;
 
 
 /**
- * Implementación del dao {@link MarcasDao}.
+ * Implementación del dao.
  * 
  * Esta clase ofrece los métodos que permiten interactuar con
  * la capa de persistencia. 
@@ -38,6 +37,9 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 	 */
 	@Autowired
 	private IFMarcasRepository marcasDao;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -93,7 +95,7 @@ public class MarcasImpl implements IFImplementacion<MarcasDTO, CategoriaDTO> {
 		 * Traza de log que escribe identificador de la marca.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.marcas.dto.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.marcas.dto.txt"))
 		.append(StringUtils.SPACE)
 		.append(marcasDTO.getDid());
 

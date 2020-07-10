@@ -23,7 +23,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,7 +53,7 @@ public class ProcessDataModuleTest {
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 		
 		ServletContextEvent sve =  new ServletContextEvent(context);
-		List<ResultadoDTO> ls;
+		List<IFProcessPrice> ls;
 		UrlDTO urlDto = new UrlDTO();
 		urlDto.setNomUrl("https://www.alcampo.es/compra-online/alimentacion/caldos-pasta-arroz-legumbres-pure/arroz/arroz-para-cocinar/la-cigala-arroz-redondo-1-kg/p/882610");
 		urlDto.setDidEmpresa(108);

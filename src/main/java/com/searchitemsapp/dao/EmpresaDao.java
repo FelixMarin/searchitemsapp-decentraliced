@@ -14,12 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.searchitemsapp.commons.CommonsPorperties;
+	
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFEmpresaRepository;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFEmpresaRepository;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -40,6 +40,9 @@ public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 	 */	
 	@Autowired
 	private IFParser<EmpresaDTO, TbSiaEmpresa> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 		
 	/*
 	 * Constructor.
@@ -66,7 +69,7 @@ public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.all"));		
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.select.all"));		
 		
 		/**
 		 * Se ejecuta la consulta y se almacena en objeto de tipo query
@@ -117,7 +120,7 @@ public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.did.txt"))
 		.append(StringUtils.SPACE).append(did);	
 		
 		if(LOGGER.isInfoEnabled()) {
@@ -171,15 +174,15 @@ public class EmpresaDao extends AbstractDao implements IFEmpresaRepository {
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.empresa.select.lista.empresas.by.empresa.y.categoria"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.select.lista.empresas.by.empresa.y.categoria"));
 			
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
 		 * A la consulta se le pasan como parametros los identificadores.
 		 */
 		Query q = entityManager.createQuery(stringBuilder.toString());		
-		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);	
-		q.setParameter(CommonsPorperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), didCatEmpresa);	
+		q.setParameter(iFCommonsProperties.getValue("flow.value.categoria.didEmpresa.key"), didEmpresa);	
+		q.setParameter(iFCommonsProperties.getValue("flow.value.categoria.didCategoriaEmpresa.key"), didCatEmpresa);	
 		
 		/**
 		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.

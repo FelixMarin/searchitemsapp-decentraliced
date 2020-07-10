@@ -40,7 +40,7 @@ public class PaisParserTest {
 	 PaisDTO nomProductoDto;
 	 
 	 @Autowired
-	 PaisParser parser;
+	 IFParser<PaisDTO, TbSiaPais> parser;
 	 
     @BeforeClass
     public static void setLogger() throws MalformedURLException {

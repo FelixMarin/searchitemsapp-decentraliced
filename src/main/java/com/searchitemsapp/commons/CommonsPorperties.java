@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.StandardEnvironment;
+import org.springframework.stereotype.Component;
 
 /**
  * Esta clase carga los ficheros de propiedades 
@@ -21,7 +22,8 @@ import org.springframework.core.env.StandardEnvironment;
  * @author Felix Marin Ramirez
  * 
  */
-public class CommonsPorperties {
+@Component
+public class CommonsPorperties implements IFCommonsProperties {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonsPorperties.class);     
 	
@@ -95,7 +97,7 @@ public class CommonsPorperties {
 	 * @param String
 	 * @return String
 	 */
-	public static String getValue(String value) {
+	public String getValue(String value) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info("Valor: ".concat(value));

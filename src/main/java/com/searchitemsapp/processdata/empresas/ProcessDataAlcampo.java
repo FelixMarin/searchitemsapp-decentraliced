@@ -12,10 +12,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataEmpresas;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -33,6 +33,9 @@ public class ProcessDataAlcampo implements IFProcessDataEmpresas {
 	 */
 	private static final String PATTERN = ".*&page=([0-9]+)";
 	private static final String ZERO_STRING = "0";
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	/*
 	 * Constructor
@@ -78,7 +81,7 @@ public class ProcessDataAlcampo implements IFProcessDataEmpresas {
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */		
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.alcampo"));
+		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.alcampo"));
 		
 		/**
 		 * Se crea una lista de Strings.

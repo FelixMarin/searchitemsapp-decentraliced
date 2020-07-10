@@ -100,8 +100,6 @@
         class="org.springframework.orm.jpa.JpaTransactionManager"
         p:entityManagerFactory-ref="entityManagerFactory" />
         
-        <bean id="listaProductosController" class="com.searchitemsapp.controller.ListaProductosController"></bean>
-        
       <util:map id="mapDynEmpresas" map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="java.lang.Boolean"></util:map>
 	  <util:map id="mapEmpresas" map-class="java.util.HashMap" key-type="java.lang.String" value-type="com.searchitemsapp.dto.EmpresaDTO"></util:map>
       <util:list id="listTodasMarcas" value-type="com.searchitemsapp.dto.MarcasDTO"></util:list>
@@ -110,7 +108,6 @@
       <bean id="empresaDTO" class="com.searchitemsapp.dto.EmpresaDTO"></bean> 
       <bean id="paisDTO" class="com.searchitemsapp.dto.PaisDTO"></bean>
       <bean id="pedidoDTO" class="com.searchitemsapp.dto.PedidoDTO"></bean> 
-      <bean id="resultadoDTO" class="com.searchitemsapp.dto.ResultadoDTO"></bean> 
       <bean id="urlDTO" class="com.searchitemsapp.dto.UrlDTO"></bean> 
       <bean id="loginDTO" class="com.searchitemsapp.dto.LoginDTO"></bean>
       <bean id="paramsLoginDTO" class="com.searchitemsapp.dto.ParamsLoginDTO"></bean>
@@ -187,11 +184,11 @@
       <bean id="procesDataDynamic" class="com.searchitemsapp.processdata.ProcessDataDynamic"></bean>
       
       <bean id="serviceFactory" class="com.searchitemsapp.services.ServiceFactory"></bean>
-      <bean id="processDataEmpresasFactory" class="com.searchitemsapp.processdata.ProcessDataEmpresasFactory"></bean>
+      <bean id="processDataEmpresasFactory" class="com.searchitemsapp.processdata.empresas.ProcessDataEmpresasFactory"></bean>
        
-       <bean id="listaProductosValidator" class="com.searchitemsapp.validator.ListaProductosValidator"></bean>
+       <bean id="listaProductosValidator" class="com.searchitemsapp.controller.ListaProductosValidator"></bean>
        
-      <bean id="processPrice" class="com.searchitemsapp.processprice.ProcessPrice"></bean>
+       <bean id="processPriceBean" class="com.searchitemsapp.processprice.ProcessPriceBean"></bean>
       <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>
       
       <bean id="initCache" class="com.searchitemsapp.initcache.InitCache"></bean>

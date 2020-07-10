@@ -17,13 +17,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.LoginDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.ParamsLoginDTO;
-import com.searchitemsapp.dto.ResultadoDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.impl.IFImplementacion;
 import com.searchitemsapp.impl.IFUrlImpl;
@@ -68,6 +67,12 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 	private IFUrlImpl urlImpl;
 	
 	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
+	
+	@Autowired
+	private IFProcessPrice ifProcessPrice;
+	
+	@Autowired
 	private CategoriaDTO categoriaDto;
 	
 	@Autowired 
@@ -77,7 +82,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 	private EmpresaDTO empresaDTO;
 	
 	@Autowired
-	ParamsLoginDTO paramsLoginDto;
+	private ParamsLoginDTO paramsLoginDto;
 	
 	/*
 	 * Constructor
@@ -103,14 +108,14 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 			String didPais, String didCategoria, int iIdEmpresa,  
 			Map<Integer,Map<String,String>> mapaCookies) throws IOException {
 			
-		ResultadoDTO auxResDto = null;
+		IFProcessPrice auxResDto = null;
 		
 		/**
 		 * Se comprueba si el módulo está activo consultando una
 		 * propieadad del fichero 'flow.properties'.
 		 */
 		boolean isLoginActivo = Boolean
-				.parseBoolean(CommonsPorperties.getValue("flow.value.did.login.activo"));
+				.parseBoolean(iFCommonsProperties.getValue("flow.value.did.login.activo"));
 		
 		/**
 		 * Si el valor de la propiedad es 'false' 
@@ -131,30 +136,29 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		List<UrlDTO> listUrlDto = urlImpl.obtenerUrlsLogin(paisDto, categoriaDto);
 		empresaDTO.setDid(iIdEmpresa);
 		
-		List<ResultadoDTO> listResUrlLogin = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<IFProcessPrice> listResUrlLogin = new ArrayList<>(NumberUtils.INTEGER_ONE);
 		
 		/**
 		 * se crea una lista de resultados a partir de
 		 * la lista de URLs.
 		 */
 		for (UrlDTO urlDto : listUrlDto) {
-			ResultadoDTO resultadoDto = new ResultadoDTO();
-			resultadoDto.setNomUrl(urlDto.getNomUrl());
-			resultadoDto.setDidEmpresa(urlDto.getDidEmpresa());
-			resultadoDto.setDidUrl(urlDto.getDid());
-			resultadoDto.setBolActivo(urlDto.getBolActivo());
-			resultadoDto.setNomEmpresa(urlDto.getNomEmpresa());
-			resultadoDto.setBolStatus(urlDto.getBolStatus());
-			resultadoDto.setBolLogin(urlDto.getBolLogin());
-			resultadoDto.setDesUrl(urlDto.getDesUrl());
-			listResUrlLogin.add(resultadoDto);
+			ifProcessPrice.setNomUrl(urlDto.getNomUrl());
+			ifProcessPrice.setDidEmpresa(urlDto.getDidEmpresa());
+			ifProcessPrice.setDidUrl(urlDto.getDid());
+			ifProcessPrice.setBolActivo(urlDto.getBolActivo());
+			ifProcessPrice.setNomEmpresa(urlDto.getNomEmpresa());
+			ifProcessPrice.setBolStatus(urlDto.getBolStatus());
+			ifProcessPrice.setBolLogin(urlDto.getBolLogin());
+			ifProcessPrice.setDesUrl(urlDto.getDesUrl());
+			listResUrlLogin.add(ifProcessPrice);
 		}
     	
 		/**
 		 * Se filtran todos los que tienen el campo 'ActionLogin' y 
 		 * se descarta el resto.
 		 */
-		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
+		for (IFProcessPrice resUrlLogin : listResUrlLogin) {
 			if(resUrlLogin.getDidEmpresa().equals(empresaDTO.getDid()) &&
 					ACTION_LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
 				auxResDto = resUrlLogin;
@@ -173,7 +177,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		 * Se filtran todos los que tienen el campo 'Login' y 
 		 * se descarta el resto.
 		 */
-		for (ResultadoDTO resUrlLogin : listResUrlLogin) {
+		for (IFProcessPrice resUrlLogin : listResUrlLogin) {
 			if(resUrlLogin.getDidEmpresa().equals(empresaDTO.getDid()) &&
 					LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
 				auxResDto.setLoginUrl(resUrlLogin.getNomUrl());

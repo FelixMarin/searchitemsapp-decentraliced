@@ -17,9 +17,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dto.ResultadoDTO;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
 import com.sun.istack.NotNull;
 
@@ -34,7 +34,7 @@ import com.sun.istack.NotNull;
  * @author Felix Marin Ramirez
  *
  */
-public class ProcessDataModule extends ProcessDataLogin  implements Callable<List<ResultadoDTO>> {
+public class ProcessDataModule extends ProcessDataLogin  implements Callable<List<IFProcessPrice>> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataModule.class);  
 	
@@ -54,6 +54,9 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	private String didPais; 
 	private String didCategoria;
 	private String ordenacion;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -76,19 +79,20 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	 * lista de objetos. Finalmente se devuelve una lista
 	 * con todos los resultados obtenidos.
 	 * 
-	 * @return List<ResultadoDTO>
+	 * @return List<IFProcessPrice>
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 * @throws InterruptedException
 	 */
-	public  List<ResultadoDTO> checkHtmlDocument() throws IOException, URISyntaxException, InterruptedException {
+	public  List<IFProcessPrice> checkHtmlDocument() 
+			throws IOException, URISyntaxException, InterruptedException {
 			
 		/*
 		 * Variables
 		 */
-		List<ResultadoDTO> lResultadoDto;
+		List<IFProcessPrice> lResultadoDto;
 		Elements entradas;
-		ResultadoDTO resDto;
+		IFProcessPrice resDto;
 		
 		/**
 		 * Se extraen los valores principales para validarlos
@@ -181,7 +185,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	    			 * En este punto se extraen los datos del objeto
 	    			 * element y se añaden en un objeto DTO.
 	    			 */
-	    			resDto = fillDataResultadoDTO(elem, urlDto, ordenacion);
+	    			resDto = fillProcessPrice(elem, urlDto, ordenacion, new ProcessPriceModule());
 	    			
 	    			/**
 	    			 * Se realiza la última comprovación y 
@@ -207,7 +211,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	 * @return 
 	 */
 	@Override
-	public List<ResultadoDTO> call() throws IOException, URISyntaxException, InterruptedException {
+	public List<IFProcessPrice> call() throws IOException, URISyntaxException, InterruptedException {
 		return checkHtmlDocument();
 	}
 	
@@ -235,7 +239,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	 */
 	private boolean validaYCargaResultado(@NotNull final int iIdEmpresa, 
 			@NotNull final String[] arProducto, 
-			@NotNull final ResultadoDTO resDto, 
+			@NotNull final IFProcessPrice resDto, 
 			@NotNull final Pattern pattern) {
 		
 		if(LOGGER.isInfoEnabled()) {
@@ -288,7 +292,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	}
 	
 	private boolean validaSelector(Element elem) {
-		return Objects.nonNull(elem.selectFirst(CommonsPorperties.getValue("flow.value.pagina.siguiente.carrefour"))) ||
-		Objects.nonNull(elem.selectFirst(CommonsPorperties.getValue("flow.value.pagina.acceso.popup.peso")));
+		return Objects.nonNull(elem.selectFirst(iFCommonsProperties.getValue("flow.value.pagina.siguiente.carrefour"))) ||
+		Objects.nonNull(elem.selectFirst(iFCommonsProperties.getValue("flow.value.pagina.acceso.popup.peso")));
 	}	
 }

@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFSelectoresCssRepository;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFSelectoresCssRepository;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -39,6 +39,9 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 	 */
 	@Autowired
 	private IFParser<SelectoresCssDTO, TbSiaSelectoresCss> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -66,7 +69,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.all"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.selectorescss.select.all"));
 				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
@@ -119,7 +122,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 		 * en el fichero de logs. Pinta el identificador de la marca.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.selectorescss.did.txt"))
 		.append(StringUtils.SPACE).append(did);
 
 		if(LOGGER.isInfoEnabled()) {
@@ -172,7 +175,7 @@ public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepo
 		 * le añade el parametro al objeto query.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.selectorescss.select.by.didEmpresa"));
 		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaSelectoresCss.class);
 		query.setParameter("didEmpresa", didEmpresa);
 

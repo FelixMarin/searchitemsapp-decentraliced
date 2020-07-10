@@ -8,10 +8,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataSimply;
 
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -29,6 +29,9 @@ public class ProcessDataSimply implements IFProcessDataSimply {
 	 */
 	private static final String STRING_ENIE_MIN = "ñ";
 	private static final String ENIE_URL = "%F1";
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -76,7 +79,7 @@ public class ProcessDataSimply implements IFProcessDataSimply {
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.simply"));
+		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.simply"));
 		
 		/**
 		 * Se asigna la url base a la lista.

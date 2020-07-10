@@ -12,10 +12,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataEmpresas;
 
 
 
@@ -34,6 +34,9 @@ public class ProcessDataDia implements IFProcessDataEmpresas {
 	 * Constantes Globales
 	 */
 	private static final String PROTOCOL_ACCESSOR ="://";
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 
 	/*
 	 * Constructor
@@ -69,7 +72,7 @@ public class ProcessDataDia implements IFProcessDataEmpresas {
 		 */
 		String urlBase = urlDto.getNomUrl();
 		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.dia"));
+		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.dia"));
 
 		/**
 		 * Se divide el selector de paginación.

@@ -35,8 +35,7 @@ public class UrlParserTest {
 	 TbSiaUrl tbSiaUrl;
 	 
 	 @Autowired
-	 UrlParser parser;
-	 
+	 IFParser<UrlDTO, TbSiaUrl> parser;
 	 
 	 @Autowired
 	 UrlDTO urlDto;

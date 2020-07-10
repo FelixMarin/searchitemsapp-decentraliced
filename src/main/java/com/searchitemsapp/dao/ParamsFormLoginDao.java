@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFParamsFormLogin;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsFormLogin;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFParamsFormLogin;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -40,6 +40,9 @@ public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin
 	 */
 	@Autowired
 	private IFParser<ParamsLoginDTO, TbSiaParamsFormLogin> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -67,7 +70,7 @@ public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin
 		 * Se obtiene la query del fichero de propiedades.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.all"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.login.form.select.all"));
 				
 		/**
 		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
@@ -119,9 +122,9 @@ public class ParamsFormLoginDao extends AbstractDao implements IFParamsFormLogin
 		 * le añade el parametro al objeto query.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.form.select.by.url"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.login.form.select.by.url"));
 		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsFormLogin.class);
-		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
+		query.setParameter(iFCommonsProperties.getValue("flow.value.url.did.param.txt"), didUrl);
 		List<TbSiaParamsFormLogin> formLoginList = query.getResultList();	
 		
 		/**

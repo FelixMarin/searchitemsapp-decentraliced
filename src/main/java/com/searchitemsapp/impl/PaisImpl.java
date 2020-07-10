@@ -12,14 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
-import com.searchitemsapp.dao.PaisDao;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFPaisRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
-import com.searchitemsapp.repository.IFPaisRepository;
 
 /**
- * Implementación del dao {@link PaisDao}.
+ * Implementación del dao.
  * 
  * Esta clase ofrece los métodos que permiten interactuar con
  * la capa de persistencia. 
@@ -37,6 +36,9 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 */
 	@Autowired
 	private IFPaisRepository paisDao;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -72,7 +74,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 		 * Traza de log que escribe identificador del pais.
 		 */
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.pais.did.txt"))
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.pais.did.txt"))
 		.append(StringUtils.SPACE)
 		.append(paisDto.getDid());
 		

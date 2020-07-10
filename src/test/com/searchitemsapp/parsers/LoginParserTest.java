@@ -33,7 +33,7 @@ public class LoginParserTest {
 	 TbSiaLogin tbSiaLogin;
 	 
 	 @Autowired
-	 LoginParser parser;
+	 IFParser<LoginDTO, TbSiaLogin> parser;
 	 
 	 @Autowired
 	 LoginDTO loginDto;

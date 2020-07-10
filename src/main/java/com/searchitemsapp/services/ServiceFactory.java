@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author Felix Marin Ramirez
  */
 @Component
-public class ServiceFactory {
+public class ServiceFactory implements IFServiceFctory {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceFactory.class);  
 	
@@ -26,7 +26,7 @@ public class ServiceFactory {
 	 * VAriables Globales
 	 */
 	@Autowired
-	private ListadoProductosService listadoProductosService;
+	private ApplicationService listadoProductosService;
 	
 	/*
 	 * Constructor

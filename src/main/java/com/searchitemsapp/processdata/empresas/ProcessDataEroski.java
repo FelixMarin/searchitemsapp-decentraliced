@@ -8,10 +8,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
-import com.searchitemsapp.processdata.interfaces.IFProcessDataEroski;
 /**
  * Módulo de scraping especifico diseñado para la 
  * extracción de datos del sitio web de Eroski.
@@ -30,6 +30,9 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 	private static final String ENIE_EROSKI = "$00f1";
 	private static final String[] ARRAY_TILDES_EROSKI = {"$00e1","$00e9","$00ed","$00f3","$00fa"};
 	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor 
@@ -69,7 +72,7 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 		 * Se obtiene del fichero de propiedades el número máximo de
 		 * páginas que se van a pedir al sitio web.
 		 */	
-		int numresultados = NumberUtils.toInt(CommonsPorperties.getValue("flow.value.paginacion.url.eroski"));
+		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.eroski"));
 		
 		/**
 		 * Se añade la URL base a la lista en formato string.

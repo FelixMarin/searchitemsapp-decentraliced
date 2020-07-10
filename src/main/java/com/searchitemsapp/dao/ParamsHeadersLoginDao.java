@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.dao.repository.IFParamsHeadersLogin;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
 import com.searchitemsapp.parsers.IFParser;
-import com.searchitemsapp.repository.IFParamsHeadersLogin;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -39,6 +39,9 @@ public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeader
 	 */
 	@Autowired
 	private IFParser<ParamsLoginDTO, TbSiaParamsHeadersLogin> parser;
+	
+	@Autowired
+	private IFCommonsProperties iFCommonsProperties;
 	
 	/*
 	 * Constructor
@@ -62,7 +65,7 @@ public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeader
 		List<ParamsLoginDTO> resultado = null;
 		
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.headers.select.all"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.login.headers.select.all"));
 		
 		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsHeadersLogin.class);
 		
@@ -93,9 +96,9 @@ public class ParamsHeadersLoginDao extends AbstractDao implements IFParamsHeader
 		List<ParamsLoginDTO> listParamsLoginDto = null;
 		
 		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(CommonsPorperties.getValue("flow.value.login.header.select.by.url"));
+		stringBuilder.append(iFCommonsProperties.getValue("flow.value.login.header.select.by.url"));
 		Query query = entityManager.createQuery(stringBuilder.toString(), TbSiaParamsHeadersLogin.class);
-		query.setParameter(CommonsPorperties.getValue("flow.value.url.did.param.txt"), didUrl);
+		query.setParameter(iFCommonsProperties.getValue("flow.value.url.did.param.txt"), didUrl);
 		
 		try {
 			listParamsLoginDto = parser.toListDTO((List<TbSiaParamsHeadersLogin>) query.getResultList());
