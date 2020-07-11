@@ -1,7 +1,6 @@
 package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -9,8 +8,10 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
 /**
  * Módulo de scraping especifico diseñado para la 
@@ -19,6 +20,7 @@ import com.searchitemsapp.dto.UrlDTO;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ProcessDataEroski implements IFProcessDataEroski {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataEroski.class);  
@@ -77,7 +79,7 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 		/**
 		 * Se añade la URL base a la lista en formato string.
 		 */
-		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
 		
 		/**

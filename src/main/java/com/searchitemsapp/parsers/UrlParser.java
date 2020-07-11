@@ -1,21 +1,24 @@
 package com.searchitemsapp.parsers;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
 import com.searchitemsapp.entities.TbSiaUrl;
+import com.sun.istack.NotNull;
 
 /**
  * Es un componente analizador de software que 
@@ -25,6 +28,7 @@ import com.searchitemsapp.entities.TbSiaUrl;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlParser.class); 
@@ -41,14 +45,17 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	private static final String SCRAP_PATTERN = "SCRAP_PATTERN";
 	private static final String DID = "DID";
 	
-	@Autowired
-	UrlDTO urlPDto;
+	@Resource(name="listUrlDto")
+	private List<UrlDTO> listUrlDto;
 	
 	@Autowired
-	TbSiaUrl tbSiaPUrl;
+	private UrlDTO urlPDto;
 	
 	@Autowired
-	TbSiaSelectoresCss tselectores;
+	private TbSiaUrl tbSiaPUrl;
+	
+	@Autowired
+	private TbSiaSelectoresCss tselectores;
 	
 	/*
 	 * Constructor
@@ -63,13 +70,13 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 * @param TbSiaUrl
 	 * @return UrlDTO
 	 */
-	public UrlDTO toDTO(TbSiaUrl tbSiaPUrl) {	
+	public UrlDTO toDTO(@NotNull final TbSiaUrl tbSiaPUrl) {	
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		Map<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+		Map<String, String> selectores = Maps.newHashMap();
 		
 		urlPDto.setBolActivo(tbSiaPUrl.getBolActivo());
 		urlPDto.setDesUrl(tbSiaPUrl.getDesUrl());
@@ -84,7 +91,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 			TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaPUrl
 					.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 			
-			Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			Map<String, String> mapSelectores = Maps.newHashMap();
 			mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 			mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 			mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
@@ -108,7 +115,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 * @param UrlDTO
 	 * @return TbSiaUrl
 	 */
-	public TbSiaUrl toTbSia(UrlDTO urlPDto) {
+	public TbSiaUrl toTbSia(@NotNull final UrlDTO urlPDto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -120,7 +127,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 		tbSiaPUrl.setNomUrl(urlPDto.getNomUrl());
 		tbSiaPUrl.setBolStatus(urlPDto.getBolStatus());
 		tbSiaPUrl.setBolLogin(urlPDto.getBolLogin());	
-		tbSiaPUrl.setTbSiaSelectoresCsses(new ArrayList<>());
+		tbSiaPUrl.setTbSiaSelectoresCsses(Lists.newArrayList());
 		tbSiaPUrl.setTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaPUrl.getTbSiaEmpresa().setDid(urlPDto.getDid());
 		tbSiaPUrl.getTbSiaEmpresa().setNomEmpresa(urlPDto.getNomEmpresa());
@@ -147,16 +154,16 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 * @param List<TbSiaUrl>
 	 * @return List<UrlDTO>
 	 */
-	public List<UrlDTO> toListDTO(List<TbSiaUrl> lsUrls) {
+	public List<UrlDTO> toListDTO(@NotNull final List<TbSiaUrl> lsUrls) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<UrlDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
-		Map<String, String> selectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+		List<UrlDTO> listDto = Lists.newArrayList(); 
+		Map<String, String> selectores = Maps.newHashMap();
 		
-		for (TbSiaUrl tbSiaUrl : lsUrls) {
+		lsUrls.forEach(tbSiaUrl -> {
 			urlPDto = new UrlDTO();
 			urlPDto.setBolActivo(tbSiaUrl.getBolActivo());
 			urlPDto.setDesUrl(tbSiaUrl.getDesUrl());
@@ -171,7 +178,7 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 				TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaUrl
 						.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 			
-				Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				Map<String, String> mapSelectores = Maps.newHashMap();
 				mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 				mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 				mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
@@ -186,8 +193,8 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 				urlPDto.setSelectores(selectores);
 			}
 			
-			listDto.add(urlPDto);
-		}
+			listDto.add(urlPDto);	
+		});
 		
 		return listDto;
 	}
@@ -198,21 +205,17 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	 * @param List<Object[]>
 	 * @return List<UrlDTO>
 	 */
-	public List<UrlDTO> toListODTO(List<Object[]> urlList) {
+	public List<UrlDTO> toListODTO(@NotNull final List<Object[]> urlList) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		if(Objects.isNull(urlList)) {
-			return new ArrayList<>();
-		}
-		
-		List<UrlDTO> listUrlDto = null;
-		
 		if (!urlList.isEmpty()){ 
-			listUrlDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
-			for (Object[] objects : urlList) {
+			
+			listUrlDto = Lists.newArrayList();
+			
+			urlList.forEach(objects -> {
 				urlPDto = new UrlDTO();
 				urlPDto.setNomUrl(String.valueOf(objects[0]));
 				urlPDto.setDidEmpresa(Integer.parseInt(String.valueOf(objects[1])));
@@ -222,8 +225,8 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 				urlPDto.setBolStatus(Boolean.parseBoolean(null!=objects[5]?String.valueOf(objects[5]):null));
 				urlPDto.setBolLogin(Boolean.parseBoolean(null!=objects[6]?String.valueOf(objects[6]):null));
 				urlPDto.setDesUrl(String.valueOf(objects[7]));
-				listUrlDto.add(urlPDto);
-			}
+				listUrlDto.add(urlPDto);				
+			});
 		}
 		return listUrlDto;
 	}

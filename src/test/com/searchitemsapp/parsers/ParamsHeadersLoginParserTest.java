@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -18,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsHeadersLogin;
 import com.searchitemsapp.entities.TbSiaUrl;
@@ -90,11 +90,11 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaParamsHeadersLogin> lsParamsHeadersLogin = new ArrayList<>();
+		List<TbSiaParamsHeadersLogin> lsParamsHeadersLogin = Lists.newArrayList();
 		tbSiaParamsHeadersLogin.setTbSiaUrl(new TbSiaUrl());
 		lsParamsHeadersLogin.add(tbSiaParamsHeadersLogin);
 		
-		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<>();
+		List<ParamsLoginDTO> listParamsHeadersLoginDTO = Lists.newArrayList();
 		listParamsHeadersLoginDTO = parser.toListDTO(lsParamsHeadersLogin);
 		
 		assertEquals("size", 
@@ -109,11 +109,11 @@ public class ParamsHeadersLoginParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsParamsHeadersLogin = new ArrayList<>();
+		List<Object[]> lsParamsHeadersLogin = Lists.newArrayList();
 		lsParamsHeadersLogin.add(new Object[5]);
 		lsParamsHeadersLogin.add(new Object[4]);
 		
-		List<ParamsLoginDTO> listParamsHeadersLoginDTO = new ArrayList<>();
+		List<ParamsLoginDTO> listParamsHeadersLoginDTO = Lists.newArrayList();
 		ParamsHeadersLoginParser parser = new ParamsHeadersLoginParser();
 		listParamsHeadersLoginDTO = parser.toListODTO(lsParamsHeadersLogin);
 			

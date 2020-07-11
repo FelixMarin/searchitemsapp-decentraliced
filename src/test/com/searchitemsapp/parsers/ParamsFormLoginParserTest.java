@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -18,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsFormLogin;
 import com.searchitemsapp.entities.TbSiaUrl;
@@ -90,7 +90,7 @@ public class ParamsFormLoginParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaParamsFormLogin> lsParamsFormLogin = new ArrayList<>();
+		List<TbSiaParamsFormLogin> lsParamsFormLogin = Lists.newArrayList();
 		tbSiaParamsFormLogin.setTbSiaUrl(new TbSiaUrl());
 		lsParamsFormLogin.add(tbSiaParamsFormLogin);
 		
@@ -108,10 +108,10 @@ public class ParamsFormLoginParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsParamsFormLogin = new ArrayList<>();
+		List<Object[]> lsParamsFormLogin = Lists.newArrayList();
 		lsParamsFormLogin.add(new Object[5]);
 		
-		List<ParamsLoginDTO> listParamsFormLoginDTO = new ArrayList<>();
+		List<ParamsLoginDTO> listParamsFormLoginDTO = Lists.newArrayList();
 		listParamsFormLoginDTO = parser.toListODTO(lsParamsFormLogin);
 			
 		assertNotEquals(lsParamsFormLogin, listParamsFormLoginDTO);

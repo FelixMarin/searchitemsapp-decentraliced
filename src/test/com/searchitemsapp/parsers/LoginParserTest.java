@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -18,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.LoginDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaLogin;
@@ -108,11 +108,11 @@ public class LoginParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaLogin> lsLogin = new ArrayList<>();
+		List<TbSiaLogin> lsLogin = Lists.newArrayList();
 		tbSiaLogin.setTbSiaEmpresa(new TbSiaEmpresa());
 		lsLogin.add(tbSiaLogin);
 		
-		List<LoginDTO> listLoginDTO = new ArrayList<>();
+		List<LoginDTO> listLoginDTO = Lists.newArrayList();
 		listLoginDTO = parser.toListDTO(lsLogin);
 		
 		assertEquals("size", 
@@ -125,11 +125,11 @@ public class LoginParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsLogin = new ArrayList<>();
+		List<Object[]> lsLogin = Lists.newArrayList();
 		lsLogin.add(new Object[5]);
 		lsLogin.add(new Object[4]);
 		
-		List<LoginDTO> listLoginDTO = new ArrayList<>();
+		List<LoginDTO> listLoginDTO = Lists.newArrayList();
 		listLoginDTO = parser.toListODTO(lsLogin);
 			
 		assertNotEquals(lsLogin, listLoginDTO);

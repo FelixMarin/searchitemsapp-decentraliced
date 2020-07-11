@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaEmpresa;
@@ -77,12 +78,12 @@ public class CategoriaParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaCategoriasEmpresa> lsCategorias = new ArrayList<>();
-		tbSiaCategoriasEmpresa.setTbSiaEmpresas(new ArrayList<>());
+		List<TbSiaCategoriasEmpresa> lsCategorias = Lists.newArrayList();
+		tbSiaCategoriasEmpresa.setTbSiaEmpresas(Lists.newArrayList());
 		tbSiaCategoriasEmpresa.getTbSiaEmpresas().add(new TbSiaEmpresa());
-		tbSiaCategoriasEmpresa.setTbSiaMarcas(new ArrayList<>());
+		tbSiaCategoriasEmpresa.setTbSiaMarcas(Lists.newArrayList());
 		tbSiaCategoriasEmpresa.getTbSiaMarcas().add(new TbSiaMarcas());
-		tbSiaCategoriasEmpresa.setTbSiaNomProductos(new ArrayList<>());
+		tbSiaCategoriasEmpresa.setTbSiaNomProductos(Lists.newArrayList());
 		tbSiaCategoriasEmpresa.getTbSiaNomProductos().add(new TbSiaNomProducto());
 		lsCategorias.add(tbSiaCategoriasEmpresa);
 		
@@ -101,7 +102,7 @@ public class CategoriaParserTest {
 		List<Object[]> lsCategorias = new ArrayList<Object[]>();
 		lsCategorias.add(new Object[0]);
 		
-		List<CategoriaDTO> listCategoriaDTO = new ArrayList<>();
+		List<CategoriaDTO> listCategoriaDTO = Lists.newArrayList();
 		listCategoriaDTO = parser.toListODTO(lsCategorias);
 			
 		assertNotEquals(lsCategorias.size(), listCategoriaDTO.size());

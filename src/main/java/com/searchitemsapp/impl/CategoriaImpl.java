@@ -1,18 +1,17 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.CategoriaDao;
 import com.searchitemsapp.dao.repository.IFCategoriaRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
@@ -27,7 +26,7 @@ import com.searchitemsapp.dto.EmpresaDTO;
  * @author Felix Marin Ramirez
  *
  */
-@Aspect
+@Component
 public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaImpl.class);  
@@ -110,6 +109,6 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	 */
 	@Override
 	public List<CategoriaDTO> findByTbSia(CategoriaDTO categoriaDTO, EmpresaDTO empresaDTO) throws IOException {
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+		return Lists.newArrayList();
 	}
 }

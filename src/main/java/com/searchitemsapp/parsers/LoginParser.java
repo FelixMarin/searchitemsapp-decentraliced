@@ -1,16 +1,18 @@
 package com.searchitemsapp.parsers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.LoginDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaLogin;
+import com.sun.istack.NotNull;
 
 
 
@@ -22,15 +24,16 @@ import com.searchitemsapp.entities.TbSiaLogin;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginParser.class);  
 	
 	@Autowired
-	LoginDTO loginPDto;
+	private LoginDTO loginPDto;
 	
 	@Autowired
-	TbSiaLogin tbSiaLogin;
+	private TbSiaLogin tbSiaLogin;
 	
 	/*
 	 * Constructor
@@ -46,7 +49,7 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	 * @return LoginDTO
 	 */
 	@Override
-	public LoginDTO toDTO(TbSiaLogin tbSiaLogin) {	
+	public LoginDTO toDTO(@NotNull final TbSiaLogin tbSiaLogin) {	
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -71,7 +74,7 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	 * @return TbSiaLogin
 	 */
 	@Override
-	public TbSiaLogin toTbSia(LoginDTO loginPDto) {
+	public TbSiaLogin toTbSia(@NotNull final LoginDTO loginPDto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -97,26 +100,26 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	 * @return List<LoginDTO>
 	 */
 	@Override
-	public List<LoginDTO> toListDTO(List<TbSiaLogin> lsLoginPDto) {
+	public List<LoginDTO> toListDTO(@NotNull final List<TbSiaLogin> lsLoginPDto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<LoginDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
+		List<LoginDTO> listDto = Lists.newArrayList(); 
 		
-		for (TbSiaLogin tbSiaLog : lsLoginPDto) {
+		lsLoginPDto.forEach(e -> {
 			loginPDto = new LoginDTO();
-			loginPDto.setDid(tbSiaLog.getDid());
-			loginPDto.setCodPassword(tbSiaLog.getCodPassword());
-			loginPDto.setCodPostal(tbSiaLog.getCodPostal());		
-			loginPDto.setDesEmail(tbSiaLog.getDesEmail());
-			loginPDto.setNomUsuario(tbSiaLog.getNomUsuario());
-			loginPDto.setNumTelefono(tbSiaLog.getNumTelefono());
-			loginPDto.setDidEmpresa(tbSiaLog.getTbSiaEmpresa().getDid());
-			loginPDto.setNomEmpresa(tbSiaLog.getTbSiaEmpresa().getNomEmpresa());
-			listDto.add(loginPDto);
-		}
+			loginPDto.setDid(e.getDid());
+			loginPDto.setCodPassword(e.getCodPassword());
+			loginPDto.setCodPostal(e.getCodPostal());		
+			loginPDto.setDesEmail(e.getDesEmail());
+			loginPDto.setNomUsuario(e.getNomUsuario());
+			loginPDto.setNumTelefono(e.getNumTelefono());
+			loginPDto.setDidEmpresa(e.getTbSiaEmpresa().getDid());
+			loginPDto.setNomEmpresa(e.getTbSiaEmpresa().getNomEmpresa());
+			listDto.add(loginPDto);			
+		});
 		
 		return listDto;
 	}
@@ -125,12 +128,7 @@ public class LoginParser implements IFParser<LoginDTO, TbSiaLogin> {
 	 * Método no implementado.
 	 */
 	@Override
-	public List<LoginDTO> toListODTO(List<Object[]> objeto) {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+	public List<LoginDTO> toListODTO(final List<Object[]> objeto) {
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }

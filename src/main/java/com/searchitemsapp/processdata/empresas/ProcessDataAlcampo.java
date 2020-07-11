@@ -1,7 +1,6 @@
 package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -13,8 +12,10 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
 
 /**
@@ -24,6 +25,7 @@ import com.searchitemsapp.dto.UrlDTO;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ProcessDataAlcampo implements IFProcessDataEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataAlcampo.class);   
@@ -86,7 +88,7 @@ public class ProcessDataAlcampo implements IFProcessDataEmpresas {
 		/**
 		 * Se crea una lista de Strings.
 		 */
-		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> liSelectorAtr = Lists.newArrayList();
 		
 		/**
 		 * Se divide el selector de paginación.
@@ -105,7 +107,7 @@ public class ProcessDataAlcampo implements IFProcessDataEmpresas {
 		 * utilizando el selector css.
 		 */
 		Elements elements = document.select(liSelectorAtr.get(0));
-		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> listaUrls = Lists.newArrayList();
 		
 		/**
 		 * Si la lista de elementos no está vacía

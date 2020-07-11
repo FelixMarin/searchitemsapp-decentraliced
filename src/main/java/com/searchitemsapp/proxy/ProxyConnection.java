@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.config.IFCommonsProperties;
 
  /**
   * Esta clase establece el proxy, a través del cual,

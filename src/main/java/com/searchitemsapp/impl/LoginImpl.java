@@ -1,18 +1,17 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFLoginRepository;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.LoginDTO;
@@ -26,7 +25,7 @@ import com.searchitemsapp.dto.LoginDTO;
  * @author Felix Marin Ramirez
  *
  */
-@Aspect
+@Component
 public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginImpl.class);  
@@ -126,7 +125,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(loginDTO) || Objects.isNull(empresaDTO)) {
-			return new ArrayList<>(NumberUtils.INTEGER_ONE);
+			return Lists.newArrayList();
 		}		
 		
 		/**
@@ -145,7 +144,7 @@ public class LoginImpl implements IFImplementacion<LoginDTO, EmpresaDTO> {
 		 * Se ejecuta la consulta y el resultado 
 		 * se asigna a la lista que será retornada.
 		 */
-		List<LoginDTO> listLoginDTO = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<LoginDTO> listLoginDTO = Lists.newArrayList();
 		listLoginDTO.add(loginDao.findByTbSiaEmpresa(empresaDTO.getDid()));
 		
 		return listLoginDTO;

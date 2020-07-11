@@ -1,6 +1,6 @@
 package com.searchitemsapp.dto;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -14,9 +14,9 @@ public class CategoriaDTOTest {
 		cdto.setBolActivo(true);
 		cdto.setDesCatEmpresa("catEmpresa");
 		cdto.setDid(101);
-		cdto.setEmpresas(new LinkedHashMap<>());
-		cdto.setProductos(new LinkedHashMap<>());
-		cdto.setMarcas(new LinkedHashMap<>());
+		cdto.setEmpresas(new HashMap<>());
+		cdto.setProductos(new HashMap<>());
+		cdto.setMarcas(new HashMap<>());
 		cdto.setNomCatEmpresa("nombre");
 		
 		cdto.getBolActivo();

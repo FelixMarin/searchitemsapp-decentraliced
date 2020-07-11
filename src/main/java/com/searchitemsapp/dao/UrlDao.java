@@ -1,7 +1,6 @@
 package com.searchitemsapp.dao;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,13 +8,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFUrlRepository;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaUrl;
@@ -164,7 +163,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		 * termina y retorna nulo.
 		 */
 		if (Objects.isNull(didCategoria)) {
-			return new ArrayList<>(NumberUtils.INTEGER_ONE);
+			return Lists.newArrayList();
 		}
 		
 		List<UrlDTO> listUrlDto = null;
@@ -226,7 +225,7 @@ public class UrlDao extends AbstractDao implements IFUrlRepository {
 		 * termina y retorna nulo.
 		 */
 		if (Objects.isNull(didCategoria)) {
-			return new ArrayList<>(NumberUtils.INTEGER_ONE);
+			return Lists.newArrayList();
 		}
 		
 		List<UrlDTO> listUrlDto = null;

@@ -1,4 +1,4 @@
-package com.searchitemsapp.commons;
+package com.searchitemsapp.config;
 
 public interface IFCommonsProperties {
 

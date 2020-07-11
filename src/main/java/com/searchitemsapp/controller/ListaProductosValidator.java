@@ -1,6 +1,5 @@
 package com.searchitemsapp.controller;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -54,7 +53,7 @@ public class ListaProductosValidator {
 	
 	public boolean isParams(@NotNull final String... input) {
 		
-		if(Objects.isNull(input) || input.length != 5) {
+		if(input.length != 5) {
 			return Boolean.FALSE;
 		}
 		

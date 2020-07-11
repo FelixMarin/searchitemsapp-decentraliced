@@ -1,17 +1,19 @@
 package com.searchitemsapp.parsers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
 import com.searchitemsapp.entities.TbSiaUrl;
+import com.sun.istack.NotNull;
 
 /**
  * Es un componente analizador de software que 
@@ -21,15 +23,16 @@ import com.searchitemsapp.entities.TbSiaUrl;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSelectoresCss> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssParser.class);  
 	
 	@Autowired 
-	SelectoresCssDTO selectoresCssDTO;
+	private SelectoresCssDTO selectoresCssDTO;
 	
 	@Autowired
-	TbSiaSelectoresCss tbSiaSelectoresCss;
+	private TbSiaSelectoresCss tbSiaSelectoresCss;
 	
 	/*
 	 * Constructor
@@ -45,7 +48,7 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	 * @return SelectoresCssDTO
 	 */
 	@Override
-	public SelectoresCssDTO toDTO(TbSiaSelectoresCss tbSiaSelectores) {
+	public SelectoresCssDTO toDTO(@NotNull final TbSiaSelectoresCss tbSiaSelectores) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -77,7 +80,7 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	 * @return TbSiaSelectoresCss
 	 */
 	@Override
-	public TbSiaSelectoresCss toTbSia(SelectoresCssDTO selectoresCssDTO) {
+	public TbSiaSelectoresCss toTbSia(@NotNull final SelectoresCssDTO selectoresCssDTO) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -110,15 +113,15 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	 * @param List<TbSiaSelectoresCss>
 	 * @return List<SelectoresCssDTO>
 	 */
-	public List<SelectoresCssDTO> toListDTO(List<TbSiaSelectoresCss> lsTbSiaSelectoresCss) {
+	public List<SelectoresCssDTO> toListDTO(@NotNull final List<TbSiaSelectoresCss> lsTbSiaSelectoresCss) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<SelectoresCssDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
+		List<SelectoresCssDTO> listDto = Lists.newArrayList(); 
 		
-		for (TbSiaSelectoresCss tbSiaSelectores : lsTbSiaSelectoresCss) {
+		lsTbSiaSelectoresCss.forEach(tbSiaSelectores -> {
 			selectoresCssDTO = new SelectoresCssDTO();
 			selectoresCssDTO.setDid(tbSiaSelectores.getDid());
 			selectoresCssDTO.setBolActivo(tbSiaSelectores.getBolActivo());
@@ -135,8 +138,9 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 			selectoresCssDTO.setNomEmpresa(tbSiaSelectores.getTbSiaEmpresa().getNomEmpresa());		
 			selectoresCssDTO.setDidUrl(tbSiaSelectores.getTbSiaUrl().getDid());
 			selectoresCssDTO.setNomUrl(tbSiaSelectores.getTbSiaUrl().getNomUrl());
-			listDto.add(selectoresCssDTO);
-		}
+			listDto.add(selectoresCssDTO);			
+		});
+
 		return listDto;
 	}
 	
@@ -144,12 +148,7 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	 * Método no implementado.
 	 */
 	@Override
-	public List<SelectoresCssDTO> toListODTO(List<Object[]> objeto) {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+	public List<SelectoresCssDTO> toListODTO(final List<Object[]> objeto) {
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }

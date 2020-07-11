@@ -1,18 +1,17 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFSelectoresCssRepository;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
@@ -26,7 +25,7 @@ import com.searchitemsapp.dto.SelectoresCssDTO;
  * @author Felix Marin Ramirez
  *
  */
-@Aspect
+@Component
 public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, EmpresaDTO> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssImpl.class);  
@@ -128,7 +127,7 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 		 * termina y retorna nulo.
 		 */
 		if(Objects.isNull(empresaDto)) {
-			return new ArrayList<>(NumberUtils.INTEGER_ONE);
+			return Lists.newArrayList();
 		}
 		
 		/**

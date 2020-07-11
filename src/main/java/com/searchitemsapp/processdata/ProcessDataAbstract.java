@@ -1,13 +1,14 @@
 package com.searchitemsapp.processdata;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -30,7 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
@@ -136,6 +137,12 @@ public abstract class ProcessDataAbstract {
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 	
+	@Autowired
+	private EmpresaDTO empresaDto;
+	
+	@Autowired
+	SelectoresCssDTO selectoresCssDto;
+	
 	/*
 	 * Constructor
 	 */
@@ -211,27 +218,30 @@ public abstract class ProcessDataAbstract {
 		}
 
 		if(StringUtils.isAllEmpty(emp)) {
-			return new ArrayList<>();
+			return Lists.newArrayList();
 		}
 		
 		StringTokenizer st = new StringTokenizer(emp, COMMA_STRING); 			
-		SelectoresCssDTO selectoresCssDto = new SelectoresCssDTO();
-		List<Integer> listaAux = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<Integer> listaAux = Lists.newArrayList();
 		
 		while (st.hasMoreElements()) {
 			listaAux.add(Integer.parseInt(String.valueOf(st.nextElement())));
 			
 		}
 		
-		List<SelectoresCssDTO> listaSelectoresResultado = new ArrayList<>();
+		List<SelectoresCssDTO> listaSelectoresResultado = Lists.newArrayList();
 		
-		for (Integer didEmpresa : listaAux) {
-			EmpresaDTO empresaDto = new EmpresaDTO();
-			empresaDto.setDid(didEmpresa);			
-			List<SelectoresCssDTO> lsel = selectoresCssImpl.findByTbSia(selectoresCssDto, empresaDto);
-			listaSelectoresResultado.addAll(lsel);
-		}
-
+		listaAux.forEach(didEmpresa -> {
+			
+			try {
+				empresaDto.setDid(didEmpresa);			
+				List<SelectoresCssDTO> lsel = selectoresCssImpl.findByTbSia(selectoresCssDto, empresaDto);
+				listaSelectoresResultado.addAll(lsel);
+			}catch(IOException e) {
+				throw new UncheckedIOException(e);
+			}
+			
+		});
 		
 		return listaSelectoresResultado;
 	}
@@ -302,7 +312,7 @@ public abstract class ProcessDataAbstract {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-    	List<Document> listDocuments = new ArrayList<>(NumberUtils.INTEGER_ONE);
+    	List<Document> listDocuments = Lists.newArrayList();
     	
 		/**
 		 * El identificador de la empresa se añade 
@@ -357,7 +367,7 @@ public abstract class ProcessDataAbstract {
 			final UrlDTO urlDto, final int idEmpresa) 
 					throws MalformedURLException {
 		
-		List<String> listUrlsResultado = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> listUrlsResultado = Lists.newArrayList();
 		
 		/**
 		 * Se obtiene el listado de URLs correspodientes
@@ -432,31 +442,35 @@ public abstract class ProcessDataAbstract {
 	 */
 	protected Pattern createPatternProduct(@NotNull final String[] arProducto) {
 
-		List<String> tokens = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> tokens = Lists.newArrayList();
 		
 		/**
 		 * Se añaden todas las palabras que componen 
 		 * el producto en una lista en mayúsculas.
 		 */
-		for (int i = 0; i < arProducto.length; i++) {
-			tokens.add(arProducto[i].toUpperCase());
-		}
+		List<String> listProducto = Arrays.asList(arProducto);  
+		listProducto.forEach(elem -> {
+			tokens.add(elem.toUpperCase());
+		});
 		
 		//INI - Bloque de código donde se forma el patrón.
-		StringBuilder stringBuilder = new StringBuilder(1);
+		StringBuilder stringBuilder = new StringBuilder(10);
 		stringBuilder.append("(");
-		for (String string : tokens) {
-			stringBuilder.append(".*").append(string);
-		}
+		
+		tokens.forEach(e -> {
+			stringBuilder.append(".*").append(e);
+		});
+		
 		stringBuilder.append(")");
 		
 		Collections.reverse(tokens);
 		
 		stringBuilder.append("|(");
-		for (String string : tokens) {
-			stringBuilder.append(".*")
-			.append(string);
-		}
+		
+		tokens.forEach(e -> {
+			stringBuilder.append(".*").append(e);			
+		});
+
 		stringBuilder.append(")");
 		//FIN - Bloque de código donde se forma el patrón.
 		
@@ -492,7 +506,7 @@ public abstract class ProcessDataAbstract {
 			return StringUtils.EMPTY;
 		}
 		
-		List<String> lista = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> lista = Lists.newArrayList();
 		String strResult;
 		
 		/**
@@ -776,7 +790,8 @@ public abstract class ProcessDataAbstract {
 		 */
 		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE);
 				
-		StringBuilder stringBuilder = new StringBuilder(1);
+		StringBuilder stringBuilder = new StringBuilder(10);
+		
 		for (int i = 0; i < nomProdSeparado.length; i++) {
 			
 			String may = nomProdSeparado[i].toUpperCase();			
@@ -878,7 +893,9 @@ public abstract class ProcessDataAbstract {
 		if (iTipo == 0) {
 			stringBuilder.append(strCadena);
 		}
+		
 		final int dif = iLongitud - strCadena.length();
+		
 		for (int i = 0; i < dif; i++) {
 			stringBuilder.append(chrCaracter);
 		}

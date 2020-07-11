@@ -1,5 +1,7 @@
 package com.searchitemsapp.dto;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Objeto de Transferencia de Datos (DTO) 
  * es un objeto que transporta datos entre procesos.
@@ -9,6 +11,7 @@ package com.searchitemsapp.dto;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ParamsLoginDTO implements IFdto {
 
 	/*

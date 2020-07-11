@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -18,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaMarcas;
@@ -103,13 +103,13 @@ public class MarcasParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaMarcas> lsMarcas = new ArrayList<>();
+		List<TbSiaMarcas> lsMarcas = Lists.newArrayList();
 		tbSiaMarcas.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaMarcas.setTbSiaPais(new TbSiaPais());
 		tbSiaMarcas.setDid(101);
 		lsMarcas.add(tbSiaMarcas);
 		
-		List<MarcasDTO> listMarcasDTO = new ArrayList<>();
+		List<MarcasDTO> listMarcasDTO = Lists.newArrayList();
 		listMarcasDTO = parser.toListDTO(lsMarcas);
 		
 		assertEquals("size", 
@@ -122,10 +122,10 @@ public class MarcasParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsMarcas = new ArrayList<>();
+		List<Object[]> lsMarcas = Lists.newArrayList();
 		lsMarcas.add(new Object[5]);
 		
-		List<MarcasDTO> listMarcasDTO = new ArrayList<>();
+		List<MarcasDTO> listMarcasDTO = Lists.newArrayList();
 		listMarcasDTO = parser.toListODTO(lsMarcas);
 			
 		assertNotEquals(lsMarcas, listMarcasDTO);

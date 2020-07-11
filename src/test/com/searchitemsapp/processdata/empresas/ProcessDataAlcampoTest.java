@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.google.common.collect.Maps;
+import com.searchitemsapp.config.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -65,7 +65,7 @@ public class ProcessDataAlcampoTest {
 				"E:\\eclipse-workspace\\properties\\db.properties",
 				"db.properties", sve);
 		
-		Map<String,String> map = new HashMap<>();
+		Map<String,String> map = Maps.newHashMap(); 
 		map.put("SEL_PAGINACION", "div|href");
 		urlDTO.setSelectores(map); 
 		Document document = new Document("<html></html>");

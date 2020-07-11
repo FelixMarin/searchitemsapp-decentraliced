@@ -1,7 +1,6 @@
 package com.searchitemsapp.services;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -12,15 +11,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.processdata.IFProcessPrice;
@@ -112,7 +111,7 @@ public class ApplicationService implements IFService<String,String> {
 		 * Se declaran las variables que serán utilizadasa en el
 		 * proceso de ejecución del programa.
 		 */
-		List<IFProcessPrice> listResultDtoFinal = new ArrayList<>(10);
+		List<IFProcessPrice> listResultDtoFinal = Lists.newArrayList();
 		int contador = 0;
 		
 		/**
@@ -150,7 +149,7 @@ public class ApplicationService implements IFService<String,String> {
 			 * en cada uno de los supermercados. Habrá un objeto por cada 
 			 * supermercado a rastrear.
 			 */
-			Collection<ProcessDataModule> colPDMcallables = new ArrayList<>(NumberUtils.INTEGER_ONE);
+			Collection<ProcessDataModule> colPDMcallables = Lists.newArrayList();
 
 			/**
 			 * Habrá tantas iteraciones como URLs contenga cada supermercado.
@@ -202,6 +201,10 @@ public class ApplicationService implements IFService<String,String> {
 			
 		}catch(IOException | InterruptedException | ExecutionException e) {
 			
+  			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
+			}
+			
 			/**
 			 * Interrumpe este subproceso. 
 			 * A menos que el subproceso actual se interrumpa a sí mismo, 
@@ -244,7 +247,7 @@ public class ApplicationService implements IFService<String,String> {
 	private List<IFProcessPrice> executeFuture(final List<Future<List<IFProcessPrice>>> resultList) 
 			throws InterruptedException, ExecutionException {
 		
-		List<IFProcessPrice> listResultFinal = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<IFProcessPrice> listResultFinal = Lists.newArrayList();
 		
 		/**
 		 * Se itera sobre la lista de futuros. Cada ejecución

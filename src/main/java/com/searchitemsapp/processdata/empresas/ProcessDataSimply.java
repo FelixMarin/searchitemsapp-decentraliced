@@ -1,7 +1,6 @@
 package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -9,8 +8,10 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
 
 /**
@@ -20,6 +21,7 @@ import com.searchitemsapp.dto.UrlDTO;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ProcessDataSimply implements IFProcessDataSimply {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataSimply.class);  
@@ -84,7 +86,7 @@ public class ProcessDataSimply implements IFProcessDataSimply {
 		/**
 		 * Se asigna la url base a la lista.
 		 */
-		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
 		
 		/**
@@ -92,6 +94,7 @@ public class ProcessDataSimply implements IFProcessDataSimply {
 		 * realizar la extracción de datos.
 		 */
 		for (int i = 2; i <= max; i++) {
+			
 			urlAux = urlBase.replace("=1&", "=".concat(String.valueOf(i).concat("&")));
 			
 			if(i == 2) {
