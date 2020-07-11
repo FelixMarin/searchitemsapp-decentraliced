@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.LoginDTO;
@@ -323,25 +323,26 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 					.ignoreHttpErrors(Boolean.TRUE)
 					.timeout(100000);
 			
-			for (ParamsLoginDTO paramsLoginDTO : listParamLoginHeaders) {
+			listParamLoginHeaders.forEach(paramsLoginDTO -> {
 				if(paramsLoginDTO.getDidUrl().equals(idUrl)) {
 					connection.header(paramsLoginDTO.getParamClave(), paramsLoginDTO.getParamValor());
-				}
-			}
+				}				
+			});
 			
 			response = connection.execute();	
 			
+			if(response == null) {
+				return Maps.newHashMap();
+			}			
+		
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.info(HTTP_STATUS_CODE.concat(String.valueOf(response.statusCode())));
 			}
+			
 		} catch (IOException e) {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 			}
-		}
-		
-		if(response == null) {
-			return Maps.newHashMap();
 		}
 		
 		return response.cookies();
@@ -398,6 +399,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.info(HTTP_STATUS_CODE.concat(String.valueOf(response.statusCode())));
 			}
+			
 		} catch (IOException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFUrlRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
@@ -129,15 +129,13 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		if(Objects.isNull(listUrlDTO)) {
 			return lsIdsEmpresas;
 		}
-		
-		
-		
+				
 		for (String id : arIdsEpresas) {
-			for (UrlDTO urlDTO : listUrlDTO) {
+			listUrlDTO.forEach(urlDTO -> {
 				if(Integer.parseInt(id) == urlDTO.getDidEmpresa()) {
 					lsIdsEmpresas.add(urlDTO);
 				}
-			}
+			});
 		}
 		
 		return lsIdsEmpresas;

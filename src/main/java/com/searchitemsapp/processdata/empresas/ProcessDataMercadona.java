@@ -1,11 +1,9 @@
 package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.json.JSONObject;
 import org.json.XML;
 import org.jsoup.Connection;
@@ -15,7 +13,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.processdata.IFProcessPrice;
 
@@ -26,6 +26,7 @@ import com.searchitemsapp.processdata.IFProcessPrice;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ProcessDataMercadona implements IFProcessDataMercadona {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataMercadona.class);  
@@ -89,7 +90,7 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 		/**
 		 * Se asigna la url base a la lista.
 		 */
-		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
 		
 		return listaUrls;

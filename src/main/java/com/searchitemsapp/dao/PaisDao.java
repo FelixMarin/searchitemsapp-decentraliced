@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFPaisRepository;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.entities.TbSiaPais;

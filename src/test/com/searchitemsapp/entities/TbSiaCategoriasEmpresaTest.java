@@ -1,13 +1,13 @@
 package com.searchitemsapp.entities;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.google.common.collect.Lists;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/context-servicefactory-test.xml")
@@ -20,11 +20,11 @@ public class TbSiaCategoriasEmpresaTest {
 	@Test
 	public void testTbSiaCategoriasEmpresa() {
 
-		tbSiaCategoriasEmpresa.setTbSiaEmpresas(new ArrayList<>());
+		tbSiaCategoriasEmpresa.setTbSiaEmpresas(Lists.newArrayList());
 		tbSiaCategoriasEmpresa.getTbSiaEmpresas().add(new TbSiaEmpresa());
-		tbSiaCategoriasEmpresa.setTbSiaMarcas(new ArrayList<>());
+		tbSiaCategoriasEmpresa.setTbSiaMarcas(Lists.newArrayList());
 		tbSiaCategoriasEmpresa.getTbSiaMarcas().add(new TbSiaMarcas());
-		tbSiaCategoriasEmpresa.setTbSiaNomProductos(new ArrayList<>());
+		tbSiaCategoriasEmpresa.setTbSiaNomProductos(Lists.newArrayList());
 		tbSiaCategoriasEmpresa.getTbSiaNomProductos().add(new TbSiaNomProducto());
 		tbSiaCategoriasEmpresa.addTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaCategoriasEmpresa.addTbSiaMarca(new TbSiaMarcas());

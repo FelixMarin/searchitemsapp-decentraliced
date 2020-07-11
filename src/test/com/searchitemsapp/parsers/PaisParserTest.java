@@ -6,8 +6,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -20,6 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaMarcas;
@@ -56,9 +56,9 @@ public class PaisParserTest {
 		
 		LOGGER.debug(Thread.currentThread().getStackTrace()[1].toString());
 
-		tbSiaPais.setTbSiaEmpresas(new ArrayList<>());
-		tbSiaPais.setTbSiaMarcas(new ArrayList<>());
-		tbSiaPais.setTbSiaNomProductos(new ArrayList<>());
+		tbSiaPais.setTbSiaEmpresas(Lists.newArrayList());
+		tbSiaPais.setTbSiaMarcas(Lists.newArrayList());
+		tbSiaPais.setTbSiaNomProductos(Lists.newArrayList());
 		
 		tbSiaPais.addTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaPais.addTbSiaMarca(new TbSiaMarcas());
@@ -91,9 +91,9 @@ public class PaisParserTest {
 	public void toTbSia() {
 		
 		nomProductoDto.setDid(101);
-		nomProductoDto.setEmpresas(new LinkedHashMap<>());
-		nomProductoDto.setMarcas(new LinkedHashMap<>());
-		nomProductoDto.setProductos(new LinkedHashMap<>());
+		nomProductoDto.setEmpresas(Maps.newHashMap());
+		nomProductoDto.setMarcas(Maps.newHashMap());
+		nomProductoDto.setProductos(Maps.newHashMap());
 		TbSiaPais tbSiaPais = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
@@ -120,12 +120,12 @@ public class PaisParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaPais> lsPais = new ArrayList<>();
-		tbSiaPais.setTbSiaEmpresas(new ArrayList<>());
+		List<TbSiaPais> lsPais = Lists.newArrayList();
+		tbSiaPais.setTbSiaEmpresas(Lists.newArrayList());
 		tbSiaPais.addTbSiaEmpresa(new TbSiaEmpresa());
 		lsPais.add(tbSiaPais);
 		
-		List<PaisDTO> listPaisDTO = new ArrayList<>();
+		List<PaisDTO> listPaisDTO = Lists.newArrayList();
 		listPaisDTO = parser.toListDTO(lsPais);
 		
 		assertTrue(listPaisDTO.isEmpty());	
@@ -139,10 +139,10 @@ public class PaisParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsPais = new ArrayList<>();
+		List<Object[]> lsPais = Lists.newArrayList();
 		lsPais.add(new Object[5]);
 		
-		List<PaisDTO> listPaisDTO = new ArrayList<>();
+		List<PaisDTO> listPaisDTO = Lists.newArrayList();
 		listPaisDTO = parser.toListODTO(lsPais);
 			
 		assertNotEquals(lsPais, listPaisDTO);

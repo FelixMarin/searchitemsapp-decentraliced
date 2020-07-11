@@ -1,12 +1,11 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dao.repository.IFNomProductoRepository;
 import com.searchitemsapp.dto.NomProductoDTO;
 
@@ -47,7 +46,7 @@ public class NomProductoImpl  implements IFImplementacion<NomProductoDTO, Object
 
 	@Override
 	public List<NomProductoDTO> findByTbSia(NomProductoDTO r, Object t) throws IOException {
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+		return Lists.newArrayList();
 	}
 
 }

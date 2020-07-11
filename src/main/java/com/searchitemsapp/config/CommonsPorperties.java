@@ -1,4 +1,4 @@
-package com.searchitemsapp.commons;
+package com.searchitemsapp.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;

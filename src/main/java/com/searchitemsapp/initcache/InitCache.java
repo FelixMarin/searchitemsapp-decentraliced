@@ -8,7 +8,7 @@ import javax.servlet.ServletContextListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.searchitemsapp.commons.CommonsPorperties;
+import com.searchitemsapp.config.CommonsPorperties;
 
 /**
  * Servlet que se ejecuta al arrancar la aplicación y carga

@@ -1,18 +1,17 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFPaisRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
@@ -26,7 +25,7 @@ import com.searchitemsapp.dto.PaisDTO;
  * @author Felix Marin Ramirez
  *
  */
-@Aspect
+@Component
 public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PaisImpl.class);  
@@ -95,7 +94,7 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<PaisDTO> findAll() throws IOException {
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+		return Lists.newArrayList();
 	}
 
 	/**
@@ -105,6 +104,6 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 */
 	@Override
 	public List<PaisDTO> findByTbSia(PaisDTO paisDTO, CategoriaDTO categoriaDTO) throws IOException {
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+		return Lists.newArrayList();
 	}
 }

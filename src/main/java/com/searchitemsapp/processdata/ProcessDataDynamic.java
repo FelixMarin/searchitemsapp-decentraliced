@@ -16,8 +16,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.processdata.empresas.IFProcessDataConsum;
 
 /**
@@ -28,6 +29,7 @@ import com.searchitemsapp.processdata.empresas.IFProcessDataConsum;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ProcessDataDynamic {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataDynamic.class);  

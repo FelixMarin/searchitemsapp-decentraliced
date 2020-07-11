@@ -2,8 +2,6 @@ package com.searchitemsapp.processdata;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -11,15 +9,17 @@ import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.searchitemsapp.commons.IFCommonsProperties;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
 import com.sun.istack.NotNull;
 
@@ -34,6 +34,7 @@ import com.sun.istack.NotNull;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ProcessDataModule extends ProcessDataLogin  implements Callable<List<IFProcessPrice>> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataModule.class);  
@@ -48,7 +49,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	/* 
 	 * Variables Globales
 	 */
-	private static Map<Integer, Map<String, String>> mapaCookies = new HashMap<>(NumberUtils.INTEGER_ONE);
+	private static Map<Integer, Map<String, String>> mapaCookies = Maps.newHashMap();
 	private UrlDTO urlDto; 
 	private String producto;
 	private String didPais; 
@@ -127,7 +128,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
         	 */
         	List<Document> listDocuments = getHtmlDocument(urlDto, mapLoginPageCookies, producto);
         	
-        	lResultadoDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
+        	lResultadoDto = Lists.newArrayList();
         	
         	/**
         	 * Se itera sobre cada uno de los documentos
@@ -153,7 +154,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 	            if(listDocuments.size() == 1 && 
 	            		!validaURL(document.baseUri(),urlDto.getNomUrl()
 	            				.replace(StringUtils.SPACE, SEPARADOR_URL))) {
-	            	return new ArrayList<>(NumberUtils.INTEGER_ONE);
+	            	return Lists.newArrayList();
 	            }
 	            
 	            /**
@@ -198,7 +199,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
 		        }
         	}	
         } else {
-        	return new ArrayList<>(NumberUtils.INTEGER_ONE);
+        	return Lists.newArrayList();
         }   
         
         return lResultadoDto;

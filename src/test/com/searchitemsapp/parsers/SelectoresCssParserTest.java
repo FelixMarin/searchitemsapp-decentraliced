@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -18,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
@@ -101,13 +101,13 @@ public class SelectoresCssParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaSelectoresCss> lsSelectoresCssParser = new ArrayList<>();
+		List<TbSiaSelectoresCss> lsSelectoresCssParser = Lists.newArrayList();
 		tbSiaSelectoresCssParser.setTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaSelectoresCssParser.getTbSiaEmpresa().setDid(101);
 		tbSiaSelectoresCssParser.setTbSiaUrl(new TbSiaUrl());
 		lsSelectoresCssParser.add(tbSiaSelectoresCssParser);
 		
-		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<>();
+		List<SelectoresCssDTO> listSelectoresCssParserDTO = Lists.newArrayList();
 		listSelectoresCssParserDTO = parser.toListDTO(lsSelectoresCssParser);
 		
 		assertEquals("size", 
@@ -120,10 +120,10 @@ public class SelectoresCssParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsSelectoresCssParser = new ArrayList<>();
+		List<Object[]> lsSelectoresCssParser = Lists.newArrayList();
 		lsSelectoresCssParser.add(new Object[5]);
 		
-		List<SelectoresCssDTO> listSelectoresCssParserDTO = new ArrayList<>();
+		List<SelectoresCssDTO> listSelectoresCssParserDTO = Lists.newArrayList();
 		listSelectoresCssParserDTO = parser.toListODTO(lsSelectoresCssParser);
 			
 		assertNotEquals(lsSelectoresCssParser, listSelectoresCssParserDTO);

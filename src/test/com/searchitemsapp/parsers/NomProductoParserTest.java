@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -18,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.NomProductoDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaNomProducto;
@@ -112,12 +112,12 @@ public class NomProductoParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaNomProducto> lsNomProducto = new ArrayList<>();
+		List<TbSiaNomProducto> lsNomProducto = Lists.newArrayList();
 		tbSiaNomProducto.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaNomProducto.setTbSiaPais(new TbSiaPais());
 		lsNomProducto.add(tbSiaNomProducto);
 		
-		List<NomProductoDTO> listNomProductoDTO = new ArrayList<>();
+		List<NomProductoDTO> listNomProductoDTO = Lists.newArrayList();
 		listNomProductoDTO = parser.toListDTO(lsNomProducto);
 		
 		assertEquals("size", 
@@ -130,10 +130,10 @@ public class NomProductoParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsNomProducto = new ArrayList<>();
+		List<Object[]> lsNomProducto = Lists.newArrayList();
 		lsNomProducto.add(new Object[5]);
 		
-		List<NomProductoDTO> listNomProductoDTO = new ArrayList<>();
+		List<NomProductoDTO> listNomProductoDTO = Lists.newArrayList();
 		listNomProductoDTO = parser.toListODTO(lsNomProducto);
 		
 		assertNotEquals(lsNomProducto, listNomProductoDTO);

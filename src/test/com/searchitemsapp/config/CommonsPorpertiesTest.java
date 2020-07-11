@@ -1,4 +1,4 @@
-package com.searchitemsapp.commons;
+package com.searchitemsapp.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
