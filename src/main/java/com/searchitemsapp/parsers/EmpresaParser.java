@@ -2,23 +2,25 @@ package com.searchitemsapp.parsers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaPais;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
 import com.searchitemsapp.entities.TbSiaUrl;
-
-
+import com.sun.istack.NotNull;
 
 /**
  * Es un componente analizador de software que 
@@ -28,6 +30,7 @@ import com.searchitemsapp.entities.TbSiaUrl;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaParser.class); 
@@ -48,10 +51,10 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	 * Variables Globales
 	 */
 	@Autowired
-	EmpresaDTO empresaPDto;
+	private EmpresaDTO empresaPDto;
 	
 	@Autowired
-	TbSiaEmpresa tbSiaPEmpresas;
+	private TbSiaEmpresa tbSiaPEmpresas;
 	
 	/*
 	 * Constructor
@@ -67,7 +70,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	 * @return EmpresaDTO
 	 */
 	@Override
-	public EmpresaDTO toDTO(TbSiaEmpresa tbSiaPEmpresas) {	
+	public EmpresaDTO toDTO(@NotNull final TbSiaEmpresa tbSiaPEmpresas) {	
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -89,7 +92,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 			TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaPEmpresas
 					.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 			
-			Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			Map<String, String> mapSelectores = Maps.newHashMap();
 			mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 			mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 			mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
@@ -106,7 +109,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		
 		if(!tbSiaPEmpresas.getTbSiaUrls().isEmpty()) {
 			TbSiaUrl tbSiaUrl = tbSiaPEmpresas.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
-			Map<Integer, String> mapUrls = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			Map<Integer, String> mapUrls = Maps.newHashMap();
 			mapUrls.put(tbSiaUrl.getDid(), tbSiaUrl.getNomUrl());
 			empresaPDto.setUrls(mapUrls);
 		}
@@ -121,7 +124,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	 * @return TbSiaEmpresa
 	 */
 	@Override
-	public TbSiaEmpresa toTbSia(EmpresaDTO empresaPDto) {
+	public TbSiaEmpresa toTbSia(@NotNull final EmpresaDTO empresaPDto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -133,7 +136,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		tbSiaPEmpresas.setNomEmpresa(empresaPDto.getNomEmpresa());
 		tbSiaPEmpresas.setBolDynScrap(empresaPDto.getBolDynScrap());
 		tbSiaPEmpresas.setTbSiaUrls(new ArrayList<TbSiaUrl>());
-		tbSiaPEmpresas.setTbSiaSelectoresCsses(new ArrayList<>());
+		tbSiaPEmpresas.setTbSiaSelectoresCsses(Lists.newArrayList());
 		tbSiaPEmpresas.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaPEmpresas.setTbSiaPais(new TbSiaPais());
 		
@@ -142,12 +145,12 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		tbSiaPEmpresas.getTbSiaPais().setDid(empresaPDto.getDidPais());
 		tbSiaPEmpresas.getTbSiaPais().setNomPais(empresaPDto.getNomPais());
 		
-		for (Map.Entry<Integer,String> e  : empresaPDto.getUrls().entrySet()) {
+		empresaPDto.getUrls().entrySet().forEach(e -> {
 			TbSiaUrl tburl = new TbSiaUrl();
 			tburl.setDid(e.getKey());
 			tburl.setNomUrl(e.getValue());
-			tbSiaPEmpresas.getTbSiaUrls().add(tburl);
-		}
+			tbSiaPEmpresas.getTbSiaUrls().add(tburl);			
+		});
 		
 		Map<String,String> map = empresaPDto.getSelectores();
 		TbSiaSelectoresCss tselectores = new TbSiaSelectoresCss();
@@ -175,33 +178,33 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	 * @return List<EmpresaDTO>
 	 */
 	@Override
-	public List<EmpresaDTO> toListDTO(List<TbSiaEmpresa> lsEmpresas) {
+	public List<EmpresaDTO> toListDTO(@NotNull final List<TbSiaEmpresa> lsEmpresas) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<EmpresaDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
+		List<EmpresaDTO> listDto = Lists.newArrayList(); 
 		
-		for (TbSiaEmpresa tbSiaEmpresa : lsEmpresas) {
+		lsEmpresas.forEach(e -> {
 			empresaPDto = new EmpresaDTO();
-			empresaPDto.setBolActivo(tbSiaEmpresa.getBolActivo());
-			empresaPDto.setDesEmpresa(tbSiaEmpresa.getDesEmpresa());
-			empresaPDto.setDid(tbSiaEmpresa.getDid());
-			empresaPDto.setNomEmpresa(tbSiaEmpresa.getNomEmpresa());
-			empresaPDto.setBolDynScrap(tbSiaEmpresa.getBolDynScrap());
+			empresaPDto.setBolActivo(e.getBolActivo());
+			empresaPDto.setDesEmpresa(e.getDesEmpresa());
+			empresaPDto.setDid(e.getDid());
+			empresaPDto.setNomEmpresa(e.getNomEmpresa());
+			empresaPDto.setBolDynScrap(e.getBolDynScrap());
 
-			empresaPDto.setDidPais(tbSiaEmpresa.getTbSiaPais().getDid());
-			empresaPDto.setNomPais(tbSiaEmpresa.getTbSiaPais().getNomPais());
-			empresaPDto.setDidCatEmpresa(tbSiaEmpresa.getTbSiaCategoriasEmpresa().getDid());
-			empresaPDto.setNomCatEmpresa(tbSiaEmpresa.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			empresaPDto.setDidPais(e.getTbSiaPais().getDid());
+			empresaPDto.setNomPais(e.getTbSiaPais().getNomPais());
+			empresaPDto.setDidCatEmpresa(e.getTbSiaCategoriasEmpresa().getDid());
+			empresaPDto.setNomCatEmpresa(e.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
 			
-			if(!tbSiaEmpresa.getTbSiaSelectoresCsses().isEmpty()) {
+			if(!e.getTbSiaSelectoresCsses().isEmpty()) {
 				
-				TbSiaSelectoresCss tbSiaSelectoresCsses = tbSiaEmpresa
+				TbSiaSelectoresCss tbSiaSelectoresCsses = e
 						.getTbSiaSelectoresCsses().get(NumberUtils.INTEGER_ZERO);
 				
-				Map<String, String> mapSelectores = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+				Map<String, String> mapSelectores = Maps.newHashMap();
 				mapSelectores.put(SCRAP_PATTERN, tbSiaSelectoresCsses.getScrapPattern());
 				mapSelectores.put(SCRAP_NO_PATTERN, tbSiaSelectoresCsses.getScrapNoPattern());
 				mapSelectores.put(SEL_IMAGE, tbSiaSelectoresCsses.getSelImage());
@@ -216,15 +219,15 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 				empresaPDto.setSelectores(mapSelectores);
 			}
 			
-			if(!tbSiaEmpresa.getTbSiaUrls().isEmpty()) {
-				TbSiaUrl tbSiaUrl = tbSiaEmpresa.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
-				LinkedHashMap<Integer, String> mapUrls = new LinkedHashMap<>(NumberUtils.INTEGER_ONE);
+			if(!e.getTbSiaUrls().isEmpty()) {
+				TbSiaUrl tbSiaUrl = e.getTbSiaUrls().get(NumberUtils.INTEGER_ZERO);
+				Map<Integer, String> mapUrls = Maps.newHashMap();
 				mapUrls.put(tbSiaUrl.getDid(), tbSiaUrl.getNomUrl());
 				empresaPDto.setUrls(mapUrls);
 			}
 			
-			listDto.add(empresaPDto);
-		}
+			listDto.add(empresaPDto);			
+		});
 		
 		return listDto;
 	}
@@ -233,12 +236,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	 * Método no implementado.
 	 */
 	@Override
-	public List<EmpresaDTO> toListODTO(List<Object[]> objeto) {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+	public List<EmpresaDTO> toListODTO(final List<Object[]> objeto) {
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }

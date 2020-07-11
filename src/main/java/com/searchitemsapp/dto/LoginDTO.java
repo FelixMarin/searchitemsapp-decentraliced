@@ -1,5 +1,8 @@
 package com.searchitemsapp.dto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class LoginDTO implements IFdto {
 
 	/*

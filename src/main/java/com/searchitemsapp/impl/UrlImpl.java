@@ -1,23 +1,23 @@
 package com.searchitemsapp.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFUrlRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.UrlDTO;
+import com.sun.istack.NotNull;
 
 
 /**
@@ -29,7 +29,7 @@ import com.searchitemsapp.dto.UrlDTO;
  * @author Felix Marin Ramirez
  *
  */
-@Aspect
+@Component
 public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlImpl.class);  
@@ -104,33 +104,33 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		return urlDao.findByDidAndNomUrl(paisDto.getDid(), String.valueOf(categoriaDto.getDid()));
 	}
 	
-	public List<UrlDTO> obtenerUrlsPorIdEmpresa(PaisDTO paisDto, 
-			CategoriaDTO categoriaDto,
-			String strIdsEmpresas) 
+	public List<UrlDTO> obtenerUrlsPorIdEmpresa(@NotNull final PaisDTO paisDto, 
+			@NotNull final CategoriaDTO categoriaDto,
+			@NotNull final String idsEmpresas) 
 			throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		if(Objects.isNull(paisDto) ||
-				Objects.isNull(categoriaDto) ||
-				StringUtils.isAllEmpty(strIdsEmpresas)) {
-			return new ArrayList<>(NumberUtils.INTEGER_ONE);
-		}
+		String strIdsEmpresas;
 		
-		if(ALL.equalsIgnoreCase(strIdsEmpresas)) {
+		if(ALL.equalsIgnoreCase(idsEmpresas)) {
 			strIdsEmpresas = iFCommonsProperties.getValue("flow.value.all.id.empresa");
+		} else {
+			strIdsEmpresas = idsEmpresas;
 		}
 		
 		String[] arIdsEpresas = tokenizeString(strIdsEmpresas, COMA);
-		List<UrlDTO> lsIdsEmpresas = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<UrlDTO> lsIdsEmpresas = Lists.newArrayList();
 				
 		List<UrlDTO> listUrlDTO = urlDao.findByDidAndDesUrl(paisDto.getDid(), String.valueOf(categoriaDto.getDid()));
 		
 		if(Objects.isNull(listUrlDTO)) {
 			return lsIdsEmpresas;
 		}
+		
+		
 		
 		for (String id : arIdsEpresas) {
 			for (UrlDTO urlDTO : listUrlDTO) {
@@ -145,12 +145,12 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 
 	@Override
 	public List<UrlDTO> findAll() throws IOException {
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+		return Lists.newArrayList();
 	}
 
 	@Override
 	public List<UrlDTO> findByTbSia(UrlDTO r, CategoriaDTO t) throws IOException {
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+		return Lists.newArrayList();
 	}
 	
 	/*
@@ -160,7 +160,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	private String[] tokenizeString(final String cadena, final String token) {
 		
 		StringTokenizer st = new StringTokenizer(cadena, token); 		
-		List<String> listaAux = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> listaAux = Lists.newArrayList();
 		
 		while (st.hasMoreElements()) {
 			listaAux.add((String) st.nextElement());

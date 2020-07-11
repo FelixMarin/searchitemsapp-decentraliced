@@ -3,6 +3,8 @@ package com.searchitemsapp.dto;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.stereotype.Component;
+
 
 
 /**
@@ -14,6 +16,7 @@ import java.util.Objects;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class CategoriaDTO implements IFdto {
 
 	/*

@@ -2,7 +2,6 @@ package com.searchitemsapp.processdata.empresas;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -13,7 +12,9 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
 
@@ -26,6 +27,7 @@ import com.searchitemsapp.dto.UrlDTO;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ProcessDataDia implements IFProcessDataEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataDia.class);   
@@ -78,7 +80,7 @@ public class ProcessDataDia implements IFProcessDataEmpresas {
 		 * Se divide el selector de paginación.
 		 */
 		StringTokenizer st = new StringTokenizer(selectorPaginacion, "|");
-		List<String> liSelectorAtr = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> liSelectorAtr = Lists.newArrayList();
 
 		/**
 		 * Se añaden todos los tokens en la lista de selectores 
@@ -92,7 +94,7 @@ public class ProcessDataDia implements IFProcessDataEmpresas {
 		 * utilizando el selector css.
 		 */
 		Elements elements = document.select(liSelectorAtr.get(0));
-		List<String> listaUrls = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<String> listaUrls = Lists.newArrayList();
 
 		/**
 		 * Se añade la URL base en la lista.
