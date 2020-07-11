@@ -1,8 +1,8 @@
 package com.searchitemsapp.dto;
 
-import java.util.HashMap;
-
 import org.junit.Test;
+
+import com.google.common.collect.Maps;
 
 public class CategoriaDTOTest {
 
@@ -14,9 +14,9 @@ public class CategoriaDTOTest {
 		cdto.setBolActivo(true);
 		cdto.setDesCatEmpresa("catEmpresa");
 		cdto.setDid(101);
-		cdto.setEmpresas(new HashMap<>());
-		cdto.setProductos(new HashMap<>());
-		cdto.setMarcas(new HashMap<>());
+		cdto.setEmpresas(Maps.newHashMap());
+		cdto.setProductos(Maps.newHashMap());
+		cdto.setMarcas(Maps.newHashMap());
 		cdto.setNomCatEmpresa("nombre");
 		
 		cdto.getBolActivo();

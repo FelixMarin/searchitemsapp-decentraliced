@@ -6,7 +6,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -20,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaMarcas;
@@ -91,9 +91,9 @@ public class PaisParserTest {
 	public void toTbSia() {
 		
 		nomProductoDto.setDid(101);
-		nomProductoDto.setEmpresas(new HashMap<>());
-		nomProductoDto.setMarcas(new HashMap<>());
-		nomProductoDto.setProductos(new HashMap<>());
+		nomProductoDto.setEmpresas(Maps.newHashMap());
+		nomProductoDto.setMarcas(Maps.newHashMap());
+		nomProductoDto.setProductos(Maps.newHashMap());
 		TbSiaPais tbSiaPais = parser.toTbSia(nomProductoDto);
 		
 		//- Equals -//
