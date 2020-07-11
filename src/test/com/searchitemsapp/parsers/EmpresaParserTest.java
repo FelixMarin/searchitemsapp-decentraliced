@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +86,7 @@ public class EmpresaParserTest {
 	public void toTbSia() {
 		
 		empresaDto.setDid(101);
-		empresaDto.setUrls(new HashMap<>());
+		empresaDto.setUrls(Maps.newHashMap());
 		Map<String, String> lhm = Maps.newHashMap();
 		lhm.put("DID", "101");
 		lhm.put("BOL_ACTIVO", "true");

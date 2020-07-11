@@ -1,7 +1,6 @@
 package com.searchitemsapp.parsers;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -135,7 +134,7 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		tbSiaPEmpresas.setDid(empresaPDto.getDid());
 		tbSiaPEmpresas.setNomEmpresa(empresaPDto.getNomEmpresa());
 		tbSiaPEmpresas.setBolDynScrap(empresaPDto.getBolDynScrap());
-		tbSiaPEmpresas.setTbSiaUrls(new ArrayList<TbSiaUrl>());
+		tbSiaPEmpresas.setTbSiaUrls(Lists.newArrayList());
 		tbSiaPEmpresas.setTbSiaSelectoresCsses(Lists.newArrayList());
 		tbSiaPEmpresas.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaPEmpresas.setTbSiaPais(new TbSiaPais());

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
-import com.searchitemsapp.entities.TbSiaSelectoresCss;
 import com.searchitemsapp.entities.TbSiaUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -111,7 +109,7 @@ public class UrlParserTest {
 		
 		List<TbSiaUrl> lsUrl = Lists.newArrayList();
 		tbSiaUrl.setTbSiaEmpresa(new TbSiaEmpresa());
-		tbSiaUrl.setTbSiaSelectoresCsses(new ArrayList<TbSiaSelectoresCss>());
+		tbSiaUrl.setTbSiaSelectoresCsses(Lists.newArrayList());
 		lsUrl.add(tbSiaUrl);
 		
 		List<UrlDTO> listUrlDTO = Lists.newArrayList();

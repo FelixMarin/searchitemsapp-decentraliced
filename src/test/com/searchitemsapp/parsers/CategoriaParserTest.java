@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -99,7 +98,7 @@ public class CategoriaParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsCategorias = new ArrayList<Object[]>();
+		List<Object[]> lsCategorias = Lists.newArrayList();
 		lsCategorias.add(new Object[0]);
 		
 		List<CategoriaDTO> listCategoriaDTO = Lists.newArrayList();

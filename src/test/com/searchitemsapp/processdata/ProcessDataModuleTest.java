@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -22,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Maps;
 import com.searchitemsapp.config.CommonsPorperties;
 import com.searchitemsapp.dto.UrlDTO;
 
@@ -57,7 +57,7 @@ public class ProcessDataModuleTest {
 		UrlDTO urlDto = new UrlDTO();
 		urlDto.setNomUrl("https://www.alcampo.es/compra-online/alimentacion/caldos-pasta-arroz-legumbres-pure/arroz/arroz-para-cocinar/la-cigala-arroz-redondo-1-kg/p/882610");
 		urlDto.setDidEmpresa(108);
-		urlDto.setSelectores(new HashMap<>());
+		urlDto.setSelectores(Maps.newHashMap());
 		
 		CommonsPorperties.loadPropertiesFile(
 				"E:\\eclipse-workspace\\properties\\flow.properties",
