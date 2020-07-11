@@ -1,16 +1,18 @@
 package com.searchitemsapp.parsers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.ParamsLoginDTO;
 import com.searchitemsapp.entities.TbSiaParamsFormLogin;
 import com.searchitemsapp.entities.TbSiaUrl;
+import com.sun.istack.NotNull;
 
 /**
  * Es un componente analizador de software que 
@@ -20,15 +22,16 @@ import com.searchitemsapp.entities.TbSiaUrl;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaParamsFormLogin> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParamsFormLoginParser.class);  
 	
 	@Autowired
-	ParamsLoginDTO paramsLoginDto;
+	private ParamsLoginDTO paramsLoginDto;
 	
 	@Autowired
-	TbSiaParamsFormLogin tbSiaParamsFormLogin;
+	private TbSiaParamsFormLogin tbSiaParamsFormLogin;
 	
 	/*
 	 * Constructor
@@ -43,7 +46,7 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	 * @param TbSiaParamsFormLogin
 	 * @return ParamsLoginDTO
 	 */
-	public ParamsLoginDTO toDTO(TbSiaParamsFormLogin tbSiaParamsFormLog) {
+	public ParamsLoginDTO toDTO(@NotNull final TbSiaParamsFormLogin tbSiaParamsFormLog) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -64,7 +67,7 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	 * @param ParamsLoginDTO
 	 * @return TbSiaParamsFormLogin
 	 */
-	public TbSiaParamsFormLogin toTbSia(ParamsLoginDTO paramsLoginDto) {
+	public TbSiaParamsFormLogin toTbSia(@NotNull final ParamsLoginDTO paramsLoginDto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -86,24 +89,24 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	 * @param List<TbSiaParamsFormLogin>
 	 * @return List<ParamsLoginDTO>
 	 */
-	public List<ParamsLoginDTO> toListDTO(List<TbSiaParamsFormLogin> listTbSiaParamsFormLogin) {
+	public List<ParamsLoginDTO> toListDTO(@NotNull final List<TbSiaParamsFormLogin> listTbSiaParamsFormLogin) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<ParamsLoginDTO> listParamsLoginDto = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<ParamsLoginDTO> listParamsLoginDto = Lists.newArrayList();
 		
-		for (TbSiaParamsFormLogin tbSiaParamsFormLog : listTbSiaParamsFormLogin) {
+		listTbSiaParamsFormLogin.forEach(e -> {
 			paramsLoginDto = new ParamsLoginDTO();
-			paramsLoginDto.setDid(tbSiaParamsFormLog.getDid());
-			paramsLoginDto.setParamClave(tbSiaParamsFormLog.getParamClave());
-			paramsLoginDto.setParamValor(tbSiaParamsFormLog.getParamValor());
-			boolean isNull = null == tbSiaParamsFormLog.getTbSiaUrl().getDid();
-			paramsLoginDto.setDidUrl(isNull?101:tbSiaParamsFormLog.getTbSiaUrl().getDid());
-			paramsLoginDto.setNomUrl(tbSiaParamsFormLog.getTbSiaUrl().getNomUrl());	
-			listParamsLoginDto.add(paramsLoginDto);
-		}
+			paramsLoginDto.setDid(e.getDid());
+			paramsLoginDto.setParamClave(e.getParamClave());
+			paramsLoginDto.setParamValor(e.getParamValor());
+			boolean isNull = null == e.getTbSiaUrl().getDid();
+			paramsLoginDto.setDidUrl(isNull?101:e.getTbSiaUrl().getDid());
+			paramsLoginDto.setNomUrl(e.getTbSiaUrl().getNomUrl());	
+			listParamsLoginDto.add(paramsLoginDto);			
+		});
 		
 		return listParamsLoginDto;
 	}
@@ -112,12 +115,7 @@ public class ParamsFormLoginParser implements IFParser<ParamsLoginDTO, TbSiaPara
 	 * Método no implementado.
 	 */
 	@Override
-	public List<ParamsLoginDTO> toListODTO(List<Object[]> objeto) {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+	public List<ParamsLoginDTO> toListODTO(final List<Object[]> objeto) {
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }

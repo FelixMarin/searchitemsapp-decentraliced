@@ -5,8 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaEmpresa;
@@ -57,7 +57,7 @@ public class EmpresaParserTest {
 
 		tbSiaEmpresa.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaEmpresa.setTbSiaPais(new TbSiaPais());
-		tbSiaEmpresa.setTbSiaSelectoresCsses(new ArrayList<>());
+		tbSiaEmpresa.setTbSiaSelectoresCsses(Lists.newArrayList());
 		
 		EmpresaDTO empresaDto = parser.toDTO(tbSiaEmpresa);
 		
@@ -86,8 +86,8 @@ public class EmpresaParserTest {
 	public void toTbSia() {
 		
 		empresaDto.setDid(101);
-		empresaDto.setUrls(new LinkedHashMap<>());
-		Map<String, String> lhm = new LinkedHashMap<>();
+		empresaDto.setUrls(Maps.newHashMap());
+		Map<String, String> lhm = Maps.newHashMap();
 		lhm.put("DID", "101");
 		lhm.put("BOL_ACTIVO", "true");
 		lhm.put("FEC_MODIFICACION", "2020-06-05");
@@ -118,11 +118,11 @@ public class EmpresaParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaEmpresa> lsEmpresas = new ArrayList<>();
+		List<TbSiaEmpresa> lsEmpresas = Lists.newArrayList();
 		tbSiaEmpresa.setTbSiaCategoriasEmpresa(new TbSiaCategoriasEmpresa());
 		tbSiaEmpresa.setTbSiaPais(new TbSiaPais());
-		tbSiaEmpresa.setTbSiaSelectoresCsses(new ArrayList<>());
-		tbSiaEmpresa.setTbSiaUrls(new ArrayList<>());
+		tbSiaEmpresa.setTbSiaSelectoresCsses(Lists.newArrayList());
+		tbSiaEmpresa.setTbSiaUrls(Lists.newArrayList());
 		lsEmpresas.add(tbSiaEmpresa);
 		
 		List<EmpresaDTO> listEmpresaDTO = parser.toListDTO(lsEmpresas);
@@ -137,11 +137,11 @@ public class EmpresaParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsEmpresas = new ArrayList<>();
+		List<Object[]> lsEmpresas = Lists.newArrayList();
 		lsEmpresas.add(new Object[5]);
 		lsEmpresas.add(new Object[4]);
 		
-		List<EmpresaDTO> listEmpresaDTO = new ArrayList<>();
+		List<EmpresaDTO> listEmpresaDTO = Lists.newArrayList();
 		listEmpresaDTO = parser.toListODTO(lsEmpresas);
 			
 		assertNotEquals(lsEmpresas, listEmpresaDTO);

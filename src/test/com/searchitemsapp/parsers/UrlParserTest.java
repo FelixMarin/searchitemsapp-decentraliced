@@ -5,7 +5,6 @@ import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
@@ -81,7 +82,7 @@ public class UrlParserTest {
 		urlDto.setNomUrl("test");
 		urlDto.setDid(1111);
 		urlDto.setDidEmpresa(101);
-		Map<String, String> lhm = new LinkedHashMap<>();
+		Map<String, String> lhm = Maps.newHashMap();
 		lhm.put("DID", "101");
 		lhm.put("BOL_ACTIVO", "true");
 		lhm.put("FEC_MODIFICACION", "2020-06-05");
@@ -108,12 +109,12 @@ public class UrlParserTest {
 	@Test
 	public void toListDTO() {
 		
-		List<TbSiaUrl> lsUrl = new ArrayList<>();
+		List<TbSiaUrl> lsUrl = Lists.newArrayList();
 		tbSiaUrl.setTbSiaEmpresa(new TbSiaEmpresa());
 		tbSiaUrl.setTbSiaSelectoresCsses(new ArrayList<TbSiaSelectoresCss>());
 		lsUrl.add(tbSiaUrl);
 		
-		List<UrlDTO> listUrlDTO = new ArrayList<>();
+		List<UrlDTO> listUrlDTO = Lists.newArrayList();
 		listUrlDTO = parser.toListDTO(lsUrl);
 		
 		assertEquals("size", 
@@ -126,7 +127,7 @@ public class UrlParserTest {
 	@Test
 	public void toListODTO() {
 		
-		List<Object[]> lsUrl = new ArrayList<>();
+		List<Object[]> lsUrl = Lists.newArrayList();
 		Object[] objTest = {"test","1","2","test","test",
 				"test","test","test","test","test"};
 		

@@ -1,0 +1,64 @@
+[33m2134404[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: checkout: moving from feature1 to develop
+[33m742ce6d[m[33m ([m[1;32mfeature1[m[33m)[m HEAD@{1}: checkout: moving from feature1 to feature1
+[33m742ce6d[m[33m ([m[1;32mfeature1[m[33m)[m HEAD@{2}: checkout: moving from develop to feature1
+[33m2134404[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{3}: checkout: moving from feature1 to develop
+[33m742ce6d[m[33m ([m[1;32mfeature1[m[33m)[m HEAD@{4}: checkout: moving from develop to feature1
+[33m2134404[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{5}: checkout: moving from master to develop
+[33m07f2e5d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{6}: commit: Refactorización
+[33m2134404[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{7}: merge develop: Fast-forward
+[33mf0a807b[m HEAD@{8}: checkout: moving from develop to master
+[33m2134404[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{9}: merge feature1: Merge made by the 'recursive' strategy.
+[33mf0a807b[m HEAD@{10}: checkout: moving from feature1 to develop
+[33m742ce6d[m[33m ([m[1;32mfeature1[m[33m)[m HEAD@{11}: commit: db.properties updated
+[33mbf14c65[m HEAD@{12}: checkout: moving from master to feature1
+[33mf0a807b[m HEAD@{13}: merge develop: Fast-forward
+[33me4ca823[m HEAD@{14}: checkout: moving from develop to master
+[33mf0a807b[m HEAD@{15}: merge feature1: Merge made by the 'recursive' strategy.
+[33me4ca823[m HEAD@{16}: checkout: moving from feature1 to develop
+[33mbf14c65[m HEAD@{17}: commit: Correcciones
+[33me4ca823[m HEAD@{18}: checkout: moving from master to feature1
+[33me4ca823[m HEAD@{19}: checkout: moving from develop to master
+[33me4ca823[m HEAD@{20}: checkout: moving from feature1 to develop
+[33me4ca823[m HEAD@{21}: checkout: moving from master to feature1
+[33me4ca823[m HEAD@{22}: merge develop: Fast-forward
+[33mb56779f[m HEAD@{23}: checkout: moving from develop to master
+[33me4ca823[m HEAD@{24}: merge feature1: Merge made by the 'recursive' strategy.
+[33mb56779f[m HEAD@{25}: checkout: moving from feature1 to develop
+[33me097385[m HEAD@{26}: commit: Refactorización
+[33mb56779f[m HEAD@{27}: checkout: moving from develop to feature1
+[33mb56779f[m HEAD@{28}: checkout: moving from feature1 to develop
+[33mb56779f[m HEAD@{29}: checkout: moving from develop to feature1
+[33mb56779f[m HEAD@{30}: checkout: moving from master to develop
+[33mb56779f[m HEAD@{31}: pull: Fast-forward
+[33mb458a37[m HEAD@{32}: checkout: moving from v7.6 to master
+[33m714eb91[m HEAD@{33}: reset: moving to HEAD
+[33m714eb91[m HEAD@{34}: pull: Merge made by the 'recursive' strategy.
+[33mb458a37[m HEAD@{35}: reset: moving to b458a37
+[33md2144de[m HEAD@{36}: checkout: moving from feature1 to v7.6
+[33m534efc2[m HEAD@{37}: checkout: moving from v7.6 to feature1
+[33md2144de[m HEAD@{38}: checkout: moving from master to v7.6
+[33mb458a37[m HEAD@{39}: pull: Fast-forward
+[33m0e3b650[m HEAD@{40}: checkout: moving from feature1 to master
+[33m534efc2[m HEAD@{41}: checkout: moving from v7.6 to feature1
+[33md2144de[m HEAD@{42}: merge origin: Merge made by the 'recursive' strategy.
+[33mf0dd681[m HEAD@{43}: pull origin v7.6: Fast-forward
+[33mc397ec4[m HEAD@{44}: checkout: moving from feature1 to v7.6
+[33m534efc2[m HEAD@{45}: merge origin: Fast-forward
+[33m5a89e47[m HEAD@{46}: pull: Fast-forward
+[33mc397ec4[m HEAD@{47}: checkout: moving from v7.6 to feature1
+[33mc397ec4[m HEAD@{48}: commit: Refactorización
+[33m0e3b650[m HEAD@{49}: checkout: moving from v7.5 to v7.6
+[33mefb6f10[m HEAD@{50}: checkout: moving from v7.6 to v7.5
+[33m0e3b650[m HEAD@{51}: checkout: moving from v7.5 to v7.6
+[33mefb6f10[m HEAD@{52}: checkout: moving from v7.6 to v7.5
+[33m0e3b650[m HEAD@{53}: checkout: moving from v7.5 to v7.6
+[33mefb6f10[m HEAD@{54}: reset: moving to HEAD
+[33mefb6f10[m HEAD@{55}: checkout: moving from v7.6 to v7.5
+[33m0e3b650[m HEAD@{56}: checkout: moving from v7.5 to v7.6
+[33mefb6f10[m HEAD@{57}: checkout: moving from v7.6 to v7.5
+[33m0e3b650[m HEAD@{58}: checkout: moving from v7.5 to v7.6
+[33mefb6f10[m HEAD@{59}: checkout: moving from v7.6 to v7.5
+[33m0e3b650[m HEAD@{60}: checkout: moving from v7.5 to v7.6
+[33mefb6f10[m HEAD@{61}: checkout: moving from v7.6 to v7.5
+[33m0e3b650[m HEAD@{62}: checkout: moving from master to v7.6
+[33m0e3b650[m HEAD@{63}: clone: from https://github.com/FelixMarin/searchitemsapp.git

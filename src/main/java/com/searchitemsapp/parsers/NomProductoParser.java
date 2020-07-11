@@ -1,17 +1,19 @@
 package com.searchitemsapp.parsers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.NomProductoDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaNomProducto;
 import com.searchitemsapp.entities.TbSiaPais;
+import com.sun.istack.NotNull;
 
 /**
  * Es un componente analizador de software que 
@@ -21,15 +23,16 @@ import com.searchitemsapp.entities.TbSiaPais;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProducto> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NomProductoParser.class);  
 	
 	@Autowired
-	NomProductoDTO nomProductoDTO;
+	private NomProductoDTO nomProductoDTO;
 	
 	@Autowired
-	TbSiaNomProducto tbSiaNomProducto;
+	private TbSiaNomProducto tbSiaNomProducto;
 	
 	/*
 	 * Constructor
@@ -44,7 +47,7 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 * @param TbSiaNomProducto
 	 * @return NomProductoDTO
 	 */
-	public NomProductoDTO toDTO(TbSiaNomProducto tbSiaNomProducto) {
+	public NomProductoDTO toDTO(@NotNull final TbSiaNomProducto tbSiaNomProducto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -68,7 +71,7 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 * @param NomProductoDTO
 	 * @return TbSiaNomProducto
 	 */
-	public TbSiaNomProducto toTbSia(NomProductoDTO nomProductoDTO) { 
+	public TbSiaNomProducto toTbSia(@NotNull final NomProductoDTO nomProductoDTO) { 
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -92,29 +95,28 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 * @param List<TbSiaNomProducto>
 	 * @return List<NomProductoDTO>
 	 */
-	public List<NomProductoDTO> toListDTO(List<TbSiaNomProducto> lsTbSiaNomProducto) {
+	public List<NomProductoDTO> toListDTO(@NotNull final List<TbSiaNomProducto> lsTbSiaNomProducto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<NomProductoDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
+		List<NomProductoDTO> listDto = Lists.newArrayList(); 
 		
-		for (TbSiaNomProducto tbSiaNomProdu : lsTbSiaNomProducto) {
+		lsTbSiaNomProducto.forEach(e -> {
 			nomProductoDTO = new NomProductoDTO();
-			nomProductoDTO.setDid(tbSiaNomProdu.getDid());
-			nomProductoDTO.setNomProducto(tbSiaNomProdu.getNomProducto());
-			boolean isNull = null == tbSiaNomProdu.getTbSiaCategoriasEmpresa().getDid();
-			nomProductoDTO.setDidCatEmpresas(isNull?101:tbSiaNomProdu.getTbSiaCategoriasEmpresa().getDid());
-			nomProductoDTO.setNomCatEmpresas(tbSiaNomProdu.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
-			isNull = null == tbSiaNomProdu.getTbSiaCategoriasEmpresa().getDid();
-			nomProductoDTO.setDidPais(isNull?101:tbSiaNomProdu.getTbSiaPais().getDid());
-			nomProductoDTO.setNomPais(tbSiaNomProdu.getTbSiaPais().getNomPais());
-			listDto.add(nomProductoDTO);
-		}
+			nomProductoDTO.setDid(e.getDid());
+			nomProductoDTO.setNomProducto(e.getNomProducto());
+			boolean isNull = null == e.getTbSiaCategoriasEmpresa().getDid();
+			nomProductoDTO.setDidCatEmpresas(isNull?101:e.getTbSiaCategoriasEmpresa().getDid());
+			nomProductoDTO.setNomCatEmpresas(e.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			isNull = null == e.getTbSiaCategoriasEmpresa().getDid();
+			nomProductoDTO.setDidPais(isNull?101:e.getTbSiaPais().getDid());
+			nomProductoDTO.setNomPais(e.getTbSiaPais().getNomPais());
+			listDto.add(nomProductoDTO);			
+		});
 		
 		return listDto;
-		
 	}
 	
 	/**
@@ -122,11 +124,6 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	 */
 	@Override
 	public List<NomProductoDTO> toListODTO(List<Object[]> objeto) {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+		throw new NotImplementedException("Funcionalidad no implementada");	
 	}
 }

@@ -1,9 +1,7 @@
 package com.searchitemsapp.processdata;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +14,10 @@ import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.searchitemsapp.commons.IFCommonsProperties;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
@@ -35,6 +36,7 @@ import com.searchitemsapp.impl.IFUrlImpl;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataLogin.class);  
@@ -108,7 +110,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 			String didPais, String didCategoria, int iIdEmpresa,  
 			Map<Integer,Map<String,String>> mapaCookies) throws IOException {
 			
-		IFProcessPrice auxResDto = null;
+		IFProcessPrice ifProcessPriceAux = null;
 		
 		/**
 		 * Se comprueba si el módulo está activo consultando una
@@ -122,7 +124,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		 * termina el proceso y retorna nulo.
 		 */
 		if(!isLoginActivo) {
-			return new HashMap<>(); 
+			return Maps.newHashMap(); 
 		}
 		
 		/**
@@ -136,13 +138,13 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		List<UrlDTO> listUrlDto = urlImpl.obtenerUrlsLogin(paisDto, categoriaDto);
 		empresaDTO.setDid(iIdEmpresa);
 		
-		List<IFProcessPrice> listResUrlLogin = new ArrayList<>(NumberUtils.INTEGER_ONE);
+		List<IFProcessPrice> listResUrlLogin = Lists.newArrayList();
 		
 		/**
 		 * se crea una lista de resultados a partir de
 		 * la lista de URLs.
 		 */
-		for (UrlDTO urlDto : listUrlDto) {
+		listUrlDto.forEach(urlDto -> {
 			ifProcessPrice.setNomUrl(urlDto.getNomUrl());
 			ifProcessPrice.setDidEmpresa(urlDto.getDidEmpresa());
 			ifProcessPrice.setDidUrl(urlDto.getDid());
@@ -152,7 +154,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 			ifProcessPrice.setBolLogin(urlDto.getBolLogin());
 			ifProcessPrice.setDesUrl(urlDto.getDesUrl());
 			listResUrlLogin.add(ifProcessPrice);
-		}
+		});
     	
 		/**
 		 * Se filtran todos los que tienen el campo 'ActionLogin' y 
@@ -161,7 +163,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		for (IFProcessPrice resUrlLogin : listResUrlLogin) {
 			if(resUrlLogin.getDidEmpresa().equals(empresaDTO.getDid()) &&
 					ACTION_LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
-				auxResDto = resUrlLogin;
+				ifProcessPriceAux = resUrlLogin;
 			}
 		}
 		
@@ -169,8 +171,8 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		 * Se comprueba que al menos haya un objeto resultado 
 		 * en la lista. De otro modo, termina el proceso.
 		 */
-		if(Objects.isNull(auxResDto)) {
-			return new HashMap<>();
+		if(Objects.isNull(ifProcessPriceAux)) {
+			return Maps.newHashMap();
 		}
 		
 		/**
@@ -180,14 +182,14 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		for (IFProcessPrice resUrlLogin : listResUrlLogin) {
 			if(resUrlLogin.getDidEmpresa().equals(empresaDTO.getDid()) &&
 					LOGIN.equalsIgnoreCase(resUrlLogin.getDesUrl())) {
-				auxResDto.setLoginUrl(resUrlLogin.getNomUrl());
+				ifProcessPriceAux.setLoginUrl(resUrlLogin.getNomUrl());
 			}
 		}
 		
 		/**
 		 * Se establece el id de la url.
 		 */
-		paramsLoginDto.setDidUrl(auxResDto.getDidUrl());
+		paramsLoginDto.setDidUrl(ifProcessPriceAux.getDidUrl());
 		
 		/**
 		 * Se obtienen de la bbdd los valores necesarios para
@@ -204,15 +206,15 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		 * se termina el proceso retornando nulo.
 		 */
 		if(Objects.isNull(listParamLoginForm)) {
-			return new HashMap<>();
+			return Maps.newHashMap();
 		}
         
 		/**
 		 * En este punto se inicia la sessión mediante login de usuario
 		 * y se obtienen las cookies de la sesion.
 		 */
-		Map<String, String> mapLoginPageCookies = obtenerCookiesMethodGet(auxResDto.getLoginnUrl(), 
-				listParamLoginHeaders, auxResDto.getDidUrl());
+		Map<String, String> mapLoginPageCookies = obtenerCookiesMethodGet(ifProcessPriceAux.getLoginnUrl(), 
+				listParamLoginHeaders, ifProcessPriceAux.getDidUrl());
 		
 		/**
 		 * Se crea un mapa con el identificador de la empresa
@@ -225,10 +227,10 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		 * se añaden a la misma todos los parámetros correspondientes
 		 * a la url actual.
 		 */
-		Map<String, String> mapParamsFormLogin = new HashMap<>(NumberUtils.INTEGER_ONE);
+		Map<String, String> mapParamsFormLogin = Maps.newHashMap();
         
         for (ParamsLoginDTO paramsLoginDTO : listParamLoginForm) {
-        	if(auxResDto.getDidUrl().equals(paramsLoginDTO.getDidUrl())) {
+        	if(ifProcessPriceAux.getDidUrl().equals(paramsLoginDTO.getDidUrl())) {
         		mapParamsFormLogin.put(paramsLoginDTO.getParamClave(), paramsLoginDTO.getParamValor());
         	}
 		}
@@ -243,7 +245,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
          * En este punto se establece el login y 
          * se inicia la sesion en el sitio web.
          */
-        logearseEnSitioWeb(auxResDto.getNomUrl(), mapParamsFormLogin, mapLoginPageCookies, b64login);
+        logearseEnSitioWeb(ifProcessPriceAux.getNomUrl(), mapParamsFormLogin, mapLoginPageCookies, b64login);
         
         return mapLoginPageCookies;
     }
@@ -307,7 +309,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		Response response  = null;
 		
 		if(Objects.isNull(listParamLoginHeaders)) {
-			return new HashMap<>();
+			return Maps.newHashMap();
 		}
 		
 		try {
@@ -339,7 +341,7 @@ public abstract class ProcessDataLogin extends ProcessDataAbstract {
 		}
 		
 		if(response == null) {
-			return new HashMap<>();
+			return Maps.newHashMap();
 		}
 		
 		return response.cookies();

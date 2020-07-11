@@ -1,15 +1,17 @@
 package com.searchitemsapp.parsers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.entities.TbSiaMarcas;
+import com.sun.istack.NotNull;
 
 /**
  * Es un componente analizador de software que 
@@ -19,15 +21,16 @@ import com.searchitemsapp.entities.TbSiaMarcas;
  * @author Felix Marin Ramirez
  *
  */
+@Component
 public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MarcasParser.class);  
 	
 	@Autowired
-	MarcasDTO marcasDto;
+	private MarcasDTO marcasDto;
 	
 	@Autowired
-	TbSiaMarcas tbSiaMarcas;
+	private TbSiaMarcas tbSiaMarcas;
 	
 	/*
 	 * Constructor
@@ -42,7 +45,7 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	 * @param TbSiaMarcas
 	 * @return MaracasDTO
 	 */
-	public MarcasDTO toDTO(TbSiaMarcas tbSiaMarcas) {
+	public MarcasDTO toDTO(@NotNull final TbSiaMarcas tbSiaMarcas) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -66,7 +69,7 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	 * @param MaracasDTO
 	 * @return TbSiaMarcas
 	 */
-	public TbSiaMarcas toTbSia(MarcasDTO marcasDto) {
+	public TbSiaMarcas toTbSia(@NotNull final MarcasDTO marcasDto) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -84,27 +87,27 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	 * @param List<TbSiaMarcas>
 	 * @return List<MaracasDTO>
 	 */
-	public List<MarcasDTO> toListDTO(List<TbSiaMarcas> lsTbSiaMarcas) {
+	public List<MarcasDTO> toListDTO(@NotNull final List<TbSiaMarcas> lsTbSiaMarcas) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		List<MarcasDTO> listDto = new ArrayList<>(NumberUtils.INTEGER_ONE); 
+		List<MarcasDTO> listDto = Lists.newArrayList(); 
 		
-		for (TbSiaMarcas tbSiaMarc : lsTbSiaMarcas) {
+		lsTbSiaMarcas.forEach(e -> {
 			marcasDto = new MarcasDTO();
-			marcasDto.setDid(tbSiaMarc.getDid());
-			marcasDto.setNomMarca(tbSiaMarc.getNomMarca());
-			boolean isNull =  null == tbSiaMarc.getTbSiaCategoriasEmpresa().getDid();
-			marcasDto.setDidCatEmpresas(isNull?101:tbSiaMarc.getTbSiaCategoriasEmpresa().getDid());
-			marcasDto.setNomCatEmpresas(tbSiaMarc.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
-			isNull = null == tbSiaMarc.getTbSiaPais().getDid();
-			marcasDto.setDidPais(isNull?101:tbSiaMarc.getTbSiaPais().getDid());
-			marcasDto.setNomPais(tbSiaMarc.getTbSiaPais().getNomPais());
+			marcasDto.setDid(e.getDid());
+			marcasDto.setNomMarca(e.getNomMarca());
+			boolean isNull =  null == e.getTbSiaCategoriasEmpresa().getDid();
+			marcasDto.setDidCatEmpresas(isNull?101:e.getTbSiaCategoriasEmpresa().getDid());
+			marcasDto.setNomCatEmpresas(e.getTbSiaCategoriasEmpresa().getNomCatEmpresa());
+			isNull = null == e.getTbSiaPais().getDid();
+			marcasDto.setDidPais(isNull?101:e.getTbSiaPais().getDid());
+			marcasDto.setNomPais(e.getTbSiaPais().getNomPais());
 			
-			listDto.add(marcasDto);
-		}
+			listDto.add(marcasDto);			
+		});
 		
 		return listDto;
 	}
@@ -113,12 +116,7 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	 * Método no implementado.
 	 */
 	@Override
-	public List<MarcasDTO> toListODTO(List<Object[]> objeto) {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		return new ArrayList<>(NumberUtils.INTEGER_ONE);
+	public List<MarcasDTO> toListODTO(final List<Object[]> objeto) {
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }
