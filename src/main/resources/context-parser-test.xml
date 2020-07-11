@@ -57,8 +57,6 @@
       <bean id="tbSiaMarcas" class="com.searchitemsapp.entities.TbSiaMarcas"></bean>
       <bean id="tbSiaNomProducto" class="com.searchitemsapp.entities.TbSiaNomProducto"></bean>
       <bean id="tbSiaPais" class="com.searchitemsapp.entities.TbSiaPais"></bean>
-      <bean id="tbSiaParamsFormLogin" class="com.searchitemsapp.entities.TbSiaParamsFormLogin"></bean>
-      <bean id="tbSiaParamsHeadersLogin" class="com.searchitemsapp.entities.TbSiaParamsHeadersLogin"></bean>
       <bean id="tbSiaSelectoresCss" class="com.searchitemsapp.entities.TbSiaSelectoresCss"></bean>
       <bean id="tbSiaUrl" class="com.searchitemsapp.entities.TbSiaUrl"></bean>
      
