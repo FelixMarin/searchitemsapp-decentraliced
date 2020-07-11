@@ -30,7 +30,7 @@ import com.searchitemsapp.impl.IFUrlImpl;
  *
  */
 @Component
-public class UrlComposer extends ProcessDataLogin implements IFUrlComposer {
+public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlComposer.class);   
 	

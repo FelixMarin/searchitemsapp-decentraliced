@@ -35,7 +35,7 @@ import com.sun.istack.NotNull;
  *
  */
 @Component
-public class ProcessDataModule extends ProcessDataLogin  implements Callable<List<IFProcessPrice>> {
+public class ProcessDataModule extends ProcessDataAbstract  implements Callable<List<IFProcessPrice>> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataModule.class);  
 	
@@ -117,11 +117,7 @@ public class ProcessDataModule extends ProcessDataLogin  implements Callable<Lis
         	 * estraer la información de la página web.
         	 */
     		Map<String, String> mapLoginPageCookies = mapaCookies.get(iIdEmpresa);
-        	
-        	if(Objects.isNull(mapLoginPageCookies)) {
-    			mapLoginPageCookies = checkingHtmlLoginDocument(didPais, didCategoria, iIdEmpresa, mapaCookies);
-        	}
-        	
+        	        	
         	/**
         	 * Se obtiene el listado de documentos de los que se
         	 * van a extraer los datos.
