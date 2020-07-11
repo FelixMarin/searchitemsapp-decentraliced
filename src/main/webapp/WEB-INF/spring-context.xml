@@ -111,8 +111,6 @@
       <bean id="marcasDao" class="com.searchitemsapp.dao.MarcasDao"></bean>
       <bean id="nomProductoDao" class="com.searchitemsapp.dao.NomProductoDao"></bean>
       <bean id="paisDao" class="com.searchitemsapp.dao.PaisDao"></bean>
-      <bean id="paramsFormLoginDao" class="com.searchitemsapp.dao.ParamsFormLoginDao"></bean>
-      <bean id="paramsHeadersLoginDao" class="com.searchitemsapp.dao.ParamsHeadersLoginDao"></bean>
       <bean id="selectoresCssDao" class="com.searchitemsapp.dao.SelectoresCssDao"></bean>
       <bean id="urlDao" class="com.searchitemsapp.dao.UrlDao"></bean>
         
@@ -122,8 +120,6 @@
       <bean id="tbSiaMarcas" class="com.searchitemsapp.entities.TbSiaMarcas"></bean>
       <bean id="tbSiaNomProducto" class="com.searchitemsapp.entities.TbSiaNomProducto"></bean>
       <bean id="tbSiaPais" class="com.searchitemsapp.entities.TbSiaPais"></bean>
-      <bean id="tbSiaParamsFormLogin" class="com.searchitemsapp.entities.TbSiaParamsFormLogin"></bean>
-      <bean id="tbSiaParamsHeadersLogin" class="com.searchitemsapp.entities.TbSiaParamsHeadersLogin"></bean>
       <bean id="tbSiaSelectoresCss" class="com.searchitemsapp.entities.TbSiaSelectoresCss"></bean>
       <bean id="tbSiaUrl" class="com.searchitemsapp.entities.TbSiaUrl"></bean>
       
