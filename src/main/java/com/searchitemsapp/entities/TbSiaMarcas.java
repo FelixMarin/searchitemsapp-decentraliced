@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import org.hibernate.annotations.TypeDef;
+import org.springframework.stereotype.Component;
 
 /**
  * Definición de tipos customizados.
@@ -32,6 +33,7 @@ import org.hibernate.annotations.TypeDef;
  * @author Felix Marin Ramirez
  */
 @Entity
+@Component
 @Table(name="tb_sia_marcas", schema = "sia")
 @NamedQuery(name="TbSiaMarcas.findAll", query="SELECT t FROM TbSiaMarcas t")
 public class TbSiaMarcas implements Serializable {

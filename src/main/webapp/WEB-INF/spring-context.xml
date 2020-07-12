@@ -31,10 +31,7 @@
  	<mvc:annotation-driven /> 	
  	<context:annotation-config /> 	
  
-	<context:component-scan base-package="com.searchitemsapp">
-        <context:include-filter type="regex" expression=".*Stub.*Repository"/>
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
-     </context:component-scan>
+	<context:component-scan base-package="com.searchitemsapp" />
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
           <property name="prefix" value="/" />
@@ -91,8 +88,7 @@
         </property>
  
         <property name="loadTimeWeaver">
-            <bean
-                class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+            <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
         </property> 
     </bean>
         
@@ -104,24 +100,7 @@
 	  <util:map id="mapEmpresas" map-class="java.util.HashMap" key-type="java.lang.String" value-type="com.searchitemsapp.dto.EmpresaDTO"></util:map>
       <util:list id="listTodasMarcas" value-type="com.searchitemsapp.dto.MarcasDTO"></util:list>
       <util:list id="listUrlDto" value-type="com.searchitemsapp.dto.UrlDTO"></util:list>
-      
-      <bean id="categoriaDao" class="com.searchitemsapp.dao.CategoriaDao"></bean>
-      <bean id="empresaDao" class="com.searchitemsapp.dao.EmpresaDao"></bean>
-      <bean id="marcasDao" class="com.searchitemsapp.dao.MarcasDao"></bean>
-      <bean id="nomProductoDao" class="com.searchitemsapp.dao.NomProductoDao"></bean>
-      <bean id="paisDao" class="com.searchitemsapp.dao.PaisDao"></bean>
-      <bean id="selectoresCssDao" class="com.searchitemsapp.dao.SelectoresCssDao"></bean>
-      <bean id="urlDao" class="com.searchitemsapp.dao.UrlDao"></bean>
-        
-      <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.entities.TbSiaCategoriasEmpresa"></bean>
-      <bean id="tbSiaEmpresa" class="com.searchitemsapp.entities.TbSiaEmpresa"></bean>
-      <bean id="tbSiaMarcas" class="com.searchitemsapp.entities.TbSiaMarcas"></bean>
-      <bean id="tbSiaNomProducto" class="com.searchitemsapp.entities.TbSiaNomProducto"></bean>
-      <bean id="tbSiaPais" class="com.searchitemsapp.entities.TbSiaPais"></bean>
-      <bean id="tbSiaSelectoresCss" class="com.searchitemsapp.entities.TbSiaSelectoresCss"></bean>
-      <bean id="tbSiaUrl" class="com.searchitemsapp.entities.TbSiaUrl"></bean>
-      
-      <bean id="urlComposer" class="com.searchitemsapp.processdata.UrlComposer"></bean> 
+          
       <bean id="processDataModule" class="com.searchitemsapp.processdata.ProcessDataModule" scope="prototype">
       		<constructor-arg index="0" ref="urlDTO" />
       		<constructor-arg index="1" type="java.lang.String" value="" />
