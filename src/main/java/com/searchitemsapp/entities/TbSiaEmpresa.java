@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.TypeDef;
+import org.springframework.stereotype.Component;
 
 /**
  * Definición de tipos customizados.
@@ -45,6 +46,7 @@ import org.hibernate.annotations.TypeDef;
  *
  */
 @Entity
+@Component
 @Table(name="tb_sia_empresa", schema = "sia")
 @NamedQuery(name="TbSiaEmpresa.findAll", query="SELECT t FROM TbSiaEmpresa t")
 public class TbSiaEmpresa implements Serializable {
