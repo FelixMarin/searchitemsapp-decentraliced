@@ -16,9 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UrlDTO implements IFdto {
 
-	/*
-	 * Variables Globales
-	 */
 	private Integer did;
 	private Boolean bolActivo;
 	private String desUrl;
@@ -30,9 +27,6 @@ public class UrlDTO implements IFdto {
 	
 	private Map<String, String> selectores;
 	
-	/*
-	 * Constructor
-	 */
 	public UrlDTO() {
 		super();
 	}
@@ -53,9 +47,6 @@ public class UrlDTO implements IFdto {
 		this.nomEmpresa = nomEmpresa;
 	}
 
-	/*
-	 * Métodos Getters y Setters
-	 */
 	public Integer getDid() {
 		return did;
 	}
@@ -112,9 +103,6 @@ public class UrlDTO implements IFdto {
 		this.selectores = selectores;
 	}
 
-	/*
-	 * Metodos sobre-escritos
-	 */
 	@Override
 	public String toString() {
 		return "UrlDTO [did=" + did + ", bolActivo=" + bolActivo + ", desUrl=" + desUrl + ", nomUrl=" + nomUrl

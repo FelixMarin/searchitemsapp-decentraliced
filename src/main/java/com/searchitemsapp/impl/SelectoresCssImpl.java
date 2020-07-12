@@ -2,19 +2,16 @@ package com.searchitemsapp.impl;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Lists;
-import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFSelectoresCssRepository;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
+import com.sun.istack.NotNull;
 
 /**
  * Implementación del dao.
@@ -30,18 +27,9 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssImpl.class);  
 	
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private IFSelectoresCssRepository selectoresCssDao;
 	
-	@Autowired
-	private IFCommonsProperties iFCommonsProperties;
-	
-	/*
-	 * Controlador
-	 */
 	public SelectoresCssImpl() {
 		super();
 	}
@@ -60,9 +48,6 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Ejeculta la llamada al dao y devuelve el resultado.
-		 */
 		return selectoresCssDao.findAll();
 	}	
 	
@@ -75,35 +60,12 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	 * @exception IOException
 	 */
 	@Override
-	public SelectoresCssDTO findByDid(SelectoresCssDTO selectorCssDto) throws IOException {
+	public SelectoresCssDTO findByDid(@NotNull final SelectoresCssDTO selectorCssDto) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Si el parametro de entrada es nulo, el proceso
-		 * termina y retorna nulo.
-		 */
-		if(Objects.isNull(selectorCssDto)) {
-			return new SelectoresCssDTO();
-		}
-		
-		/**
-		 * Traza de log que escribe todos los valores del objeto selector css.
-		 */
-		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(iFCommonsProperties.getValue("flow.value.valor.dto"))
-		.append(StringUtils.SPACE)
-		.append(selectorCssDto.toString());
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(stringBuilder.toString(),this.getClass());
-		}
-		
-		/**
-		 * Devuelve un objeto con el valor solicitado.
-		 */
 		return selectoresCssDao.findByDid(selectorCssDto.getDid());
 	}	
 	
@@ -116,35 +78,12 @@ public class SelectoresCssImpl implements IFImplementacion<SelectoresCssDTO, Emp
 	 * @exception IOException
 	 */
 	@Override
-	public List<SelectoresCssDTO> findByTbSia(SelectoresCssDTO selectoresCssDto, EmpresaDTO empresaDto) throws IOException {
+	public List<SelectoresCssDTO> findByTbSia(@NotNull final SelectoresCssDTO selectoresCssDto, EmpresaDTO empresaDto) throws IOException {
 			
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Si el parametro de entrada es nulo, el proceso
-		 * termina y retorna nulo.
-		 */
-		if(Objects.isNull(empresaDto)) {
-			return Lists.newArrayList();
-		}
-		
-		/**
-		 * Mensaje que se pintará en las trazas de log.
-		 */
-		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(iFCommonsProperties.getValue("flow.value.activo"))
-		.append(StringUtils.SPACE)
-		.append(empresaDto.getDid());
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(stringBuilder.toString(),this.getClass());
-		}
-		
-		/**
-		 * Ejecuta la llamada al dao y devuelve el resultado.
-		 */
 		return selectoresCssDao.findByTbSiaEmpresa(empresaDto.getDid());
 	}
 }

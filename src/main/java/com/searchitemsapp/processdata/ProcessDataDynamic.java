@@ -33,24 +33,15 @@ import com.searchitemsapp.processdata.empresas.IFProcessDataConsum;
 public class ProcessDataDynamic {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataDynamic.class);  
-	
-	/*
-	 * Constantes Globales
-	 */
+
 	private static final String SCROLLDOWN = "window.scrollTo(0, document.body.scrollHeight);";	
-	
-	/*
-	 * Variables Globales
-	 */	
+
 	@Autowired
 	private IFProcessDataConsum processdataConsum;
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
-	
-	/*
-	 * Constructor
-	 */
+
 	protected ProcessDataDynamic() {
 		super();
 	}
@@ -74,16 +65,9 @@ public class ProcessDataDynamic {
 		String resultado;	
 		int didConsum = Integer.parseInt(iFCommonsProperties.getValue("flow.value.did.empresa.consum"));
 		
-		
-		/**
-		 * Se añade el driver a las propiedades globales del sistema.
-		 */
 		System.getProperties().setProperty(initDriver(0), 
 				iFCommonsProperties.getValue("flow.value.firefox.driver.path"));
 		
-		/**
-		 * Se inicilaiza y configura el driver.
-		 */
 		WebDriver webDriver = initWebDriver(0);
 		cleanWindows(webDriver);
 		

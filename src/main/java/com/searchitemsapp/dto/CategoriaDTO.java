@@ -1,7 +1,6 @@
 package com.searchitemsapp.dto;
 
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
@@ -19,9 +18,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CategoriaDTO implements IFdto {
 
-	/*
-	 * Varibles Globales
-	 */
 	private Integer did;
 	private Boolean bolActivo;
 	private String desCatEmpresa;
@@ -30,16 +26,9 @@ public class CategoriaDTO implements IFdto {
 	private Map<Integer,String> marcas;
 	private Map<Integer,String> productos;
 	
-	/*
-	 * Constructor
-	 */
 	public CategoriaDTO() {
 		super();
 	}
-
-	/*
-	 * Métodos Getters y Setters 
-	 */
 	
 	public Integer getDid() {
 		return did;
@@ -96,20 +85,6 @@ public class CategoriaDTO implements IFdto {
 	public void setProductos(Map<Integer,String> productos) {
 		this.productos = productos;
 	}
-	
-	/*
-	 * Métodos sobre-escritos. 
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((Objects.isNull(bolActivo)) ? 0 : bolActivo.hashCode());
-		result = prime * result + ((Objects.isNull(desCatEmpresa)) ? 0 : desCatEmpresa.hashCode());
-		result = prime * result + ((Objects.isNull(did)) ? 0 : did.hashCode());
-		result = prime * result + ((Objects.isNull(nomCatEmpresa)) ? 0 : nomCatEmpresa.hashCode());
-		return result;
-	}
 
 	@Override
 	public String toString() {
@@ -117,5 +92,4 @@ public class CategoriaDTO implements IFdto {
 				+ ", nomCatEmpresa=" + nomCatEmpresa + ", empresas=" + empresas + ", marcas=" + marcas + ", productos="
 				+ productos + "]";
 	}
-
 }

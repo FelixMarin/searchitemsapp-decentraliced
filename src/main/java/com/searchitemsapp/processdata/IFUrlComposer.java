@@ -19,6 +19,9 @@ public interface IFUrlComposer {
 	
 	abstract public void cargarTodasLasMarcas();
 	
-	abstract public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(final String didEmpresas) throws IOException;
+	abstract public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(
+			final String didEmpresas, 
+			final String didPais,
+			final String didCategoria) throws IOException;
 	
 }

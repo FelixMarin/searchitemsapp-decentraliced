@@ -37,10 +37,7 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 	
 	@Autowired
 	private TbSiaPais tbSiaPPais;
-		
-	/*
-	 * Constructor
-	 */
+	
 	public PaisParser() {
 		super();
 	}
@@ -130,17 +127,11 @@ public class PaisParser implements IFParser<PaisDTO, TbSiaPais> {
 		return tbSiaPPais;
 	}
 
-	/**
-	 * Método no implementado.
-	 */
 	@Override
 	public List<PaisDTO> toListDTO(final List<TbSiaPais> objeto) {
 		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 	
-	/**
-	 * Método no implementado.
-	 */
 	@Override
 	public List<PaisDTO> toListODTO(final List<Object[]> objeto) {
 		throw new NotImplementedException("Funcionalidad no implementada");

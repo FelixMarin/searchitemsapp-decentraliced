@@ -24,10 +24,6 @@ public class InitCache implements ServletContextListener {
 	private static final String[] PROPERTIES_FILES = {"flow.properties","db.properties","log4j.properties"};
 	private static final Logger LOGGER = LoggerFactory.getLogger(InitCache.class);     
 	
-    /**
-     * Constructor
-     * @see ServletContextListener#ServletContextListener()
-     */
     public InitCache() {
         super();
     }

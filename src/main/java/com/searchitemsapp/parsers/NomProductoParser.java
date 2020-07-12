@@ -34,9 +34,6 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 	@Autowired
 	private TbSiaNomProducto tbSiaNomProducto;
 	
-	/*
-	 * Constructor
-	 */
 	public NomProductoParser() {
 		super();
 	}
@@ -119,9 +116,6 @@ public class NomProductoParser implements IFParser<NomProductoDTO, TbSiaNomProdu
 		return listDto;
 	}
 	
-	/**
-	 * Método no implementado.
-	 */
 	@Override
 	public List<NomProductoDTO> toListODTO(List<Object[]> objeto) {
 		throw new NotImplementedException("Funcionalidad no implementada");	

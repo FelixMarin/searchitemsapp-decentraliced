@@ -249,6 +249,19 @@ CREATE SEQUENCE sia.sq_empresa
 
 
 --
+-- TOC entry 193 (class 1259 OID 16846)
+-- Name: sq_login; Type: SEQUENCE; Schema: sia; Owner: pgadmin
+--
+
+CREATE SEQUENCE sia.sq_login
+    START WITH 101
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
 -- TOC entry 194 (class 1259 OID 16848)
 -- Name: sq_marcas; Type: SEQUENCE; Schema: sia; Owner: pgadmin
 --
@@ -285,6 +298,33 @@ CREATE SEQUENCE sia.sq_pais
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+--
+-- TOC entry 197 (class 1259 OID 16854)
+-- Name: sq_params_form_login; Type: SEQUENCE; Schema: sia; Owner: pgadmin
+--
+
+CREATE SEQUENCE sia.sq_params_form_login
+    START WITH 101
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 198 (class 1259 OID 16856)
+-- Name: sq_params_headers_login; Type: SEQUENCE; Schema: sia; Owner: pgadmin
+--
+
+CREATE SEQUENCE sia.sq_params_headers_login
+    START WITH 101
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
 
 --
 -- TOC entry 199 (class 1259 OID 16858)
@@ -363,6 +403,23 @@ CREATE TABLE sia.tb_sia_empresa (
     CONSTRAINT tb_sia_empresa_nom_empresa_check CHECK (((nom_empresa)::text <> ''::text))
 );
 
+
+--
+-- TOC entry 204 (class 1259 OID 16887)
+-- Name: tb_sia_login; Type: TABLE; Schema: sia; Owner: pgadmin
+--
+
+CREATE TABLE sia.tb_sia_login (
+    did integer DEFAULT nextval('sia.sq_login'::regclass) NOT NULL,
+    did_empresa integer,
+    nom_usuario character varying(500),
+    cod_password character varying(100),
+    des_email character varying(500),
+    num_telefono character varying(100),
+    cod_postal integer
+);
+
+
 --
 -- TOC entry 205 (class 1259 OID 16894)
 -- Name: tb_sia_marcas; Type: TABLE; Schema: sia; Owner: pgadmin
@@ -404,6 +461,38 @@ CREATE TABLE sia.tb_sia_paises (
     CONSTRAINT tb_sia_paises_des_pais_check CHECK (((des_pais)::text <> ''::text)),
     CONSTRAINT tb_sia_paises_nom_pais_check CHECK (((nom_pais)::text <> ''::text))
 );
+
+
+--
+-- TOC entry 208 (class 1259 OID 16910)
+-- Name: tb_sia_params_form_login; Type: TABLE; Schema: sia; Owner: pgadmin
+--
+
+CREATE TABLE sia.tb_sia_params_form_login (
+    did integer DEFAULT nextval('sia.sq_params_form_login'::regclass) NOT NULL,
+    did_url integer,
+    param_clave character varying(500) NOT NULL,
+    param_valor character varying(500) NOT NULL,
+    CONSTRAINT tb_sia_params_form_login_param_clave_check CHECK (((param_clave)::text <> ''::text)),
+    CONSTRAINT tb_sia_params_form_login_param_valor_check CHECK (((param_valor)::text <> ''::text))
+);
+
+
+--
+-- TOC entry 209 (class 1259 OID 16919)
+-- Name: tb_sia_params_headers_login; Type: TABLE; Schema: sia; Owner: pgadmin
+--
+
+CREATE TABLE sia.tb_sia_params_headers_login (
+    did integer DEFAULT nextval('sia.sq_params_headers_login'::regclass) NOT NULL,
+    did_url integer,
+    param_clave character varying(500) NOT NULL,
+    param_valor character varying(500) NOT NULL,
+    bol_activo boolean,
+    CONSTRAINT tb_sia_params_headers_login_param_clave_check CHECK (((param_clave)::text <> ''::text)),
+    CONSTRAINT tb_sia_params_headers_login_param_valor_check CHECK (((param_valor)::text <> ''::text))
+);
+
 
 --
 -- TOC entry 210 (class 1259 OID 16928)
@@ -484,6 +573,17 @@ INSERT INTO sia.tb_sia_empresa (did, nom_empresa, des_empresa, id_pais, bol_acti
 INSERT INTO sia.tb_sia_empresa (did, nom_empresa, des_empresa, id_pais, bol_activo, id_categoria, bol_dyn_scrap) VALUES (114, 'SIMPLY', 'SPAIN', 101, true, 101, false);
 INSERT INTO sia.tb_sia_empresa (did, nom_empresa, des_empresa, id_pais, bol_activo, id_categoria, bol_dyn_scrap) VALUES (115, 'DICCIONARIO', 'DICCIONARIO', 101, true, 101, false);
 INSERT INTO sia.tb_sia_empresa (did, nom_empresa, des_empresa, id_pais, bol_activo, id_categoria, bol_dyn_scrap) VALUES (116, 'CONSUM', 'SPAIN', 101, true, 101, true);
+
+
+--
+-- TOC entry 2345 (class 0 OID 16887)
+-- Dependencies: 204
+-- Data for Name: tb_sia_login; Type: TABLE DATA; Schema: sia; Owner: pgadmin
+--
+
+INSERT INTO sia.tb_sia_login (did, did_empresa, nom_usuario, cod_password, des_email, num_telefono, cod_postal) VALUES (103, 101, 'zaelyn.braeleigh@buycow.org', 'eVAHtr67qhmSUUx', 'zaelyn.braeleigh@buycow.org', NULL, 8034);
+INSERT INTO sia.tb_sia_login (did, did_empresa, nom_usuario, cod_password, des_email, num_telefono, cod_postal) VALUES (101, 109, 'zaelyn.braeleigh@buycow.org', 'eVAHtr67qhmSUUx', 'zaelyn.braeleigh@buycow.org', NULL, 8034);
+
 
 --
 -- TOC entry 2346 (class 0 OID 16894)
@@ -2432,6 +2532,47 @@ INSERT INTO sia.tb_sia_nom_productos (did, nom_producto, id_categoria, id_pais) 
 
 INSERT INTO sia.tb_sia_paises (did, nom_pais, des_pais, bol_activo) VALUES (101, 'SPAIN', 'SPAIN', true);
 
+
+--
+-- TOC entry 2349 (class 0 OID 16910)
+-- Dependencies: 208
+-- Data for Name: tb_sia_params_form_login; Type: TABLE DATA; Schema: sia; Owner: pgadmin
+--
+
+INSERT INTO sia.tb_sia_params_form_login (did, did_url, param_clave, param_valor) VALUES (107, 119, 'ulogin[email]', 'zaelyn.braeleigh@buycow.org');
+INSERT INTO sia.tb_sia_params_form_login (did, did_url, param_clave, param_valor) VALUES (108, 119, 'ulogin[password]', 'eVAHtr67qhmSUUx');
+INSERT INTO sia.tb_sia_params_form_login (did, did_url, param_clave, param_valor) VALUES (109, 118, 'ulogin[email]', 'zaelyn.braeleigh@buycow.org');
+INSERT INTO sia.tb_sia_params_form_login (did, did_url, param_clave, param_valor) VALUES (110, 118, 'ulogin[password]', 'eVAHtr67qhmSUUx');
+
+
+--
+-- TOC entry 2350 (class 0 OID 16919)
+-- Dependencies: 209
+-- Data for Name: tb_sia_params_headers_login; Type: TABLE DATA; Schema: sia; Owner: pgadmin
+--
+
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (101, 119, 'authority', 'www.carritus.com', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (102, 119, 'path', '/', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (103, 119, 'scheme', 'https', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (104, 119, 'accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (105, 119, 'Connection', 'keep-alive', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (106, 119, 'accept-encoding', 'gzip, deflate, br', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (107, 119, 'accept-language', 'es-ES,es;q=0.9,en;q=0.8', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (108, 119, 'cache-control', 'max-age=0', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (109, 119, 'if-modified-since', 'Mon, 18 Feb 2019 09:34:38 GMT', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (110, 119, 'upgrade-insecure-requests', '1', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (111, 118, 'authority', 'www.carritus.com', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (112, 118, 'path', '/', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (113, 118, 'scheme', 'https', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (114, 118, 'accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (115, 118, 'Connection', 'keep-alive', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (116, 118, 'accept-encoding', 'gzip, deflate, br', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (117, 118, 'accept-language', 'es-ES,es;q=0.9,en;q=0.8', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (118, 118, 'cache-control', 'max-age=0', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (119, 118, 'if-modified-since', 'Mon, 18 Feb 2019 09:34:38 GMT', true);
+INSERT INTO sia.tb_sia_params_headers_login (did, did_url, param_clave, param_valor, bol_activo) VALUES (120, 118, 'upgrade-insecure-requests', '1', true);
+
+
 --
 -- TOC entry 2351 (class 0 OID 16928)
 -- Dependencies: 210
@@ -2570,6 +2711,16 @@ SELECT pg_catalog.setval('sia.sq_ele_nod', 116, true);
 
 SELECT pg_catalog.setval('sia.sq_empresa', 115, true);
 
+
+--
+-- TOC entry 2398 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: sq_login; Type: SEQUENCE SET; Schema: sia; Owner: pgadmin
+--
+
+SELECT pg_catalog.setval('sia.sq_login', 103, true);
+
+
 --
 -- TOC entry 2399 (class 0 OID 0)
 -- Dependencies: 194
@@ -2595,6 +2746,25 @@ SELECT pg_catalog.setval('sia.sq_nom_prod', 102, true);
 --
 
 SELECT pg_catalog.setval('sia.sq_pais', 101, true);
+
+
+--
+-- TOC entry 2402 (class 0 OID 0)
+-- Dependencies: 197
+-- Name: sq_params_form_login; Type: SEQUENCE SET; Schema: sia; Owner: pgadmin
+--
+
+SELECT pg_catalog.setval('sia.sq_params_form_login', 110, true);
+
+
+--
+-- TOC entry 2403 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: sq_params_headers_login; Type: SEQUENCE SET; Schema: sia; Owner: pgadmin
+--
+
+SELECT pg_catalog.setval('sia.sq_params_headers_login', 120, true);
+
 
 --
 -- TOC entry 2404 (class 0 OID 0)
@@ -2648,6 +2818,16 @@ ALTER TABLE ONLY sia.tb_sia_categorias_productos
 
 ALTER TABLE ONLY sia.tb_sia_empresa
     ADD CONSTRAINT tb_sia_empresa_pkey PRIMARY KEY (did);
+
+
+--
+-- TOC entry 2191 (class 2606 OID 16953)
+-- Name: tb_sia_login tb_sia_login_pkey; Type: CONSTRAINT; Schema: sia; Owner: pgadmin
+--
+
+ALTER TABLE ONLY sia.tb_sia_login
+    ADD CONSTRAINT tb_sia_login_pkey PRIMARY KEY (did);
+
 
 --
 -- TOC entry 2193 (class 2606 OID 16955)
@@ -2765,6 +2945,16 @@ ALTER TABLE ONLY sia.tb_sia_marcas
 ALTER TABLE ONLY sia.tb_sia_empresa
     ADD CONSTRAINT tb_sia_empresa_id_pais_fkey FOREIGN KEY (id_pais) REFERENCES sia.tb_sia_paises(did);
 
+
+--
+-- TOC entry 2202 (class 2606 OID 17010)
+-- Name: tb_sia_login tb_sia_login_did_empresa_fkey; Type: FK CONSTRAINT; Schema: sia; Owner: pgadmin
+--
+
+ALTER TABLE ONLY sia.tb_sia_login
+    ADD CONSTRAINT tb_sia_login_did_empresa_fkey FOREIGN KEY (did_empresa) REFERENCES sia.tb_sia_empresa(did);
+
+
 --
 -- TOC entry 2208 (class 2606 OID 17015)
 -- Name: tb_sia_selectores_css tb_sia_scss_fkey; Type: FK CONSTRAINT; Schema: sia; Owner: pgadmin
@@ -2875,6 +3065,20 @@ GRANT SELECT,USAGE ON SEQUENCE sia.sq_empresa TO pgadmin WITH GRANT OPTION;
 
 SET SESSION AUTHORIZATION 'pgadmin';
 
+--
+-- TOC entry 2370 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: SEQUENCE sq_login; Type: ACL; Schema: sia; Owner: pgadmin
+--
+
+REVOKE ALL ON SEQUENCE sia.sq_login FROM PUBLIC;
+REVOKE ALL ON SEQUENCE sia.sq_login FROM pgadmin;
+GRANT UPDATE ON SEQUENCE sia.sq_login TO pgadmin;
+GRANT SELECT,USAGE ON SEQUENCE sia.sq_login TO pgadmin WITH GRANT OPTION;
+GRANT SELECT,USAGE ON SEQUENCE sia.sq_login TO sia_select WITH GRANT OPTION;
+
+
+SET SESSION AUTHORIZATION 'pgadmin';
 
 --
 -- TOC entry 2371 (class 0 OID 0)
@@ -2920,6 +3124,35 @@ GRANT SELECT,USAGE ON SEQUENCE sia.sq_pais TO pgadmin WITH GRANT OPTION;
 
 SET SESSION AUTHORIZATION 'pgadmin';
 
+--
+-- TOC entry 2374 (class 0 OID 0)
+-- Dependencies: 197
+-- Name: SEQUENCE sq_params_form_login; Type: ACL; Schema: sia; Owner: pgadmin
+--
+
+REVOKE ALL ON SEQUENCE sia.sq_params_form_login FROM PUBLIC;
+REVOKE ALL ON SEQUENCE sia.sq_params_form_login FROM pgadmin;
+GRANT UPDATE ON SEQUENCE sia.sq_params_form_login TO pgadmin;
+GRANT SELECT,USAGE ON SEQUENCE sia.sq_params_form_login TO pgadmin WITH GRANT OPTION;
+GRANT SELECT,USAGE ON SEQUENCE sia.sq_params_form_login TO sia_select WITH GRANT OPTION;
+
+
+SET SESSION AUTHORIZATION 'pgadmin';
+
+--
+-- TOC entry 2375 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: SEQUENCE sq_params_headers_login; Type: ACL; Schema: sia; Owner: pgadmin
+--
+
+REVOKE ALL ON SEQUENCE sia.sq_params_headers_login FROM PUBLIC;
+REVOKE ALL ON SEQUENCE sia.sq_params_headers_login FROM pgadmin;
+GRANT UPDATE ON SEQUENCE sia.sq_params_headers_login TO pgadmin;
+GRANT SELECT,USAGE ON SEQUENCE sia.sq_params_headers_login TO pgadmin WITH GRANT OPTION;
+GRANT SELECT,USAGE ON SEQUENCE sia.sq_params_headers_login TO sia_select WITH GRANT OPTION;
+
+
+SET SESSION AUTHORIZATION 'pgadmin';
 
 --
 -- TOC entry 2376 (class 0 OID 0)
@@ -2978,6 +3211,20 @@ GRANT SELECT ON TABLE sia.tb_sia_empresa TO sia_select;
 SET SESSION AUTHORIZATION 'pgadmin';
 
 --
+-- TOC entry 2380 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: TABLE tb_sia_login; Type: ACL; Schema: sia; Owner: pgadmin
+--
+
+REVOKE ALL ON TABLE sia.tb_sia_login FROM PUBLIC;
+REVOKE ALL ON TABLE sia.tb_sia_login FROM pgadmin;
+GRANT ALL ON TABLE sia.tb_sia_login TO pgadmin;
+GRANT SELECT ON TABLE sia.tb_sia_login TO sia_select WITH GRANT OPTION;
+
+
+SET SESSION AUTHORIZATION 'pgadmin';
+
+--
 -- TOC entry 2381 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: TABLE tb_sia_marcas; Type: ACL; Schema: sia; Owner: pgadmin
@@ -3015,6 +3262,34 @@ REVOKE ALL ON TABLE sia.tb_sia_paises FROM PUBLIC;
 REVOKE ALL ON TABLE sia.tb_sia_paises FROM pgadmin;
 GRANT ALL ON TABLE sia.tb_sia_paises TO pgadmin;
 GRANT SELECT ON TABLE sia.tb_sia_paises TO sia_select;
+
+
+SET SESSION AUTHORIZATION 'pgadmin';
+
+--
+-- TOC entry 2384 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: TABLE tb_sia_params_form_login; Type: ACL; Schema: sia; Owner: pgadmin
+--
+
+REVOKE ALL ON TABLE sia.tb_sia_params_form_login FROM PUBLIC;
+REVOKE ALL ON TABLE sia.tb_sia_params_form_login FROM pgadmin;
+GRANT ALL ON TABLE sia.tb_sia_params_form_login TO pgadmin;
+GRANT SELECT ON TABLE sia.tb_sia_params_form_login TO sia_select WITH GRANT OPTION;
+
+
+SET SESSION AUTHORIZATION 'pgadmin';
+
+--
+-- TOC entry 2385 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: TABLE tb_sia_params_headers_login; Type: ACL; Schema: sia; Owner: pgadmin
+--
+
+REVOKE ALL ON TABLE sia.tb_sia_params_headers_login FROM PUBLIC;
+REVOKE ALL ON TABLE sia.tb_sia_params_headers_login FROM pgadmin;
+GRANT ALL ON TABLE sia.tb_sia_params_headers_login TO pgadmin;
+GRANT SELECT ON TABLE sia.tb_sia_params_headers_login TO sia_select WITH GRANT OPTION;
 
 
 SET SESSION AUTHORIZATION 'pgadmin';

@@ -5,18 +5,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Lists;
-import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.EmpresaDao;
 import com.searchitemsapp.dao.repository.IFEmpresaRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
+import com.sun.istack.NotNull;
 
 /**
  * Implementación del dao.
@@ -31,18 +29,10 @@ import com.searchitemsapp.dto.EmpresaDTO;
 public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaImpl.class);  
-	/*
-	 * Variables Globales
-	 */
+
 	@Autowired
 	private IFEmpresaRepository empresaDao;
 	
-	@Autowired
-	private IFCommonsProperties iFCommonsProperties;
-	
-	/*
-	 * Constructor
-	 */
 	public EmpresaImpl() {
 		super();
 	}
@@ -59,9 +49,7 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		/**
-		 * Ejeculta la llamada al dao y devuelve el resultado.
-		 */
+		
 		return empresaDao.findAll();
 	}	
 	
@@ -73,36 +61,16 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	 * @exception IOException
 	 */
 	@Override
-	public EmpresaDTO findByDid(EmpresaDTO empresaDto) throws IOException {
+	public EmpresaDTO findByDid(@NotNull final EmpresaDTO empresaDto) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Si los parámetros de entrada son nulos, el proceso
-		 * termina y retorna nulo.
-		 */
-		if(Objects.isNull(empresaDto) ||
-				Objects.isNull(empresaDto.getDid())) {
-			
+		if(Objects.isNull(empresaDto.getDid())) {			
 			return new EmpresaDTO();
 		}
 		
-		/**
-		 * Mensaje que se pintará en las trazas de log.
-		 */
-		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.did.txt"))
-		.append(StringUtils.SPACE).append(empresaDto.getDid());
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(stringBuilder.toString(),this.getClass());
-		}
-		
-		/**
-		 * Ejecuta la llamada al dao y devuelve el resultado.
-		 */
 		return empresaDao.findByDid(empresaDto.getDid());
 	}
 	
@@ -115,23 +83,14 @@ public class EmpresaImpl implements IFImplementacion<EmpresaDTO, CategoriaDTO> {
 	 * @exception IOException
 	 */
 	@Override
-	public List<EmpresaDTO> findByTbSia(EmpresaDTO empresaDto, CategoriaDTO categoriaDto) throws IOException {
+	public List<EmpresaDTO> findByTbSia(
+			@NotNull final EmpresaDTO empresaDto, 
+			@NotNull final CategoriaDTO categoriaDto) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Si los parámetros de entrada son nulos, el proceso
-		 * termina y retorna nulo.
-		 */
-		if(Objects.isNull(empresaDto) || Objects.isNull(categoriaDto)) {
-			return Lists.newArrayList();
-		}
-		
-		/**
-		 * Ejecuta la llamada al dao y devuelve el resultado.
-		 */
 		return empresaDao.findByDidAndTbSiaCategoriasEmpresa(empresaDto.getDid(), categoriaDto.getDid());
 	}	
 }
