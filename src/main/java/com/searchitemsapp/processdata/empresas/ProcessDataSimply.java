@@ -26,18 +26,12 @@ public class ProcessDataSimply implements IFProcessDataSimply {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataSimply.class);  
 	
-	/*
-	 * Constantes Globales
-	 */
 	private static final String STRING_ENIE_MIN = "ñ";
 	private static final String ENIE_URL = "%F1";
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 	
-	/*
-	 * Constructor
-	 */
 	private ProcessDataSimply() {
 		super();
 	}
@@ -61,38 +55,18 @@ public class ProcessDataSimply implements IFProcessDataSimply {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/*
-		 * Variable locales
-		 */
 		String urlAux;
 		int fin = 30;
 		int max = 10;
 		int incremento = 2;
 		
-		/**
-		 * Se obtiene la URL base. Esta es la URL principal 
-		 * del conjunto de páginas obtenidas como resultado
-		 * de la búsqueda del producto. A partir de esta URL 
-		 * se generan las de paginación.
-		 */
 		String urlBase = urlDto.getNomUrl();
 		
-		/**
-		 * Se obtiene del fichero de propiedades el número máximo de
-		 * páginas que se van a pedir al sitio web.
-		 */	
 		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.simply"));
 		
-		/**
-		 * Se asigna la url base a la lista.
-		 */
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
 		
-		/**
-		 * Bucle que compone la lista de URLs de las que se va a
-		 * realizar la extracción de datos.
-		 */
 		for (int i = 2; i <= max; i++) {
 			
 			urlAux = urlBase.replace("=1&", "=".concat(String.valueOf(i).concat("&")));
@@ -106,12 +80,6 @@ public class ProcessDataSimply implements IFProcessDataSimply {
 			listaUrls.add(urlAux);
 		}
 		
-		/**
-		 * Se limita el número de sitios a los que realizar
-		 * solicitudes html para optimizar el rendimiento.
-		 * Este parámetro sed configura en el fichero de
-		 * properties.
-		 */
 		if(numresultados > 0 && numresultados <= listaUrls.size()) {
 			listaUrls = listaUrls.subList(0, numresultados);
 		}

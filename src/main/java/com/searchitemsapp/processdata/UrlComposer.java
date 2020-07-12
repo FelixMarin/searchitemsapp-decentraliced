@@ -33,18 +33,12 @@ import com.searchitemsapp.impl.IFUrlImpl;
 public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlComposer.class);   
-	
-	/*
-	 * Constantes Globales
-	 */
+
 	private static final String EROSKI = "EROSKI";
 	private static final String SIMPLY = "SIMPLY";
 	private static final String CONDIS = "CONDIS";
 	private static final String WILDCARD = "{1}";
-	
-	/*
-	 * Variables Globales
-	 */
+
 	@Autowired
 	private IFUrlImpl urlImpl;
 	
@@ -53,10 +47,7 @@ public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 	
 	@Autowired 
 	private PaisDTO paisDto;
-	
-	/*
-	 * Constructor
-	 */
+
 	public UrlComposer() {
 		super();
 	}
@@ -85,49 +76,21 @@ public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se establece el identificador de pais y de categoria.
-		 */
 		paisDto.setDid(NumberUtils.toInt(didPais));		
 		categoriaDto.setDid(NumberUtils.toInt(didCategoria));
 		
-		/**
-		 * De la base de datos se obtienen las URLs asociadas a la empresa. 
-		 */
 		List<UrlDTO> pListResultadoDto  = urlImpl.obtenerUrlsPorIdEmpresa(paisDto, categoriaDto, empresas);
 		
-		/**
-		 * Se comprueba que el nombre del producto sea una palabra válida.
-		 */
 		String productoTratadoAux = tratarProducto(producto);
 		
-		/**
-		 * Se crea la variable que almacenará el listado de URLs.
-		 */
 		List<UrlDTO> listUrlDto = Lists.newArrayList();
-		
-		/**
-		 * Bucle que reemplaza el comodín '{1}' por el nombre del
-		 * producto a buscar.  
-		 */
+	
 		pListResultadoDto.forEach(urlDto -> {
 			
 			try {			
-				/**
-				 * Se extraen los selectores de la lista. Estos selectores 
-				 * correspondietes a la página web que va a ser revisada.
-				 */
+				
 				cargaSelectoresCss(urlDto, listTodosSelectoresCss);
 				
-				/**
-				 * Se comprueba que la URL está activada y se permite
-				 * configurarla.
-				 * 
-				 * Para 'EROSKI','SIMPLY' y 'CONDIS', el tratamiento de sus
-				 * URLs es diferente por lo que tiene sus propios métodos.
-				 * 
-				 * El resto de supermercados tienen todos el mismo tratamiento.
-				 */
 				String productoTratado = StringUtils.EMPTY;	
 				if(urlDto.getBolActivo().booleanValue()) {
 					if(mapEmpresas.get(EROSKI).getDid().equals(urlDto.getDidEmpresa())) {
@@ -144,13 +107,11 @@ public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 						productoTratado = productoTratadoAux;
 					}
 					
-					/**
-					 * Se reemplaza el 'wild card' por el nombre del producto.
-					 */
 					String urlAux = urlDto.getNomUrl();
 					urlAux = urlAux.replace(WILDCARD, productoTratado);
 					urlDto.setNomUrl(urlAux);
 					listUrlDto.add(urlDto);
+					
 				} else {
 					if(LOGGER.isInfoEnabled()) {
 						LOGGER.info("La URL: ".
@@ -158,7 +119,6 @@ public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 								concat(" esta deshabilitada."));
 					}
 				}
-				
 			}catch(IOException e) {
 				throw new UncheckedIOException(e);
 			}
@@ -167,9 +127,6 @@ public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 		return listUrlDto;
 	}
 	
-	/*
-	 * Métodos privados 
-	 */
 	/**
 	 * Este método obtinen los selectores correspondietes
 	 * a cada una de las empresas solicitadas en la solicitud 
@@ -184,27 +141,13 @@ public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se comprueba que los parametros no sean nulos.
-		 */
 		if(Objects.nonNull(resDtoUrls) && 
 				Objects.nonNull(resDtoUrls.getDidEmpresa()) &&
 				Objects.nonNull(listTodosElementNodes) &&
 				!listTodosElementNodes.isEmpty()) {
-			
-			/**
-			 * Se obtiene el identificador de la empresa y
-			 * se crean dos lista, una con los selectores y
-			 * otra con un objeto tabja de selectores.
-			 */
+		
 			Integer empDidEnUlrs = resDtoUrls.getDidEmpresa();
-			
-			/**
-			 * Se recorre la lista con todos los selectores.
-			 * Si la lista contiene alguno que coincida con el 
-			 * identificador de la empresa actua se añadirá a
-			 * la lista de nodos por empresa.
-			 */
+	
 			SelectoresCssDTO selectoresCssDTO = null;			
 			for (SelectoresCssDTO elementNodesDTO : listTodosElementNodes) {
 				if (elementNodesDTO.getDidEmpresa().equals(empDidEnUlrs)) {

@@ -33,18 +33,12 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaParser.class);  
 	
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private CategoriaDTO categoriaPDto;
 	
 	@Autowired
 	private TbSiaCategoriasEmpresa tbSiaPCategorias;
 	
-	/*
-	 *  Constructor
-	 */
 	public CategoriaParser() {
 		super();
 	}
@@ -190,9 +184,6 @@ public class CategoriaParser implements IFParser<CategoriaDTO, TbSiaCategoriasEm
 		return listDto;
 	}
 
-	/**
-	 * Método no implementado.
-	 */
 	@Override
 	public List<CategoriaDTO> toListODTO(final List<Object[]> objeto) {
 		throw new NotImplementedException("Funcionalidad no implementada");

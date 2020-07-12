@@ -34,7 +34,6 @@ public class ProcessDataConsum implements IFProcessDataConsum {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataConsum.class);   
 
-	/* XPATH_EXPRESSION : /html/body/div[1]/div/div[1]/div/div[2]/div/div/div/div/div/mod-client-catalog/div/mod-catalog/div/lib-grid/div/div/div[2]/div[2]/div[3]/div[2]/button */
 	private static final String SCROLL_INTO_VIEW = "arguments[0].scrollIntoView(true)";
 
 	private ProcessDataConsum() {
@@ -60,10 +59,6 @@ public class ProcessDataConsum implements IFProcessDataConsum {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se obtiene la URL y se añade en una lista que
-		 * será retornada.
-		 */
 		String urlBase = urlDto.getNomUrl();
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
@@ -87,28 +82,15 @@ public class ProcessDataConsum implements IFProcessDataConsum {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Variables
-		 */
 		WebElement wButton;
 		JavascriptExecutor js = (JavascriptExecutor) webDriver;
 		boolean isButton = Boolean.TRUE;
 		
-		/**
-		 * se añade la URL en el objeto web driver y se le asigna
-		 * un tiempo de espera. Ese tiempo de espera permite que
-		 * se carge la página web en el navegador headless.
-		 */
 		webDriver.get(strUrl);		
 		WebDriverWait wait = new WebDriverWait(webDriver, 30);
 		
-		/**
-		 * Este bloque simula hacer click el el boton de página siguiente
-		 * en la web del producto y mediante scroll down permite que se
-		 * carguen todos los elementos. 
-		 * Devuelve 
-		 */
 		try {
+			
 			do {				
 				Thread.sleep(2000);
 				wButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("grid__footer-viewMore")));
@@ -119,15 +101,13 @@ public class ProcessDataConsum implements IFProcessDataConsum {
 					wButton.click();
 				}
 			} while (isButton);
+			
 		} catch (ElementNotVisibleException | TimeoutException | ElementClickInterceptedException e) {
 			if(LOGGER.isWarnEnabled()) {
 				LOGGER.warn(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
 
-		/**
-		 * Get the source of the last loaded page.
-		 */
 		return webDriver.getPageSource();
 	}
 }

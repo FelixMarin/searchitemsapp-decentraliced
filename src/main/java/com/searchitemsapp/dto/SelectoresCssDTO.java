@@ -16,9 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SelectoresCssDTO  implements IFdto {
 	
-	/*
-	 * Variables Globales
-	 */
 	private Integer did;
 	private Boolean bolActivo;
 	private LocalDate fecModificacion;
@@ -35,16 +32,10 @@ public class SelectoresCssDTO  implements IFdto {
 	private Integer didUrl;
 	private String nomUrl;
 
-	/*
-	 * Constructor
-	 */
 	public SelectoresCssDTO() {
 		super();
 	}
 
-	/*
-	 * Métodos Getters y Setters
-	 */
 	public Integer getDid() {
 		return did;
 	}
@@ -165,9 +156,6 @@ public class SelectoresCssDTO  implements IFdto {
 		this.nomUrl = nomUrl;
 	}
 
-	/*
-	 * Métodos sobre-escritos
-	 */
 	@Override
 	public String toString() {
 		return "SelectoresCssDTO [did=" + did + ", bolActivo=" + bolActivo + ", fecModificacion=" + fecModificacion
@@ -176,5 +164,4 @@ public class SelectoresCssDTO  implements IFdto {
 				+ ", selProducto=" + selProducto + ", selPaginacion=" + selPaginacion + ", didEmpresa=" + didEmpresa
 				+ ", nomEmpresa=" + nomEmpresa + ", didUrl=" + didUrl + ", nomUrl=" + nomUrl + "]";
 	}
-
 }

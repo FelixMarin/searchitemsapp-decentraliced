@@ -16,21 +16,11 @@ import org.springframework.stereotype.Component;
 public class ServiceFactory implements IFServiceFctory {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceFactory.class);  
-	
-	/*
-	 * Constantes Globales
-	 */
 	private static final String LISTA_PRODUCTOS = "LISTA_PRODUCTOS";
 
-	/*
-	 * VAriables Globales
-	 */
 	@Autowired
 	private ApplicationService listadoProductosService;
 	
-	/*
-	 * Constructor
-	 */
 	public ServiceFactory() {
 		super();
 	}

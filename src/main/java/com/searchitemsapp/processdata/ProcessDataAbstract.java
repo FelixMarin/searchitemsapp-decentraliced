@@ -60,9 +60,6 @@ public abstract class ProcessDataAbstract {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataAbstract.class);   
 	
-	/*
-	 * Constantes Globales
-	 */
 	private static final String AGENT_ALL = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36";
 	private static final String REFFERER_GOOGLE = "http://www.google.com";
 	private static final String ACCEPT_LANGUAGE = "Accept-Language";	
@@ -95,9 +92,6 @@ public abstract class ProcessDataAbstract {
 	private static final String PIPE_STRING = "|";
 	private static final String SCRIPT = "script";
 	
-	/*
-	 * Variables Globales
-	 */
 	@Resource(name="mapEmpresas")
 	protected Map<String,EmpresaDTO> mapEmpresas;
 	
@@ -126,16 +120,16 @@ public abstract class ProcessDataAbstract {
 	private IFProcessDataMercadona scrapingMercadona;
 				
 	@Autowired
-	private IFProcessDataCondis scrapingCondis;
+	private IFProcessDataCondis ifProcessDataCondis;
 	
 	@Autowired
-	private IFProcessDataEroski scrapingEroski;
+	private IFProcessDataEroski ifProcessDataEroski;
 	
 	@Autowired
-	private IFProcessDataSimply scrapingSimply;
+	private IFProcessDataSimply ifProcessDataSimply;
 	
 	@Autowired
-	private IFCommonsProperties iFCommonsProperties;
+	private IFCommonsProperties ifCommonsProperties;
 	
 	@Autowired
 	private EmpresaDTO empresaDto;
@@ -143,9 +137,6 @@ public abstract class ProcessDataAbstract {
 	@Autowired
 	SelectoresCssDTO selectoresCssDto;
 	
-	/*
-	 * Constructor
-	 */
 	protected ProcessDataAbstract() {
 		super();
 	}
@@ -159,24 +150,10 @@ public abstract class ProcessDataAbstract {
 		
 		try {
 			
-			/**
-			 * Se cargan todas las marcas de 
-			 * productos desde la base de datos.
-			 */
 			listTodasMarcas = iFMarcasImp.findAll();
-			
-			/**
-			 * Se establece la lista de empresas en la 
-			 * variable global estática.
-			 */
+
 			List<EmpresaDTO> listEmpresaDto = iFEmpresaImpl.findAll();
 
-			/**
-			 * En este punto se establece la lista de empresas
-			 * en la variable estática global y se indica en otro
-			 * mapa el tipo de raspado que se va a utilizar en el
-			 * proceso. 
-			 */
 			listEmpresaDto.stream().forEach(empresaDTO -> {
 				mapEmpresas.put(empresaDTO.getNomEmpresa(), empresaDTO);
 				mapDynEmpresas.put(empresaDTO.getDid(), empresaDTO.getBolDynScrap());
@@ -196,10 +173,13 @@ public abstract class ProcessDataAbstract {
 	 * la ejecución del programa,
 	 */
 	public void cargarTodasLasMarcas() {
+		
 		try {
+			
 			if(Objects.isNull(listTodasMarcas)) {
 				listTodasMarcas = iFMarcasImp.findAll();
 			}
+			
 		}catch(IOException e) {
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
@@ -207,18 +187,18 @@ public abstract class ProcessDataAbstract {
 		}
 	}
 	
-	public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(final String didEmpresas) throws IOException {
+	public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(
+			@NotNull final String didEmpresas, 
+			final String didPais,
+			final String didCategoria) 
+					throws IOException {
 
 		String emp;
 		
 		if("ALL".equalsIgnoreCase(didEmpresas)) {
-			emp = iFCommonsProperties.getValue("flow.value.all.id.empresa");
+			emp = ifCommonsProperties.getValue("flow.value.all.id.empresa");
 		} else {
 			emp = didEmpresas;
-		}
-
-		if(StringUtils.isAllEmpty(emp)) {
-			return Lists.newArrayList();
 		}
 		
 		StringTokenizer st = new StringTokenizer(emp, COMMA_STRING); 			
@@ -267,10 +247,7 @@ public abstract class ProcessDataAbstract {
 		int iResultado = 0;
 
 		try {
-			/**
-			 * Jsoup es una librería que permite conectarse a sitios web
-			 * descargarlos y manipularlos a través de un DOM virtual.
-			 */
+			
 			iResultado = Jsoup.connect(url)
 					.userAgent(AGENT_ALL)
 					.method(Connection.Method.GET)
@@ -314,29 +291,13 @@ public abstract class ProcessDataAbstract {
 		
     	List<Document> listDocuments = Lists.newArrayList();
     	
-		/**
-		 * El identificador de la empresa se añade 
-		 * a una variable.
-		 */
 		int idEmpresa = urlDto.getDidEmpresa();			
     	
-		/**
-		 * Objeto Document con el contenido del
-		 * HTML de la web listo para ser manipulado.
-		 */
     	Document document = getDocument(urlDto.getNomUrl(), idEmpresa, 
     			producto, mapLoginPageCookies);
 
-    	/**
-    	 * Se extrae el listado de URLs que se van a utlizar
-    	 * para extraer los datos.
-    	 */
     	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, idEmpresa);
-   		
-    	/**
-    	 * Se obtienen los documets de la llamadas a las
-    	 * URLs, se añaden a una lista y se retorna.
-    	 */  			
+   		 			
    		if(!liUrlsPorEmpresaPaginacion.isEmpty()) {
 	   		for (String url : liUrlsPorEmpresaPaginacion) {
 	   			listDocuments.add(getDocument(url, idEmpresa, 
@@ -369,11 +330,6 @@ public abstract class ProcessDataAbstract {
 		
 		List<String> listUrlsResultado = Lists.newArrayList();
 		
-		/**
-		 * Se obtiene el listado de URLs correspodientes
-		 * a la empresa a la que se le va a realizar la
-		 * solicitud.
-		 */
 		listUrlsResultado.addAll(processDataEmpresasFactory
 				.getScrapingEmpresa(idEmpresa).getListaUrls(document, urlDto));
 		
@@ -414,12 +370,8 @@ public abstract class ProcessDataAbstract {
 	 * @param pattern
 	 * @return boolean
 	 */
-	protected String eliminarTildes(final String cadena) {
-		
-		if(Objects.isNull(cadena)) {
-			return StringUtils.EMPTY;
-		}
-		
+	protected String eliminarTildes(@NotNull final String cadena) {
+			
 		if(cadena.indexOf(CHAR_ENIE_COD) != -1) {
 			return cadena;
 		}
@@ -444,17 +396,13 @@ public abstract class ProcessDataAbstract {
 
 		List<String> tokens = Lists.newArrayList();
 		
-		/**
-		 * Se añaden todas las palabras que componen 
-		 * el producto en una lista en mayúsculas.
-		 */
 		List<String> listProducto = Arrays.asList(arProducto);  
 		listProducto.forEach(elem -> {
 			tokens.add(elem.toUpperCase());
 		});
 		
-		//INI - Bloque de código donde se forma el patrón.
 		StringBuilder stringBuilder = new StringBuilder(10);
+		
 		stringBuilder.append("(");
 		
 		tokens.forEach(e -> {
@@ -472,82 +420,8 @@ public abstract class ProcessDataAbstract {
 		});
 
 		stringBuilder.append(")");
-		//FIN - Bloque de código donde se forma el patrón.
 		
-		
-		/**
-		 * El resultado es un objeto de tipo 
-		 * patrón creado a partir del patrón
-		 * en formato String. 
-		 */
 		return Pattern.compile(stringBuilder.toString());
-	}
-	
-	/**
-	 * Método que extrae los datos del elemento a partir de
-	 * un selector. Dependiendo de la empresa la técnica de
-	 * extraccion de los datos es de una manera u otra.
-	 * 
-	 * @param elem
-	 * @param cssSelector
-	 * @param urlDto
-	 * @return String
-	 * @throws MalformedURLException
-	 */
-	protected String elementoPorCssSelector(@NotNull final Element elem, 
-			@NotNull final String cssSelector,
-			@NotNull final UrlDTO urlDto) throws MalformedURLException {
-		
-		/**
-		 * Se comprueba que los parametros de entrada no sean nulos.
-		 * Si nulos retorna nulo.
-		 */
-		if(StringUtils.EMPTY.equals(cssSelector)) {
-			return StringUtils.EMPTY;
-		}
-		
-		List<String> lista = Lists.newArrayList();
-		String strResult;
-		
-		/**
-		 * Se extraen los selectores de la variable.
-		 */
-		StringTokenizer st = new StringTokenizer(cssSelector,PIPE_STRING);  
-		
-		/**
-		 * Se añaden los tokens a una lista.
-		 */
-		while (st.hasMoreTokens()) {  
-			lista.add(st.nextToken());
-		}
-		
-		/**
-		 * Se obtiene el tamaño de la lista en una variable
-		 */
-		int listaSize = lista.size();
-		
-		/**
-		 * El método de extracción de datos es diferente en cada empresa.
-		 */
-		if(mapEmpresas.get(MERCADONA).getDid().equals(urlDto.getDidEmpresa())) {
-			
-			strResult = scrapingMercadona.getResult(elem, cssSelector);
-			
-		} else if(mapEmpresas.get(CONDIS).getDid().equals(urlDto.getDidEmpresa()) &&
-				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
-			
-			strResult = scrapingCondis.tratarTagScript(elem, lista.get(0));
-			
-		} else if(mapEmpresas.get(ELCORTEINGLES).getDid().equals(urlDto.getDidEmpresa())) {
-			strResult = elem.selectFirst(iFCommonsProperties.getValue("flow.value.pagina.precio.eci.offer")).text();
-		} else {
-			strResult = extraerValorDelElemento(listaSize, elem, lista, cssSelector);
-		}
-		
-		/**
-		 * se validan y se retorna el resultado.
-		 */
-		return validaResultadoElementValue(strResult, urlDto.getNomUrl());
 	}
 	
 	/**
@@ -562,10 +436,6 @@ public abstract class ProcessDataAbstract {
 		
 		String strProducto;
 		
-		/**
-		 * Se comprueba de que marca es el producto, dependiendo
-		 * de la misma, se ejecutará un proceso u otro.
-		 */
 		if(iIdEmpresa == mapEmpresas.get(HIPERCOR).getDid() ||
 				iIdEmpresa == mapEmpresas.get(DIA).getDid() ||
 				iIdEmpresa == mapEmpresas.get(ELCORTEINGLES).getDid()) {
@@ -574,10 +444,6 @@ public abstract class ProcessDataAbstract {
 			strProducto = nomProducto;
 		}
 		
-		/**
-		 * Se comprueba que la descripción del producto no 
-		 * comience por la marca. Si es así, esta se elimina.
-		 */
 		for (MarcasDTO marcaDto : listTodasMarcas) {
 			if(strProducto.toLowerCase()
 					.startsWith(marcaDto
@@ -587,15 +453,11 @@ public abstract class ProcessDataAbstract {
 				strProducto = strProducto.toLowerCase()
 						.replaceAll(marcaDto.getNomMarca()
 							.toLowerCase(), StringUtils.EMPTY).trim();
-				
 				break;
 			}
 		}
-		
 		return strProducto;
 	}
-	
-	
 	
 	/**
 	 * Este método se encarga de extraer cada uno de los datos 
@@ -612,17 +474,9 @@ public abstract class ProcessDataAbstract {
 			@NotNull final UrlDTO urlDto, 
 			@NotNull final String ordenacion, 
 			IFProcessPrice ifProcessPrice) throws IOException {
-		
-		/**
-		 * Variables utilizadas en el proceso.
-		 */
+
 		int idEmpresaActual = urlDto.getDidEmpresa();
-		
-		/**
-		 * Se setean los valores recuperados de los elementos
-		 * en la variable resultado. Los valores son todos los
-		 * que devolverá el servicio.
-		 */
+
 		ifProcessPrice.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_IMAGE"), urlDto));
 		ifProcessPrice.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
 		ifProcessPrice.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_PRODUCTO"), urlDto));
@@ -631,11 +485,7 @@ public abstract class ProcessDataAbstract {
 		ifProcessPrice.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().get("SEL_LINK_PROD"), urlDto));
 		ifProcessPrice.setDidEmpresa(urlDto.getDidEmpresa());
 		ifProcessPrice.setNomEmpresa(urlDto.getNomEmpresa());
-		
-		/**
-		 * Dependiendo de la empresa, el tratamiento de las URLs 
-		 * extraidas del elemento se realiza de diferente forma.
-		 */
+
 		if(idEmpresaActual == mapEmpresas.get(MERCADONA).getDid()) {
 			ifProcessPrice.setNomUrlAllProducts(scrapingMercadona.getUrlAll(ifProcessPrice));
 			ifProcessPrice.setImagen(ifProcessPrice.getImagen().replace(COMMA_STRING, DOT_STRING));
@@ -643,11 +493,6 @@ public abstract class ProcessDataAbstract {
 			ifProcessPrice.setNomUrlAllProducts(urlDto.getNomUrl());
 		}
 		
-		/**
-		 * Se establece el tipo de ordenación del resultado
-		 * La oredenacion puede ser por por precio o por
-		 * precio/kilo.
-		 */
 		ifProcessPrice.setOrdenacion(Integer.parseInt(ordenacion));		
 		
 		return ifProcessPrice;
@@ -681,25 +526,21 @@ public abstract class ProcessDataAbstract {
 	}
 	
 	protected String reeplazarTildesCondis(@NotNull final String producto) {
-		return scrapingCondis.eliminarTildesProducto(producto);
+		return ifProcessDataCondis.eliminarTildesProducto(producto);
 	}
 	
 	protected String reeplazarCaracteresCondis(@NotNull final String producto) {
-		return scrapingCondis.reemplazarCaracteres(producto);
+		return ifProcessDataCondis.reemplazarCaracteres(producto);
 	}
 	
 	protected String reemplazarCaracteresEroski(@NotNull final String producto) {
-		return scrapingEroski.reemplazarCaracteres(producto);
+		return ifProcessDataEroski.reemplazarCaracteres(producto);
 	}
 	
 	protected String reeplazarCaracteresSimply(@NotNull final String producto) {
-		return scrapingSimply.reemplazarCaracteres(producto);
+		return ifProcessDataSimply.reemplazarCaracteres(producto);
 	}
-	
-	/*
-	 * Métodos privados
-	 */
-	
+		
 	/**
 	 * Este método devuelve un objeto de la clase Document con el contenido del
 	 * HTML de la web.
@@ -722,21 +563,14 @@ public abstract class ProcessDataAbstract {
 		Connection connection  = null;
 		Response response = null;
 		
-		/**
-		 * Variables con los valores necesarios para el proceso.
-		 */
 		boolean isMercadona = didEmpresa == mapEmpresas.get(MERCADONA).getDid();	
 		boolean bDynScrap = mapDynEmpresas.get(didEmpresa);
 		URL url = new URL(strUrl);
-		 
-		/**
-		  * Si está activo el indicador de scraping dinámico asociado a la empresa
-		  * la llamada a las webs se realizará mediante web driver. Si no, se usará
-		  * la librería JSOUP.
-		  */
+
 		if(bDynScrap) {			
-			document = Jsoup.parse(procesDataDynamic.getDynHtmlContent(strUrl, didEmpresa), 
-					new URL(strUrl).toURI().toString());
+			document = Jsoup.parse(procesDataDynamic
+					.getDynHtmlContent(strUrl, didEmpresa), 
+					url.toURI().toString());
 		} else if(isMercadona) {			
 			connection = scrapingMercadona.getConnection(strUrl, producto);	
 			response = connection.execute();
@@ -753,12 +587,7 @@ public abstract class ProcessDataAbstract {
 					.timeout(100000);
 			response = connection.execute();
 		}
-		
-		/**
-		 * Si el booleano de scraping dinamico no está activo y
-		 * el mapa con las cookie para el login no es nulo, se
-		 * añaden las cookies a la conexión.
-		 */
+
 		if(!bDynScrap && Objects.nonNull(mapLoginPageCookies)) {
 			connection.cookies(mapLoginPageCookies);
 		}
@@ -785,9 +614,6 @@ public abstract class ProcessDataAbstract {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se corta el nombre del producto y se añade e un array.
-		 */
 		String[] nomProdSeparado = nomProducto.trim().split(StringUtils.SPACE);
 				
 		StringBuilder stringBuilder = new StringBuilder(10);
@@ -806,6 +632,55 @@ public abstract class ProcessDataAbstract {
 	}	
 	
 	/**
+	 * Método que extrae los datos del elemento a partir de
+	 * un selector. Dependiendo de la empresa la técnica de
+	 * extraccion de los datos es de una manera u otra.
+	 * 
+	 * @param elem
+	 * @param cssSelector
+	 * @param urlDto
+	 * @return String
+	 * @throws MalformedURLException
+	 */
+	private String elementoPorCssSelector(@NotNull final Element elem, 
+			@NotNull final String cssSelector,
+			@NotNull final UrlDTO urlDto) throws MalformedURLException {
+				
+		List<String> lista = Lists.newArrayList();
+		String strResult;
+		
+		StringTokenizer st = new StringTokenizer(cssSelector,PIPE_STRING);  
+		
+		while (st.hasMoreTokens()) {  
+			lista.add(st.nextToken());
+		}
+		
+		int listaSize = lista.size();
+		
+		if(mapEmpresas.get(MERCADONA).getDid().equals(urlDto.getDidEmpresa())) {
+			
+			strResult = scrapingMercadona.getResult(elem, cssSelector);
+			
+		} else if(mapEmpresas.get(CONDIS).getDid().equals(urlDto.getDidEmpresa()) &&
+				SCRIPT.equalsIgnoreCase(lista.get(0))) {	
+			
+			strResult = ifProcessDataCondis.tratarTagScript(elem, lista.get(0));
+			
+		} else if(mapEmpresas.get(ELCORTEINGLES).getDid().equals(urlDto.getDidEmpresa())) {
+			
+			strResult = elem.selectFirst(ifCommonsProperties
+					.getValue("flow.value.pagina.precio.eci.offer")).text();
+		
+		} else {
+			
+			strResult = extraerValorDelElemento(listaSize, elem, lista, cssSelector);
+		
+		}
+		
+		return validaResultadoElementValue(strResult, urlDto.getNomUrl());
+	}
+	
+	/**
 	 * Valida los datos extraidos de los elementos.
 	 * 
 	 * @param strResult
@@ -818,35 +693,20 @@ public abstract class ProcessDataAbstract {
 		
 		int iend = -1;
 		
-		/**
-		 * Se valida el párametro de entrada.
-		 */
 		if(Objects.isNull(strResult)){
 			return strResult;
 		} else {
 			iend = strResult.indexOf(LEFT_PARENTHESIS_0);
 		}
-		
-		/**
-		 * Se crea un objeto URL a partir del párametro.
-		 * Con los metodos del objeto url se compone la
-		 * estructura de la URL de la empresa.
-		 */		
+				
 		URL url = new URL(strUrl);
 		String strUrlEmpresa = url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost());
 		
-		/**
-		 * Si el valor contiene un paraentesis, se
-		 * extrae el texto hasta dicho parentesis.
-		 */
 		if(iend != -1) {
 			strResult = strResult.substring(0, 
 					strResult.indexOf(LEFT_PARENTHESIS_0)-1);
 		}
 		
-		/**
-		 * En este punto se compone la URL de la imagen del producto.
-		 */
 		String caracteres = StringUtils.EMPTY;
 		if(Objects.nonNull(strResult) && strResult.trim().startsWith(DOBLE_BARRA)) {
 			caracteres = HTTPS.concat(strResult);

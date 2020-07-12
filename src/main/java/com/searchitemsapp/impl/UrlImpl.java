@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,24 +34,15 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlImpl.class);  
 	
-	/*
-	 * Constante Globales
-	 */
 	private static final String COMA = ",";
 	private static final String ALL = "ALL";
 
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private IFUrlRepository urlDao;
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 	
-	/*
-	 * Constructor
-	 */
 	public UrlImpl() {
 		super();
 	}
@@ -64,24 +55,11 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	 * @exception IOException
 	 */
 	@Override
-	public UrlDTO findByDid(UrlDTO urlDTO) throws IOException {
+	public UrlDTO findByDid(@NotNull final UrlDTO urlDTO) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		
-		if(Objects.isNull(urlDTO)) {
-			return new UrlDTO();
-		}
-		
-		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(iFCommonsProperties.getValue("flow.value.empresa.did.txt"))
-		.append(StringUtils.SPACE)
-		.append(urlDTO.getDid());
-		
-			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(stringBuilder.toString(),this.getClass());
-			}
 			
 		return urlDao.findByDid(urlDTO.getDid());
 	}
@@ -130,8 +108,6 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 			return lsIdsEmpresas;
 		}
 		
-		
-		
 		for (String id : arIdsEpresas) {
 			for (UrlDTO urlDTO : listUrlDTO) {
 				if(Integer.parseInt(id) == urlDTO.getDidEmpresa()) {
@@ -142,20 +118,6 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		
 		return lsIdsEmpresas;
 	}
-
-	@Override
-	public List<UrlDTO> findAll() throws IOException {
-		return Lists.newArrayList();
-	}
-
-	@Override
-	public List<UrlDTO> findByTbSia(UrlDTO r, CategoriaDTO t) throws IOException {
-		return Lists.newArrayList();
-	}
-	
-	/*
-	 * Métodos privados
-	 */
 	
 	private String[] tokenizeString(final String cadena, final String token) {
 		
@@ -164,9 +126,18 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		
 		while (st.hasMoreElements()) {
 			listaAux.add((String) st.nextElement());
-			
 		}
 		
 		return listaAux.toArray(new String[0]);
+	}
+
+	@Override
+	public List<UrlDTO> findAll() throws IOException {
+		throw new NotImplementedException("Funcionalidad no implementada");
+	}
+
+	@Override
+	public List<UrlDTO> findByTbSia(UrlDTO r, CategoriaDTO t) throws IOException {
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }

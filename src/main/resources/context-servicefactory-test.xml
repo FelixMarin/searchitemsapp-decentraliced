@@ -109,46 +109,36 @@
       <bean id="paisDTO" class="com.searchitemsapp.dto.PaisDTO"></bean>
       <bean id="pedidoDTO" class="com.searchitemsapp.dto.PedidoDTO"></bean> 
       <bean id="urlDTO" class="com.searchitemsapp.dto.UrlDTO"></bean> 
-      <bean id="loginDTO" class="com.searchitemsapp.dto.LoginDTO"></bean>
-      <bean id="paramsLoginDTO" class="com.searchitemsapp.dto.ParamsLoginDTO"></bean>
       <bean id="marcasDTO" class="com.searchitemsapp.dto.MarcasDTO"></bean>
       <bean id="selectoresCssDTO" class="com.searchitemsapp.dto.SelectoresCssDTO"></bean>
        <bean id="nomProductoDTO" class="com.searchitemsapp.dto.NomProductoDTO"></bean>
       
       <bean id="categoriaParser" class="com.searchitemsapp.parsers.CategoriaParser"></bean>
       <bean id="empresaParser" class="com.searchitemsapp.parsers.EmpresaParser"></bean>
-      <bean id="loginParser" class="com.searchitemsapp.parsers.LoginParser"></bean>
       <bean id="marcasParser" class="com.searchitemsapp.parsers.MarcasParser"></bean>
       <bean id="nomProductoParser" class="com.searchitemsapp.parsers.NomProductoParser"></bean>
       <bean id="paisParser" class="com.searchitemsapp.parsers.PaisParser"></bean>
-      <bean id="paramsFormLoginParser" class="com.searchitemsapp.parsers.ParamsFormLoginParser"></bean>
-      <bean id="paramsHeadersParser" class="com.searchitemsapp.parsers.ParamsHeadersLoginParser"></bean>
       <bean id="selectoresCssParser" class="com.searchitemsapp.parsers.SelectoresCssParser"></bean>
       <bean id="urlParser" class="com.searchitemsapp.parsers.UrlParser"></bean>
      
       <bean id="categoriaDao" class="com.searchitemsapp.dao.CategoriaDao"></bean>
       <bean id="empresaDao" class="com.searchitemsapp.dao.EmpresaDao"></bean>
-      <bean id="loginDao" class="com.searchitemsapp.dao.LoginDao"></bean>
       <bean id="marcasDao" class="com.searchitemsapp.dao.MarcasDao"></bean>
       <bean id="nomProductoDao" class="com.searchitemsapp.dao.NomProductoDao"></bean>
       <bean id="paisDao" class="com.searchitemsapp.dao.PaisDao"></bean>
       <bean id="selectoresCssDao" class="com.searchitemsapp.dao.SelectoresCssDao"></bean>
       <bean id="urlDao" class="com.searchitemsapp.dao.UrlDao"></bean>
      
-      <bean id="loginImpl" class="com.searchitemsapp.impl.LoginImpl"></bean>
       <bean id="categoriaImpl" class="com.searchitemsapp.impl.CategoriaImpl"></bean> 
       <bean id="empresaImpl" class="com.searchitemsapp.impl.EmpresaImpl"></bean>
       <bean id="paisImpl" class="com.searchitemsapp.impl.PaisImpl"></bean>
       <bean id="urlImpl" class="com.searchitemsapp.impl.UrlImpl"></bean>
-      <bean id="paramsFormLoginImpl" class="com.searchitemsapp.impl.ParamsFormLoginImpl"></bean>
-      <bean id="paramsHeadersLoginImpl" class="com.searchitemsapp.impl.ParamsHeadersLoginImpl"></bean>
       <bean id="marcasImpl" class="com.searchitemsapp.impl.MarcasImpl"></bean>
        <bean id="selectoresCssImpl" class="com.searchitemsapp.impl.SelectoresCssImpl"></bean>
       <bean id="nomProductoImpl" class="com.searchitemsapp.impl.NomProductoImpl"></bean>
       
       <bean id="tbSiaCategoriasEmpresa" class="com.searchitemsapp.entities.TbSiaCategoriasEmpresa"></bean>
       <bean id="tbSiaEmpresa" class="com.searchitemsapp.entities.TbSiaEmpresa"></bean>
-      <bean id="tbSiaLogin" class="com.searchitemsapp.entities.TbSiaLogin"></bean>
       <bean id="tbSiaMarcas" class="com.searchitemsapp.entities.TbSiaMarcas"></bean>
       <bean id="tbSiaNomProducto" class="com.searchitemsapp.entities.TbSiaNomProducto"></bean>
       <bean id="tbSiaPais" class="com.searchitemsapp.entities.TbSiaPais"></bean>
@@ -185,7 +175,6 @@
        <bean id="listaProductosValidator" class="com.searchitemsapp.controller.ListaProductosValidator"></bean>
        
        <bean id="processPriceBean" class="com.searchitemsapp.processprice.ProcessPriceBean"></bean>
-      <bean id="proxyConnection" class="com.searchitemsapp.proxy.ProxyConnection"></bean>
       
       <bean id="initCache" class="com.searchitemsapp.initcache.InitCache"></bean>
       

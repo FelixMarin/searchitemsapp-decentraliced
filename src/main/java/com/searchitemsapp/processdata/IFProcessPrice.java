@@ -26,13 +26,10 @@ public abstract interface IFProcessPrice extends Comparator<IFProcessPrice>{
 	public abstract void setBolActivo(boolean bolActivo);
 	public abstract boolean isBolStatus();
 	public abstract void setBolStatus(boolean bolStatus);
-	public abstract void setBolLogin(Boolean bolLogin);
 	public abstract String getDesUrl();
 	public abstract void setDesUrl(String desUrl);
 	public abstract String getNomUrlAllProducts();
 	public abstract void setNomUrlAllProducts(String nomUrlAllProducts);
-	public abstract String getLoginnUrl();
-	public abstract void setLoginUrl(String loginUrl);
 	public abstract int getOrdenacion();
 	public abstract void setOrdenacion(int ordenacion);
 	public abstract String getNomEmpresa();

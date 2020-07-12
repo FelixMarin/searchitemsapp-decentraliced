@@ -34,9 +34,6 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 	@Autowired
 	private TbSiaSelectoresCss tbSiaSelectoresCss;
 	
-	/*
-	 * Constructor
-	 */
 	public SelectoresCssParser() {
 		super();
 	}
@@ -144,9 +141,6 @@ public class SelectoresCssParser implements IFParser<SelectoresCssDTO, TbSiaSele
 		return listDto;
 	}
 	
-	/**
-	 * Método no implementado.
-	 */
 	@Override
 	public List<SelectoresCssDTO> toListODTO(final List<Object[]> objeto) {
 		throw new NotImplementedException("Funcionalidad no implementada");

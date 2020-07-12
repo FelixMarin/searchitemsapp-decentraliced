@@ -24,9 +24,6 @@ public class ProcessDataCaprabo implements IFProcessDataEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataCaprabo.class);   
 
-	/*
-	 * Constructor
-	 */
 	public ProcessDataCaprabo() {
 		super();
 	}
@@ -50,10 +47,6 @@ public class ProcessDataCaprabo implements IFProcessDataEmpresas {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se obtiene la URL y se añade en una lista que
-		 * será retornada.
-		 */
 		String urlBase = urlDto.getNomUrl();
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);

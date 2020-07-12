@@ -46,18 +46,12 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 	private static final String SCRAP_PATTERN = "SCRAP_PATTERN";
 	private static final String DID = "DID";
 	
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private EmpresaDTO empresaPDto;
 	
 	@Autowired
 	private TbSiaEmpresa tbSiaPEmpresas;
 	
-	/*
-	 * Constructor
-	 */
 	public EmpresaParser() {
 		super();
 	}
@@ -166,7 +160,6 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		tselectores.setFecModificacion(LocalDate.parse(map.get(FEC_MODIFICACION)));
 		tbSiaPEmpresas.getTbSiaSelectoresCsses().add(tselectores);
 		
-		
 		return tbSiaPEmpresas;
 	}
 	
@@ -231,9 +224,6 @@ public class EmpresaParser implements IFParser<EmpresaDTO, TbSiaEmpresa> {
 		return listDto;
 	}
 	
-	/**
-	 * Método no implementado.
-	 */
 	@Override
 	public List<EmpresaDTO> toListODTO(final List<Object[]> objeto) {
 		throw new NotImplementedException("Funcionalidad no implementada");

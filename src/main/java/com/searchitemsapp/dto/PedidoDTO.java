@@ -1,7 +1,5 @@
 package com.searchitemsapp.dto;
 
-import java.util.Objects;
-
 import org.springframework.stereotype.Component;
 
 
@@ -18,22 +16,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PedidoDTO implements IFdto {
 	
-	/*
-	 * Variables Globales
-	 */
 	private String categoria;
 	private String producto;
 
-	/*
-	 * Constructor
-	 */
 	public PedidoDTO() {
 		super();
 	}
 
-	/*
-	 * Métodos Getters y Setters
-	 */
 	public String getCategoria() {
 		return categoria;
 	}
@@ -48,23 +37,6 @@ public class PedidoDTO implements IFdto {
 
 	public void setProducto(String producto) {
 		this.producto = producto;
-	}
-
-	/*
-	 * Métodos sobre-escitos
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((Objects.isNull(categoria)) ? 0 : categoria.hashCode());
-		result = prime * result + ((Objects.isNull(producto)) ? 0 : producto.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return Objects.equals(this, obj);
 	}
 
 	@Override

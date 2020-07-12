@@ -21,9 +21,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Log4jInit extends HttpServlet {
 
-	/**
-	 * Variables
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final String LOG4J_APPENDER_FILE_FILE = "log4j.appender.file.File";
 	private static final String LOG4J_INIT_FILE = "log4j-init-file";
@@ -31,9 +28,6 @@ public class Log4jInit extends HttpServlet {
 	private static final String CURRENT_FILE_SEPARATOR = System.getProperty("file.separator");
 	private static final Logger LOGGER = LoggerFactory.getLogger(Log4jInit.class);  
 
-	/**
-	 * Constructor
-	 */
 	public Log4jInit() {
 		super();
 	}
@@ -48,11 +42,6 @@ public class Log4jInit extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		
-		/**
-		 * Se escribe una traza en el fichero de logs. En esta traza
-		 * se indican la posicion actual del flujo, así como la fecha
-		 * y la hora actuales.
-		 */
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}

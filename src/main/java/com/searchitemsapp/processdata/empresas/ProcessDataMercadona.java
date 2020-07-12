@@ -31,9 +31,6 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataMercadona.class);  
 
-	/*
-	 * Constantes Globales
-	 */
 	private static final String LT_EM_GT_CIERRE = "&lt;/em&gt;";
 	private static final String SEPARADOR_URL = "%20";
 	private static final String LT_EM_GT = "&lt;em&gt;";
@@ -53,9 +50,6 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 	private static final String GZIP_DEFLATE_SDCH = "gzip, deflate, sdch";	
 	private static final String URL_ALL_PRODUCTS = "https://lolamarket.com/tienda/mercadona/buscar/";
 
-	/*
-	 * Constructor
-	 */
 	private ProcessDataMercadona() {
 		super();
 	}
@@ -79,17 +73,8 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se obtiene la URL base. Esta es la URL principal 
-		 * del conjunto de páginas obtenidas como resultado
-		 * de la búsqueda del producto. A partir de esta URL 
-		 * se generan las de paginación.
-		 */
 		String urlBase = urlDto.getNomUrl();
 		
-		/**
-		 * Se asigna la url base a la lista.
-		 */
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
 		
@@ -110,27 +95,12 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se crea un objeto JSON a partir del body
-		 * del documento web.
-		 */
 		JSONObject json = new JSONObject(body);
 		
-		/**
-		 * Se transforma el objeto JSON en un XML formato cadena.
-		 */
 		String xml = XML.toString(json);
 		
-		/**
-		 * Del XML se reemplazan los puntos por comas.
-		 */
 		xml = xml.replace(".", ",");
 		
-		/**
-		 * Si el XML no está vacío, se termina el proceso
-		 * y retorna nulo. En otro caso, el XML es limpiado
-		 * de caracteres especiales.
-		 */
 		if(StringUtils.isAllEmpty(xml)) {
 			return new Document(StringUtils.EMPTY);
 		} else {
@@ -139,10 +109,6 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 			xml = xml.replace(LT_EM_GT_CIERRE, StringUtils.EMPTY);
 		}
 		
-		/**
-		 * Se transforma el XML en formato objeto Document 
-		 * y se retorna dicho objeto.
-		 */
 		Document doc = Jsoup.parse(xml, StringUtils.EMPTY, Parser.xmlParser());
 		doc.setBaseUri(url);
 		
@@ -170,11 +136,6 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 	 */
 	public Connection getConnection(final String strUrl, final String producto) {
 		
-		/**
-		 * Mediate la librería JSOUP se puede extablecer conexion con
-		 * un sitio web. Utilizando los métodos de la librería, se puede
-		 * configura la solicitud de la página web.
-		 */
 		return Jsoup.connect(strUrl)
 				.userAgent(AGENT_ALL)
 				.method(Connection.Method.POST)
@@ -200,12 +161,7 @@ public class ProcessDataMercadona implements IFProcessDataMercadona {
 	public String getUrlAll(final IFProcessPrice resDto) {
 		
 		String productoAux = StringUtils.EMPTY;
-				
-		/**
-		 * Se reemplazan los espacios en blanco por el caracter
-		 * unicode que lo representa.<br> 
-		 * "  " => "%20"
- 		 */
+		
 		if(!StringUtils.isAllEmpty(resDto.getNomProducto())) {
 			productoAux= resDto.getNomProducto()
 				.replace(StringUtils.SPACE, SEPARADOR_URL);

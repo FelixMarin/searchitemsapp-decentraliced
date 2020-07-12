@@ -2,7 +2,6 @@ package com.searchitemsapp.dao;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -17,6 +16,7 @@ import com.searchitemsapp.dao.repository.IFCategoriaRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.parsers.IFParser;
+import com.sun.istack.NotNull;
 
 /**
  * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
@@ -32,18 +32,12 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaDao.class);   
 	
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private IFParser<CategoriaDTO, TbSiaCategoriasEmpresa> parser;
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 	
-	/*
-	 * Constructor 
-	 */
 	public CategoriaDao() {
 		super();
 	}
@@ -63,21 +57,9 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 		
 		List<CategoriaDTO> resultado = null;
 		
-		/**
-		 * Se obtiene la query del fichero de propiedades.
-		 */
-		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(iFCommonsProperties.getValue("flow.value.categoria.select.all"));		
-
-		
-		/**
-		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query.
-		 */
-		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaCategoriasEmpresa.class);
-		
-		/**
-		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
-		 */
+		Query q = entityManager.createQuery(iFCommonsProperties
+				.getValue("flow.value.categoria.select.all"), TbSiaCategoriasEmpresa.class);
+	
 		try {
 			resultado = parser.toListDTO(((List<TbSiaCategoriasEmpresa>) q.getResultList()));
 		}catch(NoResultException e) {
@@ -85,7 +67,6 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
-		
 		
 		return resultado;
 	}
@@ -97,33 +78,15 @@ public class CategoriaDao extends AbstractDao implements IFCategoriaRepository {
 	 * @return CategoriaDTO
 	 */
 	@Override
-	public CategoriaDTO findByDid(Integer did) {
+	public CategoriaDTO findByDid(@NotNull Integer did) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		/**
-		 * Si el parametro de entrada es nulo, el proceso
-		 * termina y retorna nulo.
-		 */
-		if(Objects.isNull(did)) {
-			return new CategoriaDTO();
-		}
-		
-		/**
-		 * Se traza el identificador de la categoría.
-		 */
-		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(String.valueOf(did),this.getClass());
 		}
-		
+				
 		CategoriaDTO categoriaDTO = null;
 		
-		/**
-		 * Se obtiene el resutlado y se mapea a un objeto de tipo DTO.
-		 * Si no hay resultado la excepcion se traza en los logs.
-		 */
 		try {
 			categoriaDTO = parser.toDTO(entityManager.find(TbSiaCategoriasEmpresa.class, did));
 		}catch(NoResultException e) {
