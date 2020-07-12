@@ -14,6 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.TypeDef;
+import org.springframework.stereotype.Component;
 
 /**
  * Definición de tipos customizados.
@@ -48,6 +49,7 @@ import org.hibernate.annotations.TypeDef;
  *  @author Felix Marin Ramirez
  */
 @Entity
+@Component
 @Table(name="tb_sia_selectores_css", schema = "sia")
 @NamedQuery(name="TbSiaSelectoresCss.findAll", query="SELECT t FROM TbSiaSelectoresCss t")
 public class TbSiaSelectoresCss implements Serializable {
