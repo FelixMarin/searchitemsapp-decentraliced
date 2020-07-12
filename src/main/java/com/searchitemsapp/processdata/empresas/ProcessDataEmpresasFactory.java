@@ -21,9 +21,6 @@ public class ProcessDataEmpresasFactory implements IFProcessDataEmpresasFactory 
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataEmpresasFactory.class);  
 	
-	/*
-	 * Constantes Globales
-	 */
 	private static final String ID_EROSKI = "107";
 	private static final String ID_LIDL = "102";
 	private static final String ID_HIPERCOR = "103";
@@ -38,9 +35,6 @@ public class ProcessDataEmpresasFactory implements IFProcessDataEmpresasFactory 
 	private static final String ID_MERCADONA = "101";
 	private static final String ID_CONSUM = "116";
 
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private ProcessDataAlcampo processdataAlcapo;
 	
@@ -80,9 +74,6 @@ public class ProcessDataEmpresasFactory implements IFProcessDataEmpresasFactory 
 	@Autowired
 	private ProcessDataLidl processdataLidl;	
 	
-	/*
-	 * Constructor
-	 */
 	public ProcessDataEmpresasFactory() {
 		super();
 	}
@@ -102,11 +93,7 @@ public class ProcessDataEmpresasFactory implements IFProcessDataEmpresasFactory 
 		}
 		
 		IFProcessDataEmpresas ifs = null;
-		
-		/**
-		 * Dependiendo del valor de entrada devolverá uno u otro objeto.
-		 * Nulo si el parámetro de entrada no coincide con lo esperado.
-		 */
+	
 		if(NumberUtils.toInt(ID_ALCAMPO) == idEmpresa) {
 			ifs = processdataAlcapo;
 		} else if(NumberUtils.toInt(ID_CAPRABO) == idEmpresa) {

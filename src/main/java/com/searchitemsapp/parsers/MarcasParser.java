@@ -32,9 +32,6 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 	@Autowired
 	private TbSiaMarcas tbSiaMarcas;
 	
-	/*
-	 * Constructor
-	 */
 	public MarcasParser() {
 		super();
 	}
@@ -112,9 +109,6 @@ public class MarcasParser implements IFParser<MarcasDTO, TbSiaMarcas> {
 		return listDto;
 	}
 
-	/**
-	 * Método no implementado.
-	 */
 	@Override
 	public List<MarcasDTO> toListODTO(final List<Object[]> objeto) {
 		throw new NotImplementedException("Funcionalidad no implementada");

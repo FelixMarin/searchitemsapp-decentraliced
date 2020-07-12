@@ -57,9 +57,6 @@ public class UrlParser implements IFParser<UrlDTO, TbSiaUrl> {
 	@Autowired
 	private TbSiaSelectoresCss tselectores;
 	
-	/*
-	 * Constructor
-	 */
 	public UrlParser() {
 		super();
 	}

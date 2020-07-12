@@ -29,7 +29,7 @@ import com.searchitemsapp.dto.MarcasDTO;
 @WebAppConfiguration
 public class MarcasImplTest {
 	
-	private static Logger LOGGER = LoggerFactory.getLogger(LoginImplTest.class); 
+	private static Logger LOGGER = LoggerFactory.getLogger(MarcasImplTest.class); 
 	
     @Autowired
     private ServletContext context;

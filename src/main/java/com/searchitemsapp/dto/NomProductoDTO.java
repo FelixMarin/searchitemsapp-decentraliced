@@ -14,9 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class NomProductoDTO  implements IFdto {
 
-	/*
-	 * Variables Globales
-	 */
 	private Integer did;
 	private String nomProducto;
 	private int didCatEmpresas;
@@ -24,16 +21,10 @@ public class NomProductoDTO  implements IFdto {
 	private int didPais;
 	private String nomPais;
 	
-	/*
-	 * Contructor
-	 */
 	public NomProductoDTO() {
 		super();
 	}
-		
-	/*
-	 * Métodos Getters y Setters
-	 */
+	
 	public Integer getDid() {
 		return did;
 	}
@@ -80,9 +71,6 @@ public class NomProductoDTO  implements IFdto {
 		this.nomPais = nomPais;
 	}
 
-	/*
-	 * Métodos sobre-escritos
-	 */
 	@Override
 	public String toString() {
 		return "NomProductoDTO [did=" + did + ", nomProducto=" + nomProducto + ", tbSiaCategoriasEmpresa="

@@ -28,17 +28,11 @@ public class ProcessDataECI implements IFProcessDataEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataECI.class);  
 	
-	/*
-	 * Constasntes Globales
-	 */
 	private static final String PATTERN = ".*de ([0-9]+)";
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 
-	/*
-	 * Constructor
-	 */
 	public ProcessDataECI() {
 		super();
 	}
@@ -61,66 +55,29 @@ public class ProcessDataECI implements IFProcessDataEmpresas {
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
-		/**
-		 * Se obtiene la URL base. Esta es la URL principal 
-		 * del conjunto de páginas obtenidas como resultado
-		 * de la búsqueda del producto. A partir de esta URL 
-		 * se generan las de paginación.
-		 */
-		String urlBase = urlDto.getNomUrl();
 		
-		/**
-		 * Se crea un string con el selector de paginación.
-		 */
+		String urlBase = urlDto.getNomUrl();
+	
 		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");
 
-		/**
-		 * Se obbtiene del documento el número de resultados. 
-		 */
 		String strPaginacion = document.select(selectorPaginacion).text();
-		
-		/**
-		 * Se obtiene del fichero de propiedades el número máximo de
-		 * páginas que se van a pedir al sitio web.
-		 */
+
 		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.eci"));
-		
-		/**
-		 * Si el elemento de paginación coincide con el patrón es
-		 * que hay más de una página web que hay que solicitar al 
-		 * sitio web.
-		 */
+
 		Matcher m = Pattern.compile(PATTERN).matcher(strPaginacion);	
 		if(m.find()) {
 			strPaginacion=m.group(1);
 		}
-		
-		/**
-		 * Se desformatea el número de páginas que se pueden solicitar.
-		 */
+
 		int intPaginacion = NumberUtils.toInt(strPaginacion.trim());
-		
-		/**
-		 * Se añade la URL base a la lista en formato string.
-		 */
+
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
-		
-		/**
-		 * Se compone la lista de URLs que se van a solicitar 
-		 * al sitio web.
-		 * El primer elemento de la lista es la URL base, por
-		 * lo que se itera a partir de la segunda posición.
-		 */
+
 		for (int i = 2; i <= intPaginacion; i++) {
 			listaUrls.add(urlBase.replace("/1/", "/".concat(String.valueOf(i).concat("/"))));
 		}
-		
-		/**
-		 * Se eliminan las URLs que superen el número maximo
-		 * de resultados permitidos indicados en la variable
-		 * 'numeroresultados'
-		 */
+
 		if(numresultados > 0 && numresultados <= listaUrls.size()) {
 			listaUrls = listaUrls.subList(0, numresultados);
 		}	

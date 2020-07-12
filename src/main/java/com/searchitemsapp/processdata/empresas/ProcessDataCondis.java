@@ -30,9 +30,6 @@ public class ProcessDataCondis implements IFProcessDataCondis {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataCondis.class);  
 	
-	/*
-	 * Constantes Globales
-	 */
 	private static final String REGEX_NUMERO_DECIMAL = "\\d*[,][0-9]*";
 	private static final String[] ARRAY_TILDES_NORMALES_MIN = {"á","é","í","ó","ú"};
 	private static final String[] ARRAY_VOCALES_MIN = {"a","e","i","o","u"};
@@ -44,14 +41,8 @@ public class ProcessDataCondis implements IFProcessDataCondis {
 	private static final char LEFT_SLASH_CHAR = '\'';
 	private static final String SPECIALS_CHARS_STRING = "\r\n|\r|\n";
 	
-	/*
-	 * Constantes Globales
-	 */
 	private static final String ENIE_CONDIS = "%D1";
 
-	/*
-	 * Constructor
-	 */
 	public ProcessDataCondis() {
 		super();
 	}
@@ -76,10 +67,6 @@ public class ProcessDataCondis implements IFProcessDataCondis {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se obtiene la URL y se añade en una lista que
-		 * será retornada.
-		 */
 		String urlBase = urlDto.getNomUrl();
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
@@ -87,12 +74,7 @@ public class ProcessDataCondis implements IFProcessDataCondis {
 		return listaUrls;
 	}
 	
-	/**
-	 * 
-	 * @param elem
-	 * @param cssSelector
-	 * @return String
-	 */
+	
 	public String tratarTagScript(final Element elem, final String cssSelector) {
 		
 		if(LOGGER.isInfoEnabled()) {

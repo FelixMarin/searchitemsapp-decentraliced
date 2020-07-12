@@ -8,11 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.sun.istack.NotNull;
 
-/**
- * 
- * @author Felix Marin Ramirez
- *
- */
 @Component
 public class ListaProductosValidator {
 	

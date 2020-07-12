@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +32,12 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(NomProductoDao.class);     
 	
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private IFParser<NomProductoDTO, TbSiaNomProducto> parser;
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
-		
-	/*
-	 * Constructor
-	 */
+	
 	public NomProductoDao() {
 		super();
 	}
@@ -50,7 +45,7 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 	/**
 	 * Método que devuelve todos los elementos de una tabla.
 	 * 
-	 * @return List<LoginDTO>
+	 * @return List<NomProductoDTO>
 	 * @exception IOException
 	 */
 	@Override
@@ -62,20 +57,9 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 		
 		List<NomProductoDTO> resultado = null;
 		
-		/**
-		 * Se obtiene la query del fichero de propiedades.
-		 */
-		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(iFCommonsProperties.getValue("flow.value.nomproducto.select.all"));
-				
-		/**
-		 * Se ejecuta la consulta y se almacena en ubjeto de tipo query
-		 */
-		Query q = entityManager.createQuery(stringBuilder.toString(), TbSiaNomProducto.class);
-		
-		/**
-		 * Se recupera el resultado de la query y se mapea a un objeto de tipo DTO.
-		 */
+		Query q = entityManager.createQuery(iFCommonsProperties
+				.getValue("flow.value.nomproducto.select.all"), TbSiaNomProducto.class);
+
 		try {
 			resultado = parser.toListDTO(((List<TbSiaNomProducto>) q.getResultList()));
 		}catch(NoResultException e) {
@@ -83,8 +67,6 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
 			}
 		}
-		
-		
 		
 		return resultado;
 	}
@@ -98,6 +80,6 @@ public class NomProductoDao extends AbstractDao implements IFNomProductoReposito
 	 */
 	@Override
 	public NomProductoDTO findByDid(Integer did) throws IOException {
-		return new NomProductoDTO();
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }

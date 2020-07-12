@@ -25,9 +25,6 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataEroski.class);  
 	
-	/*
-	 * Constantes Globales
-	 */
 	private static final String STRING_ENIE_MIN = "ñ";
 	private static final String ENIE_EROSKI = "$00f1";
 	private static final String[] ARRAY_TILDES_EROSKI = {"$00e1","$00e9","$00ed","$00f3","$00fa"};
@@ -36,9 +33,6 @@ public class ProcessDataEroski implements IFProcessDataEroski {
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 	
-	/*
-	 * Constructor 
-	 */
 	private ProcessDataEroski() {
 		super();
 	}

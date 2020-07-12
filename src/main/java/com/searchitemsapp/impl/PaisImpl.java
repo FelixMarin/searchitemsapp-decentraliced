@@ -2,19 +2,17 @@ package com.searchitemsapp.impl;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Lists;
-import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dao.repository.IFPaisRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
+import com.sun.istack.NotNull;
 
 /**
  * Implementación del dao.
@@ -30,18 +28,9 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PaisImpl.class);  
 	
-	/*
-	 * Variables Globales
-	 */
 	@Autowired
 	private IFPaisRepository paisDao;
 	
-	@Autowired
-	private IFCommonsProperties iFCommonsProperties;
-	
-	/*
-	 * Constructor
-	 */
 	public PaisImpl() {
 		super();
 	}
@@ -55,55 +44,22 @@ public class PaisImpl implements IFImplementacion<PaisDTO, CategoriaDTO> {
 	 * @exception IOException
 	 */
 	@Override
-	public PaisDTO findByDid(PaisDTO paisDto) throws IOException {
+	public PaisDTO findByDid(@NotNull final PaisDTO paisDto) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Si el parametro de entrada es nulo, el proceso
-		 * termina y retorna nulo.
-		 */
-		if(Objects.isNull(paisDto)) {
-			return new PaisDTO();
-		}
-		
-		/**
-		 * Traza de log que escribe identificador del pais.
-		 */
-		StringBuilder stringBuilder = new StringBuilder(1);
-		stringBuilder.append(iFCommonsProperties.getValue("flow.value.pais.did.txt"))
-		.append(StringUtils.SPACE)
-		.append(paisDto.getDid());
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(stringBuilder.toString(),this.getClass());
-		}
-		
-		/**
-		 * Devuelve un objeto con el valor solicitado.
-		 */
 		return paisDao.findByDid(paisDto.getDid());
 	}
 
-	/**
-	 * Funcionalidad no implementada.
-	 * 
-	 * @throws UnsupportedOperationException
-	 */
 	@Override
 	public List<PaisDTO> findAll() throws IOException {
-		return Lists.newArrayList();
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 
-	/**
-	 * Funcionalidad no implementada.
-	 * 
-	 * @throws UnsupportedOperationException
-	 */
 	@Override
 	public List<PaisDTO> findByTbSia(PaisDTO paisDTO, CategoriaDTO categoriaDTO) throws IOException {
-		return Lists.newArrayList();
+		throw new NotImplementedException("Funcionalidad no implementada");
 	}
 }

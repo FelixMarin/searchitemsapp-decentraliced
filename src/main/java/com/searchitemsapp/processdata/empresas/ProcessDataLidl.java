@@ -23,9 +23,6 @@ public class ProcessDataLidl implements IFProcessDataEmpresas {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataLidl.class);  
 	
-	/*
-	 * Constructor
-	 */
 	public ProcessDataLidl() {
 		super();
 	}
@@ -50,10 +47,6 @@ public class ProcessDataLidl implements IFProcessDataEmpresas {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 		
-		/**
-		 * Se obtiene la URL y se añade en una lista que
-		 * será retornada.
-		 */
 		String urlBase = urlDto.getNomUrl();		
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
