@@ -1,5 +1,6 @@
 package com.searchitemsapp.config;
 
+import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -7,7 +8,10 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
@@ -20,9 +24,17 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.thomasvitale.jpa.demo.repository")
+@ComponentScan(basePackages = { "com.searchitemsapp.*" })
+@PropertySources({
+	@PropertySource("file:${PROPERTIES_SIA}/flow.properties"),
+	@PropertySource("file:${PROPERTIES_SIA}/db.properties"),
+	@PropertySource("file:${PROPERTIES_SIA}/log4j.properties")
+})
+@EnableJpaRepositories(basePackages = "com.searchitemsapp.dao.repository")
 public class JpaConfig {
 	
 	@Autowired
@@ -42,6 +54,23 @@ public class JpaConfig {
 		em.setJpaProperties(additionalProperties());
 
 		return em;
+	}
+	
+	@Bean
+	public ComboPooledDataSource C3p0Config() throws PropertyVetoException {
+		ComboPooledDataSource cpd = new ComboPooledDataSource();
+		
+		cpd.setDriverClass(ifCommonsProperties.getValue("hibernate.connection.driver_class"));
+		cpd.setJdbcUrl(ifCommonsProperties.getValue("hibernate.connection.url"));
+		cpd.setUser(ifCommonsProperties.getValue("hibernate.connection.username"));
+		cpd.setPassword(ifCommonsProperties.getValue("hibernate.connection.password"));
+		cpd.setAcquireIncrement(Integer.parseInt(ifCommonsProperties.getValue("hibernate.c3p0.acquire_increment")));
+		cpd.setMinPoolSize(Integer.parseInt(ifCommonsProperties.getValue("hibernate.c3p0.min_size")));
+		cpd.setMaxPoolSize(Integer.parseInt(ifCommonsProperties.getValue("hibernate.c3p0.max_size")));
+		cpd.setMaxIdleTime(Integer.parseInt(ifCommonsProperties.getValue("hibernate.c3p0.max_idle_time")));
+		cpd.setUnreturnedConnectionTimeout(Integer.parseInt(ifCommonsProperties.getValue("hibernate.c3p0.unreturned_connection_timeout")));
+		
+		return cpd;
 	}
 
 	@Bean
