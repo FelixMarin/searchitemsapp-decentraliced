@@ -7,9 +7,6 @@
 		<class>com.searchitemsapp.entities.TbSiaEmpresa</class>
 		<class>com.searchitemsapp.entities.TbSiaPais</class>
 		<class>com.searchitemsapp.entities.TbSiaUrl</class> 
-		<class>com.searchitemsapp.entities.TbSiaLogin</class>
-		<class>com.searchitemsapp.entities.TbSiaParamsFormLogin</class>
-		<class>com.searchitemsapp.entities.TbSiaParamsHeadersLogin</class>
 		<class>com.searchitemsapp.entities.TbSiaMarcas</class>
 		<class>com.searchitemsapp.entities.TbSiaNomProducto</class>
 		<class>com.searchitemsapp.entities.TbSiaSelectoresCss</class>
