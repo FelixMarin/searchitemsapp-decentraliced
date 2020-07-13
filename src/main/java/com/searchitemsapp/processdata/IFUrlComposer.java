@@ -17,8 +17,6 @@ public interface IFUrlComposer {
 	
 	abstract public void applicationData();
 	
-	abstract public void cargarTodasLasMarcas();
-	
 	abstract public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(
 			final String didEmpresas, 
 			final String didPais,
