@@ -65,7 +65,6 @@ public class UrlComposerTest {
 				"db.properties", sve);
 		try {
 			urlComposer.applicationData();
-			urlComposer.cargarTodasLasMarcas();
 			url = urlComposer.replaceWildcardCharacter("101","101","sal","101",selectores.findAll());
 		} catch (IOException e) {
 			LOGGER.error("ERROR",e);
