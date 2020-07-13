@@ -165,28 +165,7 @@ public abstract class ProcessDataAbstract {
 			}
 		}
 	}
-	
-	/**
-	 * Este metodo carga todas las marcas de 
-	 * productos desde la base de datos. Se
-	 * cachea al principio y dura durante toda
-	 * la ejecución del programa,
-	 */
-	public void cargarTodasLasMarcas() {
 		
-		try {
-			
-			if(Objects.isNull(listTodasMarcas)) {
-				listTodasMarcas = iFMarcasImp.findAll();
-			}
-			
-		}catch(IOException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-	}
-	
 	public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(
 			@NotNull final String didEmpresas, 
 			final String didPais,

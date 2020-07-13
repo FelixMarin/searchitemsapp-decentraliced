@@ -68,7 +68,6 @@ public class ApplicationService implements IFService<String,String> {
 		}
 	
 		urlComposer.applicationData();
-		urlComposer.cargarTodasLasMarcas();
 		
 		String didPais = params[0];
 		String didCategoria = params[1];
