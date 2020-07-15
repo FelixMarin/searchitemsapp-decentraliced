@@ -63,7 +63,7 @@ public class ProcessDataUlabox implements IFProcessDataEmpresas {
 		List<String> listaUrls = Lists.newArrayList();
 		listaUrls.add(urlBase);
 
-		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");		
+		String selectorPaginacion = urlDto.getSelectores().getSelPaginacion();		
 		String strPaginacion = document.select(selectorPaginacion).text();
 
 		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.ulabox"));

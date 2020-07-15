@@ -6,7 +6,6 @@ import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,8 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.dto.SelectoresCssDTO;
+import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaCategoriasEmpresa;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaPais;
@@ -86,13 +86,11 @@ public class EmpresaParserTest {
 	public void toTbSia() {
 		
 		empresaDto.setDid(101);
-		empresaDto.setUrls(Maps.newHashMap());
-		Map<String, String> lhm = Maps.newHashMap();
-		lhm.put("DID", "101");
-		lhm.put("BOL_ACTIVO", "true");
-		lhm.put("FEC_MODIFICACION", "2020-06-05");
+		empresaDto.setUrls(new UrlDTO());
+		SelectoresCssDTO lhm = new SelectoresCssDTO();
+		lhm.setDid(101);
+		lhm.setBolActivo(true);
 		empresaDto.setSelectores(lhm);
-		TbSiaEmpresa tbSiaEmpresa = parser.toTbSia(empresaDto);
 		
 		//- Equals -//
 		assertEquals("getTbSiaCategoriasEmpresa", 

@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 import com.sun.istack.NotNull;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Objeto de Transferencia de Datos (DTO) 
  * es un objeto que transporta datos entre procesos.
@@ -23,6 +26,7 @@ import com.sun.istack.NotNull;
  * @author Felix Marin Ramirez
  *
  */
+@Data @NoArgsConstructor
 @Component
 public class ProcessPriceModule implements IFProcessPrice {
 	
@@ -57,138 +61,6 @@ public class ProcessPriceModule implements IFProcessPrice {
 	private String desUrl;
 	private String nomUrlAllProducts;
 	private int ordenacion;
-	
-	public ProcessPriceModule() {
-		super();
-	}
-	
-	public int getIdentificador() {
-		return identificador;
-	}
-	
-	public void setIdentificador(int identificador) {
-		this.identificador = identificador;
-	}
-	
-	public String getNomProducto() {
-		return nomProducto;
-	}
-	
-	public void setNomProducto(String nomProducto) {
-		this.nomProducto = nomProducto;
-	}
-	
-	public String getDesProducto() {
-		return desProducto;
-	}
-	
-	public void setDesProducto(String desProducto) {
-		this.desProducto = desProducto;
-	}
-	
-	public String getImagen() {
-		return imagen;	
-	}
-	
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
-	}
-	
-	public String getPrecio() {
-		return precio;
-	}
-	
-	public void setPrecio(String precio) {
-		this.precio = precio;
-	}
-	
-	public Integer getDidEmpresa() {
-		return didEmpresa;
-	}
-	
-	public void setDidEmpresa(Integer didEmpresa) {
-		this.didEmpresa = didEmpresa;
-	}
-	
-	public String getPrecioKilo() {
-		return precioKilo;
-	}
-	
-	public void setPrecioKilo(String precioKilo) {
-		this.precioKilo = precioKilo;
-	}
-	
-	public String getNomUrl() {
-		return nomUrl;
-	}
-	
-	public void setNomUrl(String nomUrl) {
-		this.nomUrl = nomUrl;
-	}
-	
-	public Integer getDidUrl() {
-		return didUrl;
-	}
-	
-	public void setDidUrl(Integer didUrl) {
-		this.didUrl = didUrl;
-	}
-	
-	public boolean isBolActivo() {
-		return bolActivo;
-	}
-	
-	public void setBolActivo(boolean bolActivo) {
-		this.bolActivo = bolActivo;
-	}
-	
-	public boolean isBolStatus() {
-		return bolStatus;
-	}
-	
-	public void setBolStatus(boolean bolStatus) {
-		this.bolStatus = bolStatus;
-	}
-	
-	public Boolean isBolLogin() {
-		return bolLogin;
-	}
-	
-	public void setBolLogin(Boolean bolLogin) {
-		this.bolLogin = bolLogin;
-	}
-	
-	public String getDesUrl() {
-		return desUrl;
-	}
-	
-	public void setDesUrl(String desUrl) {
-		this.desUrl = desUrl;
-	}
-	
-	public String getNomUrlAllProducts() {
-		return nomUrlAllProducts;
-	}
-	
-	public void setNomUrlAllProducts(String nomUrlAllProducts) {
-		this.nomUrlAllProducts = nomUrlAllProducts;
-	}
-	
-	public int getOrdenacion() {
-		return ordenacion;
-	}
-	
-	public void setOrdenacion(int ordenacion) {
-		this.ordenacion = ordenacion;
-	}
-	
-	public String getNomEmpresa() {
-		return nomEmpresa;
-	}
-	
-	public void setNomEmpresa(String nomEmpresa) {
-		this.nomEmpresa = nomEmpresa;
-	}
 	
 	/**
 	 * Recibe dos objetos de con los precios de los productos. Los precios

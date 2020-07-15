@@ -23,6 +23,8 @@ import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.UrlDTO;
 import com.sun.istack.NotNull;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Esta clase es la encargada de inicializar el proceso
  * de chequeo de los datos extraidos de las páginas web 
@@ -34,14 +36,13 @@ import com.sun.istack.NotNull;
  * @author Felix Marin Ramirez
  *
  */
+@NoArgsConstructor
 @Component
 public class ProcessDataModule extends ProcessDataAbstract implements Callable<List<IFProcessPrice>> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataModule.class);  
 	
 	private static final String SEPARADOR_URL = "%20";
-	private static final String SCRAP_NO_PATTERN = "SCRAP_NO_PATTERN";
-	private static final String SCRAP_PATTERN = "SCRAP_PATTERN";
 
 	private static Map<Integer, Map<String, String>> mapaCookies = Maps.newHashMap(); 
 	private UrlDTO urlDto; 
@@ -104,8 +105,8 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 	            }
 	          
 	            entradas = selectScrapPattern(document,
-	            		urlDto.getSelectores().get(SCRAP_PATTERN), 
-	            		urlDto.getSelectores().get(SCRAP_NO_PATTERN));
+	            		urlDto.getSelectores().getScrapPattern(), 
+	            		urlDto.getSelectores().getScrapNoPattern());
 
 	    		for (Element elem : entradas) {
 	    			

@@ -86,8 +86,6 @@ public class NomProductoParserTest {
 		nomProductoDto.setDid(101);
 		nomProductoDto.setNomProducto("test");
 		
-		TbSiaNomProducto tbSiaNomProducto = parser.toTbSia(nomProductoDto);
-		
 		//- Equals -//
 		assertEquals("getDid", 
 			nomProductoDto.getDid(), 
