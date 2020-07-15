@@ -14,6 +14,8 @@ import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Component;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Esta clase carga los ficheros de propiedades 
  * que contienen los literales que serán utilizados 
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
  * @author Felix Marin Ramirez
  * 
  */
+@NoArgsConstructor
 @Component
 public class CommonsPorperties implements IFCommonsProperties {
 	
@@ -29,10 +32,6 @@ public class CommonsPorperties implements IFCommonsProperties {
 	
 	private static Properties properties;
 	private static StandardEnvironment environment;
-
-	private CommonsPorperties() {
-		super();
-	}
 	
 	public static void loadPropertiesFile(final String pathToProperties, 
 			final String propName, final ServletContextEvent sce) throws IOException {

@@ -82,8 +82,6 @@ public class MarcasParserTest {
 		marcasDto.setNomMarca("test");
 		marcasDto.setDid(1111);
 		
-		TbSiaMarcas tbSiaMarcas = parser.toTbSia(marcasDto);
-		
 		//- Equals -//
 		assertEquals("getNomMarca", 
 			marcasDto.getNomMarca(), 

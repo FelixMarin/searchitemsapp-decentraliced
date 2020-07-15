@@ -61,7 +61,7 @@ public class ProcessDataAlcampo implements IFProcessDataEmpresas {
 		
 		String urlBase = urlDto.getNomUrl();
 		
-		String selectorPaginacion = urlDto.getSelectores().get("SEL_PAGINACION");	
+		String selectorPaginacion = urlDto.getSelectores().getSelPaginacion();	
 		String strPaginacion = ZERO_STRING;
 			
 		int numresultados = NumberUtils.toInt(iFCommonsProperties.getValue("flow.value.paginacion.url.alcampo"));

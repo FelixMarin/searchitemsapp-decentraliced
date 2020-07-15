@@ -3,6 +3,8 @@ package com.searchitemsapp.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * Clase Abstracta que implementan todas las clases
  * DAO. En esta clase es donde se instancia al 
@@ -14,6 +16,7 @@ import javax.persistence.PersistenceContext;
  * @param <R>
  * @param <T>
  */
+@Repository
 public abstract class AbstractDao{
 	
 	/*
