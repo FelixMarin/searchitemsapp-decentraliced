@@ -23,6 +23,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.google.common.collect.Maps;
 import com.searchitemsapp.config.CommonsPorperties;
+import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,7 +68,7 @@ public class ProcessDataAlcampoTest {
 		
 		Map<String,String> map = Maps.newHashMap(); 
 		map.put("SEL_PAGINACION", "div|href");
-		urlDTO.setSelectores(map); 
+		urlDTO.setSelectores(new SelectoresCssDTO()); 
 		Document document = new Document("<html></html>");
 		document.appendElement("div");
 		

@@ -80,7 +80,6 @@ public class SelectoresCssParserTest {
 		selectoresCssDto.setDid(101);
 		selectoresCssDto.setDidUrl(101);
 		selectoresCssDto.setDidEmpresa(101);
-		TbSiaSelectoresCss tbSiaSelectoresCssParser = parser.toTbSia(selectoresCssDto);
 		
 		//- Equals -//
 		assertEquals("getTbSiaEmpresa", 

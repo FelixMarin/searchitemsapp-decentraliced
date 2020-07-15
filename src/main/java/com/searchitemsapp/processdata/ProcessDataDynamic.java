@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.processdata.empresas.IFProcessDataConsum;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Módulo de web para el procesamiento de datos dinámico. 
  * Esta clase contiene la lógica necesaria para extraer 
@@ -29,6 +31,7 @@ import com.searchitemsapp.processdata.empresas.IFProcessDataConsum;
  * @author Felix Marin Ramirez
  *
  */
+@NoArgsConstructor
 @Component
 public class ProcessDataDynamic {
 	
@@ -42,10 +45,6 @@ public class ProcessDataDynamic {
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 
-	protected ProcessDataDynamic() {
-		super();
-	}
-	
 	/**
 	 * Método que permite extraer informacíon de una web que 
 	 * se construye dinámicamente en el navegador y no existe

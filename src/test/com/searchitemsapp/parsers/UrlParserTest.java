@@ -5,7 +5,6 @@ import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaEmpresa;
 import com.searchitemsapp.entities.TbSiaUrl;
@@ -79,14 +77,6 @@ public class UrlParserTest {
 		
 		urlDto.setNomUrl("test");
 		urlDto.setDid(1111);
-		urlDto.setDidEmpresa(101);
-		Map<String, String> lhm = Maps.newHashMap();
-		lhm.put("DID", "101");
-		lhm.put("BOL_ACTIVO", "true");
-		lhm.put("FEC_MODIFICACION", "2020-06-05");
-		urlDto.setSelectores(lhm);
-		
-		TbSiaUrl tbSiaUrl = parser.toTbSia(urlDto);
 		
 		//- Equals -//
 		assertEquals("getNomUrl", 
