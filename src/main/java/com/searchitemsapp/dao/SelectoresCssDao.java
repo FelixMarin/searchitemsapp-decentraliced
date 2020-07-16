@@ -5,129 +5,67 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.config.IFCommonsProperties;
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dao.repository.IFSelectoresCssRepository;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.entities.TbSiaSelectoresCss;
-import com.searchitemsapp.parsers.IFParser;
-import com.sun.istack.NotNull;
 
-/**
- * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
- * de lógica de negocio necesite interactuar con la base de datos, va 
- * a hacerlo a través de la API que le ofrece el DAO.
- * 
- * @author Felix Marin Ramirez
- *
- */
+import lombok.NoArgsConstructor;
+
 @SuppressWarnings("unchecked")
+@NoArgsConstructor
 @Repository
 public class SelectoresCssDao extends AbstractDao implements IFSelectoresCssRepository {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SelectoresCssDao.class);  
-	
 	@Autowired
-	private IFParser<SelectoresCssDTO, TbSiaSelectoresCss> parser;
-	
-	@Autowired
-	private IFCommonsProperties iFCommonsProperties;
-	
-	public SelectoresCssDao() {
-		super();
-	}
-		
-	/**
-	 * Método que devuelve todos los elementos de una tabla.
-	 * 
-	 * @return List<SelectoresCssDTO>
-	 * @exception IOException
-	 */
-	@Override
-	public List<SelectoresCssDTO> findAll() throws IOException {
+	private Environment env;
 
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
+	@Override
+	public List<SelectoresCssDTO> findAll() throws IOException, NoResultException {
 		
-		List<SelectoresCssDTO> resultado = null;
+		List<SelectoresCssDTO> listDto = Lists.newArrayList(); 
 			
-		Query q = entityManager.createQuery(iFCommonsProperties
-				.getValue("flow.value.selectorescss.select.all"), TbSiaSelectoresCss.class);
-	
-		try {
-			resultado = parser.toListDTO(((List<TbSiaSelectoresCss>) q.getResultList()));
-		}catch(NoResultException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
+		Query q = getEntityManager().createQuery(env
+				.getProperty("flow.value.selectorescss.select.all"), TbSiaSelectoresCss.class);
 		
-		return resultado;
+		List<TbSiaSelectoresCss> liEntities = ((List<TbSiaSelectoresCss>) q.getResultList());
+		
+		liEntities.forEach(elem -> {
+			listDto.add(getModelMapper().map(elem, SelectoresCssDTO.class));
+		});
+		
+		return listDto;
 	}
 
-	/**
-	 * A partir de un indentifcador se obtiene un elemento
-	 * de la tabla.
-	 * 
-	 * @param Integer
-	 * @return SelectoresCssDTO
-	 * @exception IOException
-	 */
 	@Override
-	public SelectoresCssDTO findByDid(@NotNull final Integer did) throws IOException {
-
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
+	public SelectoresCssDTO findByDid(final Integer did) throws IOException, NoResultException {
 				
-		SelectoresCssDTO resultado = null;
-		
-		try {
-			resultado = parser.toDTO(entityManager.find(TbSiaSelectoresCss.class, did));
-		}catch(NoResultException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-		
-		return resultado;
+		return getModelMapper().map(getEntityManager()
+				.find(TbSiaSelectoresCss.class, did), SelectoresCssDTO.class);
 	}
 
-	/**
-	 * Devuelve una lista de selectores correspondientes a una empresa.
-	 * 
-	 * @param TbSiaEmpresa
-	 * @return List<SelectoresCssDTO>
-	 * @exception IOException
-	 */
 	@Override
-	public List<SelectoresCssDTO> findByTbSiaEmpresa(@NotNull final Integer didEmpresa) throws IOException {
+	public List<SelectoresCssDTO> findByTbSiaEmpresa(
+			final Integer didEmpresa) throws IOException, NoResultException {
 
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		List<TbSiaSelectoresCss> selectoresCssList = null;
+		List<SelectoresCssDTO> listDto = Lists.newArrayList(); 
 
-		Query query = entityManager.createQuery(iFCommonsProperties
-				.getValue("flow.value.selectorescss.select.by.didEmpresa"), 
+		Query q = getEntityManager().createQuery(env
+				.getProperty("flow.value.selectorescss.select.by.didEmpresa"), 
 				TbSiaSelectoresCss.class);
 		
-		query.setParameter("didEmpresa", didEmpresa);
+		q.setParameter("didEmpresa", didEmpresa);
 
-		try {
-			selectoresCssList = query.getResultList();
-		}catch(NoResultException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
+		List<TbSiaSelectoresCss> liEntities = ((List<TbSiaSelectoresCss>) q.getResultList());
 		
-		return parser.toListDTO((selectoresCssList));
+		liEntities.forEach(elem -> {
+			listDto.add(getModelMapper().map(elem, SelectoresCssDTO.class));
+		});
+		
+		return listDto;
 	}	
 }

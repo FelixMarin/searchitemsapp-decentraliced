@@ -6,162 +6,90 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
-import com.searchitemsapp.config.IFCommonsProperties;
+import com.google.common.collect.Lists;
 import com.searchitemsapp.dao.repository.IFUrlRepository;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.entities.TbSiaUrl;
-import com.searchitemsapp.parsers.IFParser;
-import com.sun.istack.NotNull;
 
-/**
- * Encapsula el acceso a la base de datos. Por lo que cuando la capa 
- * de lógica de negocio necesite interactuar con la base de datos, va 
- * a hacerlo a través de la API que le ofrece el DAO.
- * 
- * @author Felix Marin Ramirez
- *
- */
+import lombok.NoArgsConstructor;
+
 @SuppressWarnings("unchecked")
+@NoArgsConstructor
 @Repository
 public class UrlDao extends AbstractDao implements IFUrlRepository {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(UrlDao.class);  
 	
 	@Autowired
-	private IFParser<UrlDTO, TbSiaUrl> parser;
-	
-	@Autowired
-	private IFCommonsProperties iFCommonsProperties;
+	private Environment env;
 
-	public UrlDao() {
-		super();
+	@Override
+	public List<UrlDTO> findAll() throws IOException, NoResultException {
+		
+		List<UrlDTO> listDto = Lists.newArrayList(); 
+		
+		Query q = getEntityManager().createQuery(env
+				.getProperty("flow.value.url.select.all"), TbSiaUrl.class);
+		
+		List<TbSiaUrl> liEntities = ((List<TbSiaUrl>) q.getResultList());
+		
+		liEntities.forEach(elem -> {
+			listDto.add(getModelMapper().map(elem, UrlDTO.class));
+		});
+		
+		return listDto;
+	}
+
+	@Override
+	public UrlDTO findByDid(final Integer did) throws IOException, NoResultException {
+
+		return getModelMapper().map(getEntityManager()
+				.find(TbSiaUrl.class, did), UrlDTO.class);
 	}
 	
-	/**
-	 * Método que devuelve todos los elementos de una tabla.
-	 * 
-	 * @return List<EmpresaDTO>
-	 */
 	@Override
-	public List<UrlDTO> findAll() throws IOException {
-		
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
-		
-		List<UrlDTO> resultado = null;
-		
-		Query q = entityManager.createQuery(iFCommonsProperties
-				.getValue("flow.value.url.select.all"), TbSiaUrl.class);
-		
-		try {
-			resultado = parser.toListDTO(((List<TbSiaUrl>) q.getResultList()));
-		}catch(NoResultException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-		
-		return resultado;
-	}
-	
-	/**
-	 * Método que devuelve un elemento de la 
-	 * tabla dependiendo del identificador
-	 * 
-	 * @return UrlDTO
-	 */
-	@Override
-	public UrlDTO findByDid(@NotNull final Integer did) throws IOException {
+	public List<UrlDTO> findByDidAndDesUrl(final Integer didPais, 
+			final String didCategoria) throws IOException, NoResultException {
 
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
+		List<UrlDTO> listDto = Lists.newArrayList(); 
 		
-		UrlDTO urlDto = null;
+		Query q = getEntityManager().createNativeQuery(env
+				.getProperty("flow.value.url.select.url.by.pais.categoria"));	
 		
-		try {
-			urlDto = parser.toDTO(entityManager.find(TbSiaUrl.class, did));
-		}catch(NoResultException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-
-		return urlDto;
+		q.setParameter(env.getProperty("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
+		q.setParameter(env.getProperty("flow.value.categoria.didPais.key"), didPais);
+		
+		List<UrlDTO> listUrlDto = toListODTO((List<Object[]>) q.getResultList());
+		
+		listUrlDto.forEach(elem -> {
+			listDto.add(getModelMapper().map(elem, UrlDTO.class));
+		});
+		
+		return listDto;
 	}
 
-	/**
-	 * Devuelve una lista de URLs correspondientes
-	 * a un pais y a una categoria.
-	 * 
-	 * @param didPais Integer
-	 * @param didCategoria Integer
-	 * @exception IOException
-	 */
 	@Override
-	public List<UrlDTO> findByDidAndDesUrl(@NotNull final Integer didPais, 
-			@NotNull final String didCategoria) throws IOException {
+	public List<UrlDTO> findByDidAndNomUrl(
+			final Integer didPais, 
+			final String didCategoria) 
+					throws IOException, NoResultException {
 
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
+		List<UrlDTO> listDto = Lists.newArrayList(); 
 		
-		List<UrlDTO> listUrlDto = null;
+		Query q = getEntityManager().createNativeQuery(env
+				.getProperty("flow.value.url.select.url.by.bollogin"));
 		
-		Query query = entityManager.createNativeQuery(iFCommonsProperties
-				.getValue("flow.value.url.select.url.by.pais.categoria"));	
-		
-		query.setParameter(iFCommonsProperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
-		query.setParameter(iFCommonsProperties.getValue("flow.value.categoria.didPais.key"), didPais);
+		q.setParameter(env.getProperty("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
+		q.setParameter(env.getProperty("flow.value.categoria.didPais.key"), didPais);
 
-		try {			
-			listUrlDto = parser.toListODTO((List<Object[]>) query.getResultList());
-		}catch(NoResultException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-
-		return listUrlDto;
-	}
-
-	/**
-	 * Devuelve una lista de URLs correspondientes a un país y auna categoría.
-	 * 
-	 * @param Integer didPais
-	 * @param Integer didCategoria
-	 * @return List<UrlDTO>
-	 * @exception IOException
-	 */
-	@Override
-	public List<UrlDTO> findByDidAndNomUrl(@NotNull final Integer didPais, @NotNull final String didCategoria) throws IOException {
-
-		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
-		}
+		List<TbSiaUrl> liEntities = ((List<TbSiaUrl>) q.getResultList());
 		
-		List<UrlDTO> listUrlDto = null;
+		liEntities.forEach(elem -> {
+			listDto.add(getModelMapper().map(elem, UrlDTO.class));
+		});
 		
-		Query query = entityManager.createNativeQuery(iFCommonsProperties
-				.getValue("flow.value.url.select.url.by.bollogin"));
-		
-		query.setParameter(iFCommonsProperties.getValue("flow.value.empresa.didCategoria.key"), Integer.parseInt(didCategoria));
-		query.setParameter(iFCommonsProperties.getValue("flow.value.categoria.didPais.key"), didPais);
-
-		try {			
-			listUrlDto = parser.toListODTO((List<Object[]>) query.getResultList());
-		}catch(NoResultException e) {
-			if(LOGGER.isErrorEnabled()) {
-				LOGGER.error(Thread.currentThread().getStackTrace()[1].toString(),e);
-			}
-		}
-		
-		return listUrlDto;
+		return listDto;
 	}
 }
