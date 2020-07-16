@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.searchitemsapp.config.IFCommonsProperties;
+import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.sun.istack.NotNull;
 
@@ -48,16 +50,24 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 	private UrlDTO urlDto; 
 	private String producto;
 	private String ordenacion;
+	private List<MarcasDTO> listTodasMarcas;
+	private Map<Integer,Boolean> mapDynEmpresas;
+	private Map<String,EmpresaDTO> mapEmpresas;
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 	
 	public ProcessDataModule(@NotNull UrlDTO urlDto, 
-			@NotNull String producto, @NotNull String ordenacion) {
+			@NotNull String producto, @NotNull String ordenacion, 
+			List<MarcasDTO> listTodasMarcas, Map<Integer,Boolean> mapDynEmpresas, 
+			Map<String,EmpresaDTO> mapEmpresas) {
 		super();
 		this.urlDto = urlDto;
 		this.producto = producto;
 		this.ordenacion = ordenacion;
+		this.listTodasMarcas = listTodasMarcas;
+		this.mapDynEmpresas = mapDynEmpresas;
+		this.mapEmpresas = mapEmpresas;
 	}
 	
 	/**
@@ -88,7 +98,9 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
         	
     		Map<String, String> mapLoginPageCookies = mapaCookies.get(iIdEmpresa);
         	
-        	List<Document> listDocuments = getHtmlDocument(urlDto, mapLoginPageCookies, producto);
+        	List<Document> listDocuments = 
+        			getHtmlDocument(urlDto, mapLoginPageCookies, 
+        					producto, mapDynEmpresas, mapEmpresas);
         	
         	lResultadoDto = Lists.newArrayList();
         	
@@ -115,9 +127,11 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 	    			}
 	    			
 	    			resDto = fillProcessPrice(elem, urlDto, ordenacion, 
-	    					new ProcessPriceModule());
+	    					new ProcessPriceModule(), mapEmpresas);
 	    			
-	    			if(validaYCargaResultado(iIdEmpresa, arProducto, resDto,  pattern)) {
+	    			if(validaYCargaResultado(iIdEmpresa, arProducto, 
+	    					resDto,  pattern, listTodasMarcas, mapEmpresas)) {
+	    				
 	    				lResultadoDto.add(resDto);
 	    			}
 		        }
@@ -147,7 +161,9 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 	private boolean validaYCargaResultado(@NotNull final int iIdEmpresa, 
 			@NotNull final String[] arProducto, 
 			@NotNull final IFProcessPrice resDto, 
-			@NotNull final Pattern pattern) {
+			@NotNull final Pattern pattern, 
+			List<MarcasDTO> listTodasMarcas,
+			Map<String,EmpresaDTO> mapEmpresas) {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -160,7 +176,7 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 			return Boolean.FALSE;
 		} 
 		
-		String strProducto = filtroMarca(iIdEmpresa, resDto.getNomProducto());
+		String strProducto = filtroMarca(iIdEmpresa, resDto.getNomProducto(), listTodasMarcas, mapEmpresas);
 		
 		if(StringUtils.isAllBlank(strProducto)) {
 			return Boolean.FALSE;
