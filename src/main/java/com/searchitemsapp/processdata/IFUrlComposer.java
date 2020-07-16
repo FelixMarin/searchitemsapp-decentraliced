@@ -2,7 +2,10 @@ package com.searchitemsapp.processdata;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 
@@ -12,14 +15,19 @@ public interface IFUrlComposer {
 			final String didCategoria, 
 			final String producto,
 			final String empresas,
-			final List<SelectoresCssDTO> listTodosSelectoresCss) 
-			throws IOException;
+			final List<SelectoresCssDTO> listTodosSelectoresCss,
+			final Map<String,EmpresaDTO> mapEmpresas) throws IOException;
 	
-	abstract public void applicationData();
+	abstract public void applicationData(Map<String,EmpresaDTO> mapEmpresas, 
+			Map<Integer,Boolean> mapDynEmpresas);
+	
+	abstract public List<MarcasDTO> getListTodasMarcas() throws IOException;
 	
 	abstract public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(
 			final String didEmpresas, 
 			final String didPais,
 			final String didCategoria) throws IOException;
+	
+	abstract public String getErrorJsonMessage();
 	
 }

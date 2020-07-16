@@ -105,5 +105,8 @@
       		<constructor-arg index="0" ref="urlDTO" />
       		<constructor-arg index="1" type="java.lang.String" value="" />
       		<constructor-arg index="2" type="java.lang.String" value="" />
+      		<constructor-arg index="3" ref="listTodasMarcas" />
+      		<constructor-arg index="4" ref="mapDynEmpresas" />
+      		<constructor-arg index="5" ref="mapEmpresas" />
       </bean>
 </beans>

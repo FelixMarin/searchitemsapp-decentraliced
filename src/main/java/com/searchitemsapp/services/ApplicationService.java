@@ -3,6 +3,7 @@ package com.searchitemsapp.services;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -18,12 +19,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.searchitemsapp.dto.EmpresaDTO;
+import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
 import com.searchitemsapp.processdata.IFProcessPrice;
 import com.searchitemsapp.processdata.IFUrlComposer;
 import com.searchitemsapp.processdata.ProcessDataModule;
+
+import lombok.NoArgsConstructor;
 
 /**
  * @author Felix Marin Ramirez
@@ -32,14 +38,11 @@ import com.searchitemsapp.processdata.ProcessDataModule;
  * de productos ordenados de los distintos supermercados.
  * 
  */
+@NoArgsConstructor
 @Service("applicationService")
 public class ApplicationService implements IFService<String,String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);  
-	
-	private static final String ERROR_RESULT = "[{\"request\": \"Error\", " 
-			+ "\"id\" : \"-1\", "
-			+ "\"description\": \"No hay resultados\"}]";
 	
 	@Autowired
 	private IFUrlComposer urlComposer;
@@ -49,11 +52,6 @@ public class ApplicationService implements IFService<String,String> {
 	
 	@Autowired
 	private IFProcessPrice ifProcessPrice;
-	
-	public ApplicationService() {
-		super();
-	}
-	
 	
 	/**
 	 * Método principal de servicio web.  Este método contiene 
@@ -67,7 +65,8 @@ public class ApplicationService implements IFService<String,String> {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
 		}
 	
-		urlComposer.applicationData();
+		Map<String,EmpresaDTO> mapEmpresas = Maps.newHashMap();
+		Map<Integer,Boolean> mapDynEmpresas= Maps.newHashMap();
 		
 		String didPais = params[0];
 		String didCategoria = params[1];
@@ -88,21 +87,29 @@ public class ApplicationService implements IFService<String,String> {
 		ExecutorService executorService = Executors.newCachedThreadPool();
 
 		try {
-						
-			List<SelectoresCssDTO> lselectores = urlComposer.listSelectoresCssPorEmpresa(empresas, didPais, didCategoria);
+			List<MarcasDTO> listTodasMarcas = urlComposer.getListTodasMarcas();
+			urlComposer.applicationData(mapEmpresas, mapDynEmpresas);
+			
+			List<SelectoresCssDTO> lselectores = urlComposer.
+					listSelectoresCssPorEmpresa(empresas, didPais, didCategoria);
+			
 			Collection<UrlDTO> lResultDtoUrlsTratado = urlComposer.replaceWildcardCharacter(didPais, 
-					didCategoria, producto, empresas, lselectores);
+					didCategoria, producto, empresas, lselectores, mapEmpresas);
 
 			Collection<ProcessDataModule> colPDMcallables = Lists.newArrayList();
 		
 			lResultDtoUrlsTratado.forEach(elem -> {
 				ProcessDataModule processDataModule = applicationContext
-						.getBean(ProcessDataModule.class, elem, producto, ordenacion);
+						.getBean(ProcessDataModule.class, 
+								elem, producto, ordenacion, 
+								listTodasMarcas, mapDynEmpresas, mapEmpresas);
 	
 				colPDMcallables.add(processDataModule);	
 			});
 	
-			List<Future<List<IFProcessPrice>>> listFutureListResDto = executorService.invokeAll(colPDMcallables);
+			List<Future<List<IFProcessPrice>>> listFutureListResDto = 
+					executorService.invokeAll(colPDMcallables);
+			
 			listResultDtoFinal = executeFuture(listFutureListResDto);
 
             if(listResultDtoFinal.isEmpty()) {
@@ -112,7 +119,7 @@ public class ApplicationService implements IFService<String,String> {
     				LOGGER.error("Sin resultados para: ".concat(sbParams.toString()));
     			}
             	
-    			return ERROR_RESULT;
+    			return urlComposer.getErrorJsonMessage();
             }
 
             listResultDtoFinal = ifProcessPrice.ordenarLista(listResultDtoFinal);
