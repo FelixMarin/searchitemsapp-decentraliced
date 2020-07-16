@@ -229,14 +229,12 @@ public class ProcessPriceModule implements IFProcessPrice {
 	 */
 	private  void mismoPrecioYPrecioKilo(IFProcessPrice a, IFProcessPrice b) {
 		
-		if(StringUtils.isAllEmpty(a.getPrecioKilo()) &&
-				!StringUtils.isAllEmpty(a.getPrecio())) {
+		if(StringUtils.isAllEmpty(a.getPrecioKilo())) {
 			a.setPrecioKilo(extraerDecimal(a.getPrecio())
 					.concat(BARRA_KILO_GRAM));
 		}
 		
-		if(StringUtils.isAllEmpty(b.getPrecioKilo()) &&
-				!StringUtils.isAllEmpty(b.getPrecio())) {
+		if(StringUtils.isAllEmpty(b.getPrecioKilo())) {
 			b.setPrecioKilo(extraerDecimal(b.getPrecio())
 					.concat(BARRA_KILO_GRAM));
 		}
