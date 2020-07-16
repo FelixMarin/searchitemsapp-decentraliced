@@ -1,9 +1,16 @@
 package com.searchitemsapp.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.stereotype.Repository;
+import org.modelmapper.ModelMapper;
+
+import com.google.common.collect.Lists;
+import com.searchitemsapp.dto.UrlDTO;
+
+import lombok.Data;
 
 /**
  * Clase Abstracta que implementan todas las clases
@@ -16,19 +23,38 @@ import org.springframework.stereotype.Repository;
  * @param <R>
  * @param <T>
  */
-@Repository
-public abstract class AbstractDao{
+@Data
+public abstract class AbstractDao {
 	
-	/*
-	 * Variables Globales
-	 */
+	private static final ModelMapper MODEL_MAPPER = new ModelMapper();
+	
 	@PersistenceContext
-	protected EntityManager entityManager;
+	private EntityManager entityManager;
 	
-	/*
-	 * Constructor
-	 */
-	public AbstractDao() {
-		super();
+	protected static ModelMapper getModelMapper() {
+		return MODEL_MAPPER;
 	}
+	
+	protected List<UrlDTO> toListODTO(final List<Object[]> urlList) {
+		
+		List<UrlDTO> listUrlDto = Lists.newArrayList();
+		
+		if (!urlList.isEmpty()){ 
+			
+			urlList.forEach(obj -> {
+				UrlDTO urlPDto = new UrlDTO();
+				urlPDto.setNomUrl(String.valueOf(obj[0]));
+				urlPDto.setDidEmpresa(Integer.parseInt(String.valueOf(obj[1])));
+				urlPDto.setDid(Integer.parseInt(String.valueOf(obj[2])));
+				urlPDto.setBolActivo(Boolean.parseBoolean(null!=obj[3]?String.valueOf(obj[3]):null));
+				urlPDto.setNomEmpresa(String.valueOf(obj[4]));
+				urlPDto.setBolStatus(Boolean.parseBoolean(null!=obj[5]?String.valueOf(obj[5]):null));
+				urlPDto.setBolLogin(Boolean.parseBoolean(null!=obj[6]?String.valueOf(obj[6]):null));
+				urlPDto.setDesUrl(String.valueOf(obj[7]));
+				listUrlDto.add(urlPDto);				
+			});
+		}
+		return listUrlDto;
+	}
+
 }
