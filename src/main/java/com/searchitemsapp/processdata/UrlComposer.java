@@ -3,6 +3,7 @@ package com.searchitemsapp.processdata;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 import com.searchitemsapp.dto.CategoriaDTO;
+import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.SelectoresCssDTO;
 import com.searchitemsapp.dto.UrlDTO;
@@ -67,8 +69,8 @@ public class UrlComposer extends ProcessDataAbstract implements IFUrlComposer {
 			final String didCategoria, 
 			final String producto,
 			final String empresas,
-			final List<SelectoresCssDTO> listTodosSelectoresCss) 
-			throws IOException {
+			final List<SelectoresCssDTO> listTodosSelectoresCss,
+			final Map<String,EmpresaDTO> mapEmpresas) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());

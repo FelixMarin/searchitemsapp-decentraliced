@@ -17,8 +17,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
@@ -92,14 +90,9 @@ public abstract class ProcessDataAbstract {
 	private static final String PIPE_STRING = "|";
 	private static final String SCRIPT = "script";
 	
-	@Resource(name="mapEmpresas")
-	protected Map<String,EmpresaDTO> mapEmpresas;
-	
-	@Resource(name="listTodasMarcas")
-	private List<MarcasDTO> listTodasMarcas;
-	
-	@Resource(name="mapDynEmpresas")
-	private Map<Integer,Boolean> mapDynEmpresas;
+	private static final String ERROR_RESULT = "[{\"request\": \"Error\", " 
+			+ "\"id\" : \"-1\", "
+			+ "\"description\": \"No hay resultados\"}]";
 	
 	@Autowired 
 	private ProcessDataDynamic procesDataDynamic;
@@ -146,12 +139,11 @@ public abstract class ProcessDataAbstract {
 	 * de las peticiones. Este método solo se ejecuta una vez,
 	 * los datos se cachean mientras esté la aplicación activa.
 	 */
-	public void applicationData() {
+	public void applicationData(Map<String,EmpresaDTO> mapEmpresas, 
+			Map<Integer,Boolean> mapDynEmpresas) {
 		
 		try {
 			
-			listTodasMarcas = iFMarcasImp.findAll();
-
 			List<EmpresaDTO> listEmpresaDto = iFEmpresaImpl.findAll();
 
 			listEmpresaDto.stream().forEach(empresaDTO -> {
@@ -165,7 +157,11 @@ public abstract class ProcessDataAbstract {
 			}
 		}
 	}
-		
+	
+	public List<MarcasDTO> getListTodasMarcas() throws IOException  {
+		return iFMarcasImp.findAll();
+	}
+
 	public List<SelectoresCssDTO> listSelectoresCssPorEmpresa(
 			@NotNull final String didEmpresas, 
 			final String didPais,
@@ -261,7 +257,9 @@ public abstract class ProcessDataAbstract {
 	 */
 	protected List<Document> getHtmlDocument(@NotNull final UrlDTO urlDto, 
 			final Map<String, String> mapLoginPageCookies,
-			@NotNull final String producto) 
+			final String producto, 
+			final Map<Integer,Boolean> mapDynEmpresas, 
+			final Map<String,EmpresaDTO> mapEmpresas) 
 					throws IOException, URISyntaxException, InterruptedException {
 
 		if(LOGGER.isInfoEnabled()) {
@@ -273,14 +271,14 @@ public abstract class ProcessDataAbstract {
 		int idEmpresa = urlDto.getDidEmpresa();			
     	
     	Document document = getDocument(urlDto.getNomUrl(), idEmpresa, 
-    			producto, mapLoginPageCookies);
+    			producto, mapLoginPageCookies, mapDynEmpresas, mapEmpresas);
 
     	List<String> liUrlsPorEmpresaPaginacion = urlsPaginacion(document, urlDto, idEmpresa);
    		 			
    		if(!liUrlsPorEmpresaPaginacion.isEmpty()) {
 	   		for (String url : liUrlsPorEmpresaPaginacion) {
 	   			listDocuments.add(getDocument(url, idEmpresa, 
-	   					producto, mapLoginPageCookies));
+	   					producto, mapLoginPageCookies, mapDynEmpresas, mapEmpresas));
 			}
    		} else {
    			listDocuments.add(document);
@@ -411,7 +409,10 @@ public abstract class ProcessDataAbstract {
 	 * @param nomProducto
 	 * @return String
 	 */
-	protected String filtroMarca(final int iIdEmpresa, @NotNull final String nomProducto) {
+	protected String filtroMarca(final int iIdEmpresa, 
+			@NotNull final String nomProducto, 
+			final List<MarcasDTO> listTodasMarcas,
+			final Map<String,EmpresaDTO> mapEmpresas) {
 		
 		String strProducto;
 		
@@ -452,16 +453,17 @@ public abstract class ProcessDataAbstract {
 	protected IFProcessPrice fillProcessPrice(@NotNull final Element elem,
 			@NotNull final UrlDTO urlDto, 
 			@NotNull final String ordenacion, 
-			IFProcessPrice ifProcessPrice) throws IOException {
+			IFProcessPrice ifProcessPrice, 
+			Map<String,EmpresaDTO> mapEmpresas) throws IOException {
 
 		int idEmpresaActual = urlDto.getDidEmpresa();
 
-		ifProcessPrice.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().getSelImage(), urlDto));
-		ifProcessPrice.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().getSelProducto(), urlDto));
-		ifProcessPrice.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().getSelProducto(), urlDto));
-		ifProcessPrice.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().getSelPrecio(), urlDto));
-		ifProcessPrice.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().getSelPreKilo(), urlDto));
-		ifProcessPrice.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().getSelLinkProd(), urlDto));
+		ifProcessPrice.setImagen(elementoPorCssSelector(elem, urlDto.getSelectores().getSelImage(), urlDto, mapEmpresas));
+		ifProcessPrice.setNomProducto(elementoPorCssSelector(elem, urlDto.getSelectores().getSelProducto(), urlDto, mapEmpresas));
+		ifProcessPrice.setDesProducto(elementoPorCssSelector(elem, urlDto.getSelectores().getSelProducto(), urlDto, mapEmpresas));
+		ifProcessPrice.setPrecio(elementoPorCssSelector(elem, urlDto.getSelectores().getSelPrecio(), urlDto, mapEmpresas));
+		ifProcessPrice.setPrecioKilo(elementoPorCssSelector(elem, urlDto.getSelectores().getSelPreKilo(), urlDto, mapEmpresas));
+		ifProcessPrice.setNomUrl(elementoPorCssSelector(elem, urlDto.getSelectores().getSelLinkProd(), urlDto, mapEmpresas));
 		ifProcessPrice.setDidEmpresa(urlDto.getDidEmpresa());
 		ifProcessPrice.setNomEmpresa(urlDto.getNomEmpresa());
 
@@ -535,7 +537,9 @@ public abstract class ProcessDataAbstract {
 	 */
 	private Document getDocument(@NotNull final String strUrl, 
 			final int didEmpresa, final String producto,
-			final Map<String, String> mapLoginPageCookies) 
+			final Map<String, String> mapLoginPageCookies, 
+			final Map<Integer,Boolean> mapDynEmpresas,
+			final Map<String,EmpresaDTO> mapEmpresas) 
 					throws InterruptedException, URISyntaxException, IOException {
 	
 		Document document = null;
@@ -623,7 +627,9 @@ public abstract class ProcessDataAbstract {
 	 */
 	private String elementoPorCssSelector(@NotNull final Element elem, 
 			@NotNull final String cssSelector,
-			@NotNull final UrlDTO urlDto) throws MalformedURLException {
+			@NotNull final UrlDTO urlDto, 
+			final Map<String,EmpresaDTO> mapEmpresas) 
+					throws MalformedURLException {
 				
 		List<String> lista = Lists.newArrayList();
 		String strResult;
@@ -757,5 +763,9 @@ public abstract class ProcessDataAbstract {
 		default:
 			return elem.select(cssSelector).text();
 		}
+	}
+	
+	public String getErrorJsonMessage() {
+		return ERROR_RESULT;
 	}
 }
