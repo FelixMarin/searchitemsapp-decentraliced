@@ -40,7 +40,6 @@ public class ApplicationController {
 	private IFServiceFctory serviceFactory;
 	
 	@Autowired
-	@Qualifier("listaProductosValidator")
 	private ListaProductosValidator validator;
 	
 	@GetMapping(value = "/search", produces={MediaType.APPLICATION_JSON_VALUE})
