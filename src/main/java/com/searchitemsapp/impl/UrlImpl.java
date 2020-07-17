@@ -17,7 +17,7 @@ import com.searchitemsapp.dao.repository.IFUrlRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.PaisDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.sun.istack.NotNull;
+
 
 
 /**
@@ -55,7 +55,7 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 	 * @exception IOException
 	 */
 	@Override
-	public UrlDTO findByDid(@NotNull final UrlDTO urlDTO) throws IOException {
+	public UrlDTO findByDid(final UrlDTO urlDTO) throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
@@ -82,9 +82,9 @@ public class UrlImpl implements IFUrlImpl, IFImplementacion<UrlDTO, CategoriaDTO
 		return urlDao.findByDidAndNomUrl(paisDto.getDid(), String.valueOf(categoriaDto.getDid()));
 	}
 	
-	public List<UrlDTO> obtenerUrlsPorIdEmpresa(@NotNull final PaisDTO paisDto, 
-			@NotNull final CategoriaDTO categoriaDto,
-			@NotNull final String idsEmpresas) 
+	public List<UrlDTO> obtenerUrlsPorIdEmpresa(final PaisDTO paisDto, 
+			final CategoriaDTO categoriaDto,
+			final String idsEmpresas) 
 			throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {

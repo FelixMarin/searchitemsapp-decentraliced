@@ -32,7 +32,7 @@ public class ProcessDataDia implements IFProcessDataEmpresas {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataDia.class);   
 	
-	private static final String PROTOCOL_ACCESSOR ="://";
+	private static final String PROTOCOLACCESSOR ="://";
 	
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
@@ -77,7 +77,7 @@ public class ProcessDataDia implements IFProcessDataEmpresas {
 		listaUrls.add(urlBase);
 
 		URL url = new URL(urlBase);
-		String strUrlEmpresa = url.getProtocol().concat(PROTOCOL_ACCESSOR).concat(url.getHost());
+		String strUrlEmpresa = url.getProtocol().concat(PROTOCOLACCESSOR).concat(url.getHost());
 
 		for (Element element : elements) {
 			listaUrls.add(strUrlEmpresa.concat(element.attr(liSelectorAtr.get(1))));

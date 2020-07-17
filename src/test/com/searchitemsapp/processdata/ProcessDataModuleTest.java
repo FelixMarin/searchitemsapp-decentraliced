@@ -60,11 +60,11 @@ public class ProcessDataModuleTest {
 		urlDto.setSelectores(new SelectoresCssDTO());
 		
 		CommonsPorperties.loadPropertiesFile(
-				"E:\\eclipse-workspace\\properties\\flow.properties",
+				"E:\\workspace_sts\\properties\\flow.properties",
 				"flow.properties", sve);
 		
 		CommonsPorperties.loadPropertiesFile(
-				"E:\\eclipse-workspace\\properties\\db.properties",
+				"E:\\workspace_sts\\properties\\db.properties",
 				"db.properties", sve);		
 		
 		ProcessDataModule scrapingUnit = applicationContext.getBean(ProcessDataModule.class,urlDto,"sal","101","101","1");
