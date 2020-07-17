@@ -80,7 +80,7 @@
                 <prop key="hibernate.connection.autocommit">${hibernate.connection.autocommit}</prop>
                 <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache}</prop>
                 <prop key="hibernate.cache.use_query_cache">${hibernate.query.cache}</prop>
-                <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
+                <prop key="hibernate.cache.provider_class">${hibernate.cache.prop.provider_class}</prop>
                 <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
                 <prop key="hibernate.generate_statistics">${hibernate.statistics}</prop>
                 <prop key="net.sf.ehcache.configurationResourceName">/cache-config.xml</prop>

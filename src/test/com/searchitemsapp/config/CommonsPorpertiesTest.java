@@ -49,7 +49,7 @@ public class CommonsPorpertiesTest {
 		ServletContextEvent sve =  new ServletContextEvent(context);
 		
 		CommonsPorperties.loadPropertiesFile(
-				"E:\\eclipse-workspace\\properties\\flow.properties",
+				"E:\\workspace_sts\\properties\\flow.properties",
 				"flow.properties", sve);
 		
 		assertNotNull(sve.getServletContext().getAttribute("flow.properties"));

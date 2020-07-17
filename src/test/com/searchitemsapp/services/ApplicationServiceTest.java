@@ -50,11 +50,11 @@ public class ApplicationServiceTest {
 		ServletContextEvent sve =  new ServletContextEvent(context);
 		
 		CommonsPorperties.loadPropertiesFile(
-				"E:\\eclipse-workspace\\properties\\flow.properties",
+				"E:\\workspace_sts\\properties\\flow.properties",
 				"flow.properties", sve);
 		
 		CommonsPorperties.loadPropertiesFile(
-				"E:\\eclipse-workspace\\properties\\db.properties",
+				"E:\\workspace_sts\\properties\\db.properties",
 				"db.properties", sve);
 		
 		String good = listadoProductosService.service("101","101","1","jamon","101");

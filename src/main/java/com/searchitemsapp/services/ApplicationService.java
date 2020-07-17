@@ -91,7 +91,7 @@ public class ApplicationService implements IFService<String,String> {
 			urlComposer.applicationData(mapEmpresas, mapDynEmpresas);
 			
 			List<SelectoresCssDTO> lselectores = urlComposer.
-					listSelectoresCssPorEmpresa(empresas, didPais, didCategoria);
+					listSelectoresCssPorEmpresa(empresas);
 			
 			Collection<UrlDTO> lResultDtoUrlsTratado = urlComposer.replaceWildcardCharacter(didPais, 
 					didCategoria, producto, empresas, lselectores, mapEmpresas);

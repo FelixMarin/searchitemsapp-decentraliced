@@ -2,7 +2,7 @@ package com.searchitemsapp.dto;
 
 import org.springframework.stereotype.Component;
 
-import com.sun.istack.NotNull;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Component
 public class EmpresaDTO implements IFdto {
 
-	@NotNull
+	
 	private Integer did;
 	private Boolean bolActivo;
 	private String desEmpresa;

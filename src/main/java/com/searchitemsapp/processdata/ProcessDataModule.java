@@ -23,7 +23,7 @@ import com.searchitemsapp.config.IFCommonsProperties;
 import com.searchitemsapp.dto.EmpresaDTO;
 import com.searchitemsapp.dto.MarcasDTO;
 import com.searchitemsapp.dto.UrlDTO;
-import com.sun.istack.NotNull;
+
 
 import lombok.NoArgsConstructor;
 
@@ -44,8 +44,6 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDataModule.class);  
 	
-	private static final String SEPARADOR_URL = "%20";
-
 	private static Map<Integer, Map<String, String>> mapaCookies = Maps.newHashMap(); 
 	private UrlDTO urlDto; 
 	private String producto;
@@ -57,8 +55,8 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 	@Autowired
 	private IFCommonsProperties iFCommonsProperties;
 	
-	public ProcessDataModule(@NotNull UrlDTO urlDto, 
-			@NotNull String producto, @NotNull String ordenacion, 
+	public ProcessDataModule(UrlDTO urlDto, 
+			String producto, String ordenacion, 
 			List<MarcasDTO> listTodasMarcas, Map<Integer,Boolean> mapDynEmpresas, 
 			Map<String,EmpresaDTO> mapEmpresas) {
 		super();
@@ -112,7 +110,7 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 
 	            if(listDocuments.size() == 1 && 
 	            		!validaURL(document.baseUri(),urlDto.getNomUrl()
-	            				.replace(StringUtils.SPACE, SEPARADOR_URL))) {
+	            				.replace(StringUtils.SPACE, getSeparadorUrl()))) {
 	            	return Lists.newArrayList();
 	            }
 	          
@@ -158,10 +156,10 @@ public class ProcessDataModule extends ProcessDataAbstract implements Callable<L
 		return bStatus?getStatusConnectionCode(urlDto.getNomUrl()):200;
 	}
 
-	private boolean validaYCargaResultado(@NotNull final int iIdEmpresa, 
-			@NotNull final String[] arProducto, 
-			@NotNull final IFProcessPrice resDto, 
-			@NotNull final Pattern pattern, 
+	private boolean validaYCargaResultado(final int iIdEmpresa, 
+			final String[] arProducto, 
+			final IFProcessPrice resDto, 
+			final Pattern pattern, 
 			List<MarcasDTO> listTodasMarcas,
 			Map<String,EmpresaDTO> mapEmpresas) {
 		
