@@ -45,7 +45,7 @@ public class CommonsPorperties implements IFCommonsProperties {
          	if(Objects.isNull(environment)) {
         		environment = new StandardEnvironment();
         	}
-        	
+
         	properties.load(input);
         	
         	environment.getPropertySources()
