@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.searchitemsapp.dao.repository.IFCategoriaRepository;
 import com.searchitemsapp.dto.CategoriaDTO;
 import com.searchitemsapp.dto.EmpresaDTO;
-import com.sun.istack.NotNull;
+
 
 /**
  * Implementación del dao.
@@ -46,7 +46,7 @@ public class CategoriaImpl implements IFImplementacion<CategoriaDTO, EmpresaDTO>
 	}
 	
 	@Override
-	public CategoriaDTO findByDid(@NotNull final CategoriaDTO categoriaDto)  throws IOException {
+	public CategoriaDTO findByDid(final CategoriaDTO categoriaDto)  throws IOException {
 		
 		if(LOGGER.isInfoEnabled()) {
 			LOGGER.info(Thread.currentThread().getStackTrace()[1].toString());
